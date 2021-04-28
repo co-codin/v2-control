@@ -32,6 +32,7 @@ export default {
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
     'nuxt-vite',
+    '@nuxtjs/composition-api/module',
   ],
 
   modules: [
