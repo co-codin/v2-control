@@ -7,6 +7,12 @@
       </div>
     </div>
 
+    <v-text-field v-model="search.name" dense label="Название"></v-text-field>
+
+    <v-text-field v-model="search.status" dense label="Статус"></v-text-field>
+
+    <v-text-field v-model="search.is_in_home" dense label="На главной"></v-text-field>
+
     <v-card>
       <v-data-table
         v-model="selectedBrands"
@@ -119,18 +125,23 @@ import {
   useContext,
   useRoute,
   useRouter,
-  computed
+  computed,
+  watch
 } from '@nuxtjs/composition-api';
+
+import SearchForm from "../../components/search/SearchForm";
 
 export default defineComponent({
   head: {
     title: 'Производители',
   },
+  components: {
+    SearchForm,
+  },
   setup(props, context) {
     const brands = ref([]);
     const selectedBrands = ref([]);
     const { $axios, $confirm, app } = useContext();
-    const searchQuery = ref('');
     const isLoading = ref(true);
     const deleteConfirmationDialog = ref(false);
     const headers = [
@@ -157,18 +168,44 @@ export default defineComponent({
     const brandRemovedSnackbar = ref(false);
     const route = useRoute();
     const options = ref({
-      itemsPerPage: route.value.query.per_page ? + route.value.query.per_page : 50,
-      page: route.value.query.page ? + route.value.query.page : 1,
-      sortBy: route.value.query.sort_by ? [route.value.query.sort_by].flat() : ['id'],
-      sortDesc: route.value.query.sort_desc
-        ? [route.value.query.sort_desc].flat().map(key => key === 'true') : [true],
+      itemsPerPage: +route.value.query.per_page || 5,
+      page: +route.value.query.page || 1,
+      sortBy: [route.value.query.sort_by || "id"].flat(),
+      sortDesc: [route.value.query.sort_desc || "true"].flat().map(key => key === 'true'),
     });
     const total = ref(null);
 
+
+    const search = ref({
+      name: route.value.query['filter[name]'],
+      is_in_home: route.value.query['filter[is_in_home]'],
+      status: route.value.query['filter[status]'],
+    });
     const openDeleteConfirmation = (id) => {
       deleteConfirmationDialog.value = true
       brandToDelete.value = id;
     }
+
+
+    const filter = computed(() => {
+      let filters = {};
+
+      Object.keys(search.value).forEach(key => {
+        filters[`filter[${key}]`] = search.value[key];
+      });
+
+      return filters;
+    });
+
+    watch(search.value, () => {
+      router.push({
+        query : {
+          ...route.value.query,
+          ...filter.value,
+        }
+      });
+      fetch();
+    });
 
     const deleteBrand = async () => {
       deleteConfirmationDialog.value = false;
@@ -210,6 +247,7 @@ export default defineComponent({
           "page[size]": options.value.itemsPerPage,
           "page[number]": options.value.page,
           'sort': sort.value,
+          ...filter.value,
         }
       });
       brands.value = response.data.data;
@@ -222,17 +260,17 @@ export default defineComponent({
       headers,
       selectedBrands,
       breadcrumbs,
-      searchQuery,
       isLoading,
       deleteConfirmationDialog,
       brandRemovedSnackbar,
       total,
       options,
       sort,
+      footerProps,
+      search,
       deleteBrand,
       openDeleteConfirmation,
       updateOptions,
-      footerProps,
     }
   },
 });
