@@ -8,68 +8,32 @@
     </div>
 
     <v-card>
-      <!-- orders list -->
-      <v-row dense class="pa-2 align-center">
-        <v-col cols="6">
-          <v-menu offset-y left>
-            <template v-slot:activator="{ on }">
-              <transition name="slide-fade" mode="out-in">
-                <v-btn v-show="selectedBrands.length > 0" v-on="on">
-                  Действия
-                  <v-icon right>mdi-menu-down</v-icon>
-                </v-btn>
-              </transition>
-            </template>
-            <v-list dense>
-              <v-list-item>
-                <v-list-item-title>Удалить</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-
-        </v-col>
-        <v-col cols="6" class="d-flex text-right align-center">
-          <v-text-field
-            v-model="searchQuery"
-            append-icon="mdi-magnify"
-            class="flex-grow-1 mr-md-2"
-            solo
-            hide-details
-            dense
-            clearable
-            placeholder="e.g. filter for id, email, name, etc"
-          ></v-text-field>
-          <v-btn
-            :loading="isLoading"
-            icon
-            small
-            class="ml-2"
-            @click
-          >
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-
       <v-data-table
         v-model="selectedBrands"
         show-select
         :headers="headers"
         :items="brands"
-        :search="searchQuery"
-        :items-per-page="18"
         class="flex-grow-1"
         :loading="isLoading"
+        item-key="id"
+        :server-items-length="total"
+        loading-text="Идет загрузка..."
+        :options.sync="options"
+        @update:items-per-page="updateOptions('itemsPerPage', $event)"
+        @update:page="updateOptions('page', $event)"
+        @update:sort-by="updateOptions('sortBy', $event)"
+        @update:sort-desc="updateOptions('sortDesc', $event)"
+        :footer-props="footerProps"
       >
         <template v-slot:item.id="{ item }">
-          <div class="font-weight-bold"># <copy-label :text="item.id + ''" /></div>
+          <div class="font-weight-bold"># {{ item.id }}</div>
         </template>
 
         <template v-slot:item.created_at="{ item }">
           <div>{{ item.created_at | formatDate('ll') }}</div>
         </template>
 
-        <template v-slot:item.action="{ }">
+        <template v-slot:item.action="{ item }">
           <div class="actions">
 
             <v-btn icon width="22" height="22">
@@ -78,7 +42,7 @@
               </svg>
             </v-btn>
 
-            <v-btn icon width="22" height="22">
+            <v-btn icon width="22" height="22" class="mx-1" @click="openDeleteConfirmation(item.id)">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
@@ -94,27 +58,85 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <v-dialog
+      v-model="deleteConfirmationDialog"
+      max-width="340"
+    >
+      <v-card>
+
+        <v-card-title class="headline text-center">Вы действительно хотите удалить производителя?</v-card-title>
+
+        <v-card-actions>
+
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteConfirmationDialog = false"
+          >
+            Нет
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteBrand(1)"
+          >
+            Да
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-snackbar
+      v-model="brandRemovedSnackbar"
+      :timeout="2000"
+    >
+      Производитель успешно удален
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="brandRemovedSnackbar.value = false"
+        >
+          Закрыть
+        </v-btn>
+      </template>
+    </v-snackbar>
+
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, useFetch, useContext } from '@nuxtjs/composition-api';
-import CopyLabel from '../../components/common/CopyLabel'
+import {
+  defineComponent,
+  ref,
+  useFetch,
+  useContext,
+  useRoute,
+  useRouter,
+  computed
+} from '@nuxtjs/composition-api';
 
 export default defineComponent({
-  components: {
-    CopyLabel
+  head: {
+    title: 'Производители',
   },
-  setup() {
+  setup(props, context) {
     const brands = ref([]);
     const selectedBrands = ref([]);
-    const { $axios } = useContext();
+    const { $axios, $confirm, app } = useContext();
     const searchQuery = ref('');
     const isLoading = ref(true);
+    const deleteConfirmationDialog = ref(false);
     const headers = [
-      { text: 'Brand Id', align: 'left', value: 'id' },
-      { text: 'Name', align: 'left', value: 'name' },
-      { text: 'Status', value: 'status.description' },
+      { text: 'ID', align: 'left', value: 'id' },
+      { text: 'Название', align: 'left', value: 'name' },
+      { text: 'Статус', value: 'status.description', sortable: false },
       { text: '', sortable: false, align: 'right', value: 'action' }
     ];
     const breadcrumbs = [{
@@ -125,29 +147,97 @@ export default defineComponent({
       text: 'Список производителей'
     }];
 
-    useFetch(async () => {
-      const response = await $axios.get('/brands?fields[brands]=id|name|status');
+    const footerProps = {
+      'items-per-page-options': [5, 10, 15, 50, 100, 200],
+      'items-per-page-text': ""
+    };
+
+    const router = useRouter();
+    const brandToDelete = ref(null);
+    const brandRemovedSnackbar = ref(false);
+    const route = useRoute();
+    const options = ref({
+      itemsPerPage: route.value.query.per_page ? + route.value.query.per_page : 50,
+      page: route.value.query.page ? + route.value.query.page : 1,
+      sortBy: route.value.query.sort_by ? [route.value.query.sort_by].flat() : ['id'],
+      sortDesc: route.value.query.sort_desc
+        ? [route.value.query.sort_desc].flat().map(key => key === 'true') : [true],
+    });
+    const total = ref(null);
+
+    const openDeleteConfirmation = (id) => {
+      deleteConfirmationDialog.value = true
+      brandToDelete.value = id;
+    }
+
+    const deleteBrand = async () => {
+      deleteConfirmationDialog.value = false;
+      try {
+        await $axios.delete(`/admin/brands/${brandToDelete.value}`);
+        fetch();
+        brandRemovedSnackbar.value = true;
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    const sort = computed(() => {
+      return options.value.sortBy.map((key, index) => {
+        const direction = options.value.sortDesc[index] ? '-' : "";
+        return `${direction}${key}`;
+      });
+    });
+
+    const updateOptions = (key, value) => {
+      options.value[key] = value;
+      router.push({
+        query : {
+          ...route.value.query,
+          page: options.value.page,
+          per_page: options.value.itemsPerPage,
+          sort_by: options.value.sortBy,
+          sort_desc: options.value.sortDesc,
+        }
+      });
+      fetch();
+    }
+
+    const { fetch } = useFetch(async () => {
+      isLoading.value = true;
+      const response = await $axios.get("/brands", {
+        params: {
+          "fields[brands]": "id|name|status",
+          "page[size]": options.value.itemsPerPage,
+          "page[number]": options.value.page,
+          'sort': sort.value,
+        }
+      });
       brands.value = response.data.data;
+      total.value = response.data.meta.total;
       isLoading.value = false;
     });
 
     return {
-      brands, headers, selectedBrands, breadcrumbs, searchQuery, isLoading
+      brands,
+      headers,
+      selectedBrands,
+      breadcrumbs,
+      searchQuery,
+      isLoading,
+      deleteConfirmationDialog,
+      brandRemovedSnackbar,
+      total,
+      options,
+      sort,
+      deleteBrand,
+      openDeleteConfirmation,
+      updateOptions,
+      footerProps,
     }
   },
 });
 </script>
 
-<style lang="scss" scoped>
-.slide-fade-enter-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.slide-fade-enter,
-.slide-fade-leave-to {
-  transform: translateX(10px);
-  opacity: 0;
-}
-</style>
+
+
+
