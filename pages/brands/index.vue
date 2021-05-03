@@ -1,4 +1,5 @@
 <template>
+
   <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex align-center py-3">
       <div>
@@ -6,6 +7,8 @@
         <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
       </div>
     </div>
+
+    <v-btn :to="{name: 'brands-create'}">Добавить производителя</v-btn>
 
     <v-text-field v-model="search.name" dense label="Название"></v-text-field>
 
@@ -16,20 +19,19 @@
     <v-card>
       <v-data-table
         v-model="selectedBrands"
-        show-select
+        item-key="id"
         :headers="headers"
         :items="brands"
-        class="flex-grow-1"
         :loading="isLoading"
-        item-key="id"
         :server-items-length="total"
         loading-text="Идет загрузка..."
         :options.sync="options"
+        :footer-props="footerProps"
+        show-select
         @update:items-per-page="updateOptions('itemsPerPage', $event)"
         @update:page="updateOptions('page', $event)"
         @update:sort-by="updateOptions('sortBy', $event)"
         @update:sort-desc="updateOptions('sortDesc', $event)"
-        :footer-props="footerProps"
       >
         <template v-slot:item.id="{ item }">
           <div class="font-weight-bold"># {{ item.id }}</div>
@@ -42,7 +44,7 @@
         <template v-slot:item.action="{ item }">
           <div class="actions">
 
-            <v-btn icon width="22" height="22">
+            <v-btn icon width="22" height="22" :to="{name: 'brands-id-update', params: {id: item.id}}">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
@@ -115,6 +117,7 @@
     </v-snackbar>
 
   </div>
+
 </template>
 
 <script>
@@ -147,16 +150,14 @@ export default defineComponent({
     const headers = [
       { text: 'ID', align: 'left', value: 'id' },
       { text: 'Название', align: 'left', value: 'name' },
+      { text: 'Дата создания', align: 'left', value: 'created_at' },
       { text: 'Статус', value: 'status.description', sortable: false },
       { text: '', sortable: false, align: 'right', value: 'action' }
     ];
-    const breadcrumbs = [{
-      text: 'Главная',
-      disabled: false,
-      href: '/'
-    }, {
-      text: 'Список производителей'
-    }];
+    const breadcrumbs = [
+      { text: 'Главная', href: '/' },
+      { text: 'Список производителей' }
+    ];
 
     const footerProps = {
       'items-per-page-options': [5, 10, 15, 50, 100, 200],
@@ -243,7 +244,7 @@ export default defineComponent({
       isLoading.value = true;
       const response = await $axios.get("/brands", {
         params: {
-          "fields[brands]": "id|name|status",
+          "fields[brands]": "id|name|status|created_at",
           "page[size]": options.value.itemsPerPage,
           "page[number]": options.value.page,
           'sort': sort.value,

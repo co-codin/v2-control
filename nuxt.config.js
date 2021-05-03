@@ -27,6 +27,7 @@ export default {
     { src: '~/plugins/clipboard.js', mode: 'client' },
     { src: '~/plugins/vue-shortkey.js', mode: 'client' },
     { src: '~/plugins/confirm.js', mode: 'client' },
+    { src: '~/plugins/tooltip.js', mode: 'client' },
 
     { src: '~/filters/capitalize.js' },
     { src: '~/filters/lowercase.js' },
