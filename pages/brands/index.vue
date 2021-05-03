@@ -50,8 +50,9 @@
               </svg>
             </v-btn>
 
-            <v-btn icon width="22" height="22" class="mx-1" @click="openDeleteConfirmation(item.id)">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <v-btn icon width="22" height="22" class="mx-1" @click="deleteBrand(item)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                   fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </v-btn>
@@ -66,55 +67,6 @@
         </template>
       </v-data-table>
     </v-card>
-
-    <v-dialog
-      v-model="deleteConfirmationDialog"
-      max-width="340"
-    >
-      <v-card>
-
-        <v-card-title class="headline text-center">Вы действительно хотите удалить производителя?</v-card-title>
-
-        <v-card-actions>
-
-          <v-spacer></v-spacer>
-
-          <v-btn
-            color="green darken-1"
-            text
-            @click="deleteConfirmationDialog = false"
-          >
-            Нет
-          </v-btn>
-
-          <v-btn
-            color="green darken-1"
-            text
-            @click="deleteBrand(1)"
-          >
-            Да
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-snackbar
-      v-model="brandRemovedSnackbar"
-      :timeout="2000"
-    >
-      Производитель успешно удален
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="blue"
-          text
-          v-bind="attrs"
-          @click="brandRemovedSnackbar.value = false"
-        >
-          Закрыть
-        </v-btn>
-      </template>
-    </v-snackbar>
 
   </div>
 
@@ -144,9 +96,8 @@ export default defineComponent({
   setup(props, context) {
     const brands = ref([]);
     const selectedBrands = ref([]);
-    const { $axios, $confirm, app } = useContext();
+    const { $axios, app } = useContext();
     const isLoading = ref(true);
-    const deleteConfirmationDialog = ref(false);
     const headers = [
       { text: 'ID', align: 'left', value: 'id' },
       { text: 'Название', align: 'left', value: 'name' },
@@ -158,15 +109,11 @@ export default defineComponent({
       { text: 'Главная', href: '/' },
       { text: 'Список производителей' }
     ];
-
     const footerProps = {
       'items-per-page-options': [5, 10, 15, 50, 100, 200],
       'items-per-page-text': ""
     };
-
     const router = useRouter();
-    const brandToDelete = ref(null);
-    const brandRemovedSnackbar = ref(false);
     const route = useRoute();
     const options = ref({
       itemsPerPage: +route.value.query.per_page || 5,
@@ -175,18 +122,11 @@ export default defineComponent({
       sortDesc: [route.value.query.sort_desc || "true"].flat().map(key => key === 'true'),
     });
     const total = ref(null);
-
-
     const search = ref({
       name: route.value.query['filter[name]'],
       is_in_home: route.value.query['filter[is_in_home]'],
       status: route.value.query['filter[status]'],
     });
-    const openDeleteConfirmation = (id) => {
-      deleteConfirmationDialog.value = true
-      brandToDelete.value = id;
-    }
-
 
     const filter = computed(() => {
       let filters = {};
@@ -208,14 +148,17 @@ export default defineComponent({
       fetch();
     });
 
-    const deleteBrand = async () => {
-      deleteConfirmationDialog.value = false;
+    const deleteBrand = async (brand) => {
+      if(!await context.root.$confirm(`Вы действительно хотите удалить производителя ${brand.name}?`)) {
+        return;
+      }
       try {
-        await $axios.delete(`/admin/brands/${brandToDelete.value}`);
+        await $axios.delete(`/admin/brands/${brand.id}`);
+        context.root.$snackbar(`Производитель ${brand.name} успешно удален`);
         fetch();
-        brandRemovedSnackbar.value = true;
-      } catch (e) {
-        alert(e.message);
+      }
+      catch (e) {
+        context.root.$snackbar(e.message);
       }
     }
 
@@ -262,21 +205,14 @@ export default defineComponent({
       selectedBrands,
       breadcrumbs,
       isLoading,
-      deleteConfirmationDialog,
-      brandRemovedSnackbar,
       total,
       options,
       sort,
       footerProps,
       search,
       deleteBrand,
-      openDeleteConfirmation,
       updateOptions,
     }
   },
 });
 </script>
-
-
-
-

@@ -1,23 +1,24 @@
 <template>
   <div>
-    <v-btn @click="openConfirm">открыть confirm</v-btn>
+    <v-btn @click="deleteBrand(1)">открыть confirm</v-btn>
   </div>
 </template>
 
 
 <script>
-import { defineComponent, useContext } from '@nuxtjs/composition-api';
+import { defineComponent } from '@nuxtjs/composition-api';
 
 export default defineComponent({
   setup(props, context) {
+    const deleteBrand = async (brand_id) => {
+      if(await context.root.$confirm('Уверены?')) {
+        context.root.$snackbar('Производитель успешно удален');
+      }
+    }
 
-    //const { $tooltip } = useContext();
-
-    const openConfirm = () => {
-      context.$confirm('sasasas');
-    };
-
-    return { openConfirm }
+    return {
+      deleteBrand,
+    }
   },
 });
 </script>

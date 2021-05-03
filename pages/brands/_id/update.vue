@@ -40,6 +40,7 @@ import {
   useContext,
   useFetch,
   useRoute,
+  useRouter,
 } from '@nuxtjs/composition-api';
 import SeoRelationForm from "../../../components/SeoRelationForm";
 
@@ -51,7 +52,7 @@ export default defineComponent({
     SeoRelationForm,
     BrandForm
   },
-  setup() {
+  setup(props, { root }) {
     const breadcrumbs = [
       { text: 'Главная', disabled: false, href: '/' },
       { text: 'Список производителей', href: '/brands' },
@@ -59,6 +60,7 @@ export default defineComponent({
     ];
 
     const route = useRoute();
+    const router = useRouter();
     const brand = ref(null);
     const seo = ref(null);
     const loading = ref(true);
@@ -71,17 +73,31 @@ export default defineComponent({
         }
       });
       data.data.status = data.data.status.value;
-      seo.value = data.data.seo;
+      seo.value = data.data.seo || {};
       brand.value = data.data;
       loading.value = false;
     });
 
-    const updateBrand = (form) => {
-      form.put(`/admin/brands/${route.value.params.id}`);
+    const updateBrand = async (form) => {
+      try {
+        await form.put(`/admin/brands/${route.value.params.id}`);
+        root.$snackbar(`Производитель успешно обновлен`);
+        router.push({ name: 'brands' });
+      }
+      catch (e) {
+        root.$snackbar('Приозошла ошибка при обновлении производителя: ' + e.message);
+      }
     }
 
-    const updateBrandSeo = (form) => {
-      form.patch(`/admin/brands/${route.value.params.id}/seo`);
+    const updateBrandSeo = async (form) => {
+      try {
+        await form.patch(`/admin/brands/${route.value.params.id}/seo`);
+        root.$snackbar(`SEO производителя успешно обновлено`);
+        router.push({ name: 'brands' });
+      }
+      catch (e) {
+        root.$snackbar('Прозиошла ошибка при обоновлении seo у производителя: ' + e.message);
+      }
     }
 
     return { loading, brand, seo, breadcrumbs, updateBrand, updateBrandSeo }

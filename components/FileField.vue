@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="isUploaded">
-      <img :src="'http://127.0.0.1:8000/storage/' + value" alt="" width="200">
+      <img :src="'127.0.0.1:8000/storage/' + value" alt="" width="200">
       <v-btn @click="$emit('input', null)">Удалить</v-btn>
     </div>
     <v-file-input

@@ -36,7 +36,7 @@ export default defineComponent({
   components: {
     BrandForm
   },
-  setup() {
+  setup(props, { root }) {
     const breadcrumbs = [
       { text: 'Главная', disabled: false, href: '/' },
       { text: 'Список производителей', href: '/brands' },
@@ -44,10 +44,16 @@ export default defineComponent({
     ];
     const router = useRouter();
 
-    async function createBrand(form) {
-      await form.post("/admin/brands");
-      router.push('/brands');
-    }
+    const createBrand = async (form) => {
+      try {
+          await form.post('/admin/brands');
+          root.$snackbar(`Производитель ${form.name} успешно добавлен`)
+          router.push('/brands');
+      }
+      catch (e) {
+        root.$snackbar(`Произошла ошибка при создании производителя: ${e.message}`)
+      }
+    };
 
     return { breadcrumbs, createBrand }
   },
