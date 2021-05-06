@@ -1,38 +1,48 @@
-import colors from 'vuetify/es5/util/colors'
+import config from './configs'
 
 export default {
 
   ssr: false,
 
   head: {
-    titleTemplate: '%s - control.medeq.ru',
-    title: 'control.medeq.ru',
-    htmlAttrs: {
-      lang: 'en'
-    },
+    titleTemplate: '%s - nuxt',
+    title: 'nuxt',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ...config.icons.map((href) => ({ rel: 'stylesheet', href }))
     ]
   },
 
   css: [
+    '~/assets/scss/theme.scss'
   ],
 
   plugins: [
+    { src: '~/plugins/animate.js', mode: 'client' },
+    { src: '~/plugins/clipboard.js', mode: 'client' },
+    { src: '~/plugins/vue-shortkey.js', mode: 'client' },
+    { src: '~/plugins/confirm.js', mode: 'client' },
+    { src: '~/plugins/tooltip.js', mode: 'client' },
+    { src: '~/plugins/snackbar.js', mode: 'client' },
+
+    { src: '~/filters/capitalize.js' },
+    { src: '~/filters/lowercase.js' },
+    { src: '~/filters/uppercase.js' },
+    { src: '~/filters/formatCurrency.js' },
+    { src: '~/filters/formatDate.js' }
   ],
 
-  components: true,
+  // components: true,
 
   buildModules: [
-    '@nuxt/typescript-build',
     '@nuxtjs/vuetify',
+    '@nuxt/typescript-build',
     '@nuxtjs/dotenv',
-    'nuxt-vite',
     '@nuxtjs/composition-api/module',
   ],
 
@@ -40,30 +50,21 @@ export default {
     '@nuxtjs/axios',
   ],
 
+  vuetify: {
+    customVariables: ['~/assets/scss/vuetify/variables/_index.scss'],
+    optionsPath: '~/configs/vuetify.js',
+    treeShake: true,
+    defaultAssets: {
+      font: false
+    }
+  },
+
   axios: {},
 
   publicRuntimeConfig: {
     axios: {
       baseURL: process.env.API_URL,
     },
-  },
-
-  vuetify: {
-    customVariables: ['~/assets/variables.scss'],
-    theme: {
-      dark: true,
-      themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    }
   },
 
   build: {

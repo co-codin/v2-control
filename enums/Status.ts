@@ -1,0 +1,5 @@
+export enum Status {
+  Active = 1,
+  Inactive = 2,
+  OnlyByUrl = 3,
+}
