@@ -25,8 +25,8 @@
         :loading="isLoading"
         :server-items-length="total"
         loading-text="Идет загрузка..."
-        :options.sync="options"
-        :footer-props="footerProps"
+        :options.sync="tableOptions"
+        :footer-props="tableFooterProps"
         show-select
         @update:items-per-page="updateOptions('itemsPerPage', $event)"
         @update:page="updateOptions('page', $event)"
@@ -73,146 +73,125 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-  useFetch,
-  useContext,
-  useRoute,
-  useRouter,
-  computed,
-  watch
-} from '@nuxtjs/composition-api';
-
-import SearchForm from "../../components/search/SearchForm";
-
-export default defineComponent({
-  head: {
-    title: 'Производители',
-  },
-  components: {
-    SearchForm,
-  },
-  setup(props, context) {
-    const brands = ref([]);
-    const selectedBrands = ref([]);
-    const { $axios, app } = useContext();
-    const isLoading = ref(true);
-    const headers = [
+export default {
+  data: () => ({
+    brands: [],
+    selectedBrands: [],
+    search: {
+      name: null,
+      is_in_home: null,
+      status: null,
+    },
+    total: null,
+    headers: [
       { text: 'ID', align: 'left', value: 'id' },
       { text: 'Название', align: 'left', value: 'name' },
       { text: 'Дата создания', align: 'left', value: 'created_at' },
       { text: 'Статус', value: 'status.description', sortable: false },
       { text: '', sortable: false, align: 'right', value: 'action' }
-    ];
-    const breadcrumbs = [
+    ],
+    isLoading: true,
+    breadcrumbs: [
       { text: 'Главная', href: '/' },
-      { text: 'Список производителей' }
-    ];
-    const footerProps = {
+      { text: 'Список производителей' },
+    ],
+    tableFooterProps: {
       'items-per-page-options': [5, 10, 15, 50, 100, 200],
-      'items-per-page-text': ""
-    };
-    const router = useRouter();
-    const route = useRoute();
-    const options = ref({
-      itemsPerPage: +route.value.query.per_page || 5,
-      page: +route.value.query.page || 1,
-      sortBy: [route.value.query.sort_by || "id"].flat(),
-      sortDesc: [route.value.query.sort_desc || "true"].flat().map(key => key === 'true'),
-    });
-    const total = ref(null);
-    const search = ref({
-      name: route.value.query['filter[name]'],
-      is_in_home: route.value.query['filter[is_in_home]'],
-      status: route.value.query['filter[status]'],
-    });
-
-    const filter = computed(() => {
+      'items-per-page-text': "",
+    },
+    tableOptions: {
+      itemsPerPage: null,
+      page: null,
+      sortBy: null,
+      sortDesc: null,
+    }
+  }),
+  head: {
+    title: 'Производители',
+  },
+  computed: {
+    filter() {
       let filters = {};
 
-      Object.keys(search.value).forEach(key => {
-        filters[`filter[${key}]`] = search.value[key];
+      Object.keys(this.search).forEach(key => {
+        filters[`filter[${key}]`] = this.search[key];
       });
 
       return filters;
-    });
-
-    watch(search.value, () => {
-      router.push({
+    },
+    sort() {
+      return this.tableOptions.sortBy.map((key, index) => {
+        const direction = this.tableOptions.sortDesc[index] ? '-' : "";
+        return `${direction}${key}`;
+      });
+    },
+  },
+  watch: {
+    search() {
+      this.$router.push({
         query : {
-          ...route.value.query,
-          ...filter.value,
+          ...this.$route.query,
+          ...this.filter,
         }
       });
-      fetch();
-    });
-
-    const deleteBrand = async (brand) => {
-      if(!await context.root.$confirm(`Вы действительно хотите удалить производителя ${brand.name}?`)) {
+      this.$fetch();
+    },
+  },
+  methods: {
+    async deleteBrand(brand) {
+      if(! await this.$confirm(`Вы действительно хотите удалить производителя ${brand.name}?`)) {
         return;
       }
       try {
-        await $axios.delete(`/admin/brands/${brand.id}`);
-        context.root.$snackbar(`Производитель ${brand.name} успешно удален`);
-        fetch();
+        await this.$axios.delete(`/admin/brands/${brand.id}`);
+        this.$snackbar(`Производитель ${brand.name} успешно удален`);
+        this.$fetch();
       }
       catch (e) {
-        context.root.$snackbar(e.message);
+        this.$snackbar(e.message);
       }
-    }
-
-    const sort = computed(() => {
-      return options.value.sortBy.map((key, index) => {
-        const direction = options.value.sortDesc[index] ? '-' : "";
-        return `${direction}${key}`;
-      });
-    });
-
-    const updateOptions = (key, value) => {
-      options.value[key] = value;
-      router.push({
+    },
+    updateOptions(key, value) {
+      this.tableOptions[key] = value;
+      this.$router.push({
         query : {
-          ...route.value.query,
-          page: options.value.page,
-          per_page: options.value.itemsPerPage,
-          sort_by: options.value.sortBy,
-          sort_desc: options.value.sortDesc,
+          ...this.$route.query,
+          page: this.tableOptions.page,
+          per_page: this.tableOptions.itemsPerPage,
+          sort_by: this.tableOptions.sortBy,
+          sort_desc: this.tableOptions.sortDesc,
         }
       });
-      fetch();
-    }
-
-    const { fetch } = useFetch(async () => {
-      isLoading.value = true;
-      const response = await $axios.get("/brands", {
-        params: {
-          "fields[brands]": "id|name|status|created_at",
-          "page[size]": options.value.itemsPerPage,
-          "page[number]": options.value.page,
-          'sort': sort.value,
-          ...filter.value,
-        }
-      });
-      brands.value = response.data.data;
-      total.value = response.data.meta.total;
-      isLoading.value = false;
-    });
-
-    return {
-      brands,
-      headers,
-      selectedBrands,
-      breadcrumbs,
-      isLoading,
-      total,
-      options,
-      sort,
-      footerProps,
-      search,
-      deleteBrand,
-      updateOptions,
-    }
+      this.$fetch();
+    },
   },
-});
+  async fetch() {
+    this.isLoading = true;
+    const response = await this.$axios.get("/brands", {
+      params: {
+        "fields[brands]": "id|name|status|created_at",
+        "page[size]": this.tableOptions.itemsPerPage,
+        "page[number]": this.tableOptions.page,
+        'sort': this.sort,
+        ...this.filter,
+      }
+    });
+    this.brands = response.data.data;
+    this.total = response.data.meta.total;
+    this.isLoading = false;
+  },
+  created() {
+    this.tableOptions = {
+      itemsPerPage: +this.$route.query.per_page || 5,
+      page: +this.$route.query.page || 1,
+      sortBy: [this.$route.query.sort_by || "id"].flat(),
+      sortDesc: [this.$route.query.sort_desc || "true"].flat().map(key => key === 'true'),
+    };
+    this.search = {
+      name: this.$route.query['filter[name]'],
+      is_in_home: this.$route.query['filter[is_in_home]'],
+      status: this.$route.query['filter[status]'],
+    };
+  }
+}
 </script>

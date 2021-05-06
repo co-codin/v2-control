@@ -41,35 +41,33 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import { defineComponent, ref, useContext, watch } from '@nuxtjs/composition-api';
 
-export default defineComponent({
+export default {
   props: {
     seo: {
       type: Object | null,
       default: () => ({}),
     },
   },
-  setup(props) {
-    const { $axios } = useContext();
-    const defaults = {
+  data: () => ({
+    formDefaults: {
       is_enabled: false,
       title: null,
       h1: null,
       description: null,
-    }
-    const form = ref(
-      Form.create(defaults)
-        .withOptions({ http: $axios })
-        .populate(props.seo || {})
-    );
-
-    watch(props.seo, (value) => {
-      form.value.populate(Object.assign({}, value));
-    });
-
-    return { form };
+    },
+    form: null,
+  }),
+  created() {
+    this.form = Form.create(this.formDefaults)
+      .withOptions({ http: this.$axios })
+      .populate(this.seo || {})
   },
-});
+  watch: {
+    seo(value) {
+      this.form.populate(value);
+    }
+  }
+}
 </script>
 

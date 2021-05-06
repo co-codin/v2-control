@@ -76,30 +76,10 @@
 <script>
 import { Form } from 'form-backend-validation';
 import FileField from "./FileField";
-import { defineComponent, ref, useContext, watch } from '@nuxtjs/composition-api';
 
-export default defineComponent({
-  props: {
-    brand: {
-      type: Object | null,
-      default: () => ({}),
-    },
-    isUpdating: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  components: {
-    FileField,
-  },
-  setup(props) {
-    const statusLabels = [
-      { value: 1, text: 'Active' },
-      { value: 2, text: 'Inactive' },
-      { value: 3, text: 'Only By Url' },
-    ];
-    const { $axios } = useContext();
-    const defaults = {
+export default {
+  data: () => ({
+    formDefaults: {
       name: null,
       slug: null,
       status: 1,
@@ -110,19 +90,37 @@ export default defineComponent({
       short_description: null,
       full_description: null,
       country: null,
-    }
-    const form = ref(
-      Form.create(defaults)
-        .withOptions({ http: $axios })
-        .populate(props.brand || {})
-    )
-
-    watch(props.brand, (value) => {
-      form.value.populate(Object.assign({}, value));
-    });
-
-    return { form, statusLabels }
+    },
+    statusLabels: [
+      { value: 1, text: 'Active' },
+      { value: 2, text: 'Inactive' },
+      { value: 3, text: 'Only By Url' },
+    ],
+    form: null,
+  }),
+  components: {
+    FileField,
   },
-});
+  props: {
+    brand: {
+      type: Object | null,
+      default: () => ({}),
+    },
+    isUpdating: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  created() {
+    this.form = Form.create(this.formDefaults)
+      .withOptions({ http: this.$axios })
+      .populate(this.brand || {})
+  },
+  watch: {
+    brand(value) {
+      this.form.populate(value);
+    },
+  },
+}
 </script>
 

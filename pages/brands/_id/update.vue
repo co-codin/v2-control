@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <v-card :loading="loading" class="mb-3">
+    <v-card :loading="isLoading" class="mb-3">
       <v-card-title>
         Основная информация
       </v-card-title>
@@ -17,7 +17,7 @@
       </v-card-text>
     </v-card>
 
-    <v-card :loading="loading">
+    <v-card :loading="isLoading">
       <v-card-title>
         SEO
       </v-card-title>
@@ -33,18 +33,9 @@
 
 <script>
 import BrandForm from "../../../components/BrandForm";
-
-import {
-  defineComponent,
-  ref,
-  useContext,
-  useFetch,
-  useRoute,
-  useRouter,
-} from '@nuxtjs/composition-api';
 import SeoRelationForm from "../../../components/SeoRelationForm";
 
-export default defineComponent({
+export default {
   head: {
     title: 'Редактирование производителя',
   },
@@ -52,55 +43,47 @@ export default defineComponent({
     SeoRelationForm,
     BrandForm
   },
-  setup(props, { root }) {
-    const breadcrumbs = [
+  data: () => ({
+    brand: null,
+    isLoading: true,
+    breadcrumbs: [
       { text: 'Главная', disabled: false, href: '/' },
       { text: 'Список производителей', href: '/brands' },
       { text: 'Редактирование производителя' },
-    ];
-
-    const route = useRoute();
-    const router = useRouter();
-    const brand = ref(null);
-    const seo = ref(null);
-    const loading = ref(true);
-    const { $axios } = useContext();
-
-    useFetch(async () => {
-      const { data } = await $axios.get('/brands/' + route.value.params.id, {
-        params: {
-          include: ['seo'],
-        }
-      });
-      data.data.status = data.data.status.value;
-      seo.value = data.data.seo || {};
-      brand.value = data.data;
-      loading.value = false;
+    ],
+  }),
+  async fetch() {
+    const { data } = await this.$axios.get('/brands/' + this.$route.params.id, {
+      params: {
+        include: ['seo'],
+      }
     });
-
-    const updateBrand = async (form) => {
-      try {
-        await form.put(`/admin/brands/${route.value.params.id}`);
-        root.$snackbar(`Производитель успешно обновлен`);
-        router.push({ name: 'brands' });
-      }
-      catch (e) {
-        root.$snackbar('Приозошла ошибка при обновлении производителя: ' + e.message);
-      }
-    }
-
-    const updateBrandSeo = async (form) => {
-      try {
-        await form.patch(`/admin/brands/${route.value.params.id}/seo`);
-        root.$snackbar(`SEO производителя успешно обновлено`);
-        router.push({ name: 'brands' });
-      }
-      catch (e) {
-        root.$snackbar('Прозиошла ошибка при обоновлении seo у производителя: ' + e.message);
-      }
-    }
-
-    return { loading, brand, seo, breadcrumbs, updateBrand, updateBrandSeo }
+    data.data.status = data.data.status.value;
+    this.seo = data.data.seo || {};
+    this.brand = data.data;
+    this.isLoading = false;
   },
-});
+  methods: {
+    async updateBrand(form) {
+      try {
+        await form.put(`/admin/brands/${this.$route.params.id}`);
+        this.$snackbar(`Производитель успешно обновлен`);
+        await this.$router.push({ name: 'brands' });
+      }
+      catch (e) {
+        this.$snackbar('Приозошла ошибка при обновлении производителя: ' + e.message);
+      }
+    },
+    async updateBrandSeo (form) {
+      try {
+        await form.patch(`/admin/brands/${this.$route.params.id}/seo`);
+        this.$snackbar(`SEO производителя успешно обновлено`);
+        await this.$router.push({ name: 'brands' });
+      }
+      catch (e) {
+        this.$snackbar('Прозиошла ошибка при обоновлении seo у производителя: ' + e.message);
+      }
+    },
+  }
+}
 </script>

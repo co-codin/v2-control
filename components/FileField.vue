@@ -15,18 +15,17 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@nuxtjs/composition-api";
-
-export default defineComponent({
+export default{
   props: {
     value: {
       default: null,
       type: String | File,
     },
   },
-  setup(props) {
-    const isUploaded = computed(() => typeof props.value === "string");
-    return { isUploaded };
-  }
-});
+  computed: {
+    isUploaded() {
+      return typeof this.value === "string";
+    }
+  },
+};
 </script>

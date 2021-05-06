@@ -43,7 +43,6 @@ export default {
     '@nuxtjs/vuetify',
     '@nuxt/typescript-build',
     '@nuxtjs/dotenv',
-    '@nuxtjs/composition-api/module',
   ],
 
   modules: [
