@@ -29,6 +29,7 @@ export default {
     { src: '~/plugins/confirm.js', mode: 'client' },
     { src: '~/plugins/tooltip.js', mode: 'client' },
     { src: '~/plugins/snackbar.js', mode: 'client' },
+    { src: '~/plugins/portal.js', mode: 'client' },
 
     { src: '~/filters/capitalize.js' },
     { src: '~/filters/lowercase.js' },

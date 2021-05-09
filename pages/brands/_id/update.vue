@@ -32,8 +32,8 @@
 
 
 <script>
-import BrandForm from "../../../components/BrandForm";
-import SeoRelationForm from "../../../components/SeoRelationForm";
+import BrandForm from "../../../components/forms/BrandForm";
+import SeoRelationForm from "../../../components/forms/SeoRelationForm";
 
 export default {
   head: {

@@ -21,7 +21,7 @@
 
 
 <script>
-import BrandForm from "../../components/BrandForm";
+import BrandForm from "../../components/forms/BrandForm";
 
 export default {
   head: {
