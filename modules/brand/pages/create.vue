@@ -21,7 +21,7 @@
 
 
 <script>
-import BrandForm from "../../components/forms/BrandForm";
+import BrandForm from "../components/BrandForm";
 
 export default {
   head: {
@@ -43,7 +43,7 @@ export default {
         const brand_name = form.name;
         await form.post('/admin/brands');
         this.$snackbar(`Производитель ${brand_name} успешно добавлен`)
-        await this.$router.push('/brands');
+        await this.$router.push({name: 'brands.index'});
       }
       catch (e) {
         this.$snackbar(`Произошла ошибка при создании производителя: ${e.message}`)

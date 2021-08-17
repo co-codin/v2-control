@@ -32,8 +32,8 @@
 
 
 <script>
-import BrandForm from "../../../components/forms/BrandForm";
-import SeoRelationForm from "../../../components/forms/SeoRelationForm";
+import BrandForm from "../components/BrandForm";
+import SeoRelationForm from "@/components/forms/SeoRelationForm";
 
 export default {
   head: {
@@ -68,7 +68,7 @@ export default {
       try {
         await form.put(`/admin/brands/${this.$route.params.id}`);
         this.$snackbar(`Производитель успешно обновлен`);
-        await this.$router.push({ name: 'brands' });
+        await this.$router.push({ name: 'brands.index' });
       }
       catch (e) {
         this.$snackbar('Приозошла ошибка при обновлении производителя: ' + e.message);

@@ -20,7 +20,7 @@
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { toTree, fetchAllEntries } from "../../helpers";
+import { toTree, fetchAllEntries } from "../../../helpers";
 
 export default {
   props: {
@@ -82,7 +82,7 @@ export default {
         params: {
           "page[size]": 100,
           "page[number]": page,
-          "fields[categories]": "id|name|parent_id",
+          "fields[categories]": "id,name,parent_id",
         }
       });
     });

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/router": "^1.6.1",
     "@riophae/vue-treeselect": "^0.4.0",
     "animate.css": "^4.1.0",
     "apexcharts": "^3.19.2",
@@ -24,13 +25,14 @@
     "qs": "^6.10.1",
     "v-tooltip": "^2.1.3",
     "vue": "^2.6.12",
+    "vue-api-query": "^1.9.1",
+    "vue-mc": "^0.6.0",
+    "vue-router": "^3.5.2",
     "vue-shortkey": "^3.1.7",
     "vuetify-confirm": "^2.0.6"
   },
   "devDependencies": {
     "@indielayer/eslint-config-vue": "^1.0.0",
-    "@nuxt/types": "^2.15.4",
-    "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/vuetify": "^1.11.3",
     "eslint": "^6.8.0",

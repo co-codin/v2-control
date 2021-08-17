@@ -75,7 +75,7 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import FileField from "./FileField";
+import FileField from "../../../components/forms/FileField";
 
 export default {
   data: () => ({

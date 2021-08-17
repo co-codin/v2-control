@@ -66,7 +66,7 @@ export default {
   watch: {
     seo(value) {
       this.form.populate(value);
-    }
+    },
   }
 }
 </script>

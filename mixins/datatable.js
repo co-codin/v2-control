@@ -51,7 +51,7 @@ export default {
   methods: {
     async updateOptions(key, value) {
       this.tableOptions[key] = value;
-      await this.$router.push({
+      await this.$router.replace({
         query : {
           ...this.$route.query,
           page: this.tableOptions.page,
@@ -73,7 +73,7 @@ export default {
     },
     async search(data) {
       this.searchForm = Object.assign({}, {...data});
-      await this.$router.push({
+      await this.$router.replace({
         query : {
           ...this.$route.query,
           filter: qs.stringify(this.searchForm),

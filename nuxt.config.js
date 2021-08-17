@@ -23,27 +23,25 @@ export default {
   ],
 
   plugins: [
-    { src: '~/plugins/animate.js', mode: 'client' },
-    { src: '~/plugins/clipboard.js', mode: 'client' },
-    { src: '~/plugins/vue-shortkey.js', mode: 'client' },
-    { src: '~/plugins/confirm.js', mode: 'client' },
-    { src: '~/plugins/tooltip.js', mode: 'client' },
-    { src: '~/plugins/snackbar.js', mode: 'client' },
-    { src: '~/plugins/portal.js', mode: 'client' },
-
+    { src: '~/plugins/animate.js' },
+    { src: '~/plugins/clipboard.js' },
+    { src: '~/plugins/vue-shortkey.js' },
+    { src: '~/plugins/confirm.js' },
+    { src: '~/plugins/tooltip.js' },
+    { src: '~/plugins/snackbar.js' },
+    { src: '~/plugins/portal.js' },
     { src: '~/filters/capitalize.js' },
     { src: '~/filters/lowercase.js' },
     { src: '~/filters/uppercase.js' },
     { src: '~/filters/formatCurrency.js' },
-    { src: '~/filters/formatDate.js' }
+    { src: '~/filters/formatDate.js' },
+    { src: '~plugins/vue-api-query' },
   ],
-
-  // components: true,
 
   buildModules: [
     '@nuxtjs/vuetify',
-    '@nuxt/typescript-build',
     '@nuxtjs/dotenv',
+    '@nuxtjs/router',
   ],
 
   modules: [
