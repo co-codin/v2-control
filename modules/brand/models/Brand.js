@@ -1,8 +1,7 @@
-import Model from '@/models/Model'
+import Model from '@/models/Model';
 
-export default class Brand extends Model
-{
-  resource() {
-    return 'brands'
-  }
+export default class Brand extends Model {
+    resource() {
+        return 'brands';
+    }
 }
