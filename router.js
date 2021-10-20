@@ -27,6 +27,11 @@ const routes = [
     name: 'home',
     component: page('index'),
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: page('login'),
+  },
   ...loadModules(),
 ];
 
