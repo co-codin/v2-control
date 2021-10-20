@@ -11,50 +11,50 @@
             <v-btn :to="{ name: 'categories.create' }"> Добавить категорию </v-btn>
         </div>
 
-        <!--        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />-->
+        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
 
-        <!--        <v-card>-->
-        <!--            <v-data-table-->
-        <!--                v-model="selectedItems"-->
-        <!--                item-key="id"-->
-        <!--                :headers="headers"-->
-        <!--                :items="categories"-->
-        <!--                :loading="isLoading"-->
-        <!--                :server-items-length="total"-->
-        <!--                loading-text="Идет загрузка..."-->
-        <!--                :options.sync="tableOptions"-->
-        <!--                :footer-props="tableFooterProps"-->
-        <!--                show-select-->
-        <!--                @update:items-per-page="updateOptions('itemsPerPage', $event)"-->
-        <!--                @update:page="updateOptions('page', $event)"-->
-        <!--                @update:sort-by="updateOptions('sortBy', $event)"-->
-        <!--                @update:sort-desc="updateOptions('sortDesc', $event)"-->
-        <!--            >-->
-        <!--                <template #item.id="{ item }">-->
-        <!--                    <div class="font-weight-bold"># {{ item.id }}</div>-->
-        <!--                </template>-->
+        <v-card>
+            <v-data-table
+                v-model="selectedItems"
+                item-key="id"
+                :headers="headers"
+                :items="categories"
+                :loading="isLoading"
+                :server-items-length="total"
+                loading-text="Идет загрузка..."
+                :options.sync="tableOptions"
+                :footer-props="tableFooterProps"
+                show-select
+                @update:items-per-page="updateOptions('itemsPerPage', $event)"
+                @update:page="updateOptions('page', $event)"
+                @update:sort-by="updateOptions('sortBy', $event)"
+                @update:sort-desc="updateOptions('sortDesc', $event)"
+            >
+                <template #item.id="{ item }">
+                    <div class="font-weight-bold"># {{ item.id }}</div>
+                </template>
 
-        <!--                <template #item.created_at="{ item }">-->
-        <!--                    <div>{{ item.asDate('created_at').fromNow() }}</div>-->
-        <!--                </template>-->
+                <template #item.created_at="{ item }">
+                    <div>{{ item.asDate('created_at').fromNow() }}</div>
+                </template>
 
-        <!--                <template #item.action="{ item }">-->
-        <!--                    <div class="actions">-->
-        <!--                        <v-btn icon width="22" height="22" :to="{ name: 'categories.update', params: { id: item.id } }">-->
-        <!--                            <pencil-alt-icon class="h-6 w-6" />-->
-        <!--                        </v-btn>-->
+                <template #item.action="{ item }">
+                    <div class="actions">
+                        <v-btn icon width="22" height="22" :to="{ name: 'categories.update', params: { id: item.id } }">
+                            <pencil-alt-icon class="h-6 w-6" />
+                        </v-btn>
 
-        <!--                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteBrand(item)">-->
-        <!--                            <trash-icon class="h-6 w-6" />-->
-        <!--                        </v-btn>-->
+                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteCategory(item)">
+                            <trash-icon class="h-6 w-6" />
+                        </v-btn>
 
-        <!--                        <v-btn icon width="22" height="22">-->
-        <!--                            <dots-horizontal-icon class="h-6 w-6" />-->
-        <!--                        </v-btn>-->
-        <!--                    </div>-->
-        <!--                </template>-->
-        <!--            </v-data-table>-->
-        <!--        </v-card>-->
+                        <v-btn icon width="22" height="22">
+                            <dots-horizontal-icon class="h-6 w-6" />
+                        </v-btn>
+                    </div>
+                </template>
+            </v-data-table>
+        </v-card>
     </div>
 </template>
 
@@ -104,16 +104,6 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Сайт',
-                    name: 'website',
-                    component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
-                    label: 'Страна',
-                    name: 'country',
-                    component: () => import('@/components/search/fields/ComboBoxSearchField'),
-                },
-                {
                     label: 'Статус',
                     name: 'status',
                     component: () => import('@/components/search/fields/SelectSearchField'),
@@ -145,14 +135,14 @@ export default {
         title: 'Производители',
     },
     methods: {
-        async deleteBrand(brand) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить производителя ${brand.name}?`))) {
+        async deleteCategory(category) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить категорию ${category.name}?`))) {
                 return;
             }
             try {
-                await brand.delete();
+                await category.delete();
 
-                this.$snackbar(`Производитель ${brand.name} успешно удален`);
+                this.$snackbar(`Производитель ${category.name} успешно удален`);
                 this.$fetch();
             } catch (e) {
                 this.$snackbar(e.message);
