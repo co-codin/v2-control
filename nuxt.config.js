@@ -76,7 +76,9 @@ export default {
     }
   },
 
-  axios: {},
+  axios: {
+    baseURL: process.env.API_URL,
+  },
 
   publicRuntimeConfig: {
     axios: {
@@ -85,5 +87,9 @@ export default {
   },
 
   build: {
-  }
+  },
+
+  router: {
+    middleware: ['auth']
+  },
 }
