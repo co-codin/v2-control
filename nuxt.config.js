@@ -42,6 +42,7 @@ export default {
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
     '@nuxtjs/router',
+    'nuxt-vite'
   ],
 
   modules: [
