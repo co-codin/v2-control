@@ -1,50 +1,70 @@
 <template>
   <v-autocomplete
-
+    v-bind="$attrs"
+    :items="items"
+    :loading="isLoading"
+    @input="$emit('input', $event)"
+    @keyup="searchItems($event.target.value)"
   />
 </template>
 
 <script>
-import { VAutocomplete } from "vuetify/lib";
-
-export default VAutocomplete.extends({
+export default {
   props: {
     url: {
       type: String,
       required: true,
     },
+    searchColumn: {
+      type: String,
+      required: true,
+    },
+    filterColumn: {
+      type: String,
+      required: true,
+    },
+    queryParams: {
+      type: Object,
+    },
   },
   data: () => ({
     isLoading: false,
-    foundItems: [],
-    search: null,
+    items: [],
   }),
   methods: {
     async searchItems(query) {
+      if(!query) {
+        return;
+      }
       this.isLoading = true;
-      const params = {};
-      params[`filter[${this.itemText}]`] = query;
-      const { data } = await this.$axios.get(this.url, { params });
-      this.foundItems = data.data;
+      const params = {...this.queryParams};
+      params[`filter[${this.searchColumn}]`] = query;
+      try {
+        const { data } = await this.$axios.get(this.url, { params });
+        this.items = data.data;
+      }
+      catch (e) {
+        this.$snackbar(e.message);
+      }
       this.isLoading = false;
     },
     async loadItems() {
-      if(!this.value) return;
+      if(!this.$attrs.value) return;
       this.isLoading = true;
-      const params = {};
-      params[`filter[${this.itemValue}]`] = this.value;
+      const params = {...this.queryParams};
+      params[`filter[${this.filterColumn}]`] = this.$attrs.value;
       const { data } = await this.$axios.get(this.url, { params });
-      this.foundItems = data.data;
+      this.items = data.data;
       this.isLoading = false;
-    },
-  },
-  watch: {
-    async search(value) {
-      await this.searchItems(value);
     },
   },
   async created() {
     await this.loadItems();
-  }
-});
+  },
+  watch: {
+    async "$attrs.value"() {
+      await this.loadItems();
+    },
+  },
+};
 </script>

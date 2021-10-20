@@ -110,7 +110,7 @@
       <v-main>
         <v-container class="fill-height" :fluid="!isContentBoxed">
           <v-layout>
-            <nuxt />
+            <nuxt class="d-flex flex-column flex-grow-1" />
           </v-layout>
         </v-container>
       </v-main>
