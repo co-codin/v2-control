@@ -1,44 +1,53 @@
-import { Model as BaseModel } from 'vue-api-query'
-import moment from "moment";
+import { Model as BaseModel } from 'vue-api-query';
+import moment from 'moment';
 
 export default class Model extends BaseModel {
+    baseUrl = '';
 
-  baseURL() {
-    return process.env.API_URL
-  }
+    baseURL() {
+        this.baseUrl = process.env.API_URL;
 
-  request(config) {
-    return this.$http.request(config)
-  }
-
-  whereIn(key, array) {
-
-    if (!Array.isArray(array)) {
-      throw new Error('The second argument on whereIn() method must be an array.');
+        return this.baseUrl;
     }
 
-    if(Array.isArray(key)) {
-      return super.whereIn(key, array);
+    request(config) {
+        return this.$http.request(config);
     }
 
-    this._builder.filters[key] = array.join('|');
+    whereIn(key, array) {
+        if (!Array.isArray(array)) {
+            throw new TypeError('The second argument on whereIn() method must be an array.');
+        }
 
-    return this;
-  }
+        if (Array.isArray(key)) {
+            return super.whereIn(key, array);
+        }
 
-  static hydrate(data) {
-    return data.map((item) => this.hydrateRow(item));
-  }
+        this._builder.filters[key] = array.join('|');
 
-  static hydrateRow(item) {
-    return new this(item);
-  }
+        return this;
+    }
 
-  asDate(field) {
-    return moment(this[field]);
-  }
+    static hydrate(data) {
+        return data.map((item) => this.hydrateRow(item));
+    }
 
-  static query() {
-    return this;
-  }
+    static hydrateRow(item) {
+        return new this(item);
+    }
+
+    asDate(field) {
+        return moment(this[field]);
+    }
+
+    static query() {
+        return this;
+    }
+
+    delete() {
+        this.baseURL = function () {
+            return `${this.baseUrl}/admin`;
+        };
+        super.delete();
+    }
 }
