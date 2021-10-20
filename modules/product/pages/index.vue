@@ -92,9 +92,9 @@ export default {
         status: null,
       },
       headers: [
-        { text: 'ID', align: 'left', value: 'id' },
+        { text: 'ID', align: 'left', value: 'id', cellClass: 'text-no-wrap' },
         { text: 'Производитель', align: 'left', value: 'brand.name' },
-        { text: 'Модель', align: 'left', value: 'fullName' },
+        { text: 'Модель', align: 'left', value: 'name' },
         { text: 'Категория', align: 'left', value: 'category.name' },
         { text: 'Ссылка', align: 'left', value: 'slug' },
         { text: 'Дата создания', align: 'left', value: 'created_at' },
