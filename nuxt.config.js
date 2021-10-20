@@ -46,7 +46,26 @@ export default {
 
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
+
+  auth: {
+    localStorage : false,
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: `${process.env.AUTH_URL}/api/auth/login/`, method: 'post', propertyName: 'token' },
+          logout: { url: `${process.env.AUTH_URL}/api/auth/logout/`, method: 'post' },
+          user: { url: `${process.env.AUTH_URL}/api/auth/user/`, method: 'get', propertyName: false}
+        }
+      }
+    },
+    cookie:{
+      options: {
+        expires: 183
+      }
+    }
+  },
 
   vuetify: {
     customVariables: ['~/assets/scss/vuetify/variables/_index.scss'],
