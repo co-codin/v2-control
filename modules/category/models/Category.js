@@ -1,12 +1,11 @@
-import Model from '@/models/Model'
+import Model from '@/models/Model';
 
-export default class Category extends Model
-{
-  resource() {
-    return 'categories'
-  }
+export default class Category extends Model {
+    resource() {
+        return 'categories';
+    }
 
-  get ancestorsPath() {
-    return this.ancestors?.map(ancestor => ancestor.name).join('&raquo;');
-  }
+    get ancestorsPath() {
+        return this.ancestors?.map((ancestor) => ancestor.name).join('&raquo;');
+    }
 }
