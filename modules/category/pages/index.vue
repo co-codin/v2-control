@@ -144,7 +144,7 @@ export default {
 
                 this.$snackbar(`Производитель ${category.name} успешно удален`);
 
-                this.$fetch();
+                this.categories = this.categories.filter((item) => item.id !== category.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }

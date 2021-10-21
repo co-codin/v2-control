@@ -79,7 +79,7 @@ export default {
         FileField,
     },
     props: {
-        brand: {
+        category: {
             type: Object | null,
             default: () => ({}),
         },
@@ -109,14 +109,14 @@ export default {
         form: null,
     }),
     watch: {
-        brand(value) {
+        category(value) {
             this.form.populate(value);
         },
     },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
-            .populate(this.brand || {});
+            .populate(this.category || {});
     },
 };
 </script>
