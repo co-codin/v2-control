@@ -143,6 +143,7 @@ export default {
                 await category.delete();
 
                 this.$snackbar(`Производитель ${category.name} успешно удален`);
+
                 this.$fetch();
             } catch (e) {
                 this.$snackbar(e.message);
