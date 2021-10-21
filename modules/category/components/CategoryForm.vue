@@ -1,69 +1,19 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-text-field
-            v-model="form.name"
-            label="Название"
-            :error-messages="form.errors.get('name')"
-            :error="form.errors.has('name')"
-        ></v-text-field>
-
-        <v-text-field
-            v-model="form.slug"
-            label="Ссылка"
-            :error-messages="form.errors.get('slug')"
-            :error="form.errors.has('slug')"
-        ></v-text-field>
-
-        <v-text-field
-            v-model="form.website"
-            label="Сайт"
-            :error-messages="form.errors.get('website')"
-            :error="form.errors.has('website')"
-        ></v-text-field>
-
-        <v-textarea
-            v-model="form.short_description"
-            label="Краткое описание"
-            :error-messages="form.errors.get('short_description')"
-            :error="form.errors.has('short_description')"
-        ></v-textarea>
-
-        <v-textarea
-            v-model="form.full_description"
-            label="Подробное описание"
-            :error-messages="form.errors.get('full_description')"
-            :error="form.errors.has('full_description')"
-        ></v-textarea>
-
-        <v-checkbox
-            v-model="form.is_in_home"
-            label="Отображать на главной"
-            :error-messages="form.errors.get('is_in_home')"
-            :error="form.errors.has('is_in_home')"
-        ></v-checkbox>
-
-        <file-field
-            v-model="form.image"
-            :error-messages="form.errors.get('image')"
-            :error="form.errors.has('image')"
-            @input="form.is_image_changed = true"
-        ></file-field>
-
-        <v-text-field
-            v-model="form.country"
-            label="Страна"
-            :error-messages="form.errors.get('country')"
-            :error="form.errors.has('country')"
-        ></v-text-field>
-
-        <v-select
-            v-model="form.status"
-            label="Статус"
-            :items="statusLabels"
-            :error-messages="form.errors.get('status')"
-            :error="form.errors.has('status')"
-        ></v-select>
-
+        <v-input
+            label="Родительская категория"
+            :error-messages="form.errors.get('parent_id')"
+            :error="form.errors.has('parent_id')"
+            dense
+        >
+            <treeselect
+                v-model="form.parent_id"
+                placeholder="Выберите родительскую категорию"
+                :options="categories"
+                :normalizer="normalizer"
+                @input="inputParent"
+            />
+        </v-input>
         <slot name="buttons">
             <v-btn type="submit">Сохранить</v-btn>
         </slot>
@@ -72,11 +22,15 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import Treeselect from '@riophae/vue-treeselect';
 import FileField from '../../../components/forms/FileField';
+import '@riophae/vue-treeselect/dist/vue-treeselect.css';
+import Category from '~/modules/category/models/Category';
 
 export default {
     components: {
         FileField,
+        Treeselect,
     },
     props: {
         category: {
@@ -90,16 +44,23 @@ export default {
     },
     data: () => ({
         formDefaults: {
+            parent_id: null,
             name: null,
             slug: null,
-            status: 1,
-            image: null,
-            is_image_changed: false,
-            is_in_home: false,
-            website: null,
-            short_description: null,
+            image: '',
+            product_name: null,
             full_description: null,
-            country: null,
+            status: 1,
+            seo: {
+                is_enabled: 2,
+            },
+            seo_products: {
+                is_enabled: 2,
+            },
+            is_in_home: 2,
+            is_hidden_in_parents: 1,
+            links: [],
+            attach_default_filters: false,
         },
         statusLabels: [
             { value: 1, text: 'Active' },
@@ -107,6 +68,7 @@ export default {
             { value: 3, text: 'Only By Url' },
         ],
         form: null,
+        categories: [],
     }),
     watch: {
         category(value) {
@@ -117,6 +79,9 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.category || {});
+        this.categories = Category().where('status', 1).get();
+        console.log(this.categories);
     },
+    methods: {},
 };
 </script>
