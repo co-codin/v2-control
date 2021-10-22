@@ -2,13 +2,13 @@
     <div class="d-flex flex-column flex-grow-1">
         <div class="d-flex align-center py-3 pb-0">
             <div>
-                <div class="display-1">Производители</div>
+                <div class="display-1">Достижения</div>
                 <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
             </div>
         </div>
 
         <div class="mb-2">
-            <v-btn :to="{ name: 'brands.create' }"> Добавить производителя </v-btn>
+            <v-btn :to="{ name: 'achievements.create' }"> Добавить достижения </v-btn>
         </div>
 
         <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
@@ -18,7 +18,7 @@
                 v-model="selectedItems"
                 item-key="id"
                 :headers="headers"
-                :items="brands"
+                :items="achievements"
                 :loading="isLoading"
                 :server-items-length="total"
                 loading-text="Идет загрузка..."
@@ -34,13 +34,22 @@
                     <div class="font-weight-bold"># {{ item.id }}</div>
                 </template>
 
+                <template #item.is_enabled="{ item }">
+                    <div class="font-weight-bold">{{ item.is_enabled ? 'Да' : 'Нет' }}</div>
+                </template>
+
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
 
                 <template #item.action="{ item }">
                     <div class="actions">
-                        <v-btn icon width="22" height="22" :to="{ name: 'brands.update', params: { id: item.id } }">
+                        <v-btn
+                            icon
+                            width="22"
+                            height="22"
+                            :to="{ name: 'achievements.update', params: { id: item.id } }"
+                        >
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
 
@@ -75,13 +84,12 @@ export default {
             searchForm: {
                 name: null,
                 is_enabled: null,
-                status: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Картинка', align: 'left', value: 'image', sortable: false },
-                { text: 'Статус', value: 'is_enabled', sortable: false },
+                { text: 'Доступно', value: 'is_enabled' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Позиция', align: 'left', value: 'position' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
