@@ -132,7 +132,7 @@ export default {
         this.hideLoading();
     },
     head: {
-        title: 'Производители',
+        title: 'Категории',
     },
     methods: {
         async deleteCategory(category) {
