@@ -37,9 +37,8 @@ export default {
     methods: {
         async createBrand(form) {
             try {
-                const brand_name = form.name;
                 await form.post('/admin/brands');
-                this.$snackbar(`Производитель ${brand_name} успешно добавлен`);
+                this.$snackbar(`Производитель ${form.name} успешно добавлен`);
                 await this.$router.push({ name: 'brands.index' });
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при создании производителя: ${e.message}`);

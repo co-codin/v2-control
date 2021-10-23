@@ -2,13 +2,13 @@
     <div class="d-flex flex-column flex-grow-1">
         <div class="d-flex align-center py-3 pb-0">
             <div>
-                <div class="display-1">Категории</div>
+                <div class="display-1">Города</div>
                 <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
             </div>
         </div>
 
         <div class="mb-2">
-            <v-btn :to="{ name: 'categories.create' }"> Добавить категорию </v-btn>
+            <v-btn :to="{ name: 'cities.create' }"> Добавить город </v-btn>
         </div>
 
         <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
@@ -18,7 +18,7 @@
                 v-model="selectedItems"
                 item-key="id"
                 :headers="headers"
-                :items="categories"
+                :items="cities"
                 :loading="isLoading"
                 :server-items-length="total"
                 loading-text="Идет загрузка..."
@@ -38,13 +38,21 @@
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
 
+                <template #item.coordinate="{ item }">
+                    <span v-if="item.coordinate"> {{ item.coordinate.lat }} : {{ item.coordinate.long }} </span>
+                </template>
+
+                <template #item.is_default="{ item }">
+                    <span> {{ item.is_default ? 'Да' : 'Нет' }} </span>
+                </template>
+
                 <template #item.action="{ item }">
                     <div class="actions">
-                        <v-btn icon width="22" height="22" :to="{ name: 'categories.update', params: { id: item.id } }">
+                        <v-btn icon width="22" height="22" :to="{ name: 'cities.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
 
-                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteCategory(item)">
+                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteCity(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
 
@@ -62,7 +70,7 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import { enumToSelectArray, StatusDescription } from '@/enums';
-import Category from '../models/Category';
+import City from '../models/City';
 
 export default {
     components: {
@@ -71,19 +79,22 @@ export default {
     mixins: [DatatableMixin],
     data() {
         return {
-            categories: [],
+            cities: [],
             searchForm: {
                 name: null,
-                is_in_home: null,
                 status: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
+                { text: 'Координаты центра', align: 'left', value: 'coordinate', sortable: false },
                 { text: 'Статус', value: 'status.description', sortable: false },
-                { text: 'Страна', value: 'country', sortable: true },
+                { text: 'Федеральный округ', align: 'left', value: 'federal_district' },
+                { text: 'Региональный телефон', value: 'region_phone', sortable: false },
+                { text: 'email', value: 'email', sortable: false },
+                { text: 'По умолчанию', value: 'is_default', sortable: false },
+                { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список категорий' }],
@@ -110,8 +121,8 @@ export default {
                     items: enumToSelectArray(StatusDescription),
                 },
                 {
-                    label: 'Отображается на главной',
-                    name: 'is_in_home',
+                    label: 'По умолчанию',
+                    name: 'is_default',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
             ],
@@ -120,31 +131,42 @@ export default {
     async fetch() {
         this.showLoading();
 
-        const response = await Category.select({
-            categories: ['id', 'name', 'slug', 'status', 'created_at'],
+        const response = await City.select({
+            cities: [
+                'id',
+                'name',
+                'slug',
+                'status',
+                'coordinate',
+                'federal_district',
+                'region_phone',
+                'email',
+                'created_at',
+                'is_default',
+            ],
         })
             .params(this.queryParams)
             .get();
 
-        this.categories = Category.hydrate(response.data);
+        this.cities = City.hydrate(response.data);
 
         this.setTotal(response.meta.total);
         this.hideLoading();
     },
     head: {
-        title: 'Категории',
+        title: 'Города',
     },
     methods: {
-        async deleteCategory(category) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить категорию ${category.name}?`))) {
+        async deleteCity(city) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить город ${city.name}?`))) {
                 return;
             }
             try {
-                await category.delete();
+                await city.delete();
 
-                this.$snackbar(`Производитель ${category.name} успешно удален`);
+                this.$snackbar(`Город ${city.name} успешно удален`);
 
-                this.categories = this.categories.filter((item) => item.id !== category.id);
+                this.cities = this.cities.filter((item) => item.id !== city.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }

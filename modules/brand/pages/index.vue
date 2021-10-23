@@ -44,7 +44,7 @@
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
 
-                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteBrand(item)">
+                        <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteBrand(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
 
@@ -153,7 +153,7 @@ export default {
                 await brand.delete();
 
                 this.$snackbar(`Производитель ${brand.name} успешно удален`);
-                this.$fetch();
+                this.brands = this.brands.filter((item) => item.id !== brand.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }
