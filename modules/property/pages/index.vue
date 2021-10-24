@@ -68,8 +68,9 @@ export default {
             properties: [],
             searchForm: {
                 name: null,
-                is_in_home: null,
-                status: null,
+                key: null,
+                is_hidden_from_product: null,
+                is_hidden_from_comparison: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
@@ -94,6 +95,16 @@ export default {
                     label: 'Ссылка',
                     name: 'key',
                     component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
+                    label: 'Скрыто для продукта',
+                    name: 'is_hidden_from_product',
+                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                },
+                {
+                    label: 'Скрыто для сравнения',
+                    name: 'is_hidden_from_comparison',
+                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
             ],
         };
