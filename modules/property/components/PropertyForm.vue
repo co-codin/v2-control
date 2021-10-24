@@ -26,7 +26,6 @@
         <v-checkbox v-model="form.is_hidden_from_product" label="Скрыть со страницы товара" />
         <v-checkbox v-model="form.is_hidden_from_comparison" label="Скрыть из сравнения" />
         <v-checkbox v-model="form.is_numeric" label="Число" />
-
         <slot name="buttons">
             <v-btn type="submit">Сохранить</v-btn>
         </slot>
@@ -54,6 +53,11 @@ export default {
     data: () => ({
         formDefaults: {
             name: null,
+            key: null,
+            description: null,
+            is_hidden_from_product: false,
+            is_hidden_from_comparison: false,
+            is_numeric: false,
         },
         form: null,
     }),
