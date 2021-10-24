@@ -3,6 +3,7 @@ import { brandRoutes } from './modules/brand/router';
 import { categoryRoutes } from './modules/category/router';
 import { productRoutes } from './modules/product/router';
 import { propertyRoutes } from './modules/property/router';
+import { filterRoutes } from './modules/filter/router';
 
 export default {
     ssr: false,
@@ -109,6 +110,7 @@ export default {
                     ...categoryRoutes(resolve),
                     ...productRoutes(resolve),
                     ...propertyRoutes(resolve),
+                    ...filterRoutes(resolve),
                 ]
             );
         },
