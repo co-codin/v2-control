@@ -1,5 +1,5 @@
 <template>
-    <editor v-model="content" :api-key="apiKey" :init="settings"> </editor>
+    <editor :value="value" @input="$emit('input', $event)" :api-key="apiKey" :init="settings"> </editor>
 </template>
 
 <script>
@@ -12,7 +12,6 @@ export default {
     props: ['value'],
     data() {
         return {
-            content: null,
             settings: {
                 body_class: 'editor-class',
                 content_style:
@@ -39,17 +38,6 @@ export default {
         apiKey() {
             return process.env.API_EDITOR;
         },
-    },
-    watch: {
-        content: {
-            handler(val) {
-                this.$emit('input', val);
-            },
-            immediate: true,
-        },
-    },
-    created() {
-        if (this.value) this.content = this.value;
     },
     methods: {
         upload(blobInfo, success, failure) {

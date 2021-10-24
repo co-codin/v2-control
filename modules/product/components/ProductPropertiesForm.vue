@@ -3,7 +3,7 @@
         <v-form @submit.prevent="$emit('send', form)" v-if="form">
             <v-card-title>Характеристики</v-card-title>
             <v-card-text v-if="values">
-                <v-card v-for="(property, index) in form.properties" :key="property.id" tile class="mt-2">
+                <v-card v-for="(property, index) in form.properties" :key="property.id" class="mt-2">
                     <v-card-title>
                         {{ property.name }}
                     </v-card-title>
@@ -21,22 +21,24 @@
                         ></field-value-autocomplete>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn small tile @click="removeProperty(index)">Удалить</v-btn>
+                        <v-btn small color="red" class="white--text" @click="removeProperty(index)">Удалить</v-btn>
                     </v-card-actions>
                 </v-card>
-                <v-card tile class="mt-3">
-                    <v-card-title class="green">
+                <v-card tile outlined class="mt-3">
+                    <v-card-title>
                         Добавление характеристики
                     </v-card-title>
                     <v-card-text>
                         <entity-autocomplete-field placeholder="Введите название характеристики" return-object v-model="newProperty" class="mt-0" url="/properties" :query-params="{ sort: 'name' }" item-value="id" item-text="name"  search-column="name" filter-column="id" />
+                    </v-card-text>
+                    <v-card-actions>
                         <v-btn :disabled="!newProperty" small @click="addProperty">Добавить характеристику</v-btn>
                         <v-btn  class="ml-2" small @click="openPropertyPopup">Создать новую характеристику</v-btn>
-                    </v-card-text>
+                    </v-card-actions>
                 </v-card>
             </v-card-text>
             <v-card-actions>
-                <v-btn type="submit">Сохранить</v-btn>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
             </v-card-actions>
         </v-form>
         <v-dialog
@@ -64,7 +66,7 @@
                             />
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn type="submit">Создать характеристику</v-btn>
+                        <v-btn type="submit" small color="green" class="white--text text-uppercase">Создать характеристику</v-btn>
                     </v-card-actions>
                 </v-form>
             </v-card>

@@ -120,3 +120,18 @@
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
+
+.v-card__actions {
+    background: #f9fafb;
+    justify-content: right;
+    padding: 12px 15px;
+    > .v-btn.v-btn {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+.main-card-text {
+    padding-bottom: 45px;
+    padding-top: 45px;
+}

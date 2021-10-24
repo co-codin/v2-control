@@ -39,7 +39,7 @@
       </v-card-text>
       <v-card-actions>
         <slot name="buttons">
-          <v-btn type="submit">Сохранить</v-btn>
+          <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
         </slot>
       </v-card-actions>
     </v-form>

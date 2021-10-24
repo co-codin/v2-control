@@ -1,8 +1,8 @@
 <template>
-    <v-card tile>
+    <v-card>
         <v-form @submit.prevent="$emit('send', form)">
             <v-card-title> Основная информация </v-card-title>
-            <v-card-text>
+            <v-card-text class="main-card-text">
                 <slot name="fields">
                     <categories-tree-field
                         label="Категории"
@@ -86,13 +86,24 @@
                         :error-messages="form.errors.get('video')"
                         :error="form.errors.has('video')"
                     />
+                    <v-textarea
+                        v-model="form.short_description"
+                        label="Короткое описание"
+                        :error-messages="form.errors.get('short_description')"
+                        :error="form.errors.has('short_description')"
+                    />
+                    <content-editor
+                        v-model="form.full_description"
+                        label="Подробное описание"
+                        :error-messages="form.errors.get('full_description')"
+                        :error="form.errors.has('full_description')"
+                    />
                 </slot>
             </v-card-text>
             <v-card-actions>
                 <slot name="buttons">
-                    <v-btn type="submit" text color="blue-grey" class="white--text">
+                    <v-btn type="submit" color="green" class="white--text text-uppercase">
                         Сохранить
-                        <v-icon right dark>mdi-content-save</v-icon>
                     </v-btn>
                 </slot>
             </v-card-actions>
@@ -111,12 +122,14 @@ import Brand from '~/modules/brand/models/Brand';
 import FileField from '~/components/forms/FileField';
 import { Status, StatusDescription, enumToSelectArray } from '~/enums';
 import Product from '../models/Product';
+import ContentEditor from '~/components/editors/ContentEditor';
 
 export default {
     components: {
         CategoriesTreeField,
         EntityAutocompleteField,
         FileField,
+        ContentEditor,
     },
     props: {
         product: {
