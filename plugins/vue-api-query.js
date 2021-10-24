@@ -1,5 +1,5 @@
-import { Model } from 'vue-api-query'
+import { Model } from 'vue-api-query';
 
 export default function (ctx, inject) {
-  Model.$http = ctx.$axios
+    Model.$http = ctx.$axios;
 }
