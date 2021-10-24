@@ -23,6 +23,9 @@
             <content-editor v-model="form.description"> </content-editor>
         </v-input>
 
+        <v-checkbox v-model="form.is_hidden_from_product" label="Скрыть со страницы товара" />
+        <v-checkbox v-model="form.is_hidden_from_comparison" label="Скрыть из сравнения" />
+        <v-checkbox v-model="form.is_numeric" label="Число" />
         <slot name="buttons">
             <v-btn type="submit">Сохранить</v-btn>
         </slot>
@@ -31,16 +34,14 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import FileField from '../../../components/forms/FileField';
 import ContentEditor from '~/components/editors/ContentEditor';
 
 export default {
     components: {
         ContentEditor,
-        FileField,
     },
     props: {
-        brand: {
+        property: {
             type: Object | null,
             default: () => ({}),
         },
@@ -52,32 +53,23 @@ export default {
     data: () => ({
         formDefaults: {
             name: null,
-            slug: null,
-            status: 1,
-            image: null,
-            is_image_changed: false,
-            is_in_home: false,
-            website: null,
-            short_description: null,
-            full_description: null,
-            country: null,
+            key: null,
+            description: null,
+            is_hidden_from_product: false,
+            is_hidden_from_comparison: false,
+            is_numeric: false,
         },
-        statusLabels: [
-            { value: 1, text: 'Active' },
-            { value: 2, text: 'Inactive' },
-            { value: 3, text: 'Only By Url' },
-        ],
         form: null,
     }),
     watch: {
-        brand(value) {
+        property(value) {
             this.form.populate(value);
         },
     },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
-            .populate(this.brand || {});
+            .populate(this.property || {});
     },
 };
 </script>

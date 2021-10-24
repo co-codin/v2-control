@@ -126,8 +126,8 @@ export default {
         this.showLoading();
 
         const response = await Brand.select({
-              brands: ['id', 'name', 'slug', 'status', 'created_at'],
-            })
+            brands: ['id', 'name', 'slug', 'status', 'created_at'],
+        })
             .with('country')
             .params(this.queryParams)
             .get();

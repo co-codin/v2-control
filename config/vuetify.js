@@ -1,6 +1,10 @@
+import Vue from 'vue';
+import Vuetify from 'vuetify';
 import theme from '@/config/theme';
 
-export default {
+Vue.use(Vuetify);
+
+export default new Vuetify({
     rtl: theme.isRTL,
     theme: {
         dark: theme.globalTheme === 'dark',
@@ -12,4 +16,4 @@ export default {
             light: theme.light,
         },
     },
-};
+});
