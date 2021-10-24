@@ -1,20 +1,17 @@
-const page = (path) => () =>
-  import(/* webpackChunkName: "brand-[request]" */ `../pages/${path}.vue`).then((m) => m.default || m);
-
-export default [
-  {
-    path: '/brands',
-    name: 'brands.index',
-    component: page('index'),
-  },
-  {
-    path: '/brands/create',
-    name: 'brands.create',
-    component: page('create'),
-  },
-  {
-    path: '/brands/:id/update',
-    name: 'brands.update',
-    component: page('update'),
-  },
+export const brandRoutes = (resolve) => [
+    {
+        path: '/brands',
+        name: 'brands.index',
+        component: resolve(__dirname, '../pages/index.vue'),
+    },
+    {
+        path: '/brands/create',
+        name: 'brands.create',
+        component: resolve(__dirname, '../pages/create.vue'),
+    },
+    {
+        path: '/brands/:id/update',
+        name: 'brands.update',
+        component: resolve(__dirname, '../pages/update.vue'),
+    },
 ];

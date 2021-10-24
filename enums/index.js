@@ -1,11 +1,5 @@
-import {
-  enumToSelectArray,
-} from "./helpers";
+import { enumToSelectArray } from './helpers';
 
-import { Status, StatusDescription } from "~/enums/modules/Status";
+import { Status, StatusDescription } from '~/enums/modules/Status';
 
-export {
-  Status,
-  StatusDescription,
-  enumToSelectArray,
-}
+export { Status, StatusDescription, enumToSelectArray };
