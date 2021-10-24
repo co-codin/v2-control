@@ -40,7 +40,7 @@
 
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
-                        <v-btn icon width="22" height="22" :to="{ name: 'brands.update', params: { id: item.id } }">
+                        <v-btn icon width="22" height="22" :to="{ name: 'properties.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
                         <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteProperty(item)">
@@ -68,8 +68,9 @@ export default {
             properties: [],
             searchForm: {
                 name: null,
-                is_in_home: null,
-                status: null,
+                key: null,
+                is_hidden_from_product: null,
+                is_hidden_from_comparison: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
@@ -94,6 +95,16 @@ export default {
                     label: 'Ссылка',
                     name: 'key',
                     component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
+                    label: 'Скрыто для продукта',
+                    name: 'is_hidden_from_product',
+                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                },
+                {
+                    label: 'Скрыто для сравнения',
+                    name: 'is_hidden_from_comparison',
+                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
             ],
         };

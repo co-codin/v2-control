@@ -1,20 +1,17 @@
-const page = (path) => () =>
-    import(/* webpackChunkName: "filter-[request]" */ `../pages/${path}.vue`).then((m) => m.default || m);
-
-export default [
+export const filterRoutes = (resolve) => [
     {
         path: '/filters',
         name: 'filters.index',
-        component: page('index'),
+        component: resolve(__dirname, '../pages/index.vue'),
     },
     {
         path: '/filters/create',
         name: 'filters.create',
-        component: page('create'),
+        component: resolve(__dirname, '../pages/create.vue'),
     },
     {
         path: '/filters/:id/update',
         name: 'filters.update',
-        component: page('update'),
+        component: resolve(__dirname, '../pages/update.vue'),
     },
 ];
