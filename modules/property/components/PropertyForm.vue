@@ -32,9 +32,11 @@
 <script>
 import { Form } from 'form-backend-validation';
 import FileField from '../../../components/forms/FileField';
+import ContentEditor from '~/components/editors/ContentEditor';
 
 export default {
     components: {
+        ContentEditor,
         FileField,
     },
     props: {
