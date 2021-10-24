@@ -3,7 +3,7 @@ export default {
         {
             text: '',
             key: '',
-            items: [{ icon: 'mdi-view-dashboard-outline', key: 'menu.dashboard', text: 'Dashboard', link: '/' }],
+            items: [{ icon: 'mdi-view-dashboard-outline', key: 'menu.dashboard', text: 'Панель управления', link: '/' }],
         },
         {
             text: 'Каталог',

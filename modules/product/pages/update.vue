@@ -1,8 +1,11 @@
 <template>
     <div>
         <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
-        <product-form v-if="product" :product="product" is-updating @send="updateProduct" />
-        <seo-relation-form v-if="product" :seo="seo" class="mt-3" @send="updateProductSeo" />
+        <template v-if="product">
+            <product-form :product="product" is-updating @send="updateProduct" />
+            <product-properties-form :properties="product.properties" class="mt-3" @send="updateProperties" />
+            <seo-relation-form :seo="seo" class="mt-3" @send="updateProductSeo" />
+        </template>
     </div>
 </template>
 
@@ -11,11 +14,13 @@ import ProductForm from '../components/ProductForm';
 import SeoRelationForm from '~/components/forms/SeoRelationForm';
 import Product from '../models/Product';
 import PageHeader from '../../../components/common/PageHeader';
+import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
 
 export default {
     components: {
         SeoRelationForm,
         ProductForm,
+        ProductPropertiesForm,
         PageHeader,
     },
     data: () => ({
@@ -33,7 +38,7 @@ export default {
             .select({
                 categories: ['id'],
             })
-            .with('seo', 'categories')
+            .with('seo', 'categories', 'properties')
             .$find(this.$route.params.id);
 
         product.status = product.status.value;
@@ -65,6 +70,14 @@ export default {
                 this.$snackbar(`SEO товара успешно обновлено`);
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обоновлении seo у товара: ${e.message}`);
+            }
+        },
+        async updateProperties(form) {
+            try {
+                await form.put(`/admin/products/${this.product.id}/properties`);
+                this.$snackbar(`Характеристики товара успешно обновлены`);
+            } catch (e) {
+                this.$snackbar(`Произошла ошибка при обоновлении характеристик у товара: ${e.message}`);
             }
         },
     },

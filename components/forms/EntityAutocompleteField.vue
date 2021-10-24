@@ -1,70 +1,69 @@
 <template>
-  <v-autocomplete
-    v-bind="$attrs"
-    :items="items"
-    :loading="isLoading"
-    @input="$emit('input', $event)"
-    @keyup="searchItems($event.target.value)"
-  />
+    <v-autocomplete
+        v-bind="$attrs"
+        :items="items"
+        :loading="isLoading"
+        @input="$emit('input', $event)"
+        @keyup="searchItems($event.target.value)"
+    />
 </template>
 
 <script>
 export default {
-  props: {
-    url: {
-      type: String,
-      required: true,
+    props: {
+        url: {
+            type: String,
+            required: true,
+        },
+        searchColumn: {
+            type: String,
+            required: true,
+        },
+        filterColumn: {
+            type: String,
+            required: true,
+        },
+        queryParams: {
+            type: Object,
+        },
     },
-    searchColumn: {
-      type: String,
-      required: true,
+    data: () => ({
+        isLoading: false,
+        items: [],
+    }),
+    methods: {
+        async searchItems(query) {
+            if (!query) {
+                return;
+            }
+            this.isLoading = true;
+            const params = {...this.queryParams};
+            params[`filter[${this.searchColumn}]`] = query;
+            try {
+                const {data} = await this.$axios.get(this.url, {params});
+                this.items = data.data;
+            } catch (e) {
+                this.$snackbar(e.message);
+            }
+            this.isLoading = false;
+        },
+        async loadItems() {
+            if (!this.$attrs.value) return;
+            this.isLoading = true;
+            const params = {...this.queryParams};
+            params[`filter[${this.filterColumn}]`] = this.$attrs.value;
+            const {data} = await this.$axios.get(this.url, {params});
+            this.items = data.data;
+            this.isLoading = false;
+        },
     },
-    filterColumn: {
-      type: String,
-      required: true,
+    async created() {
+        await this.loadItems();
     },
-    queryParams: {
-      type: Object,
+    watch: {
+        async "$attrs.value"() {
+            await this.loadItems();
+        },
     },
-  },
-  data: () => ({
-    isLoading: false,
-    items: [],
-  }),
-  methods: {
-    async searchItems(query) {
-      if(!query) {
-        return;
-      }
-      this.isLoading = true;
-      const params = {...this.queryParams};
-      params[`filter[${this.searchColumn}]`] = query;
-      try {
-        const { data } = await this.$axios.get(this.url, { params });
-        this.items = data.data;
-      }
-      catch (e) {
-        this.$snackbar(e.message);
-      }
-      this.isLoading = false;
-    },
-    async loadItems() {
-      if(!this.$attrs.value) return;
-      this.isLoading = true;
-      const params = {...this.queryParams};
-      params[`filter[${this.filterColumn}]`] = this.$attrs.value;
-      const { data } = await this.$axios.get(this.url, { params });
-      this.items = data.data;
-      this.isLoading = false;
-    },
-  },
-  async created() {
-    await this.loadItems();
-  },
-  watch: {
-    async "$attrs.value"() {
-      await this.loadItems();
-    },
-  },
 };
 </script>

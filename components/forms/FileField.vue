@@ -1,13 +1,18 @@
 <template>
   <div>
     <div v-if="isUploaded">
-      <div class="position-relative d-inline-block">
+      <div class="v-label v-label-active theme--light">
+        {{ $attrs.label }}
+      </div>
+      <div class="position-relative d-inline-block" style="min-width: 100px; min-height: 100px;">
         <v-img
+          v-if="isImage"
           contain
           max-height="250"
           max-width="250"
           :src="url"
         />
+        <document-text-icon width="100" height="100" v-else />
         <div style="position: absolute; right: 15px; top: 5px;">
           <v-btn
             style="background: white; padding: 3px;"
@@ -33,15 +38,21 @@
 
 <script>
 import TrashIcon from "@/components/heroicons/TrashIcon";
+import DocumentTextIcon from "@/components/heroicons/DocumentTextIcon";
 
 export default {
   components: {
     TrashIcon,
+    DocumentTextIcon,
   },
   props: {
     value: {
       default: null,
       type: String | File,
+    },
+    isImage: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {
@@ -49,7 +60,7 @@ export default {
       return typeof this.value === "string";
     },
     url() {
-      return `${this.$config.app.storageUrl}/${this.value}`;
+      return this.isImage ? `${this.$config.app.storageUrl}/${this.value}` : null;
     },
   },
 };
