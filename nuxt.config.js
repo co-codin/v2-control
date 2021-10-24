@@ -3,6 +3,7 @@ import { brandRoutes } from './modules/brand/router';
 import { categoryRoutes } from './modules/category/router';
 import { productRoutes } from './modules/product/router';
 import { propertyRoutes } from './modules/property/router';
+import { filterRoutes } from './modules/filter/router';
 
 export default {
     ssr: false,
@@ -39,7 +40,7 @@ export default {
         { src: '~plugins/vue-api-query' },
     ],
 
-    buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],
+    buildModules: ['nuxt-vite', '@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],
 
     modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dayjs'],
 
@@ -109,6 +110,7 @@ export default {
                     ...categoryRoutes(resolve),
                     ...productRoutes(resolve),
                     ...propertyRoutes(resolve),
+                    ...filterRoutes(resolve),
                 ]
             );
         },
