@@ -13,23 +13,14 @@
                 <property-form :property="property" is-updating @send="updateProperty" />
             </v-card-text>
         </v-card>
-
-        <v-card :loading="isLoading">
-            <v-card-title> SEO </v-card-title>
-            <v-card-text v-if="brand">
-                <seo-relation-form :seo="seo" @send="updatePropertySeo" />
-            </v-card-text>
-        </v-card>
     </div>
 </template>
 
 <script>
 import PropertyForm from '../components/PropertyForm';
-import SeoRelationForm from '@/components/forms/SeoRelationForm';
 
 export default {
     components: {
-        SeoRelationForm,
         PropertyForm,
     },
     data: () => ({
@@ -42,13 +33,7 @@ export default {
         ],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/properties/${this.$route.params.id}`, {
-            params: {
-                include: ['seo'],
-            },
-        });
-        data.data.status = data.data.status.value;
-        this.seo = data.data.seo || {};
+        const { data } = await this.$axios.get(`/properties/${this.$route.params.id}`);
         this.property = data.data;
         this.isLoading = false;
     },
@@ -58,20 +43,11 @@ export default {
     methods: {
         async updateProperty(form) {
             try {
-                await form.put(`/admin/brands/${this.$route.params.id}`);
-                this.$snackbar(`Производитель успешно обновлен`);
-                await this.$router.push({ name: 'brands.index' });
+                await form.put(`/admin/properties/${this.$route.params.id}`);
+                this.$snackbar(`Характеристика успешно обновлена`);
+                await this.$router.push({ name: 'properties.index' });
             } catch (e) {
-                this.$snackbar(`Приозошла ошибка при обновлении производителя: ${e.message}`);
-            }
-        },
-        async updateBrandSeo(form) {
-            try {
-                await form.patch(`/admin/brands/${this.$route.params.id}/seo`);
-                this.$snackbar(`SEO производителя успешно обновлено`);
-                await this.$router.push({ name: 'brands' });
-            } catch (e) {
-                this.$snackbar(`Прозиошла ошибка при обоновлении seo у производителя: ${e.message}`);
+                this.$snackbar(`Приозошла ошибка при обновлении характеристики: ${e.message}`);
             }
         },
     },
