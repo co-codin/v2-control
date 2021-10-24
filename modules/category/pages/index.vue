@@ -31,7 +31,7 @@
                 @update:sort-desc="updateOptions('sortDesc', $event)"
             >
                 <template #item.id="{ item }">
-                    <div class="font-weight-bold"># {{ item.id }}</div>
+                    <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
                 <template #item.created_at="{ item }">
@@ -39,17 +39,12 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions">
+                    <div class="actions text-no-wrap">
                         <v-btn icon width="22" height="22" :to="{ name: 'categories.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
-
                         <v-btn icon width="22" height="22" class="mx-1" @click="deleteCategory(item)">
                             <trash-icon class="h-6 w-6" />
-                        </v-btn>
-
-                        <v-btn icon width="22" height="22">
-                            <dots-horizontal-icon class="h-6 w-6" />
                         </v-btn>
                     </div>
                 </template>
@@ -83,7 +78,6 @@ export default {
                 { text: 'Ссылка', align: 'left', value: 'slug' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Статус', value: 'status.description', sortable: false },
-                { text: 'Страна', value: 'country', sortable: true },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список категорий' }],
