@@ -2,7 +2,7 @@ import config from './config';
 import { brandRoutes } from './modules/brand/router';
 import { categoryRoutes } from './modules/category/router';
 import { productRoutes } from './modules/product/router';
-import { propertyRoutes } from '~/modules/property/router';
+import { propertyRoutes } from './modules/property/router';
 
 export default {
     ssr: false,
