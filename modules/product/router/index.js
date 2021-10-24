@@ -1,20 +1,17 @@
-const page = (path) => () =>
-    import(/* webpackChunkName: "product-[request]" */ `../pages/${path}.vue`).then((m) => m.default || m);
-
-export default [
-    {
-        path: '/products',
-        name: 'products.index',
-        component: page('index'),
-    },
-    {
-        path: '/products/create',
-        name: 'products.create',
-        component: page('create'),
-    },
-    {
-        path: '/products/:id/update',
-        name: 'products.update',
-        component: page('update'),
-    },
+export const productRoutes = (resolve) => [
+  {
+    path: '/products',
+    name: 'products.index',
+    component: resolve(__dirname, '../pages/index.vue'),
+  },
+  {
+    path: '/products/create',
+    name: 'products.create',
+    component: resolve(__dirname, '../pages/create.vue'),
+  },
+  {
+    path: '/products/:id/update',
+    name: 'products.update',
+    component: resolve(__dirname, '../pages/update.vue'),
+  },
 ];

@@ -59,16 +59,12 @@ export default {
     },
   },
   async created() {
-    this.categories = await fetchAllEntries(page => {
-      return this.$axios.get("/categories", {
-        params: {
-          "page[size]": 100,
-          "page[number]": page,
-          "fields[categories]": "id,name,parent_id,status",
-          "sort": "name",
-        }
-      });
-    });
+    this.categories = await this.$axios.get("/categories/all", {
+      params: {
+        "fields[categories]": "id,name,parent_id,status",
+        "sort": "name",
+      }
+    }).then(({data}) => data.data);
     this.isLoading = false;
   }
 }

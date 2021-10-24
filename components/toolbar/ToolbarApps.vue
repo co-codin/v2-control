@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import config from '../../configs'
+import config from '../../config'
 /*
 |---------------------------------------------------------------------
 | Toolbar Apps Component

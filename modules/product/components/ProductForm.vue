@@ -16,7 +16,7 @@
           />
 
           <v-select
-            v-if="categories.length > 1"
+            v-if="categoryIds.length > 1"
             label="Основная категория"
             :value="mainCategoryId"
             :items="categories"
@@ -219,6 +219,10 @@ export default {
     this.form = Form.create(this.formDefaults)
       .withOptions({ http: this.$axios, resetOnSuccess: false })
       .populate(this.product || {});
+
+    if(this.isUpdating) {
+      this.updateSelectedCategories(this.categoryIds);
+    }
   },
   watch: {
     product: {

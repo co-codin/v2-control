@@ -1,7 +1,7 @@
-import configs from '../../configs'
+import config from '../../config'
 import mutations from './mutations'
 
-const { product, time, theme, currencies  } = configs
+const { product, time, theme, currencies  } = config
 
 const { globalTheme, menuTheme, toolbarTheme, isToolbarDetached, isContentBoxed, isRTL } = theme
 const { currency, availableCurrencies } = currencies

@@ -44,6 +44,7 @@
 
         <file-field
             v-model="form.image"
+            label="Логотип"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             @input="form.is_image_changed = true"

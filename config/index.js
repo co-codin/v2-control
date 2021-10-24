@@ -1,3 +1,4 @@
+import app from './app';
 import time from './time';
 import icons from './icons';
 import theme from './theme';
@@ -6,9 +7,10 @@ import currencies from './currencies';
 import navigation from './navigation';
 
 export default {
+    app,
     product: {
         name: 'control.medeq.ru',
-        version: '1',
+        version: '0.1',
     },
     time,
     icons,

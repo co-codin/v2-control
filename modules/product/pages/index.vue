@@ -31,7 +31,7 @@
                 @update:sort-desc="updateOptions('sortDesc', $event)"
             >
                 <template #item.id="{ item }">
-                    <div class="font-weight-bold"># {{ item.id }}</div>
+                    <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
                 <template #item.created_at="{ item }">
@@ -39,17 +39,13 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions">
+                    <div class="actions text-no-wrap">
                         <v-btn icon width="22" height="22" :to="{ name: 'products.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
 
-                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteBrand(item)">
+                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteProduct(item)">
                             <trash-icon class="h-6 w-6" />
-                        </v-btn>
-
-                        <v-btn icon width="22" height="22">
-                            <dots-horizontal-icon class="h-6 w-6" />
                         </v-btn>
                     </div>
                 </template>

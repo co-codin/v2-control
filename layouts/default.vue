@@ -120,7 +120,7 @@
 import { mapState } from 'vuex';
 
 // navigation menu configurations
-import config from '../configs';
+import config from '../config';
 
 import MainMenu from '../components/navigation/MainMenu';
 import ToolbarUser from '../components/toolbar/ToolbarUser';

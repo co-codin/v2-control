@@ -6,20 +6,20 @@
           contain
           max-height="250"
           max-width="250"
-          :src="'https://api.medeq.ru/storage/' + value"
+          :src="url"
         />
-        <v-btn
-          icon
-          shaped
-          absolute
-          right
-          top
-          small
-          @click="$emit('input', null)"
-          color="error"
-        >
-          <v-icon>mdi-trash-can-outline</v-icon>
-        </v-btn>
+        <div style="position: absolute; right: 15px; top: 5px;">
+          <v-btn
+            style="background: white; padding: 3px;"
+            icon
+            shaped
+            small
+            @click="$emit('input', null)"
+            color="error"
+          >
+            <trash-icon></trash-icon>
+          </v-btn>
+        </div>
       </div>
     </div>
     <v-file-input
@@ -32,7 +32,12 @@
 </template>
 
 <script>
-export default{
+import TrashIcon from "@/components/heroicons/TrashIcon";
+
+export default {
+  components: {
+    TrashIcon,
+  },
   props: {
     value: {
       default: null,
@@ -42,7 +47,10 @@ export default{
   computed: {
     isUploaded() {
       return typeof this.value === "string";
-    }
+    },
+    url() {
+      return `${this.$config.app.storageUrl}/${this.value}`;
+    },
   },
 };
 </script>

@@ -1,7 +1,6 @@
 export const Status = Object.freeze({
     Active: 1,
     Inactive: 2,
-
     OnlyByUrl: 3,
 });
 
