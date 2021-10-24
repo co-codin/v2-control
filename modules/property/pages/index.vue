@@ -56,7 +56,6 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, StatusDescription } from '@/enums';
 import Property from '../models/Property';
 
 export default {
@@ -75,10 +74,8 @@ export default {
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Ссылка', align: 'left', value: 'slug' },
+                { text: 'Ссылка', align: 'left', value: 'key' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Статус', value: 'status.description', sortable: false },
-                { text: 'Страна', value: 'country.value', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
@@ -95,29 +92,8 @@ export default {
                 },
                 {
                     label: 'Ссылка',
-                    name: 'slug',
+                    name: 'key',
                     component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
-                    label: 'Сайт',
-                    name: 'website',
-                    component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
-                    label: 'Страна',
-                    name: 'country',
-                    component: () => import('@/components/search/fields/ComboBoxSearchField'),
-                },
-                {
-                    label: 'Статус',
-                    name: 'status',
-                    component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: enumToSelectArray(StatusDescription),
-                },
-                {
-                    label: 'Отображается на главной',
-                    name: 'is_in_home',
-                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
             ],
         };
@@ -126,7 +102,7 @@ export default {
         this.showLoading();
 
         const response = await Property.select({
-            properties: ['id', 'name', 'slug', 'status', 'created_at'],
+            properties: ['id', 'name', 'key', 'created_at'],
         })
             .params(this.queryParams)
             .get();
