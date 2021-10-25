@@ -1,3 +1,5 @@
+import { toTree } from '~/helpers';
+
 const category = {
     namespaced: true,
 
@@ -17,14 +19,16 @@ const category = {
         },
 
         categoryTree(state) {
-            return state.categories;
+            return toTree(state.categories);
         },
     },
 
     actions: {
-        async getCategories({ commit }) {
-            const { data } = await this.$axios.$get('/categories/all');
-            commit('setCategories', data);
+        async getCategories({ commit, state }) {
+            if (!state.categories) {
+                const { data } = await this.$axios.$get('/categories/all');
+                commit('setCategories', data);
+            }
         },
     },
 };

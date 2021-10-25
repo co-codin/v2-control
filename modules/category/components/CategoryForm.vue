@@ -23,13 +23,12 @@
 <script>
 import { Form } from 'form-backend-validation';
 import Treeselect from '@riophae/vue-treeselect';
-import FileField from '../../../components/forms/FileField';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
-import Category from '~/modules/category/models/Category';
+import { mapGetters } from 'vuex';
+import category from '~/store/category';
 
 export default {
     components: {
-        FileField,
         Treeselect,
     },
     props: {
@@ -68,20 +67,34 @@ export default {
             { value: 3, text: 'Only By Url' },
         ],
         form: null,
-        categories: [],
     }),
+    computed: {
+        ...mapGetters({
+            categoryTree: 'category/categoryTree',
+        }),
+    },
     watch: {
         category(value) {
             this.form.populate(value);
         },
     },
+    mounted() {
+        console.log(this.categoryTree);
+    },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.category || {});
-        this.categories = Category().where('status', 1).get();
-        console.log(this.categories);
     },
-    methods: {},
+    methods: {
+        normalizer: (item) => ({
+            id: item.id,
+            label: item.name || item.label,
+            children: item.children && item.children.length > 0 ? item.children : undefined,
+        }),
+        inputParent(value) {
+            if (value === undefined) this.form.parent_id = null;
+        },
+    },
 };
 </script>
