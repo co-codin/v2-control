@@ -8,7 +8,7 @@
                             <div class="image-preview-wrap">
                                 <template v-if="checkType(image) === 'image'">
                                     <img v-if="likeFile" :src="base64_images[i]" alt />
-                                    <img v-else :src="baseUrl + image" alt />
+                                    <img v-else :src="image" alt />
                                 </template>
                                 <div v-else class="image-uploader-empty-bg file"></div>
                                 <div class="file-name">
@@ -31,7 +31,7 @@
                         <div class="image-preview">
                             <div class="image-preview-wrap">
                                 <template v-if="checkType(image.image) === 'image'">
-                                    <img :src="baseUrl + image.image" alt />
+                                    <img :src="image.image" alt />
                                 </template>
                                 <div v-else class="image-uploader-empty-bg file"></div>
                                 <div class="file-name">
@@ -134,9 +134,6 @@ export default {
         base64_images: [],
     }),
     computed: {
-        baseUrl() {
-            return process.env.UPLOADS_BASE_URL;
-        },
         uploaderId() {
             return `uploader_${this.id}`;
         },
@@ -274,7 +271,7 @@ export default {
             fd.append('file', file, file.name);
             fd.append('rules', JSON.stringify(rules));
             await this.$axios
-                .post('/tools/admin/upload/', fd, {
+                .post('/admin/upload/', fd, {
                     onUploadProgress: (uploadEvent) => {
                         console.log(Math.round((uploadEvent.loaded / uploadEvent.total) * 100));
                     },

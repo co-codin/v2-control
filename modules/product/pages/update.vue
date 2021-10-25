@@ -63,7 +63,6 @@ export default {
         },
         images() {
             return this.product.images.map((img) => {
-                console.log(`${this.$config.app.storageUrl}/${img.image}`);
                 return {
                     position: img.position,
                     image: `${this.$config.app.storageUrl}/${img.image}`,
