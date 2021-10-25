@@ -40,7 +40,7 @@ export default {
         { src: '~plugins/vue-api-query' },
     ],
 
-    buildModules: ['nuxt-vite', '@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],
+    buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],
 
     modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dayjs'],
 
