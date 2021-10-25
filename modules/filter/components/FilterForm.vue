@@ -1,5 +1,27 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
+        <v-select
+            v-if="categories.length"
+            v-model="form.category_id"
+            :items="categories"
+            item-text="name"
+            item-value="id"
+            label="Категория"
+            :error-messages="form.errors.get('category_id')"
+            :error="form.errors.has('category_id')"
+        ></v-select>
+
+        <v-select
+            v-if="properties.length"
+            v-model="form.property_id"
+            :items="properties"
+            label="Характеристика"
+            item-text="name"
+            item-value="id"
+            :error-messages="form.errors.get('property_id')"
+            :error="form.errors.has('property_id')"
+        ></v-select>
+
         <v-text-field
             v-model="form.name"
             label="Название"
@@ -51,6 +73,7 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     props: {
@@ -68,9 +91,10 @@ export default {
             name: null,
             slug: null,
             type: null,
-            is_image_changed: false,
+            category_id: null,
+            property_id: null,
             is_default: false,
-            is_enabled: null,
+            is_enabled: false,
             description: null,
         },
         typeLabels: [
@@ -80,15 +104,29 @@ export default {
         ],
         form: null,
     }),
+    computed: {
+        ...mapGetters({
+            categories: 'category/categories',
+            properties: 'property/properties',
+        }),
+    },
     watch: {
         filter(value) {
             this.form.populate(value);
         },
     },
-    created() {
+    async created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.filter || {});
+        await this.getCategories();
+        await this.getProperties();
+    },
+    methods: {
+        ...mapActions({
+            getCategories: 'category/getCategories',
+            getProperties: 'property/getProperties',
+        }),
     },
 };
 </script>

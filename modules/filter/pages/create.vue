@@ -8,7 +8,7 @@
         </div>
 
         <v-card class="pa-2">
-            <filter-form @send="createАшдеук;">
+            <filter-form @send="createFilter">
                 <template slot="buttons">
                     <v-btn type="submit">Добавить</v-btn>
                 </template>
@@ -35,7 +35,7 @@ export default {
         title: 'Добавление фильтра',
     },
     methods: {
-        async createBrand(form) {
+        async createFilter(form) {
             try {
                 await form.post('/admin/filters');
                 this.$snackbar(`Фильтр ${form.name} успешно добавлен`);

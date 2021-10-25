@@ -69,7 +69,7 @@ export default {
             try {
                 await form.patch(`/admin/categories/${this.$route.params.id}/seo`);
                 this.$snackbar(`SEO категории успешно обновлено`);
-                await this.$router.push({ name: 'categories' });
+                await this.$router.push({ name: 'categories.index' });
             } catch (e) {
                 this.$snackbar(`Прозиошла ошибка при обоновлении seo у категории: ${e.message}`);
             }
