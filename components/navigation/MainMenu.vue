@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import NavMenu from './NavMenu';
 
 export default {
@@ -19,6 +20,14 @@ export default {
             type: Array,
             default: () => [],
         },
+    },
+    async mounted() {
+        await this.getCategories();
+    },
+    methods: {
+        ...mapActions({
+            getCategories: 'category/getCategories',
+        }),
     },
 };
 </script>

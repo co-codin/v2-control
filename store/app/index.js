@@ -1,32 +1,33 @@
-import config from '../../config'
-import mutations from './mutations'
+import config from '../../config';
+import mutations from './mutations';
 
-const { product, time, theme, currencies  } = config
+const { product, time, theme, currencies } = config;
 
-const { globalTheme, menuTheme, toolbarTheme, isToolbarDetached, isContentBoxed, isRTL } = theme
-const { currency, availableCurrencies } = currencies
+const { globalTheme, menuTheme, toolbarTheme, isToolbarDetached, isContentBoxed, isRTL } = theme;
+const { currency, availableCurrencies } = currencies;
 
 // state initial values
 const state = () => ({
-  product,
+    product,
 
-  time,
+    time,
 
-  // currency
-  currency,
-  availableCurrencies,
+    // currency
+    currency,
+    availableCurrencies,
 
-  // themes and layout configurations
-  globalTheme,
-  menuTheme,
-  toolbarTheme,
-  isToolbarDetached,
-  isContentBoxed,
-  isRTL,
-})
+    // themes and layout configurations
+    globalTheme,
+    menuTheme,
+    toolbarTheme,
+    isToolbarDetached,
+
+    isContentBoxed,
+    isRTL,
+});
 
 export default {
-  namespaced: true,
-  state,
-  mutations
-}
+    namespaced: true,
+    state,
+    mutations,
+};
