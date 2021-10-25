@@ -1,3 +1,5 @@
+import { toTree } from '~/helpers';
+
 const category = {
     namespaced: true,
 
@@ -17,7 +19,7 @@ const category = {
         },
 
         categoryTree(state) {
-            return state.categories;
+            return toTree(state.categories);
         },
     },
 

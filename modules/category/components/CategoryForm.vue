@@ -9,11 +9,70 @@
             <treeselect
                 v-model="form.parent_id"
                 placeholder="Выберите родительскую категорию"
-                :options="categories"
+                :options="categoryTree"
                 :normalizer="normalizer"
                 @input="inputParent"
             />
         </v-input>
+
+        <v-text-field
+            v-model="form.name"
+            label="Название"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+        />
+
+        <v-text-field
+            v-model="form.product_name"
+            label="Имя продукта"
+            :error-messages="form.errors.get('product_name')"
+            :error="form.errors.has('product_name')"
+        />
+
+        <v-text-field
+            v-model="form.slug"
+            label="Ссылка"
+            :error-messages="form.errors.get('slug')"
+            :error="form.errors.has('slug')"
+        />
+
+        <file-field
+            v-model="form.image"
+            label="Главная фотография"
+            :error-messages="form.errors.get('image')"
+            :error="form.errors.has('image')"
+            @input="form.is_image_changed = true"
+        />
+
+        <v-input
+            label="Описание"
+            dense
+            :error-messages="form.errors.get('full_description')"
+            :error="form.errors.has('full_description')"
+        />
+
+        <v-select
+            v-model="form.status"
+            label="Статус"
+            :items="statusLabels"
+            :error-messages="form.errors.get('status')"
+            :error="form.errors.has('status')"
+        />
+
+        <v-checkbox
+            v-model="form.is_in_home"
+            label="Отображать на главной"
+            :error-messages="form.errors.get('is_in_home')"
+            :error="form.errors.has('is_in_home')"
+        />
+
+        <v-checkbox
+            v-model="form.is_hidden_in_parents"
+            label="Скрыть товары из родительской категории"
+            :error-messages="form.errors.get('is_hidden_in_parents')"
+            :error="form.errors.has('is_hidden_in_parents')"
+        />
+
         <slot name="buttons">
             <v-btn type="submit">Сохранить</v-btn>
         </slot>
@@ -23,14 +82,14 @@
 <script>
 import { Form } from 'form-backend-validation';
 import Treeselect from '@riophae/vue-treeselect';
-import FileField from '../../../components/forms/FileField';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
-import Category from '~/modules/category/models/Category';
+import { mapGetters, mapActions } from 'vuex';
+import FileField from '../../../components/forms/FileField';
 
 export default {
     components: {
-        FileField,
         Treeselect,
+        FileField,
     },
     props: {
         category: {
@@ -47,41 +106,53 @@ export default {
             parent_id: null,
             name: null,
             slug: null,
-            image: '',
+            image: null,
             product_name: null,
             full_description: null,
-            status: 1,
-            seo: {
-                is_enabled: 2,
-            },
-            seo_products: {
-                is_enabled: 2,
-            },
-            is_in_home: 2,
-            is_hidden_in_parents: 1,
-            links: [],
-            attach_default_filters: false,
+            is_in_home: false,
+            is_hidden_in_parents: false,
+            status: null,
+            is_image_changed: false,
         },
         statusLabels: [
-            { value: 1, text: 'Active' },
-            { value: 2, text: 'Inactive' },
-            { value: 3, text: 'Only By Url' },
+            { value: 1, text: 'Отображается на сайте' },
+            { value: 2, text: 'Скрыто' },
+            { value: 3, text: 'Доступно только по URL' },
+            { value: 4, text: 'Удалено' },
         ],
         form: null,
-        categories: [],
     }),
+    computed: {
+        ...mapGetters({
+            categoryTree: 'category/categoryTree',
+            categories: 'category/categories',
+        }),
+    },
     watch: {
         category(value) {
             this.form.populate(value);
         },
     },
+    async mounted() {
+        await this.getCategories();
+    },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.category || {});
-        this.categories = Category().where('status', 1).get();
-        console.log(this.categories);
     },
-    methods: {},
+    methods: {
+        ...mapActions({
+            getCategories: 'category/getCategories',
+        }),
+        normalizer: (item) => ({
+            id: item.id,
+            label: item.name || item.label,
+            children: item.children && item.children.length > 0 ? item.children : undefined,
+        }),
+        inputParent(value) {
+            if (value === undefined) this.form.parent_id = null;
+        },
+    },
 };
 </script>
