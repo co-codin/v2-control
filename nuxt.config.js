@@ -4,6 +4,7 @@ import { categoryRoutes } from './modules/category/router';
 import { productRoutes } from './modules/product/router';
 import { propertyRoutes } from './modules/property/router';
 import { filterRoutes } from './modules/filter/router';
+import { seoRuleRoutes } from './modules/seo-rule/router';
 
 export default {
     ssr: false,
@@ -111,6 +112,7 @@ export default {
                     ...productRoutes(resolve),
                     ...propertyRoutes(resolve),
                     ...filterRoutes(resolve),
+                    ...seoRuleRoutes(resolve),
                 ]
             );
         },

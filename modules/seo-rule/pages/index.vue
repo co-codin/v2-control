@@ -2,13 +2,13 @@
     <div class="d-flex flex-column flex-grow-1">
         <div class="d-flex align-center py-3 pb-0">
             <div>
-                <div class="display-1">Товары</div>
+                <div class="display-1">SEO правила</div>
                 <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
             </div>
         </div>
 
         <div class="mb-2">
-            <v-btn :to="{ name: 'products.create' }"> Добавить товар </v-btn>
+            <v-btn :to="{ name: 'seo-rules.create' }"> Добавить SEO правило </v-btn>
         </div>
 
         <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
@@ -18,7 +18,7 @@
                 v-model="selectedItems"
                 item-key="id"
                 :headers="headers"
-                :items="products"
+                :items="seoRules"
                 :loading="isLoading"
                 :server-items-length="total"
                 loading-text="Идет загрузка..."
@@ -34,10 +34,6 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
-                <template #item.created_at="{ item }">
-                    <div>{{ item.asDate('created_at').fromNow() }}</div>
-                </template>
-
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
                         <v-btn
@@ -46,14 +42,20 @@
                             height="22"
                             target="_blank"
                             link
-                            :href="`${$config.app.siteUrl}/product/${item.slug}/${item.id}`"
+                            :href="$config.app.siteUrl + item.url"
                         >
                             <external-link-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" class="mx-1" :to="{ name: 'products.update', params: { id: item.id } }">
+                        <v-btn
+                            icon
+                            width="22"
+                            height="22"
+                            class="mx-1"
+                            :to="{ name: 'seo-rules.update', params: { id: item.id } }"
+                        >
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" @click="deleteProduct(item)">
+                        <v-btn icon width="22" height="22" @click.prevent="deleteSeoRule(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
                     </div>
@@ -67,7 +69,7 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import { enumToSelectArray, StatusDescription } from '@/enums';
-import Product from '../models/Product';
+import SeoRule from '../models/SeoRule';
 
 export default {
     components: {
@@ -76,23 +78,19 @@ export default {
     mixins: [DatatableMixin],
     data() {
         return {
-            products: [],
+            seoRules: [],
             searchForm: {
+                live: null,
                 name: null,
-                is_in_home: null,
-                status: null,
+                url: null,
             },
             headers: [
-                { text: 'ID', align: 'left', value: 'id', cellClass: 'text-no-wrap' },
-                { text: 'Производитель', align: 'left', value: 'brand.name' },
-                { text: 'Модель', align: 'left', value: 'name' },
-                { text: 'Категория', align: 'left', value: 'category.name' },
-                { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Статус', value: 'status.description', sortable: false },
+                { text: 'ID', align: 'left', value: 'id' },
+                { text: 'Название', align: 'left', value: 'name' },
+                { text: 'Ссылка', align: 'left', value: 'url' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Товары' }],
+            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'SEO правила' }],
             filters: [
                 {
                     label: 'Быстрый поиск',
@@ -100,25 +98,14 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'ID',
-                    name: 'id',
+                    label: 'Название',
+                    name: 'name',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Ссылка',
-                    name: 'slug',
+                    label: 'URL',
+                    name: 'url',
                     component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
-                    label: 'Статус',
-                    name: 'status',
-                    component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: enumToSelectArray(StatusDescription),
-                },
-                {
-                    label: 'Отображается на главной',
-                    name: 'is_in_home',
-                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
             ],
         };
@@ -126,33 +113,29 @@ export default {
     async fetch() {
         this.showLoading();
 
-        const response = await Product.select({
-            products: ['id', 'name', 'brand_id', 'slug', 'status', 'created_at'],
-            brand: ['id', 'name'],
-            category: ['id', 'name'],
-            categories: ['id', 'name'],
+        const response = await SeoRule.select({
+            seoRules: ['id', 'name', 'url'],
         })
-            .with('brand', 'category', 'categories')
             .params(this.queryParams)
             .get();
 
-        this.products = Product.hydrate(response.data);
+        this.seoRules = SeoRule.hydrate(response.data);
 
         this.setTotal(response.meta.total);
         this.hideLoading();
     },
     head: {
-        title: 'Товары',
+        title: 'SEO правила',
     },
     methods: {
-        async deleteProduct(product) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить ${product.name}?`))) {
+        async deleteSeoRule(seoRule) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить ${seoRule.name}?`))) {
                 return;
             }
             try {
-                await product.delete();
-                this.$snackbar(`Производитель ${product.name} успешно удален`);
-                this.$fetch();
+                await seoRule.delete();
+                this.$snackbar(`SEO правило ${seoRule.name} успешно удалено`);
+                this.seoRules = this.seoRules.filter((item) => item.id !== seoRule.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }

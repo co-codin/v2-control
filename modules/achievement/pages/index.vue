@@ -71,7 +71,7 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import { enumToSelectArray, StatusDescription } from '@/enums';
-import Achievement from '../models/Achievement';
+import SeoRule from '../models/Achievement';
 
 export default {
     components: {
