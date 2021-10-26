@@ -1,19 +1,10 @@
 <template>
     <div>
         <page-header h1="Редактирование категории" :breadcrumbs="breadcrumbs"></page-header>
-        <v-card :loading="isLoading" class="mb-3">
-            <v-card-title> Основная информация </v-card-title>
-            <v-card-text v-if="category">
-                <category-form :category="category" is-updating @send="updateCategory" />
-            </v-card-text>
-        </v-card>
-
-        <v-card :loading="isLoading">
-            <v-card-title> SEO </v-card-title>
-            <v-card-text v-if="category">
-                <seo-relation-form :seo="seo" @send="updateCategorySeo" />
-            </v-card-text>
-        </v-card>
+        <v-expansion-panels v-if="category">
+            <category-form :category="category" is-updating @send="updateCategory" />
+            <seo-relation-form :seo="seo" @send="updateCategorySeo" />
+        </v-expansion-panels>
     </div>
 </template>
 
@@ -30,6 +21,7 @@ export default {
     },
     data: () => ({
         category: null,
+        seo: null,
         isLoading: true,
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },

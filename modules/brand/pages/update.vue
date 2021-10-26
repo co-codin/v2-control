@@ -1,39 +1,27 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Редактирование производителя</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card :loading="isLoading" class="mb-3">
-            <v-card-title> Основная информация </v-card-title>
-            <v-card-text v-if="brand">
-                <brand-form :brand="brand" is-updating @send="updateBrand" />
-            </v-card-text>
-        </v-card>
-
-        <v-card :loading="isLoading">
-            <v-card-title> SEO </v-card-title>
-            <v-card-text v-if="brand">
-                <seo-relation-form :seo="seo" @send="updateBrandSeo" />
-            </v-card-text>
-        </v-card>
+    <div>
+        <page-header h1="Редактирование производителя" :breadcrumbs="breadcrumbs" />
+        <v-expansion-panels v-if="brand">
+            <brand-form :brand="brand" is-updating @send="updateBrand" />
+            <seo-relation-form :seo="seo" @send="updateBrandSeo" />
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import BrandForm from '../components/BrandForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
+import PageHeader from "~/components/common/PageHeader";
 
 export default {
     components: {
+        PageHeader,
         SeoRelationForm,
         BrandForm,
     },
     data: () => ({
         brand: null,
+        seo: null,
         isLoading: true,
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },

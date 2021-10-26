@@ -10,28 +10,36 @@
                     :error="form.errors.has('is_enabled')"
                 />
                 <template v-if="Boolean(form.is_enabled)">
-                    <v-text-field
+                    <v-textarea
                         v-model="form.title"
+                        rows="3"
                         label="Заголовок страницы"
                         :error-messages="form.errors.get('title')"
                         :error="form.errors.has('title')"
-                    ></v-text-field>
+                    />
 
-                    <v-text-field
+                    <v-textarea
                         v-model="form.h1"
+                        rows="3"
                         label="H1"
                         :error-messages="form.errors.get('h1')"
                         :error="form.errors.has('h1')"
-                    ></v-text-field>
+                    />
 
-                    <v-text-field
+                    <v-textarea
                         v-model="form.description"
+                        rows="3"
                         label="Описание"
                         :error-messages="form.errors.get('description')"
                         :error="form.errors.has('description')"
-                    ></v-text-field>
+                    />
                 </template>
-                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+
+                <v-row class="expansion-panel-actions mt-5">
+                    <v-col>
+                        <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+                    </v-col>
+                </v-row>
             </v-form>
         </v-expansion-panel-content>
     </v-expansion-panel>
