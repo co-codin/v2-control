@@ -1,17 +1,17 @@
-export const cityRoutes = (resolve) => [
+export const newsRoutes = (resolve) => [
     {
-        path: '/cities',
-        name: 'cities.index',
+        path: '/news',
+        name: 'news.index',
         component: resolve(__dirname, '../pages/index.vue'),
     },
     {
-        path: '/cities/create',
-        name: 'cities.create',
+        path: '/news/create',
+        name: 'news.create',
         component: resolve(__dirname, '../pages/create.vue'),
     },
     {
-        path: '/cities/:id/update',
-        name: 'cities.update',
+        path: '/news/:id/update',
+        name: 'news.update',
         component: resolve(__dirname, '../pages/update.vue'),
     },
 ];

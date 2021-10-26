@@ -4,6 +4,8 @@ import { categoryRoutes } from './modules/category/router';
 import { productRoutes } from './modules/product/router';
 import { propertyRoutes } from './modules/property/router';
 import { filterRoutes } from './modules/filter/router';
+import { cityRoutes } from './modules/city/router';
+import { newsRoutes } from './modules/news/router';
 
 export default {
     ssr: false,
@@ -111,6 +113,8 @@ export default {
                     ...productRoutes(resolve),
                     ...propertyRoutes(resolve),
                     ...filterRoutes(resolve),
+                    ...cityRoutes(resolve),
+                    ...newsRoutes(resolve),
                 ]
             );
         },
