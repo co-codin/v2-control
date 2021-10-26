@@ -1,6 +1,9 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
         <v-text-field
+            single-line
+            prefix="/product/"
+            suffix="/id"
             v-model="form.name"
             label="Название"
             :error-messages="form.errors.get('name')"
@@ -35,12 +38,12 @@
             :error="form.errors.has('full_description')"
         ></v-textarea>
 
-        <v-checkbox
+        <v-switch
             v-model="form.is_in_home"
             label="Отображать на главной"
             :error-messages="form.errors.get('is_in_home')"
             :error="form.errors.has('is_in_home')"
-        ></v-checkbox>
+        />
 
         <file-field
             v-model="form.image"
@@ -50,12 +53,12 @@
             @input="form.is_image_changed = true"
         ></file-field>
 
-        <v-text-field
-            v-model="form.country"
+        <field-value-autocomplete
+            v-model="form.country_id"
             label="Страна"
-            :error-messages="form.errors.get('country')"
-            :error="form.errors.has('country')"
-        ></v-text-field>
+            :error-messages="form.errors.get('country_id')"
+            :error="form.errors.has('country_id')"
+        />
 
         <v-select
             v-model="form.status"
@@ -74,10 +77,12 @@
 <script>
 import { Form } from 'form-backend-validation';
 import FileField from '../../../components/forms/FileField';
+import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 
 export default {
     components: {
         FileField,
+        FieldValueAutocomplete,
     },
     props: {
         brand: {
@@ -100,7 +105,7 @@ export default {
             website: null,
             short_description: null,
             full_description: null,
-            country: null,
+            country_id: null,
         },
         statusLabels: [
             { value: 1, text: 'Active' },

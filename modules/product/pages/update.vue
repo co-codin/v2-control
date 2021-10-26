@@ -2,8 +2,8 @@
     <div>
         <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
         <template v-if="product">
-            <product-form :product="product" is-updating @send="updateProduct" />
-            <product-gallery-form :product-name="productName" :images="images" />
+            <product-form :product="product"></product-form>
+            <product-gallery-form :product-name="productName" :images="images" class="mt-3" />
             <product-properties-form :properties="product.properties" class="mt-3" @send="updateProperties" />
             <seo-relation-form :seo="seo" class="mt-3" @send="updateProductSeo" />
         </template>

@@ -25,6 +25,12 @@
             <trash-icon></trash-icon>
           </v-btn>
         </div>
+
+
+          <v-card>
+
+          </v-card>
+
       </div>
     </div>
     <v-file-input
@@ -65,3 +71,6 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+</style>
