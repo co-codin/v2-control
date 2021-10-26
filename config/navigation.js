@@ -20,6 +20,7 @@ export default {
             items: [
                 // { icon: 'mdi-cash-usd-outline', text: 'Достижения', link: '/achievements' },
                 { icon: 'mdi-cash-usd-outline', text: 'SEO правила', link: '/seo-rules' },
+                { icon: 'mdi-cash-usd-outline', text: 'Новости', link: '/news' },
             ],
         },
         // {
