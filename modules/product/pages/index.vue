@@ -1,11 +1,6 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3 pb-0">
-            <div>
-                <div class="display-1">Товары</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
+    <div>
+        <page-header h1="Товары" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
             <v-btn :to="{ name: 'products.create' }"> Добавить товар </v-btn>
@@ -68,10 +63,12 @@ import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import { enumToSelectArray, StatusDescription } from '@/enums';
 import Product from '../models/Product';
+import PageHeader from "~/components/common/PageHeader";
 
 export default {
     components: {
         AdvancedSearchForm,
+        PageHeader,
     },
     mixins: [DatatableMixin],
     data() {
