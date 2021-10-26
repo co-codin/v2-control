@@ -2,10 +2,10 @@
     <div>
         <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
         <template v-if="product">
+            <product-variation-form :variations="product.productVariations" />
             <product-form :product="product" is-updating @send="updateProduct" />
             <product-gallery-form :product-name="productName" :images="images" />
             <product-properties-form :properties="product.properties" class="mt-3" @send="updateProperties" />
-            <product-variation-form />
             <seo-relation-form :seo="seo" class="mt-3" @send="updateProductSeo" />
         </template>
     </div>
@@ -44,7 +44,7 @@ export default {
             .select({
                 categories: ['id'],
             })
-            .with('seo', 'categories', 'properties', 'brand', 'images')
+            .with('seo', 'categories', 'properties', 'brand', 'images', 'productVariations.currency')
             .$find(this.$route.params.id);
 
         product.status = product.status.value;
