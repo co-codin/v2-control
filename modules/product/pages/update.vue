@@ -2,8 +2,9 @@
     <div>
         <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
         <template v-if="product">
-            <product-form :product="product"></product-form>
-            <product-gallery-form :product-name="productName" :images="images" class="mt-3" />
+            <product-variation-form :variations="product.productVariations" />
+            <product-form :product="product" is-updating @send="updateProduct" />
+            <product-gallery-form :product-name="productName" :images="images" />
             <product-properties-form :properties="product.properties" class="mt-3" @send="updateProperties" />
             <seo-relation-form :seo="seo" class="mt-3" @send="updateProductSeo" />
         </template>
@@ -17,9 +18,11 @@ import Product from '../models/Product';
 import PageHeader from '../../../components/common/PageHeader';
 import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
 import ProductGalleryForm from '~/modules/product/components/ProductGalleryForm';
+import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
 
 export default {
     components: {
+        ProductVariationForm,
         ProductGalleryForm,
         SeoRelationForm,
         ProductForm,
@@ -41,7 +44,7 @@ export default {
             .select({
                 categories: ['id'],
             })
-            .with('seo', 'categories', 'properties', 'brand', 'images')
+            .with('seo', 'categories', 'properties', 'brand', 'images', 'productVariations.currency')
             .$find(this.$route.params.id);
 
         product.status = product.status.value;
