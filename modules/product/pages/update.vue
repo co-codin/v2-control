@@ -5,6 +5,7 @@
             <product-form :product="product" is-updating @send="updateProduct" />
             <product-gallery-form :product-name="productName" :images="images" />
             <product-properties-form :properties="product.properties" class="mt-3" @send="updateProperties" />
+            <product-variation-form />
             <seo-relation-form :seo="seo" class="mt-3" @send="updateProductSeo" />
         </template>
     </div>
@@ -17,9 +18,11 @@ import Product from '../models/Product';
 import PageHeader from '../../../components/common/PageHeader';
 import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
 import ProductGalleryForm from '~/modules/product/components/ProductGalleryForm';
+import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
 
 export default {
     components: {
+        ProductVariationForm,
         ProductGalleryForm,
         SeoRelationForm,
         ProductForm,
