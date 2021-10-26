@@ -2,13 +2,13 @@
     <div class="d-flex flex-column flex-grow-1">
         <div class="d-flex align-center py-3 pb-0">
             <div>
-                <div class="display-1">Города</div>
+                <div class="display-1">Новости</div>
                 <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
             </div>
         </div>
 
         <div class="mb-2">
-            <v-btn :to="{ name: 'cities.create' }"> Добавить город </v-btn>
+            <v-btn :to="{ name: 'news.create' }"> Добавить новость </v-btn>
         </div>
 
         <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
@@ -18,7 +18,7 @@
                 v-model="selectedItems"
                 item-key="id"
                 :headers="headers"
-                :items="cities"
+                :items="news"
                 :loading="isLoading"
                 :server-items-length="total"
                 loading-text="Идет загрузка..."
@@ -31,33 +31,24 @@
                 @update:sort-desc="updateOptions('sortDesc', $event)"
             >
                 <template #item.id="{ item }">
-                    <div class="font-weight-bold"># {{ item.id }}</div>
+                    <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
-                <template #item.created_at="{ item }">
-                    <div>{{ item.asDate('created_at').fromNow() }}</div>
+                <template #item.published_at="{ item }">
+                    <div>{{ item.asDate('published_at').fromNow() }}</div>
                 </template>
 
-                <template #item.coordinate="{ item }">
-                    <span v-if="item.coordinate"> {{ item.coordinate.lat }} : {{ item.coordinate.long }} </span>
-                </template>
-
-                <template #item.is_default="{ item }">
-                    <span> {{ item.is_default ? 'Да' : 'Нет' }} </span>
+                <template #item.is_in_home="{ item }">
+                    <div>{{ item.is_in_home ? 'Да' : 'Нет' }}</div>
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions">
-                        <v-btn icon width="22" height="22" :to="{ name: 'cities.update', params: { id: item.id } }">
+                    <div class="actions text-no-wrap">
+                        <v-btn icon width="22" height="22" :to="{ name: 'news.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
-
-                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteCity(item)">
+                        <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteNews(item)">
                             <trash-icon class="h-6 w-6" />
-                        </v-btn>
-
-                        <v-btn icon width="22" height="22">
-                            <dots-horizontal-icon class="h-6 w-6" />
                         </v-btn>
                     </div>
                 </template>
@@ -70,7 +61,7 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import { enumToSelectArray, StatusDescription } from '@/enums';
-import City from '../models/City';
+import News from '../models/News';
 
 export default {
     components: {
@@ -79,25 +70,22 @@ export default {
     mixins: [DatatableMixin],
     data() {
         return {
-            cities: [],
+            news: [],
             searchForm: {
                 name: null,
+                is_in_home: null,
                 status: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Координаты центра', align: 'left', value: 'coordinate', sortable: false },
-                { text: 'Статус', value: 'status.description', sortable: false },
-                { text: 'Федеральный округ', align: 'left', value: 'federal_district' },
-                { text: 'Региональный телефон', value: 'region_phone', sortable: false },
-                { text: 'email', value: 'email', sortable: false },
-                { text: 'По умолчанию', value: 'is_default', sortable: false },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
+                { text: 'Дата новости', align: 'left', value: 'published_at' },
+                { text: 'Статус', value: 'status.description' },
+                { text: 'На главной', value: 'is_in_home' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список категорий' }],
+            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список новостей' }],
             filters: [
                 {
                     label: 'Название',
@@ -121,8 +109,8 @@ export default {
                     items: enumToSelectArray(StatusDescription),
                 },
                 {
-                    label: 'По умолчанию',
-                    name: 'is_default',
+                    label: 'Отображается на главной',
+                    name: 'is_in_home',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
             ],
@@ -131,43 +119,30 @@ export default {
     async fetch() {
         this.showLoading();
 
-        const response = await City.select({
-            cities: [
-                'id',
-                'name',
-                'slug',
-                'status',
-                'coordinate',
-                'federal_district',
-                'region_phone',
-                'email',
-                'created_at',
-                'is_default',
-            ],
+        const response = await News.select({
+            news: ['id', 'name', 'slug', 'status', 'published_at', 'is_in_home'],
         })
             .params(this.queryParams)
             .get();
 
-        this.cities = City.hydrate(response.data);
-        console.log(this.cities);
+        this.news = News.hydrate(response.data);
 
         this.setTotal(response.meta.total);
         this.hideLoading();
     },
     head: {
-        title: 'Города',
+        title: 'Новости',
     },
     methods: {
-        async deleteCity(city) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить город ${city.name}?`))) {
+        async deleteNews(news) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить новость ${news.name}?`))) {
                 return;
             }
             try {
-                await city.delete();
+                await news.delete();
 
-                this.$snackbar(`Город ${city.name} успешно удален`);
-
-                this.cities = this.cities.filter((item) => item.id !== city.id);
+                this.$snackbar(`Новость ${news.name} успешно удалена`);
+                this.news = this.news.filter((item) => item.id !== news.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }
