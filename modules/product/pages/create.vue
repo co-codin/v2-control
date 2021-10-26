@@ -1,7 +1,9 @@
 <template>
     <div>
         <page-header h1="Добавление товара" :breadcrumbs="breadcrumbs"/>
-        <product-form @send="createProduct"/>
+        <v-expansion-panels :value="0">
+            <product-form @send="createProduct"/>
+        </v-expansion-panels>
     </div>
 </template>
 

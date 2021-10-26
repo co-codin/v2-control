@@ -95,12 +95,13 @@
                     :error-messages="form.errors.get('short_description')"
                     :error="form.errors.has('short_description')"
                 />
-                <content-editor
-                    v-model="form.full_description"
+                <v-input
                     label="Подробное описание"
-                    :error-messages="form.errors.get('full_description')"
-                    :error="form.errors.has('full_description')"
-                />
+                     :error-messages="form.errors.get('full_description')"
+                     :error="form.errors.has('full_description')"
+                >
+                    <content-editor v-model="form.full_description" />
+                </v-input>
                 <v-row class="expansion-panel-actions mt-5">
                     <v-col>
                         <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
