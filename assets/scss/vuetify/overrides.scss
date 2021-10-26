@@ -141,3 +141,15 @@
 .v-sheet.v-card:not(.v-sheet--outlined) {
     box-shadow: 0 2px 3px rgb(0 0 0 / 16%);
 }
+
+.expansion-panel-actions {
+    background: #f9fafb;
+    justify-content: right;
+    text-align: right;
+    > .v-btn.v-btn {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}

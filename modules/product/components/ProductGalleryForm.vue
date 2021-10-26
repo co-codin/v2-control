@@ -1,34 +1,27 @@
 <template>
-    <v-form @submit.prevent="$emit('send', form)">
-        <v-expansion-panels>
-            <v-expansion-panel>
-                <v-expansion-panel-header class="title">Галерея</v-expansion-panel-header>
-                <v-expansion-panel-content>
-                    <slot name="fields">
-                        <v-input
-                            label="Галерея"
-                            dense
-                            :error-messages="form.errors.get('images')"
-                            :error="form.errors.has('images')"
-                        >
-                            <file-uploader
-                                v-model="form.images"
-                                :multiple="true"
-                                :max="10"
-                                :object-format="true"
-                            ></file-uploader>
-                        </v-input>
-                        <div class="mt-5">
-                            <v-btn type="submit" dark color="green">Сохранить</v-btn>
-                        </div>
-                    </slot>
-                    <v-btn type="submit" color="green" class="white--text text-uppercase">
-                        Сохранить
-                    </v-btn>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
-        </v-expansion-panels>
-    </v-form>
+    <v-expansion-panel>
+        <v-expansion-panel-header class="title">Галерея</v-expansion-panel-header>
+        <v-expansion-panel-content>
+            <v-form @submit.prevent="$emit('send', form)">
+                <v-input
+                    label="Галерея"
+                    dense
+                    :error-messages="form.errors.get('images')"
+                    :error="form.errors.has('images')"
+                >
+                    <file-uploader
+                        v-model="form.images"
+                        :multiple="true"
+                        :max="10"
+                        :object-format="true"
+                    ></file-uploader>
+                </v-input>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">
+                    Сохранить
+                </v-btn>
+            </v-form>
+        </v-expansion-panel-content>
+    </v-expansion-panel>
 </template>
 
 <script>
