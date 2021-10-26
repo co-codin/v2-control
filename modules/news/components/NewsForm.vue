@@ -144,6 +144,8 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.news || {});
+
+        this.form.image = this.form.image ? `${this.$config.app.storageUrl}/${this.form.image}` : null;
     },
 };
 </script>
