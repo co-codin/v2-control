@@ -1,11 +1,6 @@
 <template>
     <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Редактирование новости</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
+        <page-header h1="Редактирование новости" :breadcrumbs="breadcrumbs"></page-header>
 
         <v-card :loading="isLoading" class="mb-3">
             <v-card-title> Основная информация </v-card-title>
@@ -26,14 +21,17 @@
 <script>
 import NewsForm from '../components/NewsForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
+import PageHeader from "~/components/common/PageHeader";
 
 export default {
     components: {
+        PageHeader,
         SeoRelationForm,
         NewsForm,
     },
     data: () => ({
         news: null,
+        seo: null,
         isLoading: true,
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },

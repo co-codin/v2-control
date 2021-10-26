@@ -1,11 +1,6 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3 pb-0">
-            <div>
-                <div class="display-1">Фильтры</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
+    <div>
+        <page-header h1="Фильтры" :breadcrumbs="breadcrumbs"></page-header>
 
         <div class="mb-2">
             <v-btn :to="{ name: 'filters.create' }"> Добавить фильтр </v-btn>
@@ -56,11 +51,13 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, StatusDescription } from '@/enums';
 import Filter from '../models/Filter';
+import PageHeader from "~/components/common/PageHeader";
+
 
 export default {
     components: {
+        PageHeader,
         AdvancedSearchForm,
     },
     mixins: [DatatableMixin],
