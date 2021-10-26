@@ -81,6 +81,9 @@
                         @input="form.is_booklet_changed = true"
                     />
                     <v-text-field
+                        prepend-icon="mdi-youtube"
+                        append-icon="mdi-open-in-new"
+                        @click:append="goToYoutube"
                         v-model="form.video"
                         label="Видеообзор"
                         :error-messages="form.errors.get('video')"
@@ -235,6 +238,9 @@ export default {
         },
         getCategoryText(category) {
             return `${category.name} (${category.ancestorsPath})`;
+        },
+        goToYoutube() {
+            window.open(this.form.video, '_blank');
         },
         updateSlug: debounce(async function () {
             if (this.isUpdating && this.form.slug) {

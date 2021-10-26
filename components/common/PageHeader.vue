@@ -1,10 +1,8 @@
 <template>
-  <div class="d-flex align-center py-3">
     <div>
-      <div class="display-1">{{ h1 }}</div>
-      <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
+        <div class="display-1">{{ h1 }}</div>
+        <v-breadcrumbs :items="breadcrumbs" class="pa-0 pt-1 pb-3"></v-breadcrumbs>
     </div>
-  </div>
 </template>
 
 <script>

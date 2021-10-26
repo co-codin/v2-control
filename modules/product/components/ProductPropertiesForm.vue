@@ -33,7 +33,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-btn :disabled="!newProperty" small @click="addProperty">Добавить характеристику</v-btn>
-                        <v-btn  class="ml-2" small @click="openPropertyPopup">Создать новую характеристику</v-btn>
+                        <v-btn class="ml-2" small @click="openPropertyPopup">Создать новую характеристику</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-card-text>

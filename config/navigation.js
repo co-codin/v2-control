@@ -8,12 +8,18 @@ export default {
         {
             text: 'Каталог',
             items: [
-                // { icon: 'mdi-cash-usd-outline', text: 'Достижения', link: '/achievements' },
                 { icon: 'mdi-cash-usd-outline', text: 'Товары', link: '/products' },
                 { icon: 'mdi-cash-usd-outline', text: 'Категории', link: '/categories' },
                 { icon: 'mdi-cash-usd-outline', text: 'Производители', link: '/brands' },
                 { icon: 'mdi-cash-usd-outline', text: 'Характеристики', link: '/properties' },
                 { icon: 'mdi-cash-usd-outline', text: 'Фильтры', link: '/filters' },
+            ],
+        },
+        {
+            text: 'Контент',
+            items: [
+                // { icon: 'mdi-cash-usd-outline', text: 'Достижения', link: '/achievements' },
+                { icon: 'mdi-cash-usd-outline', text: 'SEO правила', link: '/seo-rules' },
             ],
         },
         // {
