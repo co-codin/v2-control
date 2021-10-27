@@ -73,13 +73,13 @@ export default {
         return {
             customer_reviews: [],
             searchForm: {
-                name: null,
+                company_name: null,
                 is_in_home: null,
                 type: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
-                { text: 'Название', align: 'left', value: 'name' },
+                { text: 'Название', align: 'left', value: 'company_name' },
                 { text: 'Автор', align: 'left', value: 'author' },
                 { text: 'Отображается на главной', value: 'is_in_home.description' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
@@ -89,7 +89,7 @@ export default {
             filters: [
                 {
                     label: 'Название',
-                    name: 'name',
+                    name: 'company_name',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
@@ -114,7 +114,7 @@ export default {
         this.showLoading();
 
         const response = await CustomerReview.select({
-            customer_reviews: ['id', 'name', 'author', 'is_in_home', 'created_at'],
+            customer_reviews: ['id', 'company_name', 'author', 'is_in_home', 'created_at'],
         })
             .params(this.queryParams)
             .get();
@@ -129,13 +129,13 @@ export default {
     },
     methods: {
         async deleteCustomerReview(customer_review) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить отзыва ${customer_review.name}?`))) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить отзыва ${customer_review.company_name}?`))) {
                 return;
             }
             try {
                 await customer_review.delete();
 
-                this.$snackbar(`Отзыв ${customer_review.name} успешно удален`);
+                this.$snackbar(`Отзыв ${customer_review.company_name} успешно удален`);
                 this.customer_reviews = this.customer_reviews.filter((item) => item.id !== customer_review.id);
             } catch (e) {
                 this.$snackbar(e.message);
