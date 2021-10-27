@@ -6,7 +6,7 @@
                 <v-card v-for="variation in variations" :key="'variation-' + variation.id">
                     <v-card-title>{{ variation.name }}</v-card-title>
                     <v-card-text>
-                        <span>Валюта: {{ variation.currency.name }}</span>
+                        <span v-if="variation.currency">Валюта: {{ variation.currency.name }}</span>
                         <span>Старая цена: {{ variation.previous_price }}</span>
                         <span>Цена: {{ variation.price }}</span>
                         <span>Цена отображается: {{ variation.is_price_visible ? 'Да' : 'Нет' }}</span>

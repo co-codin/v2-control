@@ -16,9 +16,7 @@
                         :object-format="true"
                     ></file-uploader>
                 </v-input>
-                <v-btn type="submit" color="green" class="white--text text-uppercase">
-                    Сохранить
-                </v-btn>
+                <v-btn type="submit" color="green" class="white--text text-uppercase"> Сохранить </v-btn>
             </v-form>
         </v-expansion-panel-content>
     </v-expansion-panel>
@@ -51,14 +49,6 @@ export default {
                     resetOnSuccess: false,
                 }),
         };
-    },
-    methods: {
-        sendForm() {
-            this.form.patch(`/products/${this.$route.params.id}/images`).then((resp) => {
-                this.$snackbar.success(`Галерея товара ${this.productName} успешно обновлена`);
-                this.editing = false;
-            });
-        },
     },
 };
 </script>

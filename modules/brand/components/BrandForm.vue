@@ -45,14 +45,23 @@
                     :error-messages="form.errors.get('is_in_home')"
                     :error="form.errors.has('is_in_home')"
                 />
-
-                <file-field
-                    v-model="form.image"
+                <v-input
                     label="Логотип"
+                    dense
                     :error-messages="form.errors.get('image')"
                     :error="form.errors.has('image')"
-                    @input="form.is_image_changed = true"
-                />
+                >
+                    <file-uploader v-model="form.image" />
+                </v-input>
+                <!--                -->
+                <!--                <file-field-->
+                <!--                    label="Логотип"-->
+                <!--                    :error-messages="form.errors.get('image')"-->
+                <!--                    :error="form.errors.has('image')"-->
+                <!--                    @input="form.is_image_changed = true"-->
+                <!--                >-->
+                <!--                    <content-editor v-model="form.image"> </content-editor>-->
+                <!--                </file-field>-->
 
                 <field-value-autocomplete
                     v-model="form.country_id"
@@ -84,9 +93,12 @@ import { Form } from 'form-backend-validation';
 import FileField from '../../../components/forms/FileField';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import ContentEditor from '~/components/editors/ContentEditor';
+import { statusLabels } from '~/enums';
+import FileUploader from '~/components/FileUploader';
 
 export default {
     components: {
+        FileUploader,
         FileField,
         FieldValueAutocomplete,
         ContentEditor,
@@ -114,12 +126,8 @@ export default {
             full_description: null,
             country_id: null,
         },
-        statusLabels: [
-            { value: 1, text: 'Отображается на сайте' },
-            { value: 2, text: 'Скрыто' },
-            { value: 3, text: 'Доступно только по URL' },
-        ],
         form: null,
+        statusLabels,
     }),
     watch: {
         brand(value) {

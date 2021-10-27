@@ -8,7 +8,7 @@
                             <div class="image-preview-wrap">
                                 <template v-if="checkType(image) === 'image'">
                                     <img v-if="likeFile" :src="base64_images[i]" alt />
-                                    <img v-else :src="image" alt />
+                                    <img v-else :src="`${$config.app.storageUrl}/` + image" alt />
                                 </template>
                                 <div v-else class="image-uploader-empty-bg file"></div>
                                 <div class="file-name">

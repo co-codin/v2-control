@@ -1,6 +1,6 @@
 <template>
     <v-expansion-panel>
-        <v-expansion-panel-header class="title">SEO</v-expansion-panel-header>
+        <v-expansion-panel-header class="title">{{ title }}</v-expansion-panel-header>
         <v-expansion-panel-content>
             <v-form @submit.prevent="$emit('send', form)">
                 <v-switch
@@ -46,10 +46,14 @@
 </template>
 
 <script>
-import {Form} from 'form-backend-validation';
+import { Form } from 'form-backend-validation';
 
 export default {
     props: {
+        title: {
+            required: false,
+            default: 'SEO',
+        },
         seo: {
             type: Object | null,
             default: () => ({}),
@@ -64,16 +68,15 @@ export default {
         },
         form: null,
     }),
-    created() {
-        this.form = Form.create(this.formDefaults)
-            .withOptions({http: this.$axios, resetOnSuccess: false})
-            .populate(this.seo || {})
-    },
     watch: {
         seo(value) {
             this.form.populate(value);
         },
-    }
-}
+    },
+    created() {
+        this.form = Form.create(this.formDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate(this.seo || {});
+    },
+};
 </script>
-
