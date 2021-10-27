@@ -70,7 +70,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, StatusDescription } from '@/enums';
+import { enumToSelectArray, statusDescriptions } from '@/enums';
 import SeoRule from '../models/Achievement';
 
 export default {
@@ -110,7 +110,7 @@ export default {
                     label: 'Статус',
                     name: 'is_enabled',
                     component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: enumToSelectArray(StatusDescription),
+                    items: enumToSelectArray(statusDescriptions),
                 },
             ],
         };

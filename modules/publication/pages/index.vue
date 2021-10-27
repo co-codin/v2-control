@@ -72,7 +72,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, StatusDescription } from '@/enums';
+import { enumToSelectArray, statusDescriptions } from '@/enums';
 import Publication from '../models/Publication';
 
 export default {

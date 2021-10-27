@@ -51,17 +51,17 @@
                     append-icon="mdi-refresh"
                     :loading="isUpdatingSlug"
                     @click:append="
-                            form.slug = null;
-                            updateSlug();
-                        "
+                        form.slug = null;
+                        updateSlug();
+                    "
                 />
                 <file-field
                     v-model="form.image"
                     label="Главная фотография"
                     :error-messages="form.errors.get('image')"
                     :error="form.errors.has('image')"
-                    @input="form.is_image_changed = true"
                     prepend-icon="mdi-image"
+                    @input="form.is_image_changed = true"
                 />
                 <v-select
                     v-model="form.status"
@@ -81,13 +81,13 @@
                     @input="form.is_booklet_changed = true"
                 />
                 <v-text-field
+                    v-model="form.video"
                     prepend-icon="mdi-youtube"
                     append-icon="mdi-open-in-new"
-                    @click:append="goToYoutube"
-                    v-model="form.video"
                     label="Видеообзор"
                     :error-messages="form.errors.get('video')"
                     :error="form.errors.has('video')"
+                    @click:append="goToYoutube"
                 />
                 <v-textarea
                     v-model="form.short_description"
@@ -97,8 +97,8 @@
                 />
                 <v-input
                     label="Подробное описание"
-                     :error-messages="form.errors.get('full_description')"
-                     :error="form.errors.has('full_description')"
+                    :error-messages="form.errors.get('full_description')"
+                    :error="form.errors.has('full_description')"
                 >
                     <content-editor v-model="form.full_description" />
                 </v-input>
@@ -121,7 +121,7 @@ import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
 import FileField from '~/components/forms/FileField';
-import { Status, StatusDescription, enumToSelectArray } from '~/enums';
+import { Status, statusDescriptions, enumToSelectArray } from '~/enums';
 import Product from '../models/Product';
 import ContentEditor from '~/components/editors/ContentEditor';
 
