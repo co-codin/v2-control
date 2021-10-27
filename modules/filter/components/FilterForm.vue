@@ -1,15 +1,11 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-select
-            v-if="categories.length"
-            v-model="form.category_id"
-            :items="categories"
-            item-text="name"
-            item-value="id"
+        <categories-tree-field
             label="Категория"
+            :value="form.category_id"
             :error-messages="form.errors.get('category_id')"
             :error="form.errors.has('category_id')"
-        ></v-select>
+        />
 
         <v-select
             v-if="properties.length"
@@ -74,8 +70,10 @@
 <script>
 import { Form } from 'form-backend-validation';
 import { mapActions, mapGetters } from 'vuex';
+import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 
 export default {
+    components: { CategoriesTreeField },
     props: {
         filter: {
             type: Object | null,
