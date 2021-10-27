@@ -51,21 +51,10 @@ export default {
     data: () => ({
         formDefaults: {
             name: null,
-            slug: null,
-            status: 1,
-            image: null,
-            is_image_changed: false,
-            is_in_home: false,
-            website: null,
-            short_description: null,
-            full_description: null,
-            country: null,
+            url: null,
+            source: null,
+            is_enabled: false,
         },
-        statusLabels: [
-            { value: 1, text: 'Active' },
-            { value: 2, text: 'Inactive' },
-            { value: 3, text: 'Only By Url' },
-        ],
         form: null,
     }),
     watch: {
