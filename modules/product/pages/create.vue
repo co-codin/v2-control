@@ -1,15 +1,15 @@
 <template>
     <div>
-        <page-header h1="Добавление товара" :breadcrumbs="breadcrumbs"/>
+        <page-header h1="Добавление товара" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <product-form @send="createProduct"/>
+            <product-form @send="createProduct" />
         </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import ProductForm from '../components/ProductForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
@@ -18,9 +18,9 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            {text: 'Главная', href: '/'},
-            {text: 'Товары', href: '/products'},
-            {text: 'Добавление товара'},
+            { text: 'Главная', href: '/' },
+            { text: 'Товары', href: '/products' },
+            { text: 'Добавление товара' },
         ],
     }),
     head: {
@@ -31,7 +31,7 @@ export default {
             try {
                 await form.post('/admin/products');
                 this.$snackbar(`Товар ${form.name} успешно добавлен`);
-                await this.$router.push({name: 'products.index'});
+                await this.$router.push({ name: 'products.index' });
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при создании товара: ${e.message}`);
             }
