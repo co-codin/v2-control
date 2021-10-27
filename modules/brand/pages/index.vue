@@ -67,7 +67,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { statusLabels, enumToSelectArray } from '@/enums';
+import { statusLabels } from '@/enums';
 import Brand from '../models/Brand';
 import PageHeader from '~/components/common/PageHeader';
 
@@ -117,11 +117,6 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Страна',
-                    name: 'country',
-                    component: () => import('@/components/search/fields/ComboBoxSearchField'),
-                },
-                {
                     label: 'Статус',
                     name: 'status',
                     component: () => import('@/components/search/fields/SelectSearchField'),
@@ -152,6 +147,20 @@ export default {
     },
     head: {
         title: 'Производители',
+    },
+    async mounted() {
+        const { data } = await this.$axios.$get('/field-values');
+        this.filters.push({
+            label: 'Страна',
+            name: 'country_id',
+            component: () => import('@/components/search/fields/SelectSearchField'),
+            items: data.map((item) => {
+                return {
+                    text: item.value,
+                    value: item.id,
+                };
+            }),
+        });
     },
     methods: {
         async deleteBrand(brand) {
