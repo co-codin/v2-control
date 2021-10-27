@@ -22,6 +22,7 @@ export default {
             items: [
                 { icon: 'mdi-cash-usd-outline', text: 'Достижения', link: '/achievements' },
                 { icon: 'mdi-cash-usd-outline', text: 'Публикации', link: '/publications' },
+                { icon: 'mdi-cash-usd-outline', text: 'Отзывы', link: '/customer-reviews' },
                 { icon: 'mdi-cash-usd-outline', text: 'SEO правила', link: '/seo-rules' },
             ],
         },

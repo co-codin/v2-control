@@ -9,6 +9,7 @@ import { cityRoutes } from './modules/city/router';
 import { newsRoutes } from './modules/news/router';
 import { achievementRoutes } from './modules/achievement/router';
 import { publicationRoutes } from './modules/publication/router';
+import { CustomerReviewRoutes } from './modules/customer-review/router';
 
 export default {
     ssr: false,
@@ -121,6 +122,7 @@ export default {
                     ...seoRuleRoutes(resolve),
                     ...achievementRoutes(resolve),
                     ...publicationRoutes(resolve),
+                    ...CustomerReviewRoutes(resolve),
                 ]
             );
         },

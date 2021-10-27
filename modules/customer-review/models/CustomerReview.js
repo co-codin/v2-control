@@ -1,6 +1,6 @@
 import Model from '@/models/Model';
 
-export default class Brand extends Model {
+export default class CustomerReview extends Model {
     resource() {
         return 'customer-reviews';
     }
