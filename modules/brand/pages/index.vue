@@ -45,7 +45,13 @@
                         >
                             <external-link-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" class="mx-1" :to="{ name: 'brands.update', params: { id: item.id } }">
+                        <v-btn
+                            icon
+                            width="22"
+                            height="22"
+                            class="mx-1"
+                            :to="{ name: 'brands.update', params: { id: item.id } }"
+                        >
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
                         <v-btn icon width="22" height="22" @click.prevent="deleteBrand(item)">
@@ -61,9 +67,9 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, StatusDescription } from '@/enums';
+import { statusLabels, enumToSelectArray } from '@/enums';
 import Brand from '../models/Brand';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
@@ -119,7 +125,7 @@ export default {
                     label: 'Статус',
                     name: 'status',
                     component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: enumToSelectArray(StatusDescription),
+                    items: statusLabels,
                 },
                 {
                     label: 'Отображается на главной',

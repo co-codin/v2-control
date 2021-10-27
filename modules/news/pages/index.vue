@@ -55,9 +55,9 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, StatusDescription } from '@/enums';
+import { enumToSelectArray, statusDescriptions } from '@/enums';
 import News from '../models/News';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
@@ -103,7 +103,7 @@ export default {
                     label: 'Статус',
                     name: 'status',
                     component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: enumToSelectArray(StatusDescription),
+                    items: enumToSelectArray(statusDescriptions),
                 },
                 {
                     label: 'Отображается на главной',

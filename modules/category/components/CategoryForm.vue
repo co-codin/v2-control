@@ -88,12 +88,12 @@
 </template>
 
 <script>
-import {Form} from 'form-backend-validation';
+import { Form } from 'form-backend-validation';
 import Treeselect from '@riophae/vue-treeselect';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
-import {mapGetters, mapActions} from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import FileField from '../../../components/forms/FileField';
-import ContentEditor from "~/components/editors/ContentEditor";
+import ContentEditor from '~/components/editors/ContentEditor';
 
 export default {
     components: {
@@ -125,10 +125,10 @@ export default {
             is_image_changed: false,
         },
         statusLabels: [
-            {value: 1, text: 'Отображается на сайте'},
-            {value: 2, text: 'Скрыто'},
-            {value: 3, text: 'Доступно только по URL'},
-            {value: 4, text: 'Удалено'},
+            { value: 1, text: 'Отображается на сайте' },
+            { value: 2, text: 'Скрыто' },
+            { value: 3, text: 'Доступно только по URL' },
+            { value: 4, text: 'Удалено' },
         ],
         form: null,
     }),
@@ -142,13 +142,27 @@ export default {
         category(value) {
             this.form.populate(value);
         },
+        form: {
+            handler(form) {
+                if (form.parent_id && !form.slug) {
+                    const parents = [];
+                    let parent = this.categories.filter((category) => category.id === form.parent_id)[0];
+                    while (parent.id) {
+                        parents.push(parent);
+                        parent = this.categories.filter((category) => category.id === parent.parent_id);
+                    }
+                    form.slug = `${parents.map((parent) => parent.slug).join('/')}/`;
+                }
+            },
+            deep: true,
+        },
     },
     async mounted() {
         await this.getCategories();
     },
     created() {
         this.form = Form.create(this.formDefaults)
-            .withOptions({http: this.$axios, resetOnSuccess: false})
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.category || {});
     },
     methods: {

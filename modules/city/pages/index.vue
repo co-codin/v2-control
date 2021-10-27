@@ -69,7 +69,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, StatusDescription } from '@/enums';
+import { enumToSelectArray, statusDescriptions } from '@/enums';
 import City from '../models/City';
 
 export default {
@@ -118,7 +118,7 @@ export default {
                     label: 'Статус',
                     name: 'status',
                     component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: enumToSelectArray(StatusDescription),
+                    items: enumToSelectArray(statusDescriptions),
                 },
                 {
                     label: 'По умолчанию',
