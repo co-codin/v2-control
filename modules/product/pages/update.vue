@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
         <template v-if="product">
-            <product-variation-form :variations="product.productVariations" />
+            <!--            <product-variation-form :variations="product.productVariations" />-->
             <product-form :product="product" is-updating @send="updateProduct" />
             <product-gallery-form :product-name="productName" :images="images" />
             <product-properties-form :properties="product.properties" class="mt-3" @send="updateProperties" />

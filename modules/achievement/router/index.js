@@ -1,20 +1,17 @@
-const page = (path) => () =>
-    import(/* webpackChunkName: "achievement-[request]" */ `../pages/${path}.vue`).then((m) => m.default || m);
-
-export default [
+export const achievementRoutes = (resolve) => [
     {
         path: '/achievements',
         name: 'achievements.index',
-        component: page('index'),
+        component: resolve(__dirname, '../pages/index.vue'),
     },
     {
         path: '/achievements/create',
         name: 'achievements.create',
-        component: page('create'),
+        component: resolve(__dirname, '../pages/create.vue'),
     },
     {
         path: '/achievements/:id/update',
         name: 'achievements.update',
-        component: page('update'),
+        component: resolve(__dirname, '../pages/update.vue'),
     },
 ];

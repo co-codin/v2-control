@@ -7,6 +7,8 @@ import { filterRoutes } from './modules/filter/router';
 import { seoRuleRoutes } from './modules/seo-rule/router';
 import { cityRoutes } from './modules/city/router';
 import { newsRoutes } from './modules/news/router';
+import { achievementRoutes } from './modules/achievement/router';
+import { publicationRoutes } from './modules/publication/router';
 
 export default {
     ssr: false,
@@ -117,6 +119,8 @@ export default {
                     ...cityRoutes(resolve),
                     ...newsRoutes(resolve),
                     ...seoRuleRoutes(resolve),
+                    ...achievementRoutes(resolve),
+                    ...publicationRoutes(resolve),
                 ]
             );
         },
