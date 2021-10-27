@@ -7,7 +7,7 @@
 
 <script>
 import SeoRuleForm from '../components/SeoRuleForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {

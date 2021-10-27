@@ -31,14 +31,7 @@
 
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
-                        <v-btn
-                            icon
-                            width="22"
-                            height="22"
-                            target="_blank"
-                            link
-                            :href="$config.app.siteUrl + item.url"
-                        >
+                        <v-btn icon width="22" height="22" target="_blank" link :href="$config.app.siteUrl + item.url">
                             <external-link-icon class="h-6 w-6" />
                         </v-btn>
                         <v-btn
@@ -64,7 +57,7 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import SeoRule from '../models/SeoRule';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
@@ -84,6 +77,7 @@ export default {
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'url' },
+                { text: 'Текст', align: 'left', value: 'url', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'SEO правила' }],
@@ -110,7 +104,7 @@ export default {
         this.showLoading();
 
         const response = await SeoRule.select({
-            seoRules: ['id', 'name', 'url'],
+            seoRules: ['id', 'name', 'url', 'text'],
         })
             .params(this.queryParams)
             .get();
