@@ -24,6 +24,7 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Публикации', link: '/publications' },
                 { icon: 'mdi-cash-usd-outline', text: 'Отзывы', link: '/customer-reviews' },
                 { icon: 'mdi-cash-usd-outline', text: 'SEO правила', link: '/seo-rules' },
+                { icon: 'mdi-cash-usd-outline', text: 'Новости', link: '/news' },
             ],
         },
         // {

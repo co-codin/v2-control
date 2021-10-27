@@ -1,13 +1,8 @@
 <template>
-    <v-card tile class="mt-5 block-wrap">
-        <v-card-title>
-            Галерея
-            <v-btn text small color="info" class="ml-3" @click="editing = !editing">
-                {{ editing ? 'Свернуть' : 'Развернуть' }}
-            </v-btn>
-        </v-card-title>
-        <v-card-text v-show="editing">
-            <v-form class="mt-3" @submit.prevent="sendForm">
+    <v-expansion-panel>
+        <v-expansion-panel-header class="title">Галерея</v-expansion-panel-header>
+        <v-expansion-panel-content>
+            <v-form @submit.prevent="$emit('send', form)">
                 <v-input
                     label="Галерея"
                     dense
@@ -21,12 +16,12 @@
                         :object-format="true"
                     ></file-uploader>
                 </v-input>
-                <div class="mt-5">
-                    <v-btn type="submit" dark color="green">Сохранить</v-btn>
-                </div>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">
+                    Сохранить
+                </v-btn>
             </v-form>
-        </v-card-text>
-    </v-card>
+        </v-expansion-panel-content>
+    </v-expansion-panel>
 </template>
 
 <script>

@@ -1,39 +1,27 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Редактирование категории</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card :loading="isLoading" class="mb-3">
-            <v-card-title> Основная информация </v-card-title>
-            <v-card-text v-if="category">
-                <category-form :category="category" is-updating @send="updateCategory" />
-            </v-card-text>
-        </v-card>
-
-        <v-card :loading="isLoading">
-            <v-card-title> SEO </v-card-title>
-            <v-card-text v-if="category">
-                <seo-relation-form :seo="seo" @send="updateCategorySeo" />
-            </v-card-text>
-        </v-card>
+    <div>
+        <page-header h1="Редактирование категории" :breadcrumbs="breadcrumbs"></page-header>
+        <v-expansion-panels v-if="category">
+            <category-form :category="category" is-updating @send="updateCategory" />
+            <seo-relation-form :seo="seo" @send="updateCategorySeo" />
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import CategoryForm from '../components/CategoryForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
+import PageHeader from "~/components/common/PageHeader";
 
 export default {
     components: {
+        PageHeader,
         SeoRelationForm,
         CategoryForm,
     },
     data: () => ({
         category: null,
+        seo: null,
         isLoading: true,
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },

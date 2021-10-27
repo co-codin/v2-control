@@ -97,6 +97,11 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
+                    label: 'Категории',
+                    name: 'categories.id',
+                    component: () => import('@/components/search/fields/CategoryTreeSearchField'),
+                },
+                {
                     label: 'ID',
                     name: 'id',
                     component: () => import('@/components/search/fields/TextSearchField'),
