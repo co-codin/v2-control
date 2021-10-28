@@ -41,41 +41,48 @@
                                 <v-card flat>
                                     <v-card-text>
                                         <v-text-field
-                                            dense
                                             label="Цена"
                                             v-model="variation.price"
                                             :error-messages="form.errors.get(`variations.${index}.price`)"
                                             :error="form.errors.has(`variations.${index}.price`)"
+                                            dense
                                         />
                                         <v-text-field
-                                            dense
                                             label="Предыдущая цена"
                                             v-model="variation.previous_price"
                                             :error-messages="form.errors.get(`variations.${index}.previous_price`)"
                                             :error="form.errors.has(`variations.${index}.previous_price`)"
+                                            dense
                                         />
                                         <v-select
-                                            dense
                                             label="Валюта"
                                             :items="currencies"
                                             v-model="variation.currency_id"
                                             :error-messages="form.errors.get(`variations.${index}.currency_id`)"
                                             :error="form.errors.has(`variations.${index}.currency_id`)"
+                                            dense
+                                        />
+                                        <v-switch
+                                            label="Цена отображается?"
+                                            v-model="variation.is_price_visible"
+                                            :error-messages="form.errors.get(`variations.${index}.is_price_visible`)"
+                                            :error="form.errors.has(`variations.${index}.is_price_visible`)"
+                                            dense
                                         />
                                         <v-select
-                                            dense
                                             label="Наличие"
                                             :items="availabilityLabels"
                                             v-model="variation.availability"
                                             :error-messages="form.errors.get(`variations.${index}.availability`)"
                                             :error="form.errors.has(`variations.${index}.availability`)"
+                                            dense
                                         />
                                         <v-switch
-                                            dense
                                             label="Отображается на сайте?"
                                             v-model="variation.is_enabled"
                                             :error-messages="form.errors.get(`variations.${index}.is_enabled`)"
                                             :error="form.errors.has(`variations.${index}.is_enabled`)"
+                                            dense
                                         />
                                     </v-card-text>
                                 </v-card>
@@ -194,6 +201,9 @@ export default {
                 previous_price: null,
                 currency_id: 1,
                 name: null,
+                availability: 1,
+                is_price_visible: false,
+                is_enabled: false,
             });
         },
         removeVariation(index) {
