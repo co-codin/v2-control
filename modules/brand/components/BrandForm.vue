@@ -45,23 +45,15 @@
                     :error-messages="form.errors.get('is_in_home')"
                     :error="form.errors.has('is_in_home')"
                 />
-                <v-input
+
+                <file-field
                     label="Логотип"
-                    dense
                     :error-messages="form.errors.get('image')"
                     :error="form.errors.has('image')"
+                    @input="form.is_image_changed = true"
                 >
-                    <file-uploader v-model="form.image" />
-                </v-input>
-                <!--                -->
-                <!--                <file-field-->
-                <!--                    label="Логотип"-->
-                <!--                    :error-messages="form.errors.get('image')"-->
-                <!--                    :error="form.errors.has('image')"-->
-                <!--                    @input="form.is_image_changed = true"-->
-                <!--                >-->
-                <!--                    <content-editor v-model="form.image"> </content-editor>-->
-                <!--                </file-field>-->
+                    <content-editor v-model="form.image"> </content-editor>
+                </file-field>
 
                 <field-value-autocomplete
                     v-model="form.country_id"
@@ -94,11 +86,9 @@ import FileField from '../../../components/forms/FileField';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import ContentEditor from '~/components/editors/ContentEditor';
 import { statusLabels } from '~/enums';
-import FileUploader from '~/components/FileUploader';
 
 export default {
     components: {
-        FileUploader,
         FileField,
         FieldValueAutocomplete,
         ContentEditor,

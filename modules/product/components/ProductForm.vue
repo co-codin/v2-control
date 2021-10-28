@@ -121,7 +121,7 @@ import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
 import FileField from '~/components/forms/FileField';
-import { Status, statusDescriptions, enumToSelectArray } from '~/enums';
+import { Status } from '~/enums';
 import Product from '../models/Product';
 import ContentEditor from '~/components/editors/ContentEditor';
 
