@@ -11,6 +11,7 @@ import { achievementRoutes } from './modules/achievement/router';
 import { publicationRoutes } from './modules/publication/router';
 import { customerReviewRoutes } from './modules/customer-review/router';
 import { redirectRoutes } from './modules/redirect/router';
+import { pageRoutes } from './modules/page/router';
 
 export default {
     ssr: false,
@@ -125,6 +126,7 @@ export default {
                     ...publicationRoutes(resolve),
                     ...customerReviewRoutes(resolve),
                     ...redirectRoutes(resolve),
+                    ...pageRoutes(resolve),
                 ]
             );
         },
