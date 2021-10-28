@@ -28,14 +28,15 @@
             </v-simple-table>
 
             <v-card v-for="(newVariation, index) in newVariations" :key="'newVariation-' + index">
-                <v-text-field v-model="newVariation.name" label="Название"></v-text-field>
-                <v-checkbox v-model="newVariation.is_price_visible" dense label="Отображать цену" />
-                <v-select v-model="newVariation.currency_id" label="Валюта" :items="currencies" />
-                <v-text-field v-model.number="newVariation.price" label="Цена"></v-text-field>
+                <v-card-text class="mt-2">
+                    <v-text-field v-model="newVariation.name" label="Название"></v-text-field>
+                    <v-checkbox v-model="newVariation.is_price_visible" dense label="Отображать цену" />
+                    <v-select v-model="newVariation.currency_id" label="Валюта" :items="currencies" />
+                    <v-text-field v-model.number="newVariation.price" label="Цена"></v-text-field>
 
-                <v-text-field v-model.number="newVariation.previous_price" label="Старая цена"></v-text-field>
-                <v-select v-model="newVariation.availability" label="Availability" :items="availabilityLabels">
-                </v-select>
+                    <v-text-field v-model.number="newVariation.previous_price" label="Старая цена"></v-text-field>
+                    <v-select v-model="newVariation.availability" label="Availability" :items="availabilityLabels" />
+                </v-card-text>
             </v-card>
             <div class="mt-2">
                 <v-btn @click="addNewVariations"
@@ -64,6 +65,12 @@ export default {
                 { value: 2, text: 'Доллар' },
                 { value: 3, text: 'Евро' },
             ],
+            availabilityLabels: [
+                { value: 1, text: 'Новый' },
+                { value: 2, text: 'Демонстрационный' },
+                { value: 3, text: 'Восстановленный' },
+                { value: 4, text: 'Б/У' },
+            ],
             availabilityDescriptions: {
                 1: 'Новый',
                 2: 'Демонстрационный',
@@ -75,18 +82,13 @@ export default {
     methods: {
         async createVariations() {
             this.newVariations = this.newVariations.filter((item) => item.name !== null);
-            try {
-                await this.$axios.$put(`/admin/products/${this.$route.params.id}/configurator`, {
-                    variations: this.newVariations,
-                });
-                this.$snackbar('Успешно создан конфигурятор');
-                this.$route.push({ name: 'products.update', params: { id: this.$route.params.id } });
-            } catch (e) {
-                this.$snackbar('Произошла ошибка создании конфигурятора');
-            }
+            await this.$axios.$put(`/admin/products/${this.$route.params.id}/configurator`, {
+                variations: this.newVariations,
+            });
+            this.$snackbar('Успешно создан конфигурятор');
+            this.$route.push({ name: 'products.update', params: { id: this.$route.params.id } });
         },
         addNewVariations() {
-            console.log(this.newVariations);
             this.newVariations.push({
                 name: null,
                 is_price_visible: false,
@@ -96,7 +98,6 @@ export default {
                 is_enabled: false,
                 availability: null,
             });
-            console.log(this.newVariations);
         },
     },
 };
