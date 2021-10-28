@@ -86,7 +86,7 @@ export default {
         formDefaults: {
             name: null,
             slug: null,
-            status: 1,
+            status: null,
             full_description: null,
         },
         form: null,
