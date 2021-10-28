@@ -44,16 +44,38 @@
                                             dense
                                             label="Цена"
                                             v-model="variation.price"
+                                            :error-messages="form.errors.get(`variations.${index}.price`)"
+                                            :error="form.errors.has(`variations.${index}.price`)"
                                         />
                                         <v-text-field
                                             dense
                                             label="Предыдущая цена"
                                             v-model="variation.previous_price"
+                                            :error-messages="form.errors.get(`variations.${index}.previous_price`)"
+                                            :error="form.errors.has(`variations.${index}.previous_price`)"
                                         />
                                         <v-select
+                                            dense
                                             label="Валюта"
                                             :items="currencies"
                                             v-model="variation.currency_id"
+                                            :error-messages="form.errors.get(`variations.${index}.currency_id`)"
+                                            :error="form.errors.has(`variations.${index}.currency_id`)"
+                                        />
+                                        <v-select
+                                            dense
+                                            label="Наличие"
+                                            :items="availabilityLabels"
+                                            v-model="variation.availability"
+                                            :error-messages="form.errors.get(`variations.${index}.availability`)"
+                                            :error="form.errors.has(`variations.${index}.availability`)"
+                                        />
+                                        <v-switch
+                                            dense
+                                            label="Отображается на сайте?"
+                                            v-model="variation.is_enabled"
+                                            :error-messages="form.errors.get(`variations.${index}.is_enabled`)"
+                                            :error="form.errors.has(`variations.${index}.is_enabled`)"
                                         />
                                     </v-card-text>
                                 </v-card>
@@ -70,21 +92,21 @@
             </v-btn>
         </div>
 
-        <template v-if="false">
-            <v-btn @clic.prevent="addNewVariations">Добавить новую вариацию</v-btn>
-            <v-card v-for="(newVariation, index) in newVariations" :key="'newVariation-' + index">
-                <v-text-field v-model="newVariation.name" label="Название"></v-text-field>
-                <v-checkbox v-model="newVariation.is_price_visible" dense label="Отображать цену" />
-                <v-select v-model="newVariation.currency_id" label="Валюта" :items="currencies" />
-                <v-text-field v-model.number="newVariation.price" label="Цена"></v-text-field>
+<!--        <template v-if="false">-->
+<!--            <v-btn @clic.prevent="addNewVariations">Добавить новую вариацию</v-btn>-->
+<!--            <v-card v-for="(newVariation, index) in newVariations" :key="'newVariation-' + index">-->
+<!--                <v-text-field v-model="newVariation.name" label="Название"></v-text-field>-->
+<!--                <v-checkbox v-model="newVariation.is_price_visible" dense label="Отображать цену" />-->
+<!--                <v-select v-model="newVariation.currency_id" label="Валюта" :items="currencies" />-->
+<!--                <v-text-field v-model.number="newVariation.price" label="Цена"></v-text-field>-->
 
-                <v-text-field v-model.number="newVariation.previous_price" label="Старая цена"></v-text-field>
-                <v-select v-model="newVariation.availability" label="Availability" :items="availabilityLabels">
-                </v-select>
-            </v-card>
-            <v-btn @click.prevent="addNewVariations">Еще</v-btn>
-            <v-btn @click.prevent="createVariations">Сохранить</v-btn>
-        </template>
+<!--                <v-text-field v-model.number="newVariation.previous_price" label="Старая цена"></v-text-field>-->
+<!--                <v-select v-model="newVariation.availability" label="Availability" :items="availabilityLabels">-->
+<!--                </v-select>-->
+<!--            </v-card>-->
+<!--            <v-btn @click.prevent="addNewVariations">Еще</v-btn>-->
+<!--            <v-btn @click.prevent="createVariations">Сохранить</v-btn>-->
+<!--        </template>-->
     </v-form>
 </template>
 
