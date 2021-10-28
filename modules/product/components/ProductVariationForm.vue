@@ -1,37 +1,96 @@
 <template>
-    <v-expansion-panel>
-        <v-expansion-panel-header class="title">Модификации</v-expansion-panel-header>
-        <v-expansion-panel-content>
-            <v-form @submit.prevent="$emit('send', form)">
-                <v-card v-for="variation in variations" :key="'variation-' + variation.id">
-                    <v-card-title>{{ variation.name }}</v-card-title>
-                    <v-card-text>
-                        <span>Валюта: {{ variation.currency.name }}</span>
-                        <span>Старая цена: {{ variation.previous_price }}</span>
-                        <span>Цена: {{ variation.price }}</span>
-                        <span>Цена отображается: {{ variation.is_price_visible ? 'Да' : 'Нет' }}</span>
-                    </v-card-text>
-                </v-card>
+    <v-form @submit.prevent="$emit('send', form)">
+        <v-expansion-panels v-if="form">
+            <v-expansion-panel v-for="(variation, index) in form.variations" :key="index">
+                <v-expansion-panel-header class="title">
+                    #{{ index + 1 }}. {{ variation.name || '(без названия)' }}
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <v-row>
+                        <v-tabs
+                            v-model="tab"
+                            grow
+                            background-color="transparent"
+                        >
+                            <v-tab v-for="item in items" :key="item.key">
+                                {{ item.tab }}
+                            </v-tab>
+                        </v-tabs>
+                        <v-tabs-items v-model="tab" style="width: 100%">
+                            <v-tab-item
+                                key="parameters"
+                            >
+                                <v-card flat>
+                                    <v-card-text>
+                                        <v-text-field
+                                            label="Название"
+                                            v-model="variation.name"
+                                        />
+                                        <v-divider class="my-2" />
+                                        <div class="text-center">
+                                            <v-btn small @click="removeVariation(index)" class="white--text" color="red">
+                                                Удалить модификацию
+                                            </v-btn>
+                                        </div>
+                                    </v-card-text>
+                                </v-card>
+                            </v-tab-item>
+                            <v-tab-item
+                                key="commerce"
+                            >
+                                <v-card flat>
+                                    <v-card-text>
+                                        <v-text-field
+                                            dense
+                                            label="Цена"
+                                            v-model="variation.price"
+                                        />
+                                        <v-text-field
+                                            dense
+                                            label="Предыдущая цена"
+                                            v-model="variation.previous_price"
+                                        />
+                                        <v-select
+                                            label="Валюта"
+                                            :items="currencies"
+                                            v-model="variation.currency_id"
+                                        />
+                                    </v-card-text>
+                                </v-card>
+                            </v-tab-item>
+                        </v-tabs-items>
+                    </v-row>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
 
-                <v-btn @clic.prevent="addNewVariations">Добавить новую вариацию</v-btn>
-                <v-card v-for="(newVariation, index) in newVariations" :key="'newVariation-' + index">
-                    <v-text-field v-model="newVariation.name" label="Название"></v-text-field>
-                    <v-checkbox v-model="newVariation.is_price_visible" dense label="Отображать цену" />
-                    <v-select v-model="newVariation.currency_id" label="Валюта" :items="currencies" />
-                    <v-text-field v-model.number="newVariation.price" label="Цена"></v-text-field>
+        <div class="mt-2">
+            <v-btn @click="addVariation" link small color="primary" outlined>
+                Добавить модификацию
+            </v-btn>
+        </div>
 
-                    <v-text-field v-model.number="newVariation.previous_price" label="Старая цена"></v-text-field>
-                    <v-select v-model="newVariation.availability" label="Availability" :items="availabilityLabels">
-                    </v-select>
-                </v-card>
-                <v-btn @click.prevent="addNewVariations">Еще</v-btn>
-                <v-btn @click.prevent="createVariations">Сохранить</v-btn>
-            </v-form>
-        </v-expansion-panel-content>
-    </v-expansion-panel>
+        <template v-if="false">
+            <v-btn @clic.prevent="addNewVariations">Добавить новую вариацию</v-btn>
+            <v-card v-for="(newVariation, index) in newVariations" :key="'newVariation-' + index">
+                <v-text-field v-model="newVariation.name" label="Название"></v-text-field>
+                <v-checkbox v-model="newVariation.is_price_visible" dense label="Отображать цену" />
+                <v-select v-model="newVariation.currency_id" label="Валюта" :items="currencies" />
+                <v-text-field v-model.number="newVariation.price" label="Цена"></v-text-field>
+
+                <v-text-field v-model.number="newVariation.previous_price" label="Старая цена"></v-text-field>
+                <v-select v-model="newVariation.availability" label="Availability" :items="availabilityLabels">
+                </v-select>
+            </v-card>
+            <v-btn @click.prevent="addNewVariations">Еще</v-btn>
+            <v-btn @click.prevent="createVariations">Сохранить</v-btn>
+        </template>
+    </v-form>
 </template>
 
 <script>
+import Form from "form-backend-validation";
+
 export default {
     props: {
         variations: {
@@ -65,7 +124,23 @@ export default {
                 { value: 4, text: 'Вышел из производства' },
                 { value: 5, text: 'Отсутствует РУ' },
             ],
+            tab: null,
+            items: [
+                { tab: 'Параметры', key: 'parameters' },
+                { tab: 'Коммерческая информация', key: 'commerce' },
+            ],
+            form: null,
+            formDefaults: {
+                variations: [],
+            },
         };
+    },
+    created() {
+        this.form = Form.create(this.formDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate({
+                variations: this.variations || [],
+            });
     },
     methods: {
         async createVariations() {
@@ -90,6 +165,17 @@ export default {
                 is_enabled: false,
                 availability: null,
             });
+        },
+        addVariation() {
+            this.form.variations.push({
+                price: null,
+                previous_price: null,
+                currency_id: 1,
+                name: null,
+            });
+        },
+        removeVariation(index) {
+            this.form.variations.splice(index, 1);
         },
     },
 };

@@ -3,11 +3,30 @@
         <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
         <template v-if="product">
             <v-expansion-panels>
-                <product-form :product="product" is-updating @send="updateProduct" />
-                <product-variation-form :variations="product.productVariations" />
-                <product-gallery-form :product-name="productName" :images="images" />
-                <product-properties-form :properties="product.properties" @send="updateProperties" />
-                <seo-relation-form :seo="seo" @send="updateProductSeo" />
+                <form-block title="Основная информация">
+                    <product-form :product="product" is-updating @send="updateProduct" />
+                </form-block>
+                <form-block title="Конфигуратор">
+                    <v-expansion-panels>
+                        <form-block title="Модификации">
+                            <product-variation-form :variations="product.productVariations" />
+                        </form-block>
+                    </v-expansion-panels>
+                    <v-row class="expansion-panel-actions mt-3">
+                        <v-col>
+                            <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+                        </v-col>
+                    </v-row>
+                </form-block>
+                <form-block title="Галерея">
+                    <product-gallery-form :product-name="productName" :images="images" />
+                </form-block>
+                <form-block title="Характеристики">
+                    <product-properties-form :properties="product.properties" @send="updateProperties" />
+                </form-block>
+                <form-block title="SEO">
+                    <seo-relation-form :seo="seo" @send="updateProductSeo" />
+                </form-block>
             </v-expansion-panels>
         </template>
     </div>
@@ -21,6 +40,7 @@ import PageHeader from '../../../components/common/PageHeader';
 import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
 import ProductGalleryForm from '~/modules/product/components/ProductGalleryForm';
 import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
+import FormBlock from "~/components/forms/FormBlock";
 
 export default {
     components: {
@@ -30,6 +50,7 @@ export default {
         ProductForm,
         ProductPropertiesForm,
         PageHeader,
+        FormBlock,
     },
     data: () => ({
         product: null,

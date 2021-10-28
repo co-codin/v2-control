@@ -1,115 +1,110 @@
 <template>
-    <v-expansion-panel>
-        <v-expansion-panel-header class="title">Основная информация</v-expansion-panel-header>
-        <v-expansion-panel-content class="pb-0">
-            <v-form @submit.prevent="$emit('send', form)">
-                <categories-tree-field
-                    label="Категории"
-                    :value="categoryIds"
-                    multiple
-                    :error-messages="form.errors.get('categories')"
-                    :error="form.errors.has('categories')"
-                    @input="updateCategories"
-                />
-                <v-select
-                    v-if="categoryIds.length > 1"
-                    label="Основная категория"
-                    :value="mainCategoryId"
-                    :items="categories"
-                    item-value="id"
-                    :item-text="getCategoryText"
-                    @change="updateMainCategory"
-                />
-                <entity-autocomplete-field
-                    v-model="form.brand_id"
-                    url="/brands"
-                    item-value="id"
-                    item-text="name"
-                    :query-params="{ sort: 'name' }"
-                    :error-messages="form.errors.get('brand_id')"
-                    :error="form.errors.has('brand_id')"
-                    placeholder="Введите название производителя"
-                    label="Производитель"
-                    filter-column="id"
-                    search-column="name"
-                    hide-no-data
-                    cache-items
-                    @input="updateSlug"
-                />
-                <v-text-field
-                    v-model="form.name"
-                    label="Модель"
-                    :error-messages="form.errors.get('name')"
-                    :error="form.errors.has('name')"
-                    @input="updateSlug"
-                />
-                <v-text-field
-                    v-model="form.slug"
-                    label="Ссылка"
-                    :error-messages="form.errors.get('slug')"
-                    :error="form.errors.has('slug')"
-                    append-icon="mdi-refresh"
-                    :loading="isUpdatingSlug"
-                    @click:append="
+    <v-form @submit.prevent="$emit('send', form)">
+        <categories-tree-field
+            label="Категории"
+            :value="categoryIds"
+            multiple
+            :error-messages="form.errors.get('categories')"
+            :error="form.errors.has('categories')"
+            @input="updateCategories"
+        />
+        <v-select
+            v-if="categoryIds.length > 1"
+            label="Основная категория"
+            :value="mainCategoryId"
+            :items="categories"
+            item-value="id"
+            :item-text="getCategoryText"
+            @change="updateMainCategory"
+        />
+        <entity-autocomplete-field
+            v-model="form.brand_id"
+            url="/brands"
+            item-value="id"
+            item-text="name"
+            :query-params="{ sort: 'name' }"
+            :error-messages="form.errors.get('brand_id')"
+            :error="form.errors.has('brand_id')"
+            placeholder="Введите название производителя"
+            label="Производитель"
+            filter-column="id"
+            search-column="name"
+            hide-no-data
+            cache-items
+            @input="updateSlug"
+        />
+        <v-text-field
+            v-model="form.name"
+            label="Модель"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+            @input="updateSlug"
+        />
+        <v-text-field
+            v-model="form.slug"
+            label="Ссылка"
+            :error-messages="form.errors.get('slug')"
+            :error="form.errors.has('slug')"
+            append-icon="mdi-refresh"
+            :loading="isUpdatingSlug"
+            @click:append="
                         form.slug = null;
                         updateSlug();
                     "
-                />
-                <file-field
-                    v-model="form.image"
-                    label="Главная фотография"
-                    :error-messages="form.errors.get('image')"
-                    :error="form.errors.has('image')"
-                    prepend-icon="mdi-image"
-                    @input="form.is_image_changed = true"
-                />
-                <v-select
-                    v-model="form.status"
-                    label="Статус"
-                    :items="statusLabels"
-                    :error-messages="form.errors.get('status')"
-                    :error="form.errors.has('status')"
-                    item-text="text"
-                    item-value="value"
-                />
-                <file-field
-                    v-model="form.booklet"
-                    :is-image="false"
-                    label="Брошюра"
-                    :error-messages="form.errors.get('booklet')"
-                    :error="form.errors.has('booklet')"
-                    @input="form.is_booklet_changed = true"
-                />
-                <v-text-field
-                    v-model="form.video"
-                    prepend-icon="mdi-youtube"
-                    append-icon="mdi-open-in-new"
-                    label="Видеообзор"
-                    :error-messages="form.errors.get('video')"
-                    :error="form.errors.has('video')"
-                    @click:append="goToYoutube"
-                />
-                <v-textarea
-                    v-model="form.short_description"
-                    label="Короткое описание"
-                    :error-messages="form.errors.get('short_description')"
-                    :error="form.errors.has('short_description')"
-                />
-                <v-input
-                    label="Подробное описание"
-                    :error-messages="form.errors.get('full_description')"
-                    :error="form.errors.has('full_description')"
-                >
-                    <content-editor v-model="form.full_description" />
-                </v-input>
-                <v-row class="expansion-panel-actions mt-5">
-                    <v-col>
-                        <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
-                    </v-col>
-                </v-row>
-            </v-form>
-        </v-expansion-panel-content>
-    </v-expansion-panel>
+        />
+        <file-field
+            v-model="form.image"
+            label="Главная фотография"
+            :error-messages="form.errors.get('image')"
+            :error="form.errors.has('image')"
+            prepend-icon="mdi-image"
+            @input="form.is_image_changed = true"
+        />
+        <v-select
+            v-model="form.status"
+            label="Статус"
+            :items="statusLabels"
+            :error-messages="form.errors.get('status')"
+            :error="form.errors.has('status')"
+            item-text="text"
+            item-value="value"
+        />
+        <file-field
+            v-model="form.booklet"
+            :is-image="false"
+            label="Брошюра"
+            :error-messages="form.errors.get('booklet')"
+            :error="form.errors.has('booklet')"
+            @input="form.is_booklet_changed = true"
+        />
+        <v-text-field
+            v-model="form.video"
+            prepend-icon="mdi-youtube"
+            append-icon="mdi-open-in-new"
+            label="Видеообзор"
+            :error-messages="form.errors.get('video')"
+            :error="form.errors.has('video')"
+            @click:append="goToYoutube"
+        />
+        <v-textarea
+            v-model="form.short_description"
+            label="Короткое описание"
+            :error-messages="form.errors.get('short_description')"
+            :error="form.errors.has('short_description')"
+        />
+        <v-input
+            label="Подробное описание"
+            :error-messages="form.errors.get('full_description')"
+            :error="form.errors.has('full_description')"
+        >
+            <content-editor v-model="form.full_description" />
+        </v-input>
+        <v-row class="expansion-panel-actions mt-5">
+            <v-col>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+            </v-col>
+        </v-row>
+    </v-form>
 </template>
 
 <script>
