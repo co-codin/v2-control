@@ -7,79 +7,73 @@
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                     <v-row>
-                        <v-tabs
-                            v-model="tab"
-                            grow
-                            background-color="transparent"
-                        >
+                        <v-tabs v-model="tab" grow background-color="transparent">
                             <v-tab v-for="item in items" :key="item.key">
                                 {{ item.tab }}
                             </v-tab>
                         </v-tabs>
                         <v-tabs-items v-model="tab" style="width: 100%">
-                            <v-tab-item
-                                key="parameters"
-                            >
+                            <v-tab-item key="parameters">
                                 <v-card flat>
                                     <v-card-text>
-                                        <v-text-field
-                                            label="Название"
-                                            v-model="variation.name"
-                                        />
+                                        <v-text-field v-model="variation.name" label="Название" />
                                         <v-divider class="my-2" />
                                         <div class="text-center">
-                                            <v-btn small @click="removeVariation(index)" class="white--text" color="red">
+                                            <v-btn
+                                                small
+                                                class="white--text"
+                                                color="red"
+                                                @click="removeVariation(index)"
+                                            >
                                                 Удалить модификацию
                                             </v-btn>
                                         </div>
                                     </v-card-text>
                                 </v-card>
                             </v-tab-item>
-                            <v-tab-item
-                                key="commerce"
-                            >
+                            <v-tab-item key="commerce">
                                 <v-card flat>
                                     <v-card-text>
                                         <v-text-field
-                                            label="Цена"
                                             v-model="variation.price"
+                                            label="Цена"
                                             :error-messages="form.errors.get(`variations.${index}.price`)"
                                             :error="form.errors.has(`variations.${index}.price`)"
                                             dense
                                         />
                                         <v-text-field
-                                            label="Предыдущая цена"
                                             v-model="variation.previous_price"
+                                            label="Предыдущая цена"
                                             :error-messages="form.errors.get(`variations.${index}.previous_price`)"
                                             :error="form.errors.has(`variations.${index}.previous_price`)"
                                             dense
                                         />
                                         <v-select
+                                            v-model="variation.currency_id"
                                             label="Валюта"
                                             :items="currencies"
-                                            v-model="variation.currency_id"
                                             :error-messages="form.errors.get(`variations.${index}.currency_id`)"
                                             :error="form.errors.has(`variations.${index}.currency_id`)"
                                             dense
                                         />
                                         <v-switch
-                                            label="Цена отображается?"
                                             v-model="variation.is_price_visible"
+                                            label="Цена отображается?"
                                             :error-messages="form.errors.get(`variations.${index}.is_price_visible`)"
                                             :error="form.errors.has(`variations.${index}.is_price_visible`)"
                                             dense
                                         />
                                         <v-select
+                                            v-model="variation.availability"
                                             label="Наличие"
                                             :items="availabilityLabels"
-                                            v-model="variation.availability"
                                             :error-messages="form.errors.get(`variations.${index}.availability`)"
                                             :error="form.errors.has(`variations.${index}.availability`)"
                                             dense
                                         />
                                         <v-switch
-                                            label="Отображается на сайте?"
                                             v-model="variation.is_enabled"
+                                            label="Отображается на сайте?"
                                             :error-messages="form.errors.get(`variations.${index}.is_enabled`)"
                                             :error="form.errors.has(`variations.${index}.is_enabled`)"
                                             dense
@@ -94,31 +88,13 @@
         </v-expansion-panels>
 
         <div class="mt-2">
-            <v-btn @click="addVariation" link small color="primary" outlined>
-                Добавить модификацию
-            </v-btn>
+            <v-btn link small color="primary" outlined @click="addVariation"> Добавить модификацию </v-btn>
         </div>
-
-<!--        <template v-if="false">-->
-<!--            <v-btn @clic.prevent="addNewVariations">Добавить новую вариацию</v-btn>-->
-<!--            <v-card v-for="(newVariation, index) in newVariations" :key="'newVariation-' + index">-->
-<!--                <v-text-field v-model="newVariation.name" label="Название"></v-text-field>-->
-<!--                <v-checkbox v-model="newVariation.is_price_visible" dense label="Отображать цену" />-->
-<!--                <v-select v-model="newVariation.currency_id" label="Валюта" :items="currencies" />-->
-<!--                <v-text-field v-model.number="newVariation.price" label="Цена"></v-text-field>-->
-
-<!--                <v-text-field v-model.number="newVariation.previous_price" label="Старая цена"></v-text-field>-->
-<!--                <v-select v-model="newVariation.availability" label="Availability" :items="availabilityLabels">-->
-<!--                </v-select>-->
-<!--            </v-card>-->
-<!--            <v-btn @click.prevent="addNewVariations">Еще</v-btn>-->
-<!--            <v-btn @click.prevent="createVariations">Сохранить</v-btn>-->
-<!--        </template>-->
     </v-form>
 </template>
 
 <script>
-import Form from "form-backend-validation";
+import Form from 'form-backend-validation';
 
 export default {
     props: {
