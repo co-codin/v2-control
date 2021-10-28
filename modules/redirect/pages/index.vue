@@ -1,24 +1,19 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3 pb-0">
-            <div>
-                <div class="display-1">Отзывы</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
+    <div>
+        <page-header h1="Редиректы" :breadcrumbs="breadcrumbs"></page-header>
 
         <div class="mb-2">
-            <v-btn :to="{ name: 'customer-reviews.create' }"> Добавить отзыв </v-btn>
+            <v-btn :to="{ name: 'redirects.create' }"> Добавить редирект </v-btn>
         </div>
 
-        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
                 v-model="selectedItems"
                 item-key="id"
                 :headers="headers"
-                :items="customer_reviews"
+                :items="redirects"
                 :loading="isLoading"
                 :server-items-length="total"
                 loading-text="Идет загрузка..."
@@ -34,8 +29,12 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
-                <template #item.created_at="{ item }">
-                    <div>{{ item.asDate('created_at').fromNow() }}</div>
+                <template #item.source="{ item }">
+                    <copy-label :text="item.source"></copy-label>
+                </template>
+
+                <template #item.destination="{ item }">
+                    <copy-label :text="item.destination"></copy-label>
                 </template>
 
                 <template #item.action="{ item }">
@@ -45,11 +44,11 @@
                             width="22"
                             height="22"
                             class="mx-1"
-                            :to="{ name: 'customer-reviews.update', params: { id: item.id } }"
+                            :to="{ name: 'redirects.update', params: { id: item.id } }"
                         >
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" @click.prevent="deleteCustomerReview(item)">
+                        <v-btn icon width="22" height="22" @click.prevent="deleteRedirect(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
                     </div>
@@ -62,74 +61,72 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import CustomerReview from '../models/CustomerReview';
+import Redirect from '../models/Redirect';
+import PageHeader from "~/components/common/PageHeader";
+import CopyLabel from '~/components/common/CopyLabel';
 
 export default {
     components: {
         AdvancedSearchForm,
+        PageHeader,
+        CopyLabel,
     },
     mixins: [DatatableMixin],
     data() {
         return {
-            customer_reviews: [],
+            redirects: [],
             searchForm: {
-                company_name: null,
-                is_in_home: null,
-                type: null,
+                live: null,
+                source: null,
+                destination: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
-                { text: 'Компания', align: 'left', value: 'company_name' },
-                { text: 'Автор', align: 'left', value: 'author' },
-                { text: 'Отображается на главной', value: 'isInHomeLabel' },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
+                { text: 'Откуда', align: 'left', value: 'source' },
+                { text: 'Куда', align: 'left', value: 'destination' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
+            breadcrumbs: [
+                { text: 'Главная', href: '/' }, { text: 'Редиректы' },
+            ],
             filters: [
                 {
-                    label: 'Название',
-                    name: 'company_name',
+                    label: 'Быстрый поиск',
+                    name: 'live',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'ID',
-                    name: 'id',
-                    component: () => import('@/components/search/fields/ComboBoxSearchField'),
-                },
-                {
-                    label: 'Автор',
-                    name: 'author',
+                    label: 'Откуда',
+                    name: 'source',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Отображается на главной',
-                    name: 'is_in_home',
-                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                    label: 'Куда',
+                    name: 'destination',
+                    component: () => import('@/components/search/fields/TextSearchField'),
                 },
             ],
         };
     },
     async fetch() {
         this.showLoading();
-        const response = await CustomerReview.params(this.queryParams).get();
-        this.customer_reviews = CustomerReview.hydrate(response.data);
+        const response = await Redirect.params(this.queryParams).get();
+        this.redirects = Redirect.hydrate(response.data);
         this.setTotal(response.meta.total);
         this.hideLoading();
     },
     head: {
-        title: 'Отзывы',
+        title: 'Редиректы',
     },
     methods: {
-        async deleteCustomerReview(customer_review) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить отзыва ${customer_review.company_name}?`))) {
+        async deleteRedirect(redirect) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить ${redirect.name}?`))) {
                 return;
             }
             try {
-                await customer_review.delete();
-
-                this.$snackbar(`Отзыв ${customer_review.company_name} успешно удален`);
-                this.customer_reviews = this.customer_reviews.filter((item) => item.id !== customer_review.id);
+                await redirect.delete();
+                this.$snackbar(`Редактор ${redirect.name} успешно удален`);
+                this.redirects = this.redirects.filter((item) => item.id !== redirect.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }

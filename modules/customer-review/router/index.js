@@ -1,4 +1,4 @@
-export const CustomerReviewRoutes = (resolve) => [
+export const customerReviewRoutes = (resolve) => [
     {
         path: '/customer-reviews',
         name: 'customer-reviews.index',

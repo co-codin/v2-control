@@ -20,7 +20,7 @@
 
 <script>
 import SeoRuleForm from '../components/SeoRuleForm';
-import SeoRule from '~/modules/seo-rule/models/SeoRule';
+import Redirect from '~/modules/seo-rule/models/SeoRule';
 import SeoRelationForm from '~/components/forms/SeoRelationForm';
 
 export default {
