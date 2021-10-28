@@ -71,7 +71,6 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import { enumToSelectArray, statusDescriptions } from '@/enums';
-import Redirect from '../models/Achievement';
 
 export default {
     components: {
