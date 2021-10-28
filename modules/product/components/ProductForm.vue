@@ -48,9 +48,9 @@
             append-icon="mdi-refresh"
             :loading="isUpdatingSlug"
             @click:append="
-                        form.slug = null;
-                        updateSlug();
-                    "
+                form.slug = null;
+                updateSlug();
+            "
         />
         <file-field
             v-model="form.image"
