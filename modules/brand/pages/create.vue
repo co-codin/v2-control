@@ -9,7 +9,7 @@
 
 <script>
 import BrandForm from '../components/BrandForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {

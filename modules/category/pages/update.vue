@@ -4,6 +4,7 @@
         <v-expansion-panels v-if="category">
             <category-form :category="category" is-updating @send="updateCategory" />
             <seo-relation-form :seo="seo" @send="updateCategorySeo" />
+            <seo-relation-form :seo="seo" title="SEO данные товаров" @send="updateCategoryProductsSeo" />
         </v-expansion-panels>
     </div>
 </template>
@@ -11,7 +12,7 @@
 <script>
 import CategoryForm from '../components/CategoryForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
@@ -54,6 +55,16 @@ export default {
             }
         },
         async updateCategorySeo(form) {
+            try {
+                await form.patch(`/admin/categories/${this.$route.params.id}/seo`);
+                this.$snackbar(`SEO категории успешно обновлено`);
+                await this.$router.push({ name: 'categories.index' });
+            } catch (e) {
+                this.$snackbar(`Прозиошла ошибка при обоновлении seo у категории: ${e.message}`);
+            }
+        },
+
+        async updateCategoryProductsSeo(form) {
             try {
                 await form.patch(`/admin/categories/${this.$route.params.id}/seo`);
                 this.$snackbar(`SEO категории успешно обновлено`);
