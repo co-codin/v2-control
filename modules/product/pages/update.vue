@@ -1,31 +1,22 @@
 <template>
     <div>
-        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs"/>
         <template v-if="product">
             <v-expansion-panels>
                 <form-block title="Основная информация">
-                    <product-form :product="product" is-updating @send="updateProduct" />
+                    <product-form is-updating @send="updateProduct"/>
                 </form-block>
                 <form-block title="Конфигуратор">
-                    <v-expansion-panels>
-                        <form-block title="Модификации">
-                            <product-variation-form :variations="product.productVariations" />
-                        </form-block>
-                    </v-expansion-panels>
-                    <v-row class="expansion-panel-actions mt-3">
-                        <v-col>
-                            <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
-                        </v-col>
-                    </v-row>
+                    <product-configurator-form />
                 </form-block>
                 <form-block title="Галерея">
-                    <product-gallery-form :product-name="productName" :images="images" />
+                    <product-gallery-form :product-name="productName" :images="images"/>
                 </form-block>
                 <form-block title="Характеристики">
-                    <product-properties-form :properties="product.properties" @send="updateProperties" />
+                    <product-properties-form :properties="product.properties" @send="updateProperties"/>
                 </form-block>
                 <form-block title="SEO">
-                    <seo-relation-form :seo="seo" @send="updateProductSeo" />
+                    <seo-relation-form :seo="seo" @send="updateProductSeo"/>
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -39,12 +30,14 @@ import Product from '../models/Product';
 import PageHeader from '../../../components/common/PageHeader';
 import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
 import ProductGalleryForm from '~/modules/product/components/ProductGalleryForm';
-import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
 import FormBlock from "~/components/forms/FormBlock";
+import ProductConfiguratorForm from "~/modules/product/components/ProductConfiguratorForm";
+import ProductVariationForm from "~/modules/product/components/ProductVariationForm";
 
 export default {
     components: {
         ProductVariationForm,
+        ProductConfiguratorForm,
         ProductGalleryForm,
         SeoRelationForm,
         ProductForm,
@@ -57,16 +50,13 @@ export default {
         seo: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список товаров', href: '/products' },
-            { text: 'Редактирование товара' },
+            {text: 'Главная', disabled: false, href: '/'},
+            {text: 'Список товаров', href: '/products'},
+            {text: 'Редактирование товара'},
         ],
     }),
     async fetch() {
         const product = await Product.query()
-            .select({
-                categories: ['id'],
-            })
             .with('seo', 'categories', 'properties', 'brand', 'images', 'productVariations.currency')
             .$find(this.$route.params.id);
 
@@ -75,6 +65,9 @@ export default {
             id: category.id,
             is_main: Boolean(category.is_main),
         }));
+
+        this.$store.commit('forms/product/SET_PRODUCT', product);
+
         this.seo = product.seo || {};
         this.product = product;
 
@@ -99,7 +92,7 @@ export default {
     methods: {
         async updateProduct(form) {
             try {
-                const { data } = await form.put(`/admin/products/${this.product.id}`);
+                const {data} = await form.put(`/admin/products/${this.product.id}`);
                 this.product.image = data.image;
                 this.$snackbar(`Товар успешно обновлен`);
             } catch (e) {

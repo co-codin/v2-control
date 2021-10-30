@@ -14,7 +14,6 @@
                 :error-messages="form.errors.get('title')"
                 :error="form.errors.has('title')"
             />
-
             <v-textarea
                 v-model="form.h1"
                 rows="3"
@@ -22,7 +21,6 @@
                 :error-messages="form.errors.get('h1')"
                 :error="form.errors.has('h1')"
             />
-
             <v-textarea
                 v-model="form.description"
                 rows="3"
@@ -31,7 +29,6 @@
                 :error="form.errors.has('description')"
             />
         </template>
-
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>

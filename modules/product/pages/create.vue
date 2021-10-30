@@ -2,7 +2,9 @@
     <div>
         <page-header h1="Добавление товара" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <product-form @send="createProduct" />
+            <form-block title="Основная информация">
+                <product-form @send="createProduct" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -10,11 +12,13 @@
 <script>
 import ProductForm from '../components/ProductForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from "~/components/forms/FormBlock";
 
 export default {
     components: {
         PageHeader,
         ProductForm,
+        FormBlock,
     },
     data: () => ({
         breadcrumbs: [

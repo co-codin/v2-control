@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="$emit('send', form)">
+    <v-form @submit.prevent="save">
         <categories-tree-field
             label="Категории"
             :value="categoryIds"
@@ -117,7 +117,6 @@ import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField'
 import Brand from '~/modules/brand/models/Brand';
 import FileField from '~/components/forms/FileField';
 import { Status, statusDescriptions, enumToSelectArray } from '~/enums';
-import Product from '../models/Product';
 import ContentEditor from '~/components/editors/ContentEditor';
 
 export default {
@@ -128,9 +127,6 @@ export default {
         ContentEditor,
     },
     props: {
-        product: {
-            type: Product,
-        },
         isUpdating: {
             type: Boolean,
             default: false,
@@ -184,7 +180,7 @@ export default {
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
-            .populate(this.product || {});
+            .populate(this.$store.getters["forms/product/main"] || {});
 
         if (this.isUpdating) {
             this.updateSelectedCategories(this.categoryIds);
@@ -266,6 +262,16 @@ export default {
 
             this.isUpdatingSlug = false;
         }, 200),
+        async save() {
+            try {
+                const { data } = await this.form.put(`/admin/products/${this.$route.params.id}`);
+                this.$store.commit('forms/product/setMain', data);
+                // this.product.image = data.image;
+                this.$snackbar(`Товар успешно обновлен`);
+            } catch (e) {
+                this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
+            }
+        },
     },
 };
 </script>

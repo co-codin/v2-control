@@ -1,0 +1,57 @@
+<template>
+    <v-form @submit.prevent="save">
+        <v-expansion-panels v-if="form">
+            <form-block title="Модификации">
+                <product-variation-form />
+            </form-block>
+        </v-expansion-panels>
+        <v-row class="expansion-panel-actions mt-3">
+            <v-col>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+            </v-col>
+        </v-row>
+    </v-form>
+</template>
+
+<script>
+import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
+import FormBlock from '~/components/forms/FormBlock';
+import { mapGetters, mapMutations } from "vuex";
+
+export default {
+    components: {
+        FormBlock,
+        ProductVariationForm,
+    },
+    created() {
+        this.initForm();
+        this.fillForm({
+            variations: this.product?.productVariations || [],
+        });
+    },
+    computed: {
+        ...mapGetters({
+            product: 'forms/product/product',
+            form: 'forms/configurator/form',
+        }),
+    },
+    methods: {
+        ...mapMutations({
+            initForm: 'forms/configurator/INIT_FORM',
+            fillForm: 'forms/configurator/FILL_FORM',
+            fillErrors: 'forms/configurator/FILL_ERRORS'
+        }),
+        async save() {
+            try {
+                await this.$axios.put(`/admin/products/${this.product.id}/configurator`, this.form.data());
+            }
+            catch (e) {
+                const errors = e?.response?.data?.errors;
+                if(errors) {
+                    this.fillErrors(errors);
+                }
+            }
+        },
+    },
+};
+</script>
