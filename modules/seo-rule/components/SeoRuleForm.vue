@@ -15,6 +15,9 @@
                     :error-messages="form.errors.get('url')"
                     :error="form.errors.has('url')"
                 />
+                <v-input label="Текст" dense :error-messages="form.errors.get('text')" :error="form.errors.has('text')">
+                    <content-editor v-model="form.text" />
+                </v-input>
             </v-card-text>
             <v-card-actions>
                 <slot name="buttons">
@@ -27,8 +30,10 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import ContentEditor from '~/components/editors/ContentEditor';
 
 export default {
+    components: { ContentEditor },
     props: {
         seoRule: {
             type: Object | null,
@@ -43,6 +48,7 @@ export default {
         formDefaults: {
             name: null,
             url: null,
+            text: null,
         },
         form: null,
     }),

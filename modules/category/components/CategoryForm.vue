@@ -44,6 +44,7 @@
                     label="Главная фотография"
                     :error-messages="form.errors.get('image')"
                     :error="form.errors.has('image')"
+                    prepend-icon="mdi-image"
                     @input="form.is_image_changed = true"
                 />
 
