@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Производители" :breadcrumbs="breadcrumbs"></page-header>
+        <page-header h1="Вопросы" :breadcrumbs="breadcrumbs"></page-header>
 
         <div class="mb-2">
             <v-btn :to="{ name: 'questions.create' }"> Добавить вопрос </v-btn>
@@ -71,15 +71,16 @@ export default {
         return {
             questions: [],
             searchForm: {
-                name: null,
+                question: null,
                 slug: null,
                 status: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
-                { text: 'Название', align: 'left', value: 'name' },
+                { text: 'Вопрос', align: 'left', value: 'question' },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Категория', value: 'questionCategory.name', sortable: false },
+                { text: 'Ответ', align: 'left', value: 'answer' },
+                { text: 'Категория', value: 'question_category.name', sortable: false },
                 { text: 'Статус', value: 'status.description', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
@@ -113,13 +114,13 @@ export default {
         this.showLoading();
 
         const response = await Question.select({
-            questions: ['id', 'question', 'slug', 'status'],
+            questions: ['id', 'question', 'slug', 'answer', 'status', 'question_category_id'],
         })
-            .with('questionCategory')
+            .with('question_category')
             .params(this.queryParams)
             .get();
 
-        this.question_categories = Question.hydrate(response.data);
+        this.questions = Question.hydrate(response.data);
 
         this.setTotal(response.meta.total);
         this.hideLoading();

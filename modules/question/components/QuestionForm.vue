@@ -16,12 +16,28 @@
                     :error="form.errors.has('slug')"
                 />
 
-                <!--                <field-value-autocomplete-->
-                <!--                    v-model="form.country_id"-->
-                <!--                    label="Страна"-->
-                <!--                    :error-messages="form.errors.get('country_id')"-->
-                <!--                    :error="form.errors.has('country_id')"-->
-                <!--                />-->
+                <v-text-field
+                    v-model="form.answer"
+                    label="Ответ"
+                    :error-messages="form.errors.get('answer')"
+                    :error="form.errors.has('answer')"
+                />
+
+                <entity-autocomplete-field
+                    v-model="form.question_category_id"
+                    url="/question-categories"
+                    item-value="id"
+                    item-text="name"
+                    :query-params="{ sort: 'name' }"
+                    :error-messages="form.errors.get('question_category_id')"
+                    :error="form.errors.has('question_category_id')"
+                    placeholder="Введите название категории"
+                    label="Категория"
+                    filter-column="id"
+                    search-column="name"
+                    hide-no-data
+                    cache-items
+                />
 
                 <v-select
                     v-model="form.status"
@@ -42,12 +58,12 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import { statusLabels } from '~/enums';
+import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 
 export default {
     components: {
-        FieldValueAutocomplete,
+        EntityAutocompleteField,
     },
     props: {
         question: {
@@ -61,9 +77,11 @@ export default {
     },
     data: () => ({
         formDefaults: {
-            name: null,
+            question: null,
             slug: null,
+            answer: null,
             status: 1,
+            question_category_id: null,
         },
         form: null,
         statusLabels,

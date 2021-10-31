@@ -27,13 +27,13 @@ export default {
         title: 'Добавление вопроса',
     },
     methods: {
-        async createBrand(form) {
+        async createQuestion(form) {
             try {
-                await form.post('/admin/brands');
-                this.$snackbar(`Производитель ${form.name} успешно добавлен`);
-                await this.$router.push({ name: 'brands.index' });
+                await form.post('/admin/questions');
+                this.$snackbar(`Вопрос ${form.name} успешно добавлен`);
+                await this.$router.push({ name: 'questions.index' });
             } catch (e) {
-                this.$snackbar(`Произошла ошибка при создании производителя: ${e.message}`);
+                this.$snackbar(`Произошла ошибка при создании вопроса: ${e.message}`);
             }
         },
     },
