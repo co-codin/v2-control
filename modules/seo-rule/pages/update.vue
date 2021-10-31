@@ -1,32 +1,22 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Редактирование SEO правила</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card :loading="isLoading" class="mb-3">
-            <v-card-title> Основная информация </v-card-title>
-            <v-card-text v-if="seoRule">
-                <seo-rule-form :seo-rule="seoRule" is-updating @send="updateSeoRule" />
-            </v-card-text>
-        </v-card>
-
+    <div>
+        <page-header h1="Редактирование SEO правила" :breadcrumbs="breadcrumbs" />
+        <seo-rule-form v-if="seoRule" :seo-rule="seoRule" is-updating @send="updateSeoRule" />
         <seo-relation-form :seo="seo" class="mt-3" @send="updateSeoRuleSeo" />
     </div>
 </template>
 
 <script>
 import SeoRuleForm from '../components/SeoRuleForm';
-import Redirect from '~/modules/seo-rule/models/SeoRule';
+import SeoRule from '~/modules/seo-rule/models/SeoRule';
+import PageHeader from "~/components/common/PageHeader";
 import SeoRelationForm from '~/components/forms/SeoRelationForm';
 
 export default {
     components: {
         SeoRuleForm,
         SeoRelationForm,
+        PageHeader,
     },
     data: () => ({
         seoRule: null,

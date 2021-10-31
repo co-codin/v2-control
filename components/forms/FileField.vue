@@ -15,7 +15,7 @@
                         />
                         <v-card-title v-else>{{ value }}</v-card-title>
                         <v-card-actions>
-                            <v-spacer></v-spacer>
+                            <v-spacer />
                             <v-btn icon @click="$emit('input', null)" >
                                 <trash-icon width="26"/>
                             </v-btn>
