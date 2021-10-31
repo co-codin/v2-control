@@ -48,6 +48,7 @@ export default {
         { src: '~/filters/formatCurrency.js' },
         { src: '~/filters/formatDate.js' },
         { src: '~plugins/vue-api-query' },
+        { src: '~plugins/directives/digits-only' },
     ],
 
     buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],

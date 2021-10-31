@@ -1,44 +1,134 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-expansion-panels v-if="form" class="mb-3">
-            <v-expansion-panel v-for="(property, index) in form.properties" :key="property.id">
-                <v-expansion-panel-header class="title">{{ property.name }}</v-expansion-panel-header>
-                <v-expansion-panel-content>
-                    <field-value-autocomplete
-                        label="Значение"
-                        item-text="value"
-                        item-value="id"
-                        :multiple="property.is_multiple"
-                        :chips="property.is_multiple"
-                        :items="getItemsByIds(property.field_value_ids)"
-                        deletable-chips
-                        v-model="property.field_value_ids"
-                        :query-params="{ sort: 'valueLength' }"
-                    ></field-value-autocomplete>
-                    <v-btn small color="red" class="white--text" @click="removeProperty(index)">Удалить</v-btn>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
-        </v-expansion-panels>
+        <v-row>
+            <v-tabs
+                grow
+                background-color="transparent"
+                v-model="tab"
+            >
+                <v-tab key="properties">
+                    Характеристики
+                </v-tab>
+                <v-tab key="important_properties">
+                    Коротко о товаре ({{ importantProperties.length }})
+                </v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="tab" style="width: 100%">
+                <v-tab-item
+                    key="properties"
+                >
+                    <v-card flat>
+                        <v-card-text>
+                            <v-expansion-panels v-if="form && form.properties.length" class="mb-3">
+                                <v-expansion-panel v-for="(property, index) in form.properties" :key="property.id">
+                                    <v-expansion-panel-header class="title">{{ property.name }}</v-expansion-panel-header>
+                                    <v-expansion-panel-content>
+                                        <field-value-autocomplete
+                                            label="Значение"
+                                            item-text="value"
+                                            item-value="id"
+                                            :multiple="property.is_multiple"
+                                            :chips="property.is_multiple"
+                                            :items="getItemsByIds(property.field_value_ids)"
+                                            deletable-chips
+                                            v-model="property.field_value_ids"
+                                            :query-params="{ sort: 'valueLength' }"
+                                            dense
+                                        />
+                                        <v-text-field
+                                            label="Отформатированное название для страницы товара"
+                                            dense
+                                            v-model="property.pretty_key"
+                                        />
+                                        <v-text-field
+                                            label="Отформатированное значение для страницы товара"
+                                            v-model="property.pretty_value"
+                                            dense
+                                        />
+                                        <v-switch
+                                            label="Отображать в блоке 'Коротко о товаре'"
+                                            v-model="property.is_important"
+                                            dense
+                                        />
+                                        <div class="text-center mt-1">
+                                            <v-btn small color="red" class="white--text" @click="removeProperty(index)">Удалить</v-btn>
+                                        </div>
+                                    </v-expansion-panel-content>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                            <v-alert
+                                v-else
+                                dense
+                                type="info"
+                                outlined
+                            >
+                                К товару не добавлено ни одной характеристики
+                            </v-alert>
+                            <v-expansion-panels class="mt-3">
+                                <v-expansion-panel>
+                                    <v-expansion-panel-header class="title">
+                                        Добавление характеристики
+                                    </v-expansion-panel-header>
+                                    <v-expansion-panel-content>
+                                        <entity-autocomplete-field
+                                            placeholder="Введите название характеристики"
+                                            return-object
+                                            v-model="newProperty"
+                                            class="mt-0"
+                                            url="/properties"
+                                            :query-params="{ sort: 'name' }"
+                                            item-value="id"
+                                            item-text="name"
+                                            search-column="name"
+                                            filter-column="id"
+                                            hide-no-data
+                                        />
+                                        <v-btn :disabled="!newProperty" small @click="addProperty">Добавить характеристику</v-btn>
+                                        <v-btn class="ml-2" small @click="openPropertyPopup">Создать новую характеристику</v-btn>
+                                    </v-expansion-panel-content>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item
+                    key="important_properties"
+                >
+                    <v-card flat>
+                        <v-card-text>
+                            <v-alert
+                                v-if="!importantProperties.length"
+                                dense
+                                type="info"
+                                outlined
+                            >
+                                В блок "Коротко о товаре" не добавлено ни одной характеристики
+                            </v-alert>
+                            <v-expansion-panels v-else>
+                                <v-expansion-panel v-for="(property, index) in importantProperties" :key="property.id">
+                                    <v-expansion-panel-header class="title">{{ property.name }}</v-expansion-panel-header>
+                                    <v-expansion-panel-content>
+                                        <v-text-field
+                                            label="Отформатированное значение для блока 'Коротко о товаре'"
+                                            dense
+                                            v-model="property.important_value"
+                                        />
+                                        <div class="text-center mt-1">
+                                            <v-btn small color="red" class="white--text" @click="property.is_important = false">Удалить из блока "Коротко о товаре"</v-btn>
+                                        </div>
+                                    </v-expansion-panel-content>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+            </v-tabs-items>
+        </v-row>
         <v-row class="expansion-panel-actions">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
             </v-col>
         </v-row>
-        <v-expansion-panels class="mt-3">
-            <v-expansion-panel>
-                <v-expansion-panel-header class="title">
-                    Добавление характеристики
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                    <entity-autocomplete-field placeholder="Введите название характеристики" return-object
-                                               v-model="newProperty" class="mt-0" url="/properties"
-                                               :query-params="{ sort: 'name' }" item-value="id" item-text="name"
-                                               search-column="name" filter-column="id"/>
-                    <v-btn :disabled="!newProperty" small @click="addProperty">Добавить характеристику</v-btn>
-                    <v-btn class="ml-2" small @click="openPropertyPopup">Создать новую характеристику</v-btn>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
-        </v-expansion-panels>
         <v-dialog
             v-model="newPropertyPopup"
             max-width="450"
@@ -79,17 +169,12 @@ import Form from 'form-backend-validation';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import FieldValue from '~/models/FieldValue';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import {mapGetters} from "vuex";
 
 export default {
     components: {
         FieldValueAutocomplete,
         EntityAutocompleteField,
-    },
-    props: {
-        properties: {
-            type: Array,
-            default: () => [],
-        },
     },
     data: () => ({
         values: null,
@@ -105,23 +190,30 @@ export default {
         },
         newProperty: null,
         newPropertyPopup: false,
+        tab: 'properties',
     }),
     async created() {
-        const valueIds = this.properties
+        const valueIds = this.product.properties
             .map((property) => property.pivot.field_value_ids)
             .flat()
             .filter((value, index, self) => self.indexOf(value) === index);
         const values = await FieldValue.select('id', 'value').whereIn('id', valueIds).limit(200).$get();
         this.values = Object.fromEntries(values.map((item) => [item.id, item.value]));
-
         this.form = Form.create(this.formDefaults)
             .withOptions({http: this.$axios, resetOnSuccess: false})
             .populate({
-                properties: this.transformProperties(this.properties || [])
+                properties: this.transformProperties(this.product.properties || [])
             });
-
         this.propertyForm = Form.create(this.propertyFormDefaults)
             .withOptions({http: this.$axios, resetOnSuccess: true});
+    },
+    computed: {
+        ...mapGetters({
+            product: 'forms/product/product',
+        }),
+        importantProperties() {
+            return this.form?.properties?.filter(property => property.is_important) || [];
+        },
     },
     methods: {
         getItemsByIds(ids) {

@@ -9,28 +9,24 @@
                     :error-messages="form.errors.get('name')"
                     :error="form.errors.has('name')"
                 />
-
                 <v-text-field
                     v-model="form.slug"
                     label="Ссылка"
                     :error-messages="form.errors.get('slug')"
                     :error="form.errors.has('slug')"
                 />
-
                 <v-text-field
                     v-model="form.website"
                     label="Сайт"
                     :error-messages="form.errors.get('website')"
                     :error="form.errors.has('website')"
                 />
-
                 <v-textarea
                     v-model="form.short_description"
                     label="Краткое описание"
                     :error-messages="form.errors.get('short_description')"
                     :error="form.errors.has('short_description')"
                 />
-
                 <v-input
                     label="Подробное описание"
                     :error-messages="form.errors.get('full_description')"
@@ -38,14 +34,12 @@
                 >
                     <content-editor v-model="form.full_description" />
                 </v-input>
-
                 <v-switch
                     v-model="form.is_in_home"
                     label="Отображать на главной"
                     :error-messages="form.errors.get('is_in_home')"
                     :error="form.errors.has('is_in_home')"
                 />
-
                 <file-field
                     v-model="form.image"
                     label="Логотип"
@@ -54,14 +48,19 @@
                     prepend-icon="mdi-image"
                     @input="form.is_image_changed = true"
                 />
-
                 <field-value-autocomplete
                     v-model="form.country_id"
                     label="Страна"
                     :error-messages="form.errors.get('country_id')"
                     :error="form.errors.has('country_id')"
                 />
-
+                <v-text-field
+                    v-digits-only
+                    v-model="form.warranty"
+                    label="Гарантия"
+                    :error-messages="form.errors.get('warranty')"
+                    :error="form.errors.has('warranty')"
+                />
                 <v-select
                     v-model="form.status"
                     label="Статус"
@@ -69,7 +68,6 @@
                     :error-messages="form.errors.get('status')"
                     :error="form.errors.has('status')"
                 />
-
                 <v-row class="expansion-panel-actions mt-5">
                     <v-col>
                         <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -115,6 +113,7 @@ export default {
             short_description: null,
             full_description: null,
             country_id: null,
+            warranty: null,
         },
         form: null,
         statusLabels,

@@ -48,19 +48,12 @@
             append-icon="mdi-refresh"
             :loading="isUpdatingSlug"
             @click:append="
-                form.slug = null;
-                updateSlug();
-            "
-        />
-        <file-field
-            v-model="form.image"
-            label="Главная фотография"
-            :error-messages="form.errors.get('image')"
-            :error="form.errors.has('image')"
-            prepend-icon="mdi-image"
-            @input="form.is_image_changed = true"
+                        form.slug = null;
+                        updateSlug();
+                    "
         />
         <v-select
+            v-if="isUpdating"
             v-model="form.status"
             label="Статус"
             :items="statusLabels"
@@ -69,36 +62,6 @@
             item-text="text"
             item-value="value"
         />
-        <file-field
-            v-model="form.booklet"
-            :is-image="false"
-            label="Брошюра"
-            :error-messages="form.errors.get('booklet')"
-            :error="form.errors.has('booklet')"
-            @input="form.is_booklet_changed = true"
-        />
-        <v-text-field
-            v-model="form.video"
-            prepend-icon="mdi-youtube"
-            append-icon="mdi-open-in-new"
-            label="Видеообзор"
-            :error-messages="form.errors.get('video')"
-            :error="form.errors.has('video')"
-            @click:append="goToYoutube"
-        />
-        <v-textarea
-            v-model="form.short_description"
-            label="Короткое описание"
-            :error-messages="form.errors.get('short_description')"
-            :error="form.errors.has('short_description')"
-        />
-        <v-input
-            label="Подробное описание"
-            :error-messages="form.errors.get('full_description')"
-            :error="form.errors.has('full_description')"
-        >
-            <content-editor v-model="form.full_description" />
-        </v-input>
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -109,28 +72,21 @@
 
 <script>
 import Form from 'form-backend-validation';
-import { first, debounce } from 'lodash';
+import {first, debounce} from 'lodash';
 import slugify from 'slugify';
 import Category from '~/modules/category/models/Category';
 import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
-import FileField from '~/components/forms/FileField';
-import { Status } from '~/enums';
-import Product from '../models/Product';
-import ContentEditor from '~/components/editors/ContentEditor';
+import {Status, statusDescriptions, enumToSelectArray} from '~/enums';
+import {mapGetters} from "vuex";
 
 export default {
     components: {
         CategoriesTreeField,
         EntityAutocompleteField,
-        FileField,
-        ContentEditor,
     },
     props: {
-        product: {
-            type: Product,
-        },
         isUpdating: {
             type: Boolean,
             default: false,
@@ -143,22 +99,13 @@ export default {
             brand_id: null,
             name: null,
             slug: null,
-            image: null,
-            is_image_changed: false,
-            is_booklet_changed: false,
             status: Status.Inactive,
-            is_in_home: false,
-            warranty: null,
-            short_description: null,
-            full_description: null,
-            booklet: null,
-            video: null,
         },
         categories: [],
         statusLabels: [
-            { value: 1, text: 'Отображается на сайте' },
-            { value: 2, text: 'Скрыто' },
-            { value: 3, text: 'Доступно только по URL' },
+            {value: 1, text: 'Отображается на сайте'},
+            {value: 2, text: 'Скрыто'},
+            {value: 3, text: 'Доступно только по URL'},
         ],
         isUpdatingSlug: false,
     }),
@@ -172,6 +119,9 @@ export default {
         mainCategoryId() {
             return this.form.categories.find((category) => category.is_main === true)?.id;
         },
+        ...mapGetters({
+            product: 'forms/product/product',
+        }),
     },
     watch: {
         product: {
@@ -183,7 +133,7 @@ export default {
     },
     created() {
         this.form = Form.create(this.formDefaults)
-            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .withOptions({http: this.$axios, resetOnSuccess: false})
             .populate(this.product || {});
 
         if (this.isUpdating) {
@@ -192,7 +142,7 @@ export default {
     },
     methods: {
         async updateCategories(ids) {
-            const { mainCategoryId } = this;
+            const {mainCategoryId} = this;
             this.form.categories = ids.map((id) => ({
                 id,
                 is_main: ids.length === 1 || mainCategoryId === id,
@@ -232,9 +182,6 @@ export default {
         getCategoryText(category) {
             return `${category.name} (${category.ancestorsPath})`;
         },
-        goToYoutube() {
-            window.open(this.form.video, '_blank');
-        },
         updateSlug: debounce(async function () {
             if (this.isUpdating && this.form.slug) {
                 return;
@@ -262,10 +209,19 @@ export default {
                 slugItems.push(this.form.name);
             }
 
-            this.form.slug = slugItems.map((word) => slugify(word, { lower: true })).join('-');
+            this.form.slug = slugItems.map((word) => slugify(word, {lower: true})).join('-');
 
             this.isUpdatingSlug = false;
         }, 200),
+        async save() {
+            try {
+                const { data } = await this.form.put(`/admin/products/${this.$route.params.id}`);
+                this.$store.commit('forms/product/SET_PRODUCT', data);
+                this.$snackbar(`Товар успешно обновлен`);
+            } catch (e) {
+                this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
+            }
+        },
     },
 };
 </script>

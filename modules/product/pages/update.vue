@@ -1,31 +1,31 @@
 <template>
     <div>
-        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs"/>
         <template v-if="product">
             <v-expansion-panels>
                 <form-block title="Основная информация">
-                    <product-form :product="product" is-updating @send="updateProduct" />
+                    <product-form is-updating @send="updateProduct"/>
+                </form-block>
+                <form-block title="Дополнительная информация">
+                    <product-additional-form />
+                </form-block>
+                <form-block title="Системные галереи">
+                    <product-gallery-form />
+                </form-block>
+                <form-block title="Документы">
+                    <product-documents-form />
                 </form-block>
                 <form-block title="Конфигуратор">
-                    <v-expansion-panels>
-                        <form-block title="Модификации">
-                            <product-variation-form :variations="product.productVariations" />
-                        </form-block>
-                    </v-expansion-panels>
-                    <v-row class="expansion-panel-actions mt-3">
-                        <v-col>
-                            <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
-                        </v-col>
-                    </v-row>
-                </form-block>
-                <form-block title="Галерея">
-                    <product-gallery-form :product-name="productName" :images="images" />
+                    <product-configurator-form />
                 </form-block>
                 <form-block title="Характеристики">
-                    <product-properties-form :properties="product.properties" @send="updateProperties" />
+                    <product-properties-form />
+                </form-block>
+                <form-block title="Особенности">
+                    <product-benefits-form />
                 </form-block>
                 <form-block title="SEO">
-                    <seo-relation-form :seo="seo" @send="updateProductSeo" />
+                    <seo-relation-form :seo="seo" @send="updateProductSeo"/>
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -34,39 +34,44 @@
 
 <script>
 import ProductForm from '../components/ProductForm';
+import ProductDocumentsForm from '~/modules/product/components/ProductDocumentsForm';
+import ProductAdditionalForm from "~/modules/product/components/ProductAdditionalForm";
 import SeoRelationForm from '~/components/forms/SeoRelationForm';
 import Product from '../models/Product';
 import PageHeader from '../../../components/common/PageHeader';
 import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
 import ProductGalleryForm from '~/modules/product/components/ProductGalleryForm';
-import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
 import FormBlock from "~/components/forms/FormBlock";
+import ProductConfiguratorForm from "~/modules/product/components/ProductConfiguratorForm";
+import ProductVariationForm from "~/modules/product/components/ProductVariationForm";
+import {mapGetters} from "vuex";
+import ProductBenefitsForm from "~/modules/product/components/ProductBenefitsForm";
 
 export default {
     components: {
-        ProductVariationForm,
-        ProductGalleryForm,
-        SeoRelationForm,
-        ProductForm,
-        ProductPropertiesForm,
         PageHeader,
         FormBlock,
+        ProductForm,
+        ProductBenefitsForm,
+        ProductDocumentsForm,
+        ProductVariationForm,
+        ProductAdditionalForm,
+        ProductConfiguratorForm,
+        ProductGalleryForm,
+        ProductPropertiesForm,
+        SeoRelationForm,
     },
     data: () => ({
-        product: null,
         seo: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список товаров', href: '/products' },
-            { text: 'Редактирование товара' },
+            {text: 'Главная', disabled: false, href: '/'},
+            {text: 'Список товаров', href: '/products'},
+            {text: 'Редактирование товара'},
         ],
     }),
     async fetch() {
         const product = await Product.query()
-            .select({
-                categories: ['id'],
-            })
             .with('seo', 'categories', 'properties', 'brand', 'images', 'productVariations.currency')
             .$find(this.$route.params.id);
 
@@ -75,32 +80,23 @@ export default {
             id: category.id,
             is_main: Boolean(category.is_main),
         }));
+        this.$store.commit('forms/product/SET_PRODUCT', product);
         this.seo = product.seo || {};
-        this.product = product;
-
         this.isLoading = false;
     },
     head: {
         title: 'Редактирование товара',
     },
     computed: {
-        productName() {
-            return `${this.product.brand.name} ${this.product.name}`;
-        },
-        images() {
-            return this.product.images.map((img) => {
-                return {
-                    position: img.position,
-                    image: `${this.$config.app.storageUrl}/${img.image}`,
-                };
-            });
-        },
+        ...mapGetters({
+            product: 'forms/product/product',
+        }),
     },
     methods: {
         async updateProduct(form) {
             try {
                 const { data } = await form.put(`/admin/products/${this.product.id}`);
-                this.product.image = data.image;
+                // this.product.image = data.image;
                 this.$snackbar(`Товар успешно обновлен`);
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
@@ -112,14 +108,6 @@ export default {
                 this.$snackbar(`SEO товара успешно обновлено`);
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обоновлении seo у товара: ${e.message}`);
-            }
-        },
-        async updateProperties(form) {
-            try {
-                await form.put(`/admin/products/${this.product.id}/properties`);
-                this.$snackbar(`Характеристики товара успешно обновлены`);
-            } catch (e) {
-                this.$snackbar(`Произошла ошибка при обоновлении характеристик у товара: ${e.message}`);
             }
         },
     },

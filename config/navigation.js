@@ -15,17 +15,17 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Производители', link: '/brands' },
                 { icon: 'mdi-cash-usd-outline', text: 'Характеристики', link: '/properties' },
                 { icon: 'mdi-cash-usd-outline', text: 'Фильтры', link: '/filters' },
+                { icon: 'mdi-cash-usd-outline', text: 'Валюты', link: '/currencies' },
             ],
         },
         {
             text: 'Контент',
             items: [
                 { icon: 'mdi-cash-usd-outline', text: 'Новости', link: '/news' },
+                { icon: 'mdi-cash-usd-outline', text: 'Страницы', link: '/pages' },
                 { icon: 'mdi-cash-usd-outline', text: 'Публикации', link: '/publications' },
                 { icon: 'mdi-cash-usd-outline', text: 'Достижения', link: '/achievements' },
                 { icon: 'mdi-cash-usd-outline', text: 'Отзывы', link: '/customer-reviews' },
-                { icon: 'mdi-cash-usd-outline', text: 'Страницы', link: '/pages' },
-                { icon: 'mdi-cash-usd-outline', text: 'Валюты', link: '/currencies' },
             ],
         },
         {
