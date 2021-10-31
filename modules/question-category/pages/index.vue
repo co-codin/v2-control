@@ -72,15 +72,14 @@ export default {
             question_categories: [],
             searchForm: {
                 name: null,
+                slug: null,
                 status: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Статус', value: 'status.description', sortable: false },
-                { text: 'Страна', value: 'country.value', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
@@ -101,20 +100,10 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Сайт',
-                    name: 'website',
-                    component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
                     label: 'Статус',
                     name: 'status',
                     component: () => import('@/components/search/fields/SelectSearchField'),
                     items: statusLabels,
-                },
-                {
-                    label: 'Отображается на главной',
-                    name: 'is_in_home',
-                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
             ],
         };
