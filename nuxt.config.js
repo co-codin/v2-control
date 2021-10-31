@@ -13,6 +13,7 @@ import { customerReviewRoutes } from './modules/customer-review/router';
 import { redirectRoutes } from './modules/redirect/router';
 import { pageRoutes } from './modules/page/router';
 import { currencyRoutes } from './modules/currency/router';
+import { questionCategoryRoutes } from './modules/question-category/router';
 
 export default {
     ssr: false,
@@ -129,6 +130,7 @@ export default {
                     ...redirectRoutes(resolve),
                     ...pageRoutes(resolve),
                     ...currencyRoutes(resolve),
+                    ...questionCategoryRoutes(resolve),
                 ]
             );
         },
