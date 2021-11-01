@@ -47,6 +47,7 @@
             :error="form.errors.has('slug')"
             append-icon="mdi-refresh"
             :loading="isUpdatingSlug"
+            :rules="productRules"
             @click:append="
                 form.slug = null;
                 updateSlug();
@@ -105,6 +106,14 @@ export default {
         categories: [],
         statusLabels,
         isUpdatingSlug: false,
+        productRules: [
+            (v) => {
+                if (v && /^[a-zA-Z0-9\-\_]$/.test(v)) {
+                    return false;
+                }
+                return true;
+            },
+        ],
     }),
     computed: {
         categoryIds() {
