@@ -80,7 +80,7 @@ import Category from '~/modules/category/models/Category';
 import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
-import { Status, statusDescriptions, enumToSelectArray } from '~/enums';
+import { Status, statusLabels } from '~/enums';
 
 export default {
     components: {
@@ -103,11 +103,7 @@ export default {
             status: Status.Inactive,
         },
         categories: [],
-        statusLabels: [
-            { value: 1, text: 'Отображается на сайте' },
-            { value: 2, text: 'Скрыто' },
-            { value: 3, text: 'Доступно только по URL' },
-        ],
+        statusLabels,
         isUpdatingSlug: false,
     }),
     computed: {

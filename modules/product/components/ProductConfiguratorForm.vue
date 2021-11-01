@@ -42,14 +42,15 @@ export default {
             fillErrors: 'forms/configurator/FILL_ERRORS',
         }),
         async save() {
-            try {
-                await this.$axios.put(`/admin/products/${this.product.id}/configurator`, this.form.data());
-            } catch (e) {
-                const errors = e?.response?.data?.errors;
-                if (errors) {
-                    this.fillErrors(errors);
-                }
-            }
+            console.log(this.form);
+            // try {
+            //     await this.$axios.put(`/admin/products/${this.product.id}/configurator`, this.form.data());
+            // } catch (e) {
+            //     const errors = e?.response?.data?.errors;
+            //     if (errors) {
+            //         this.fillErrors(errors);
+            //     }
+            // }
         },
     },
 };
