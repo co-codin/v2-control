@@ -250,7 +250,7 @@ export default {
             this.newPropertyPopup = true;
         },
         async createProperty() {
-            const { data } = this.propertyForm.post('/admin/properties');
+            const { data } = await this.propertyForm.post('/admin/properties');
             this.form.properties.push({
                 id: data.id,
                 name: data.name,
@@ -258,6 +258,10 @@ export default {
                 field_value_ids: null,
             });
             this.newPropertyPopup = false;
+        },
+
+        linkProperties() {
+            console.log(this.form);
         },
     },
 };
