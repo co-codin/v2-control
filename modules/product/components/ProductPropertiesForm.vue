@@ -249,16 +249,15 @@ export default {
         openPropertyPopup() {
             this.newPropertyPopup = true;
         },
-        createProperty() {
-            this.propertyForm.post('/admin/properties').then((response) => {
-                this.form.properties.push({
-                    id: response.data.id,
-                    name: response.data.name,
-                    is_multiple: response.data.is_multiple,
-                    field_value_ids: null,
-                });
-                this.newPropertyPopup = false;
+        async createProperty() {
+            const { data } = this.propertyForm.post('/admin/properties');
+            this.form.properties.push({
+                id: data.id,
+                name: data.name,
+                is_multiple: data.is_multiple,
+                field_value_ids: null,
             });
+            this.newPropertyPopup = false;
         },
     },
 };
