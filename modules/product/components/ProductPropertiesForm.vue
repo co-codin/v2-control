@@ -100,6 +100,7 @@
                                             v-model="property.important_value"
                                             label="Отформатированное значение для блока 'Коротко о товаре'"
                                             dense
+                                            required
                                         />
                                         <div class="text-center mt-1">
                                             <v-btn
@@ -221,11 +222,22 @@ export default {
             }));
         },
         transformProperties(properties) {
-            return properties.map((property) => ({
-                ...property.pivot,
-                id: property.id,
-                name: property.name,
-            }));
+            return properties
+                .map((property) => ({
+                    ...property.pivot,
+                    id: property.id,
+                    name: property.name,
+                }))
+                .sort((a, b) => {
+                    let ret = 0;
+                    if (a.name < b.name) {
+                        ret = -1;
+                    }
+                    if (a.name > b.name) {
+                        ret = 1;
+                    }
+                    return ret;
+                });
         },
         removeProperty(index) {
             this.form.properties.splice(index, 1);
