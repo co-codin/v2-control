@@ -121,7 +121,7 @@ export default {
             return this.form.categories.find((category) => category.is_main === true)?.id;
         },
         ...mapGetters({
-            product: 'forms/product/product',
+            product: 'product/product',
         }),
     },
     watch: {
@@ -217,7 +217,7 @@ export default {
         async save() {
             try {
                 const { data } = await this.form.put(`/admin/products/${this.$route.params.id}`);
-                this.$store.commit('forms/product/SET_PRODUCT', data);
+                this.$store.commit('product/SET_PRODUCT', data);
                 this.$snackbar(`Товар успешно обновлен`);
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);

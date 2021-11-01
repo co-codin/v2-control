@@ -1,10 +1,10 @@
 <template>
     <div>
-        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs"/>
-        <template v-if="product">
+        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
+        <template v-if="product && !$fetchState.pending">
             <v-expansion-panels>
                 <form-block title="Основная информация">
-                    <product-form is-updating @send="updateProduct"/>
+                    <product-form is-updating @send="updateProduct" />
                 </form-block>
                 <form-block title="Дополнительная информация">
                     <product-additional-form />
@@ -25,7 +25,7 @@
                     <product-benefits-form />
                 </form-block>
                 <form-block title="SEO">
-                    <seo-relation-form :seo="seo" @send="updateProductSeo"/>
+                    <seo-relation-form :seo="productSeo" @send="updateProductSeo" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -33,19 +33,18 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import ProductForm from '../components/ProductForm';
 import ProductDocumentsForm from '~/modules/product/components/ProductDocumentsForm';
-import ProductAdditionalForm from "~/modules/product/components/ProductAdditionalForm";
+import ProductAdditionalForm from '~/modules/product/components/ProductAdditionalForm';
 import SeoRelationForm from '~/components/forms/SeoRelationForm';
-import Product from '../models/Product';
 import PageHeader from '../../../components/common/PageHeader';
 import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
 import ProductGalleryForm from '~/modules/product/components/ProductGalleryForm';
-import FormBlock from "~/components/forms/FormBlock";
-import ProductConfiguratorForm from "~/modules/product/components/ProductConfiguratorForm";
-import ProductVariationForm from "~/modules/product/components/ProductVariationForm";
-import {mapGetters} from "vuex";
-import ProductBenefitsForm from "~/modules/product/components/ProductBenefitsForm";
+import FormBlock from '~/components/forms/FormBlock';
+import ProductConfiguratorForm from '~/modules/product/components/ProductConfiguratorForm';
+import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
+import ProductBenefitsForm from '~/modules/product/components/ProductBenefitsForm';
 
 export default {
     components: {
@@ -62,40 +61,31 @@ export default {
         SeoRelationForm,
     },
     data: () => ({
-        seo: null,
-        isLoading: true,
         breadcrumbs: [
-            {text: 'Главная', disabled: false, href: '/'},
-            {text: 'Список товаров', href: '/products'},
-            {text: 'Редактирование товара'},
+            { text: 'Главная', disabled: false, href: '/' },
+            { text: 'Список товаров', href: '/products' },
+            { text: 'Редактирование товара' },
         ],
     }),
     async fetch() {
-        const product = await Product.query()
-            .with('seo', 'categories', 'properties', 'brand', 'images', 'productVariations.currency')
-            .$find(this.$route.params.id);
-
-        product.status = product.status.value;
-        product.categories = product.categories.map((category) => ({
-            id: category.id,
-            is_main: Boolean(category.is_main),
-        }));
-        this.$store.commit('forms/product/SET_PRODUCT', product);
-        this.seo = product.seo || {};
-        this.isLoading = false;
+        await this.getProduct(this.$route.params.id);
     },
     head: {
         title: 'Редактирование товара',
     },
     computed: {
         ...mapGetters({
-            product: 'forms/product/product',
+            product: 'product/product',
+            productSeo: 'product/productSeo',
         }),
     },
     methods: {
+        ...mapActions({
+            getProduct: 'product/getProduct',
+        }),
         async updateProduct(form) {
             try {
-                const { data } = await form.put(`/admin/products/${this.product.id}`);
+                await form.put(`/admin/products/${this.product.id}`);
                 // this.product.image = data.image;
                 this.$snackbar(`Товар успешно обновлен`);
             } catch (e) {
