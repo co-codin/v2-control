@@ -25,14 +25,9 @@
                     :error-messages="form.errors.get('images')"
                     :error="form.errors.has('images')"
                 >
-                    <file-uploader
-                        v-model="form.images"
-                        :multiple="true"
-                        :max="10"
-                        :object-format="true"
-                    ></file-uploader>
+                    <file-field v-for="(image, index) in images" :key="'image-' + index" v-model="form.images[index]" />
                 </v-input>
-                <v-btn type="submit" color="green" class="white--text text-uppercase"> Сохранить </v-btn>
+                <file-uploader v-model="form.images" :multiple="true" :max="10" :object-format="true"></file-uploader>
                 <v-row class="expansion-panel-actions mt-3">
                     <v-col>
                         <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -88,15 +83,15 @@ export default {
             },
         };
     },
-    created() {
-        this.form = Form.create(this.formDefaults)
-            .withOptions({ http: this.$axios, resetOnSuccess: false })
-            .populate(this.product || {});
-    },
     computed: {
         ...mapGetters({
             product: 'product/product',
         }),
+    },
+    created() {
+        this.form = Form.create(this.formDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate(this.product || {});
     },
     methods: {
         sendForm() {
