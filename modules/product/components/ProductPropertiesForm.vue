@@ -120,7 +120,9 @@
         </v-row>
         <v-row class="expansion-panel-actions">
             <v-col>
-                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+                <v-btn type="submit" color="green" class="white--text text-uppercase" @click="linkProperties"
+                    >Сохранить</v-btn
+                >
             </v-col>
         </v-row>
         <v-dialog v-model="newPropertyPopup" max-width="450" width="600">
@@ -260,8 +262,8 @@ export default {
             this.newPropertyPopup = false;
         },
 
-        linkProperties() {
-            console.log(this.form);
+        async linkProperties() {
+            await this.form.put(`admin/products/${this.$route.params.id}/properties`);
         },
     },
 };
