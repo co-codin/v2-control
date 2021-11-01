@@ -42,15 +42,16 @@ export default {
             fillErrors: 'forms/configurator/FILL_ERRORS',
         }),
         async save() {
-            console.log(this.form);
-            // try {
-            //     await this.$axios.put(`/admin/products/${this.product.id}/configurator`, this.form.data());
-            // } catch (e) {
-            //     const errors = e?.response?.data?.errors;
-            //     if (errors) {
-            //         this.fillErrors(errors);
-            //     }
-            // }
+            try {
+                await this.$axios.put(`/admin/products/${this.product.id}/configurator`, this.form.data());
+                this.$snackbar(`Конфигуратор успешно обновлен`);
+            } catch (e) {
+                const errors = e?.response?.data?.errors;
+                if (errors) {
+                    this.fillErrors(errors);
+                }
+                this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
+            }
         },
     },
 };
