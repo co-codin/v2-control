@@ -47,6 +47,7 @@
             :error="form.errors.has('slug')"
             append-icon="mdi-refresh"
             :loading="isUpdatingSlug"
+            :rules="productRules"
             @click:append="
                 form.slug = null;
                 updateSlug();
@@ -80,7 +81,7 @@ import Category from '~/modules/category/models/Category';
 import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
-import { Status, statusDescriptions, enumToSelectArray } from '~/enums';
+import { Status, statusLabels } from '~/enums';
 
 export default {
     components: {
@@ -103,12 +104,16 @@ export default {
             status: Status.Inactive,
         },
         categories: [],
-        statusLabels: [
-            { value: 1, text: 'Отображается на сайте' },
-            { value: 2, text: 'Скрыто' },
-            { value: 3, text: 'Доступно только по URL' },
-        ],
+        statusLabels,
         isUpdatingSlug: false,
+        productRules: [
+            (v) => {
+                if (v && /^[a-zA-Z0-9\-\_]$/.test(v)) {
+                    return false;
+                }
+                return true;
+            },
+        ],
     }),
     computed: {
         categoryIds() {
@@ -121,7 +126,7 @@ export default {
             return this.form.categories.find((category) => category.is_main === true)?.id;
         },
         ...mapGetters({
-            product: 'forms/product/product',
+            product: 'product/product',
         }),
     },
     watch: {
@@ -217,7 +222,7 @@ export default {
         async save() {
             try {
                 const { data } = await this.form.put(`/admin/products/${this.$route.params.id}`);
-                this.$store.commit('forms/product/SET_PRODUCT', data);
+                this.$store.commit('product/SET_PRODUCT', data);
                 this.$snackbar(`Товар успешно обновлен`);
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
