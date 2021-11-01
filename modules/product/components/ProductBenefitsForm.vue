@@ -38,7 +38,7 @@
                 </div>
             </form-block>
             <form-block title="Фишки">
-                <v-expansion-panels v-if="form.benefits.chips && form.benefits.chips.length">
+                <v-expansion-panels v-if="form.benefits.chips">
                     <v-expansion-panel v-for="(chip, index) in form.benefits.chips" :key="index">
                         <v-expansion-panel-header class="title">
                             {{
@@ -87,16 +87,12 @@
 <script>
 import Form from 'form-backend-validation';
 import { mapGetters } from 'vuex';
-import FileUploader from '~/components/FileUploader';
 import FormBlock from '~/components/forms/FormBlock';
-import FileField from '~/components/forms/FileField';
 import ContentEditor from '~/components/editors/ContentEditor';
 
 export default {
     components: {
         FormBlock,
-        FileUploader,
-        FileField,
         ContentEditor,
     },
     data() {
@@ -104,9 +100,9 @@ export default {
             form: null,
             formDefaults: {
                 benefits: {
-                    chips: null,
+                    chips: [],
                     benefit: null,
-                    information: null,
+                    information: [],
                 },
             },
         };
@@ -123,17 +119,18 @@ export default {
         },
     },
     created() {
-        this.form = Form.create()
-            .withData(this.formDefaults)
-            .withOptions({
-                http: this.$axios,
-                resetOnSuccess: false,
-            })
-            .populate(this.product || {});
+        this.form = Form.create().withData(this.formDefaults).withOptions({
+            http: this.$axios,
+            resetOnSuccess: false,
+        });
+
+        if (this.product.benefits) {
+            this.form.populate(this.product);
+        }
     },
     methods: {
         saveBenefits() {
-            this.form.patch(`/products/${this.product.id}`).then((resp) => {
+            this.form.patch(`/admin/products/${this.product.id}`).then((resp) => {
                 this.$snackbar.success(`Особенности товара успешно обновлена`);
             });
         },
@@ -170,5 +167,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped></style>
