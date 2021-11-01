@@ -48,10 +48,11 @@
             append-icon="mdi-refresh"
             :loading="isUpdatingSlug"
             @click:append="
-                        form.slug = null;
-                        updateSlug();
-                    "
+                form.slug = null;
+                updateSlug();
+            "
         />
+
         <v-select
             v-if="isUpdating"
             v-model="form.status"
@@ -72,14 +73,14 @@
 
 <script>
 import Form from 'form-backend-validation';
-import {first, debounce} from 'lodash';
+import { first, debounce } from 'lodash';
 import slugify from 'slugify';
+import { mapGetters } from 'vuex';
 import Category from '~/modules/category/models/Category';
 import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
-import {Status, statusDescriptions, enumToSelectArray} from '~/enums';
-import {mapGetters} from "vuex";
+import { Status, statusDescriptions, enumToSelectArray } from '~/enums';
 
 export default {
     components: {
@@ -103,9 +104,9 @@ export default {
         },
         categories: [],
         statusLabels: [
-            {value: 1, text: 'Отображается на сайте'},
-            {value: 2, text: 'Скрыто'},
-            {value: 3, text: 'Доступно только по URL'},
+            { value: 1, text: 'Отображается на сайте' },
+            { value: 2, text: 'Скрыто' },
+            { value: 3, text: 'Доступно только по URL' },
         ],
         isUpdatingSlug: false,
     }),
@@ -133,7 +134,7 @@ export default {
     },
     created() {
         this.form = Form.create(this.formDefaults)
-            .withOptions({http: this.$axios, resetOnSuccess: false})
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.product || {});
 
         if (this.isUpdating) {
@@ -142,7 +143,7 @@ export default {
     },
     methods: {
         async updateCategories(ids) {
-            const {mainCategoryId} = this;
+            const { mainCategoryId } = this;
             this.form.categories = ids.map((id) => ({
                 id,
                 is_main: ids.length === 1 || mainCategoryId === id,
@@ -209,7 +210,7 @@ export default {
                 slugItems.push(this.form.name);
             }
 
-            this.form.slug = slugItems.map((word) => slugify(word, {lower: true})).join('-');
+            this.form.slug = slugItems.map((word) => slugify(word, { lower: true })).join('-');
 
             this.isUpdatingSlug = false;
         }, 200),
