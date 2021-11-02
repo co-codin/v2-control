@@ -90,30 +90,37 @@
                             <v-alert v-if="!importantProperties.length" dense type="info" outlined>
                                 В блок "Коротко о товаре" не добавлено ни одной характеристики
                             </v-alert>
-                            <v-expansion-panels v-else>
-                                <v-expansion-panel v-for="(property, index) in importantProperties" :key="property.id">
-                                    <v-expansion-panel-header class="title">{{
-                                        property.name
-                                    }}</v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-text-field
-                                            v-model="property.important_value"
-                                            label="Отформатированное значение для блока 'Коротко о товаре'"
-                                            dense
-                                            required
-                                        />
-                                        <div class="text-center mt-1">
-                                            <v-btn
-                                                small
-                                                color="red"
-                                                class="white--text"
-                                                @click="property.is_important = false"
-                                                >Удалить из блока "Коротко о товаре"</v-btn
-                                            >
-                                        </div>
-                                    </v-expansion-panel-content>
-                                </v-expansion-panel>
-                            </v-expansion-panels>
+                            <div v-else>
+                                <v-expansion-panels>
+                                    <draggable
+                                        @update="updatePropertyPositions"
+                                        v-model="draggableItems"
+                                    >
+                                        <v-expansion-panel v-for="(property, index) in importantProperties" :key="property.id">
+                                            <v-expansion-panel-header class="title">{{
+                                                    property.name
+                                                }}</v-expansion-panel-header>
+                                            <v-expansion-panel-content>
+                                                <v-text-field
+                                                    v-model="property.important_value"
+                                                    label="Отформатированное значение для блока 'Коротко о товаре'"
+                                                    dense
+                                                    required
+                                                />
+                                                <div class="text-center mt-1">
+                                                    <v-btn
+                                                        small
+                                                        color="red"
+                                                        class="white--text"
+                                                        @click="property.is_important = false"
+                                                    >Удалить из блока "Коротко о товаре"</v-btn
+                                                    >
+                                                </div>
+                                            </v-expansion-panel-content>
+                                        </v-expansion-panel>
+                                    </draggable>
+                                </v-expansion-panels>
+                            </div>
                         </v-card-text>
                     </v-card>
                 </v-tab-item>
@@ -161,11 +168,14 @@ import { mapGetters } from 'vuex';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import FieldValue from '~/models/FieldValue';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import Sortable from 'sortablejs';
+import draggable from "vuedraggable";
 
 export default {
     components: {
         FieldValueAutocomplete,
         EntityAutocompleteField,
+        draggable,
     },
     data: () => ({
         values: null,
@@ -182,6 +192,7 @@ export default {
         newProperty: null,
         newPropertyPopup: false,
         tab: 'properties',
+        draggableItems: null,
     }),
     async created() {
         const valueIds = this.product.properties
@@ -205,8 +216,15 @@ export default {
             product: 'product/product',
         }),
         importantProperties() {
-            return this.form?.properties?.filter((property) => property.is_important) || [];
+            return this.form?.properties || [];
+            // return this.form?.properties?.filter((property) => property.is_important) || [];
         },
+    },
+    mounted() {
+        // Sortable.create(this.$refs["draggable-items"]);
+    },
+    beforeDestroy() {
+
     },
     methods: {
         getItemsByIds(ids) {
@@ -273,10 +291,18 @@ export default {
             });
             this.newPropertyPopup = false;
         },
-
         async linkProperties() {
             await this.form.put(`admin/products/${this.$route.params.id}/properties`);
+        },
+        updatePropertyPositions(e, l) {
+            console.log(e, l);
         },
     },
 };
 </script>
+
+<style type="text/css" scoped>
+.v-expansion-panels > *:last-child {
+    width: 100%;
+}
+</style>
