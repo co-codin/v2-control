@@ -65,7 +65,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, statusDescriptions } from '@/enums';
+import { statusDescriptions } from '@/enums';
 import Export from '~/modules/export/models/Export';
 
 export default {
@@ -78,15 +78,16 @@ export default {
             exports: [],
             searchForm: {
                 name: null,
-                is_enabled: null,
+                filename: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Картинка', align: 'left', value: 'image', sortable: false },
-                { text: 'Доступно', value: 'is_enabled' },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Позиция', align: 'left', value: 'position' },
+                { text: 'Тип', align: 'left', value: 'type.description' },
+                { text: 'Частота', align: 'left', value: 'type.description' },
+                { text: 'Название файла', align: 'left', value: 'filename', sortable: false },
+                { text: 'Параметры', align: 'left', value: 'parameters' },
+
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список достижений' }],
@@ -102,10 +103,10 @@ export default {
                     component: () => import('@/components/search/fields/ComboBoxSearchField'),
                 },
                 {
-                    label: 'Статус',
-                    name: 'is_enabled',
+                    label: 'Тип',
+                    name: 'type',
                     component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: enumToSelectArray(statusDescriptions),
+                    items: statusDescriptions,
                 },
             ],
         };
@@ -114,7 +115,7 @@ export default {
         this.showLoading();
 
         const response = await Export.select({
-            exports: ['id', 'name', 'image', 'is_enabled', 'position', 'created_at'],
+            exports: ['id', 'name', 'type', 'filename', 'frequency', 'parameters'],
         })
             .params(this.queryParams)
             .get();

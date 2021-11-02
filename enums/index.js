@@ -9,4 +9,6 @@ const uniqueContentList = [
     { value: 'full_description', text: 'Подробное описание' },
 ];
 
+const exportTypeDescriptions = [];
+
 export { Status, statusDescriptions, statusLabels, enumToSelectArray, uniqueContentList };
