@@ -102,6 +102,8 @@ export default {
             name: null,
             slug: null,
             status: Status.Inactive,
+            full_description: null,
+            image: null,
         },
         categories: [],
         statusLabels,
@@ -109,9 +111,9 @@ export default {
         productRules: [
             (v) => {
                 if (v && /^[a-zA-Z0-9\-\_]$/.test(v)) {
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             },
         ],
     }),

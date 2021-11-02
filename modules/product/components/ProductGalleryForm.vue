@@ -19,15 +19,7 @@
         </form-block>
         <form-block title="Дополнительные фотографии">
             <v-form @submit.prevent="$emit('send', form)">
-                <v-input
-                    label="Галерея"
-                    dense
-                    :error-messages="form.errors.get('images')"
-                    :error="form.errors.has('images')"
-                >
-                    <file-field v-for="(image, index) in images" :key="'image-' + index" v-model="form.images[index]" />
-                </v-input>
-                <file-uploader v-model="form.images" :multiple="true" :max="10" :object-format="true"></file-uploader>
+                <file-field v-for="(image, index) in form.images" :key="'image-' + index" v-model="image.image" />
                 <v-row class="expansion-panel-actions mt-3">
                     <v-col>
                         <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -80,6 +72,8 @@ export default {
             formDefaults: {
                 image: null,
                 video: null,
+                images: [],
+                is_image_changed: false,
             },
         };
     },
@@ -95,7 +89,7 @@ export default {
     },
     methods: {
         sendForm() {
-            this.form.patch(`admin/products/${this.$route.params.id}`).then((resp) => {
+            this.form.patch(`admin/products/${this.product.id}`).then((resp) => {
                 this.$snackbar.success(`Галерея товара успешно обновлена`);
                 this.editing = false;
             });

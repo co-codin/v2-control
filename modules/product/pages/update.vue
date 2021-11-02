@@ -91,7 +91,6 @@ export default {
         async updateProduct(form) {
             try {
                 await form.put(`/admin/products/${this.product.id}`);
-                // this.product.image = data.image;
                 this.$snackbar(`Товар успешно обновлен`);
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
