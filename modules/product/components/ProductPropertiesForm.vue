@@ -105,19 +105,21 @@
                                 В блок "Коротко о товаре" не добавлено ни одной характеристики
                             </v-alert>
                             <v-expansion-panels v-else>
-                                <v-expansion-panel v-for="(property, index) in importantProperties" :key="property.id">
-                                    <v-expansion-panel-header class="title">{{ property.name }}</v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-text-field
-                                            label="Отформатированное значение для блока 'Коротко о товаре'"
-                                            dense
-                                            v-model="property.important_value"
-                                        />
-                                        <div class="text-center mt-1">
-                                            <v-btn small color="red" class="white--text" @click="property.is_important = false">Удалить из блока "Коротко о товаре"</v-btn>
-                                        </div>
-                                    </v-expansion-panel-content>
-                                </v-expansion-panel>
+                                <draggable>
+                                    <v-expansion-panel v-for="(property, index) in importantProperties" :key="property.id">
+                                        <v-expansion-panel-header class="title">{{ property.name }}</v-expansion-panel-header>
+                                        <v-expansion-panel-content>
+                                            <v-text-field
+                                                label="Отформатированное значение для блока 'Коротко о товаре'"
+                                                dense
+                                                v-model="property.important_value"
+                                            />
+                                            <div class="text-center mt-1">
+                                                <v-btn small color="red" class="white--text" @click="property.is_important = false">Удалить из блока "Коротко о товаре"</v-btn>
+                                            </div>
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                </draggable>
                             </v-expansion-panels>
                         </v-card-text>
                     </v-card>
@@ -170,11 +172,13 @@ import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import FieldValue from '~/models/FieldValue';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import {mapGetters} from "vuex";
+import draggable from 'vuedraggable';
 
 export default {
     components: {
         FieldValueAutocomplete,
         EntityAutocompleteField,
+        draggable,
     },
     data: () => ({
         values: null,
