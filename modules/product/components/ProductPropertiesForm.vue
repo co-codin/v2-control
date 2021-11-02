@@ -92,14 +92,14 @@
                             </v-alert>
                             <div v-else>
                                 <v-expansion-panels>
-                                    <draggable
-                                        @update="updatePropertyPositions"
-                                        v-model="draggableItems"
-                                    >
-                                        <v-expansion-panel v-for="(property, index) in importantProperties" :key="property.id">
+                                    <draggable v-model="draggableItems" @update="updatePropertyPositions">
+                                        <v-expansion-panel
+                                            v-for="(property, index) in importantProperties"
+                                            :key="property.id"
+                                        >
                                             <v-expansion-panel-header class="title">{{
-                                                    property.name
-                                                }}</v-expansion-panel-header>
+                                                property.name
+                                            }}</v-expansion-panel-header>
                                             <v-expansion-panel-content>
                                                 <v-text-field
                                                     v-model="property.important_value"
@@ -113,7 +113,7 @@
                                                         color="red"
                                                         class="white--text"
                                                         @click="property.is_important = false"
-                                                    >Удалить из блока "Коротко о товаре"</v-btn
+                                                        >Удалить из блока "Коротко о товаре"</v-btn
                                                     >
                                                 </div>
                                             </v-expansion-panel-content>
@@ -165,11 +165,11 @@
 <script>
 import Form from 'form-backend-validation';
 import { mapGetters } from 'vuex';
+import Sortable from 'sortablejs';
+import draggable from 'vuedraggable';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import FieldValue from '~/models/FieldValue';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
-import Sortable from 'sortablejs';
-import draggable from "vuedraggable";
 
 export default {
     components: {
@@ -223,9 +223,7 @@ export default {
     mounted() {
         // Sortable.create(this.$refs["draggable-items"]);
     },
-    beforeDestroy() {
-
-    },
+    beforeDestroy() {},
     methods: {
         getItemsByIds(ids) {
             if (!ids) {
@@ -292,7 +290,12 @@ export default {
             this.newPropertyPopup = false;
         },
         async linkProperties() {
-            await this.form.put(`admin/products/${this.$route.params.id}/properties`);
+            try {
+                await this.form.put(`admin/products/${this.$route.params.id}/properties`);
+                this.$snackbar(`Характиристики товара успешно обновлены`);
+            } catch (e) {
+                this.$snackbar(e.message);
+            }
         },
         updatePropertyPositions(e, l) {
             console.log(e, l);

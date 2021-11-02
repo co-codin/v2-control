@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import Form from 'form-backend-validation';
 import FileField from '~/components/forms/FileField';
 
 export default {
@@ -20,11 +22,31 @@ export default {
         FileField,
     },
     data: () => ({
-        form: {},
+        form: null,
+        formDefaults: {
+            booklet: null,
+        },
     }),
-    created() {},
+    computed: {
+        ...mapGetters({
+            product: 'product/product',
+        }),
+    },
+    created() {
+        this.form = Form.create(this.formDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate(this.product || {});
+    },
+
     methods: {
-        async save() {},
+        async save() {
+            try {
+                await this.form.patch(`admin/products/${this.product.id}`);
+                this.$snackbar(`Брошюра товара успешно обновлена`);
+            } catch (e) {
+                this.$snackbar(e.message);
+            }
+        },
     },
 };
 </script>
