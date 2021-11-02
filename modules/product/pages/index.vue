@@ -128,6 +128,23 @@ export default {
                     name: 'is_in_home',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
+                {
+                    label: 'Иметь брошюра',
+                    name: 'has_booklet',
+                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                },
+                {
+                    label: 'Иметь видео',
+                    name: 'has_video',
+                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                },
+                {
+                    label: 'Уникальный контент',
+                    name: 'unique_content',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: statusLabels,
+                    multiple: true,
+                },
             ],
         };
     },
