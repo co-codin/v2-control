@@ -3,20 +3,18 @@
         v-bind="$attrs"
         :items="fieldItems"
         :loading="isLoading"
+        :search-input.sync="searchInput"
         @input="$emit('input', $event)"
         @keyup="searchItems($event.target.value)"
-        :search-input.sync="searchInput"
     >
         <template slot="no-data">
-            <div class="pl-2 pr-2">
-                Ничего не найдено. <v-btn text @click="addValue">Добавить?</v-btn>
-            </div>
+            <div class="pl-2 pr-2">Ничего не найдено. <v-btn text @click="addValue">Добавить?</v-btn></div>
         </template>
     </v-autocomplete>
 </template>
 
 <script>
-import FieldValue from "~/models/FieldValue";
+import FieldValue from '~/models/FieldValue';
 
 export default {
     props: {
@@ -34,15 +32,15 @@ export default {
             return this.loadedItems ? this.loadedItems : this.items;
         },
     },
+    watch: {
+        '$attrs.value': async function () {
+            await this.loadItems();
+        },
+    },
     async created() {
         if (this.value && !this.items) {
             await this.loadItems();
         }
-    },
-    watch: {
-        async "$attrs.value"() {
-            await this.loadItems();
-        },
     },
     methods: {
         async searchItems(query) {
@@ -65,8 +63,7 @@ export default {
             const fieldValue = new FieldValue({ value: this.searchInput });
             try {
                 await fieldValue.save();
-            }
-            catch (e) {
+            } catch (e) {
                 this.$snackbar('Произошла ошибка при создании');
             }
         },

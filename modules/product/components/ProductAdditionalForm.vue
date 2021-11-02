@@ -48,10 +48,10 @@
 </template>
 
 <script>
-import FieldValueAutocomplete from "~/components/forms/FieldValueAutocomplete";
+import { mapGetters } from 'vuex';
+import Form from 'form-backend-validation';
+import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import ContentEditor from '~/components/editors/ContentEditor';
-import {mapGetters} from "vuex";
-import Form from "form-backend-validation";
 
 export default {
     components: {
@@ -71,12 +71,12 @@ export default {
     }),
     computed: {
         ...mapGetters({
-            product: 'forms/product/product',
+            product: 'product/product',
         }),
     },
     created() {
         this.form = Form.create(this.formDefaults)
-            .withOptions({http: this.$axios, resetOnSuccess: false})
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.product || {});
     },
     methods: {
@@ -89,5 +89,5 @@ export default {
             }
         },
     },
-}
+};
 </script>

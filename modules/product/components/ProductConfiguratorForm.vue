@@ -14,9 +14,9 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
 import FormBlock from '~/components/forms/FormBlock';
-import { mapGetters, mapMutations } from "vuex";
 
 export default {
     components: {
@@ -31,7 +31,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            product: 'forms/product/product',
+            product: 'product/product',
             form: 'forms/configurator/form',
         }),
     },
@@ -39,17 +39,18 @@ export default {
         ...mapMutations({
             initForm: 'forms/configurator/INIT_FORM',
             fillForm: 'forms/configurator/FILL_FORM',
-            fillErrors: 'forms/configurator/FILL_ERRORS'
+            fillErrors: 'forms/configurator/FILL_ERRORS',
         }),
         async save() {
             try {
                 await this.$axios.put(`/admin/products/${this.product.id}/configurator`, this.form.data());
-            }
-            catch (e) {
+                this.$snackbar(`Конфигуратор успешно обновлен`);
+            } catch (e) {
                 const errors = e?.response?.data?.errors;
-                if(errors) {
+                if (errors) {
                     this.fillErrors(errors);
                 }
+                this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
             }
         },
     },

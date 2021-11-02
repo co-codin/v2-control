@@ -1,4 +1,4 @@
-import Form from "form-backend-validation";
+import Form from 'form-backend-validation';
 import { set } from 'lodash';
 
 export default {
@@ -10,7 +10,7 @@ export default {
     }),
 
     mutations: {
-        UPDATE_FIELD(state, {field, value}) {
+        UPDATE_FIELD(state, { field, value }) {
             set(state.form, field, value);
         },
         FILL_FORM(state, data) {
@@ -31,8 +31,7 @@ export default {
             });
         },
         INIT_FORM(state) {
-            state.form = Form.create(state.formDefaults)
-                .withOptions({ http: this.$axios, resetOnSuccess: false });
+            state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },
         FILL_ERRORS(state, errors) {
             state.form.errors.record(errors);
@@ -40,6 +39,6 @@ export default {
     },
 
     getters: {
-        form: state => state.form,
+        form: (state) => state.form,
     },
-}
+};

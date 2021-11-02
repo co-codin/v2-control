@@ -11,7 +11,9 @@
             />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
-                    <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                        >Сохранить</v-btn
+                    >
                 </v-col>
             </v-row>
         </form-block>
@@ -23,16 +25,9 @@
                     :error-messages="form.errors.get('images')"
                     :error="form.errors.has('images')"
                 >
-                    <file-uploader
-                        v-model="form.images"
-                        :multiple="true"
-                        :max="10"
-                        :object-format="true"
-                    ></file-uploader>
+                    <file-field v-for="(image, index) in images" :key="'image-' + index" v-model="form.images[index]" />
                 </v-input>
-                <v-btn type="submit" color="green" class="white--text text-uppercase">
-                    Сохранить
-                </v-btn>
+                <file-uploader v-model="form.images" :multiple="true" :max="10" :object-format="true"></file-uploader>
                 <v-row class="expansion-panel-actions mt-3">
                     <v-col>
                         <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -58,10 +53,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Form from 'form-backend-validation';
 import FileUploader from '~/components/FileUploader';
 import FormBlock from '~/components/forms/FormBlock';
-import FileField from "~/components/forms/FileField";
+import FileField from '~/components/forms/FileField';
 
 export default {
     components: {
@@ -80,17 +76,26 @@ export default {
     data() {
         return {
             editing: false,
-            form: Form.create()
-                .withData({ images: [...this.images] })
-                .withOptions({
-                    http: this.$axios,
-                    resetOnSuccess: false,
-                }),
+            form: null,
+            formDefaults: {
+                image: null,
+                video: null,
+            },
         };
+    },
+    computed: {
+        ...mapGetters({
+            product: 'product/product',
+        }),
+    },
+    created() {
+        this.form = Form.create(this.formDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate(this.product || {});
     },
     methods: {
         sendForm() {
-            this.form.patch(`/products/${this.$route.params.id}/images`).then((resp) => {
+            this.form.patch(`admin/products/${this.$route.params.id}`).then((resp) => {
                 this.$snackbar.success(`Галерея товара успешно обновлена`);
                 this.editing = false;
             });
