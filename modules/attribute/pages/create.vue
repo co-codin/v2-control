@@ -19,21 +19,21 @@ export default {
     data: () => ({
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список атрибутов', href: '/brands' },
-            { text: 'Добавление производителя' },
+            { text: 'Список атрибутов', href: '/attributes' },
+            { text: 'Добавление атрибутов' },
         ],
     }),
     head: {
-        title: 'Добавление производителя',
+        title: 'Добавление атрибутов',
     },
     methods: {
-        async createBrand(form) {
+        async createAttribute(form) {
             try {
-                await form.post('/admin/brands');
-                this.$snackbar(`Производитель ${form.name} успешно добавлен`);
-                await this.$router.push({ name: 'brands.index' });
+                await form.post('/admin/attributes');
+                this.$snackbar(`Атрибут ${form.name} успешно добавлен`);
+                await this.$router.push({ name: 'attributes.index' });
             } catch (e) {
-                this.$snackbar(`Произошла ошибка при создании производителя: ${e.message}`);
+                this.$snackbar(`Произошла ошибка при создании атрибута: ${e.message}`);
             }
         },
     },
