@@ -15,6 +15,9 @@ import { pageRoutes } from './modules/page/router';
 import { currencyRoutes } from './modules/currency/router';
 import { questionCategoryRoutes } from './modules/question-category/router';
 import { questionsRoutes } from './modules/question/router';
+import { vacancyRoutes } from './modules/vacancy/router';
+import { exportRoutes } from './modules/export/router';
+import { attributeRoutes } from './modules/attribute/router';
 
 export default {
     ssr: false,
@@ -134,6 +137,9 @@ export default {
                     ...currencyRoutes(resolve),
                     ...questionCategoryRoutes(resolve),
                     ...questionsRoutes(resolve),
+                    ...vacancyRoutes(resolve),
+                    ...exportRoutes(resolve),
+                    ...attributeRoutes(resolve),
                 ]
             );
         },

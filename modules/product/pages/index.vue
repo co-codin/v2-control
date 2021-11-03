@@ -67,7 +67,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { statusLabels } from '@/enums';
+import { statusLabels, uniqueContentList } from '@/enums';
 import Product from '../models/Product';
 import PageHeader from '~/components/common/PageHeader';
 
@@ -127,6 +127,35 @@ export default {
                     label: 'Отображается на главной',
                     name: 'is_in_home',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                },
+                {
+                    label: 'Иметь брошюра',
+                    name: 'has_booklet',
+                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                },
+                {
+                    label: 'Иметь видео',
+                    name: 'has_video',
+                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                },
+                {
+                    label: 'Уникальный контент',
+                    name: 'unique_content',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: uniqueContentList,
+                    multiple: true,
+                },
+                {
+                    label: 'Нет уникального контента',
+                    name: 'no_unique_content',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: uniqueContentList,
+                    multiple: true,
+                },
+                {
+                    label: 'Главная категория',
+                    name: 'categories.is_main',
+                    component: () => import('@/components/search/fields/CategoryTreeSearchField'),
                 },
             ],
         };

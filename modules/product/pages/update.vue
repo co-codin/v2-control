@@ -28,10 +28,7 @@
                     <seo-relation-form :seo="productSeo" @send="updateProductSeo" />
                 </form-block>
                 <form-block title="Уникальный контент">
-                    <product-form-unique-content
-                        v-if="$auth.loggedIn"
-                        :product_id="product.id"
-                    ></product-form-unique-content>
+                    <product-form-unique-content v-if="$auth.loggedIn" :product-id="product.id" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -94,7 +91,6 @@ export default {
         async updateProduct(form) {
             try {
                 await form.put(`/admin/products/${this.product.id}`);
-                // this.product.image = data.image;
                 this.$snackbar(`Товар успешно обновлен`);
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
