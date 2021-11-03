@@ -30,6 +30,7 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Вопросы', link: '/questions' },
                 { icon: 'mdi-cash-usd-outline', text: 'Вакансии', link: '/vacancies' },
                 { icon: 'mdi-cash-usd-outline', text: 'Экспорт', link: '/exports' },
+                { icon: 'mdi-cash-usd-outline', text: 'Аттрибуты', link: '/attributes' },
             ],
         },
         {
