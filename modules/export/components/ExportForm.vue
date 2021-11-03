@@ -12,7 +12,6 @@
 
                 <v-text-field
                     v-model="form.filename"
-                    v-digits-only
                     label="Название файла"
                     :error-messages="form.errors.get('filename')"
                     :error="form.errors.has('filename')"
@@ -20,7 +19,7 @@
                 <v-select
                     v-model="form.type"
                     label="Тип"
-                    :items="statusLabels"
+                    :items="exportTypeLabels"
                     :error-messages="form.errors.get('type')"
                     :error="form.errors.has('type')"
                 />
@@ -28,7 +27,7 @@
                 <v-select
                     v-model="form.frequency"
                     label="Частота"
-                    :items="statusLabels"
+                    :items="frequencyLabels"
                     :error-messages="form.errors.get('frequency')"
                     :error="form.errors.has('frequency')"
                 />
@@ -60,20 +59,23 @@ export default {
     data: () => ({
         formDefaults: {
             name: null,
-            type: n,
+            filename: null,
+            type: null,
+            frequency: null,
         },
         form: null,
-        statusLabels,
+        exportTypeLabels,
+        frequencyLabels,
     }),
     watch: {
-        brand(value) {
+        export(value) {
             this.form.populate(value);
         },
     },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
-            .populate(this.brand || {});
+            .populate(this.export || {});
     },
 };
 </script>
