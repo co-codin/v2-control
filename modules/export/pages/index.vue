@@ -65,7 +65,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { statusDescriptions } from '@/enums';
+import { exportTypeLabels, frequencyLabels } from '@/enums';
 import Export from '~/modules/export/models/Export';
 
 export default {
@@ -106,7 +106,13 @@ export default {
                     label: 'Тип',
                     name: 'type',
                     component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: statusDescriptions,
+                    items: exportTypeLabels,
+                },
+                {
+                    label: 'Частота',
+                    name: 'frequency',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: frequencyLabels,
                 },
             ],
         };
