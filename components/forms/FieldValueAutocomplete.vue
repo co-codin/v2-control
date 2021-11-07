@@ -4,6 +4,8 @@
         :items="fieldItems"
         :loading="isLoading"
         :search-input.sync="searchInput"
+        item-value="id"
+        item-text="value"
         @input="$emit('input', $event)"
         @keyup="searchItems($event.target.value)"
     >

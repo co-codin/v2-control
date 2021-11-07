@@ -1,9 +1,14 @@
 <template>
     <div>
         <page-header h1="Редактирование производителя" :breadcrumbs="breadcrumbs" />
+        <template v-if="category && !$fetchState.pending"> </template>
         <v-expansion-panels v-if="brand">
-            <brand-form :brand="brand" is-updating @send="updateBrand" />
-            <seo-relation-form :seo="seo" @send="updateBrandSeo" />
+            <form-block title="Основная информация">
+                <brand-form :brand="brand" is-updating @send="updateBrand" />
+            </form-block>
+            <form-block title="SEO">
+                <seo-relation-form :seo="seo" @send="updateBrandSeo" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -11,10 +16,12 @@
 <script>
 import BrandForm from '../components/BrandForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         SeoRelationForm,
         BrandForm,
