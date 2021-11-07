@@ -11,7 +11,7 @@
 <script>
 import BrandForm from '../components/BrandForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {

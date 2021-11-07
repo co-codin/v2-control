@@ -1,11 +1,19 @@
 <template>
     <div>
-        <page-header h1="Редактирование категории" :breadcrumbs="breadcrumbs"></page-header>
-        <v-expansion-panels v-if="category">
-            <category-form :category="category" is-updating @send="updateCategory" />
-            <seo-relation-form :seo="seo" @send="updateCategorySeo" />
-            <seo-relation-form :seo="seo" title="SEO данные товаров" @send="updateCategoryProductsSeo" />
-        </v-expansion-panels>
+        <page-header h1="Редактирование категории" :breadcrumbs="breadcrumbs" />
+        <template v-if="category && !$fetchState.pending">
+            <v-expansion-panels v-if="category">
+                <form-block title="Основная информация">
+                    <category-form :category="category" is-updating @send="updateCategory" />
+                </form-block>
+                <form-block title="SEO">
+                    <seo-relation-form :seo="seo" @send="updateCategorySeo" />
+                </form-block>
+                <form-block title="SEO данные товаров">
+                    <seo-relation-form :seo="seo" @send="updateCategoryProductsSeo" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
@@ -13,9 +21,11 @@
 import CategoryForm from '../components/CategoryForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         SeoRelationForm,
         CategoryForm,
