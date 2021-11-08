@@ -8,10 +8,6 @@ export default {
             ],
         },
         {
-            text: 'Пользователь',
-            items: [{ icon: 'mdi-cash-usd-outline', text: 'Профиль', link: '/user' }],
-        },
-        {
             text: 'Каталог',
             items: [
                 { icon: 'mdi-cash-usd-outline', text: 'Товары', link: '/products' },
