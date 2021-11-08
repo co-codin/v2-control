@@ -4,6 +4,7 @@
 
         <div class="mb-2">
             <v-btn :to="{ name: 'questions.create' }"> Добавить вопрос </v-btn>
+            <v-btn class="ml-2" :to="{ name: 'question-categories.index' }"> Категории вопросов </v-btn>
         </div>
 
         <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
