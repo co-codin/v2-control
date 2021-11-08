@@ -37,6 +37,7 @@ export default {
             items: [
                 { icon: 'mdi-cash-usd-outline', text: 'SEO правила', link: '/seo-rules' },
                 { icon: 'mdi-cash-usd-outline', text: 'Редиректы', link: '/redirects' },
+                { icon: 'mdi-cash-usd-outline', text: 'Канонические ссылки', link: '/canonicals' },
             ],
         },
 

@@ -11,7 +11,7 @@ export default {
         isLoading: true,
         tableFooterProps: {
             'items-per-page-options': [5, 10, 15, 50, 100, 200],
-            'items-per-page-text': "",
+            'items-per-page-text': '',
         },
         tableOptions: {
             itemsPerPage: null,
@@ -25,28 +25,28 @@ export default {
         PencilAltIcon,
         TrashIcon,
         DotsHorizontalIcon,
-        ExternalLinkIcon
+        ExternalLinkIcon,
     },
     computed: {
         filter() {
-            let filters = {};
-            Object.keys(this.searchForm).forEach(key => {
+            const filters = {};
+            Object.keys(this.searchForm).forEach((key) => {
                 filters[`filter[${key}]`] = this.searchForm[key];
             });
             return filters;
         },
         sort() {
             return this.tableOptions.sortBy.map((key, index) => {
-                const direction = this.tableOptions.sortDesc[index] ? '-' : "";
+                const direction = this.tableOptions.sortDesc[index] ? '-' : '';
                 return `${direction}${key}`;
             });
         },
         queryParams() {
             return {
-                "page[size]": this.tableOptions.itemsPerPage,
-                "page[number]": this.tableOptions.page,
+                'page[size]': this.tableOptions.itemsPerPage,
+                'page[number]': this.tableOptions.page,
                 ...this.filter,
-                "sort": this.sort,
+                sort: this.sort,
             };
         },
     },
@@ -60,7 +60,7 @@ export default {
                     per_page: this.tableOptions.itemsPerPage,
                     sort_by: this.tableOptions.sortBy,
                     sort_desc: this.tableOptions.sortDesc,
-                }
+                },
             });
             this.$fetch();
         },
@@ -74,12 +74,12 @@ export default {
             this.total = total;
         },
         async search(data) {
-            this.searchForm = Object.assign({}, {...data});
+            this.searchForm = { ...data };
             await this.$router.replace({
                 query: {
                     ...this.$route.query,
                     filter: qs.stringify(this.searchForm),
-                }
+                },
             });
             this.$fetch();
         },
@@ -89,8 +89,8 @@ export default {
         this.tableOptions = {
             itemsPerPage: +this.$route.query.per_page || 15,
             page: +this.$route.query.page || 1,
-            sortBy: [this.$route.query.sort_by || "id"].flat(),
-            sortDesc: [this.$route.query.sort_desc || "true"].flat().map(key => key === 'true'),
+            sortBy: [this.$route.query.sort_by || 'id'].flat(),
+            sortDesc: [this.$route.query.sort_desc || 'true'].flat().map((key) => key === 'true'),
         };
-    }
-}
+    },
+};
