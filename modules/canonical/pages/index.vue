@@ -35,7 +35,7 @@
                 </template>
 
                 <template #item.created_at="{ item }">
-                    <div>{{ item.asDate('created_at').fromNow() }}</div>
+                    <div>{{ item.created_at ? item.asDate('created_at').fromNow() : '' }}</div>
                 </template>
 
                 <template #item.action="{ item }">
@@ -88,11 +88,6 @@ export default {
                     label: 'Страница',
                     name: 'url',
                     component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
-                    label: 'ID',
-                    name: 'id',
-                    component: () => import('@/components/search/fields/ComboBoxSearchField'),
                 },
                 {
                     label: 'Каноническая ссылка',
