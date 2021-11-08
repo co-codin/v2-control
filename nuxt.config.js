@@ -18,6 +18,7 @@ import { questionsRoutes } from './modules/question/router';
 import { vacancyRoutes } from './modules/vacancy/router';
 import { exportRoutes } from './modules/export/router';
 import { attributeRoutes } from './modules/attribute/router';
+import { canonicalRoutes } from './modules/canonical/router';
 
 export default {
     ssr: false,
@@ -140,6 +141,7 @@ export default {
                     ...vacancyRoutes(resolve),
                     ...exportRoutes(resolve),
                     ...attributeRoutes(resolve),
+                    ...canonicalRoutes(resolve),
                 ]
             );
         },

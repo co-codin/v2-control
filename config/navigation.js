@@ -16,6 +16,8 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Характеристики', link: '/properties' },
                 { icon: 'mdi-cash-usd-outline', text: 'Фильтры', link: '/filters' },
                 { icon: 'mdi-cash-usd-outline', text: 'Валюты', link: '/currencies' },
+                { icon: 'mdi-cash-usd-outline', text: 'Экспорт товаров', link: '/exports' },
+                { icon: 'mdi-cash-usd-outline', text: 'Атрибуты', link: '/attributes' },
             ],
         },
         {
@@ -26,11 +28,8 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Публикации', link: '/publications' },
                 { icon: 'mdi-cash-usd-outline', text: 'Достижения', link: '/achievements' },
                 { icon: 'mdi-cash-usd-outline', text: 'Отзывы', link: '/customer-reviews' },
-                { icon: 'mdi-cash-usd-outline', text: 'Категории вопросов', link: '/question-categories' },
-                { icon: 'mdi-cash-usd-outline', text: 'Вопросы', link: '/questions' },
+                { icon: 'mdi-cash-usd-outline', text: 'Вопросы и ответы', link: '/questions' },
                 { icon: 'mdi-cash-usd-outline', text: 'Вакансии', link: '/vacancies' },
-                { icon: 'mdi-cash-usd-outline', text: 'Экспорт', link: '/exports' },
-                { icon: 'mdi-cash-usd-outline', text: 'Атрибуты', link: '/attributes' },
             ],
         },
         {
@@ -38,6 +37,7 @@ export default {
             items: [
                 { icon: 'mdi-cash-usd-outline', text: 'SEO правила', link: '/seo-rules' },
                 { icon: 'mdi-cash-usd-outline', text: 'Редиректы', link: '/redirects' },
+                { icon: 'mdi-cash-usd-outline', text: 'Канонические ссылки', link: '/canonicals' },
             ],
         },
     ],

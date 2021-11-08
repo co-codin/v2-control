@@ -1,15 +1,16 @@
 <template>
     <div>
         <page-header h1="Редактирование производителя" :breadcrumbs="breadcrumbs" />
-        <template v-if="category && !$fetchState.pending"> </template>
-        <v-expansion-panels v-if="brand">
-            <form-block title="Основная информация">
-                <brand-form :brand="brand" is-updating @send="updateBrand" />
-            </form-block>
-            <form-block title="SEO">
-                <seo-relation-form :seo="seo" @send="updateBrandSeo" />
-            </form-block>
-        </v-expansion-panels>
+        <template v-if="!$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <brand-form :brand="brand" is-updating @send="updateBrand" />
+                </form-block>
+                <form-block title="SEO">
+                    <seo-relation-form :seo="seo" @send="updateBrandSeo" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
