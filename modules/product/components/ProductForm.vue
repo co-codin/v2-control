@@ -1,13 +1,14 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <categories-tree-field
+        <category-tree-search-field
             label="Категории"
             :value="categoryIds"
-            multiple
             :error-messages="form.errors.get('categories')"
             :error="form.errors.has('categories')"
+            name="categoryIds"
             @input="updateCategories"
         />
+
         <v-select
             v-if="categoryIds.length > 1"
             label="Основная категория"
@@ -78,14 +79,14 @@ import { first, debounce } from 'lodash';
 import slugify from 'slugify';
 import { mapGetters } from 'vuex';
 import Category from '~/modules/category/models/Category';
-import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
 import { Status, statusLabels } from '~/enums';
+import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
     components: {
-        CategoriesTreeField,
+        CategoryTreeSearchField,
         EntityAutocompleteField,
     },
     props: {
