@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <div v-shortkey="['ctrl', '/']" class="d-flex flex-grow-1" @shortkey="onKeyup">
+        <div v-shortkey="['ctrl', '/']" class="d-flex flex-grow-1">
             <!-- Navigation -->
             <v-navigation-drawer
                 v-model="drawer"
@@ -53,51 +53,12 @@
                     :flat="!isToolbarDetached"
                 >
                     <div class="d-flex flex-grow-1 align-center">
-                        <!-- search input mobile -->
-                        <v-text-field
-                            v-if="showSearch"
-                            append-icon="mdi-close"
-                            placeholder="Search"
-                            prepend-inner-icon="mdi-magnify"
-                            hide-details
-                            solo
-                            flat
-                            autofocus
-                            @click:append="showSearch = false"
-                        ></v-text-field>
-
-                        <div v-else class="d-flex flex-grow-1 align-center">
+                        <div class="d-flex flex-grow-1 align-center">
                             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
                             <v-spacer class="d-none d-lg-block"></v-spacer>
 
-                            <!-- search input desktop -->
-                            <v-text-field
-                                ref="search"
-                                class="mx-1 hidden-xs-only"
-                                placeholder="Search"
-                                prepend-inner-icon="mdi-magnify"
-                                hide-details
-                                filled
-                                rounded
-                                dense
-                            ></v-text-field>
-
                             <v-spacer class="d-block d-sm-none"></v-spacer>
-
-                            <v-btn class="d-block d-sm-none" icon @click="showSearch = true">
-                                <v-icon>mdi-magnify</v-icon>
-                            </v-btn>
-
-                            <div class="hidden-xs-only mx-1">
-                                <toolbar-currency />
-                            </div>
-
-                            <toolbar-apps />
-
-                            <div class="mr-1">
-                                <toolbar-notifications />
-                            </div>
 
                             <toolbar-user />
                         </div>
@@ -119,38 +80,25 @@
 <script>
 import { mapState } from 'vuex';
 
-// navigation menu configurations
 import config from '../config';
 
 import MainMenu from '../components/navigation/MainMenu';
 import ToolbarUser from '../components/toolbar/ToolbarUser';
-import ToolbarApps from '../components/toolbar/ToolbarApps';
-import ToolbarCurrency from '../components/toolbar/ToolbarCurrency';
-import ToolbarNotifications from '../components/toolbar/ToolbarNotifications';
 
 export default {
     components: {
         MainMenu,
         ToolbarUser,
-        ToolbarApps,
-        ToolbarCurrency,
-        ToolbarNotifications,
     },
     data() {
         return {
             drawer: null,
-            showSearch: false,
 
             navigation: config.navigation,
         };
     },
     computed: {
         ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached']),
-    },
-    methods: {
-        onKeyup(e) {
-            this.$refs.search.focus();
-        },
     },
 };
 </script>
