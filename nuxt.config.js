@@ -61,7 +61,9 @@ export default {
     modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dayjs'],
 
     dayjs: {
+        locales: ['ru'],
         defaultLocale: 'ru',
+        plugins: ['relativeTime', 'advancedFormat'],
     },
 
     auth: {

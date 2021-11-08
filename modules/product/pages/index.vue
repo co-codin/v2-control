@@ -157,6 +157,21 @@ export default {
                     name: 'categories.is_main',
                     component: () => import('@/components/search/fields/CategoryTreeSearchField'),
                 },
+
+                {
+                    label: 'Производитель',
+                    name: 'brand_id',
+                    url: '/brands',
+                    itemValue: 'id',
+                    itemText: 'name',
+                    queryParams: "{ sort: 'name' }",
+                    placeholder: 'Введите название производителя',
+                    filterColumn: 'id',
+                    searchColumn: 'name',
+                    hideNoData: true,
+                    cacheItems: true,
+                    component: () => import('@/components/forms/EntityAutocompleteField'),
+                },
             ],
         };
     },
