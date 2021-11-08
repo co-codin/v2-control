@@ -19,7 +19,7 @@
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             @input="form.is_image_changed = true"
-        ></file-field>
+        />
 
         <slot name="buttons">
             <v-btn type="submit">Сохранить</v-btn>
