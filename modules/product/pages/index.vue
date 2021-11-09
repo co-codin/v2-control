@@ -164,7 +164,6 @@ export default {
                     url: '/brands',
                     itemValue: 'id',
                     itemText: 'name',
-                    queryParams: "{ sort: 'name' }",
                     placeholder: 'Введите название производителя',
                     filterColumn: 'id',
                     searchColumn: 'name',

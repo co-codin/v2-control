@@ -218,7 +218,10 @@ export default {
                 slugItems.push(this.form.name);
             }
 
-            this.form.slug = slugItems.map((word) => slugify(word, { lower: true })).join('-');
+            this.form.slug = slugItems
+                .map((word) => slugify(word, { lower: true }))
+                .join('-')
+                .replace(/[^a-z0-9]/gi, '');
 
             this.isUpdatingSlug = false;
         }, 200),
