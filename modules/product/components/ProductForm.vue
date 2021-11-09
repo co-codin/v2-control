@@ -221,7 +221,7 @@ export default {
             this.form.slug = slugItems
                 .map((word) => slugify(word, { lower: true }))
                 .join('-')
-                .replace(/[^a-z0-9]/gi, '');
+                .replace(/[^a-z0-9-]/gi, '');
 
             this.isUpdatingSlug = false;
         }, 200),
