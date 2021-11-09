@@ -41,4 +41,8 @@ export default {
     getters: {
         form: (state) => state.form,
     },
+
+    actions: {
+        async createConfigurator() {},
+    },
 };

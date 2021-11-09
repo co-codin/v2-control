@@ -43,6 +43,7 @@ export default {
         }),
         async save() {
             try {
+                // this.form.variations = this.form.variations.filter((variation) => variation.name !== null);
                 await this.$axios.put(`/admin/products/${this.product.id}/configurator`, this.form.data());
                 this.$snackbar(`Конфигуратор успешно обновлен`);
             } catch (e) {
