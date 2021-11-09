@@ -42,10 +42,13 @@
                 label="Видеообзор"
                 :error-messages="form.errors.get('video')"
                 :error="form.errors.has('video')"
+                :rules="urlRules"
             />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
-                    <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                        >Сохранить</v-btn
+                    >
                 </v-col>
             </v-row>
         </form-block>
@@ -84,6 +87,14 @@ export default {
                 is_image_changed: false,
             },
             newImages: [],
+            urlRules: [
+                (v) => {
+                    if (v && /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/.test(v)) {
+                        return true;
+                    }
+                    return false;
+                },
+            ],
         };
     },
     computed: {
@@ -98,18 +109,17 @@ export default {
     },
     methods: {
         async sendForm() {
-            // this.form.images.push(this.newImages);
-            console.log(this.form.images);
-            // try {
-            //     await this.form.patch(`admin/products/${this.product.id}`);
-            //     this.$snackbar(`Галерея товара успешно обновлена`);
-            //     this.editing = false;
-            // } catch (e) {
-            //     this.$snackbar(e.message);
-            // }
+            this.form.images = this.form.images.concat(this.newImages);
+            try {
+                await this.form.patch(`admin/products/${this.product.id}`);
+                this.$snackbar(`Галерея товара успешно обновлена`);
+                this.editing = false;
+            } catch (e) {
+                this.$snackbar(e.message);
+            }
         },
         removeImage(value) {
-            console.log(value);
+            this.form.images = this.form.images.filter((image) => image.image !== value);
         },
     },
 };

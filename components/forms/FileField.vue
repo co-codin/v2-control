@@ -26,6 +26,7 @@
                 </v-col>
             </v-row>
         </div>
+        <v-file-input v-else :value="value" v-bind="$attrs" @change="$emit('input', $event)"></v-file-input>
     </div>
 </template>
 
