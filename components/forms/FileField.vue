@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="file-field-wrap">
         <div v-if="isUploaded">
             <div class="v-label v-label-active theme--light">
                 {{ $attrs.label }}
             </div>
             <v-row>
-                <v-col cols="12" sm="4" md="3" class="pt-2">
+                <v-col class="pt-2">
                     <v-card>
                         <v-img v-if="isImage" :src="url" class="white--text align-end" min-height="200px" />
                         <v-card-title v-else>{{ value }}</v-card-title>
@@ -76,4 +76,9 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.file-field-wrap {
+    width: 33%;
+    padding: 15px;
+}
+</style>

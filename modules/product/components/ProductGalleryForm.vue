@@ -18,21 +18,21 @@
             </v-row>
         </form-block>
         <form-block title="Дополнительные фотографии">
-            <v-form @submit.prevent="$emit('send', form)">
+            <v-form class="gallery-form" @submit.prevent="$emit('send', form)">
                 <file-field
                     v-for="(image, index) in form.images"
                     :key="'image-' + index"
                     v-model="form.images[index].image"
                 />
-                <file-uploader v-model="newImages" :multiple="true" :max="10" :object-format="true" />
-                <v-row class="expansion-panel-actions mt-3">
-                    <v-col>
-                        <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
-                            >Сохранить</v-btn
-                        >
-                    </v-col>
-                </v-row>
             </v-form>
+            <file-uploader v-model="newImages" :multiple="true" :max="10" :object-format="true" />
+            <v-row class="expansion-panel-actions mt-3">
+                <v-col>
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                        >Сохранить</v-btn
+                    >
+                </v-col>
+            </v-row>
         </form-block>
         <form-block title="Видеообзор">
             <v-text-field
@@ -110,4 +110,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.gallery-form {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+</style>
