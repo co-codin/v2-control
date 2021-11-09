@@ -18,7 +18,7 @@
                                 <copy-icon />
                             </v-btn>
                             <v-spacer />
-                            <v-btn icon @click="$emit('input', null)">
+                            <v-btn icon @click="$emit('delete', value)">
                                 <trash-icon width="26" />
                             </v-btn>
                         </v-card-actions>

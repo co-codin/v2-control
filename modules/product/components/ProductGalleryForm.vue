@@ -18,11 +18,12 @@
             </v-row>
         </form-block>
         <form-block title="Дополнительные фотографии">
-            <v-form class="gallery-form" @submit.prevent="$emit('send', form)">
+            <v-form class="gallery-form">
                 <file-field
                     v-for="(image, index) in form.images"
                     :key="'image-' + index"
                     v-model="form.images[index].image"
+                    @delete="removeImage"
                 />
             </v-form>
             <file-uploader v-model="newImages" :multiple="true" :max="10" :object-format="true" />
@@ -97,14 +98,18 @@ export default {
     },
     methods: {
         async sendForm() {
-            this.form.images.push(this.newImages);
-            try {
-                await this.form.patch(`admin/products/${this.product.id}`);
-                this.$snackbar(`Галерея товара успешно обновлена`);
-                this.editing = false;
-            } catch (e) {
-                this.$snackbar(e.message);
-            }
+            // this.form.images.push(this.newImages);
+            console.log(this.form.images);
+            // try {
+            //     await this.form.patch(`admin/products/${this.product.id}`);
+            //     this.$snackbar(`Галерея товара успешно обновлена`);
+            //     this.editing = false;
+            // } catch (e) {
+            //     this.$snackbar(e.message);
+            // }
+        },
+        removeImage(value) {
+            console.log(value);
         },
     },
 };
