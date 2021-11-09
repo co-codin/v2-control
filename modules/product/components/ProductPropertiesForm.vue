@@ -133,23 +133,12 @@
                 >
             </v-col>
         </v-row>
-        <v-dialog v-model="newPropertyPopup" max-width="450" width="600">
+        <v-dialog v-model="newPropertyPopup" max-width="600" width="600">
             <v-card tile outlined>
-                <v-form v-if="propertyForm" @submit.prevent="createProperty">
+                <v-form @submit.prevent="createProperty">
                     <v-card-title> Создание сквозной характеристики </v-card-title>
                     <v-card-text>
-                        <v-text-field
-                            v-model="propertyForm.name"
-                            label="Название"
-                            :error-messages="propertyForm.errors.get('name')"
-                            :error="propertyForm.errors.has('name')"
-                        />
-                        <v-checkbox
-                            v-model="propertyForm.is_multiple"
-                            label="Множественное значение"
-                            :error-messages="propertyForm.errors.get('is_multiple')"
-                            :error="propertyForm.errors.has('is_multiple')"
-                        />
+                        <property-form @send="createProperty" />
                     </v-card-text>
                     <v-card-actions>
                         <v-btn type="submit" small color="green" class="white--text text-uppercase"
@@ -170,9 +159,11 @@ import draggable from 'vuedraggable';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import FieldValue from '~/models/FieldValue';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import PropertyForm from '~/modules/property/components/PropertyForm';
 
 export default {
     components: {
+        PropertyForm,
         FieldValueAutocomplete,
         EntityAutocompleteField,
         draggable,
@@ -279,8 +270,8 @@ export default {
         openPropertyPopup() {
             this.newPropertyPopup = true;
         },
-        async createProperty() {
-            const { data } = await this.propertyForm.post('/admin/properties');
+        async createProperty(form) {
+            const { data } = await form.post('/admin/properties');
             this.form.properties.push({
                 id: data.id,
                 name: data.name,
