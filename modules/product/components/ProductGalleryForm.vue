@@ -18,21 +18,22 @@
             </v-row>
         </form-block>
         <form-block title="Дополнительные фотографии">
-            <v-form @submit.prevent="$emit('send', form)">
+            <v-form class="gallery-form">
                 <file-field
                     v-for="(image, index) in form.images"
                     :key="'image-' + index"
                     v-model="form.images[index].image"
+                    @delete="removeImage"
                 />
-                <file-uploader v-model="newImages" :multiple="true" :max="10" :object-format="true" />
-                <v-row class="expansion-panel-actions mt-3">
-                    <v-col>
-                        <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
-                            >Сохранить</v-btn
-                        >
-                    </v-col>
-                </v-row>
             </v-form>
+            <file-uploader v-model="newImages" :multiple="true" :max="10" :object-format="true" />
+            <v-row class="expansion-panel-actions mt-3">
+                <v-col>
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                        >Сохранить</v-btn
+                    >
+                </v-col>
+            </v-row>
         </form-block>
         <form-block title="Видеообзор">
             <v-text-field
@@ -41,10 +42,13 @@
                 label="Видеообзор"
                 :error-messages="form.errors.get('video')"
                 :error="form.errors.has('video')"
+                :rules="urlRules"
             />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
-                    <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                        >Сохранить</v-btn
+                    >
                 </v-col>
             </v-row>
         </form-block>
@@ -83,6 +87,14 @@ export default {
                 is_image_changed: false,
             },
             newImages: [],
+            urlRules: [
+                (v) => {
+                    if (v && /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/.test(v)) {
+                        return true;
+                    }
+                    return false;
+                },
+            ],
         };
     },
     computed: {
@@ -97,7 +109,7 @@ export default {
     },
     methods: {
         async sendForm() {
-            this.form.images.push(this.newImages);
+            this.form.images = this.form.images.concat(this.newImages);
             try {
                 await this.form.patch(`admin/products/${this.product.id}`);
                 this.$snackbar(`Галерея товара успешно обновлена`);
@@ -106,8 +118,18 @@ export default {
                 this.$snackbar(e.message);
             }
         },
+        removeImage(value) {
+            this.form.images = this.form.images.filter((image) => image.image !== value);
+        },
     },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.gallery-form {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+</style>

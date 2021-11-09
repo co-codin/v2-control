@@ -33,6 +33,9 @@ export default {
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },
+        CLEAR_FORM(state) {
+            state.form.variations = state.form.variations.filter((variation) => variation.name !== null);
+        },
         FILL_ERRORS(state, errors) {
             state.form.errors.record(errors);
         },
@@ -40,5 +43,12 @@ export default {
 
     getters: {
         form: (state) => state.form,
+    },
+
+    actions: {
+        async createConfigurator({ state, commit }, productId) {
+            commit('CLEAR_FORM');
+            await this.$axios.put(`/admin/products/${productId}/configurator`, state.form.data());
+        },
     },
 };

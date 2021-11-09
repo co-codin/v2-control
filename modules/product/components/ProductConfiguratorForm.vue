@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
 import FormBlock from '~/components/forms/FormBlock';
 
@@ -41,9 +41,12 @@ export default {
             fillForm: 'forms/configurator/FILL_FORM',
             fillErrors: 'forms/configurator/FILL_ERRORS',
         }),
+        ...mapActions({
+            createConfigurator: 'forms/configurator/createConfigurator',
+        }),
         async save() {
             try {
-                await this.$axios.put(`/admin/products/${this.product.id}/configurator`, this.form.data());
+                await this.createConfigurator(this.product.id);
                 this.$snackbar(`Конфигуратор успешно обновлен`);
             } catch (e) {
                 const errors = e?.response?.data?.errors;
