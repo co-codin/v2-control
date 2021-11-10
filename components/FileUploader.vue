@@ -31,12 +31,9 @@
                         <div class="image-preview">
                             <div class="image-preview-wrap">
                                 <template v-if="checkType(image.image) === 'image'">
-                                    <img :src="image.image" alt />
+                                    <file-field v-model="image.image" />
                                 </template>
                                 <div v-else class="image-uploader-empty-bg file"></div>
-                                <div class="file-name">
-                                    <p>{{ checkName(image.image) }}</p>
-                                </div>
                                 <div class="delete" @click="deleteImage(i)"></div>
                             </div>
                         </div>
@@ -75,9 +72,11 @@
 <script>
 import mime from 'mime-types';
 import draggable from 'vuedraggable';
+import FileField from '~/components/forms/FileField';
 
 export default {
     components: {
+        FileField,
         draggable,
     },
     props: {
