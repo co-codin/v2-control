@@ -67,12 +67,8 @@
                 </div>
             </form-block>
             <form-block title="Особенность">
-                <v-input
-                    label="Особенность"
-                    :error-messages="form.errors.get('benefit')"
-                    :error="form.errors.has('benefit')"
-                >
-                    <content-editor v-model="form.benefit" />
+                <v-input label="Особенность">
+                    <content-editor v-model="form.benefits.benefit" />
                 </v-input>
             </form-block>
             <v-row class="expansion-panel-actions mt-3">
@@ -101,7 +97,7 @@ export default {
             formDefaults: {
                 benefits: {
                     chips: [],
-                    benefit: null,
+                    benefit: '',
                     information: [],
                 },
             },
@@ -131,7 +127,7 @@ export default {
     methods: {
         saveBenefits() {
             this.form.patch(`/admin/products/${this.product.id}`).then((resp) => {
-                this.$snackbar.success(`Особенности товара успешно обновлена`);
+                this.$snackbar(`Особенности товара успешно обновлена`);
             });
         },
         addChip() {

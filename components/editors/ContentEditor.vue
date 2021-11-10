@@ -1,5 +1,5 @@
 <template>
-    <editor :value="value" @input="$emit('input', $event)" :api-key="apiKey" :init="settings"> </editor>
+    <editor :value="value" :api-key="apiKey" :init="settings" @input="$emit('input', $event)"> </editor>
 </template>
 
 <script>
