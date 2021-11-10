@@ -3,7 +3,7 @@
         <v-alert dense type="info" outlined>
             В скором времени здесь появится возможность подгрузки сертификатов и прочей документации
         </v-alert>
-        <file-field v-model="form.booklet" :is-image="false" label="Брошюра" />
+        <file-field v-model="form.booklet" :is-image="false" label="Брошюра" @delete="form.booklet = null" />
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
