@@ -8,7 +8,7 @@
         </div>
 
         <div class="mb-2">
-            <v-btn :to="{ name: 'attributes.create' }"> Добавить атрибута </v-btn>
+            <v-btn :to="{ name: 'attributes.create' }"> Добавить атрибут </v-btn>
         </div>
 
         <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
