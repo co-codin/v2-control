@@ -4,6 +4,7 @@
         :items="fieldItems"
         :loading="isLoading"
         :search-input.sync="searchInput"
+        :value="value"
         item-value="id"
         item-text="value"
         @input="$emit('input', $event)"
@@ -22,6 +23,9 @@ export default {
     props: {
         items: {
             type: Array,
+        },
+        value: {
+            default: null,
         },
     },
     data: () => ({
