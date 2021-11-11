@@ -1,34 +1,29 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Редактирование публикации</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card :loading="isLoading" class="mb-3">
-            <v-card-title> Основная информация </v-card-title>
-            <v-card-text v-if="publication">
-                <publication-form :publication="publication" is-updating @send="updatePublication" />
-            </v-card-text>
-        </v-card>
-
-        <v-card :loading="isLoading">
-            <v-card-title> SEO </v-card-title>
-            <v-card-text v-if="publication">
-                <seo-relation-form :seo="seo" @send="updatePublicationSeo" />
-            </v-card-text>
-        </v-card>
+    <div>
+        <page-header h1="Редактирование публикации" :breadcrumbs="breadcrumbs" />
+        <template v-if="publication && !$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <publication-form :publication="publication" is-updating @send="updatePublication" />
+                </form-block>
+                <form-block title="SEO">
+                    <seo-relation-form :seo="seo" @send="updatePublicationSeo" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import PublicationForm from '../components/PublicationForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
+import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
+        PageHeader,
         SeoRelationForm,
         PublicationForm,
     },

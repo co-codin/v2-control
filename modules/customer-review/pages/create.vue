@@ -1,8 +1,10 @@
 <template>
     <div>
-        <page-header h1="Добавление производителя" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Добавление отзыва" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <customer-review-form @send="createCustomerReview" />
+            <form-block title="Основная информация">
+                <customer-review-form @send="createCustomerReview" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -10,9 +12,11 @@
 <script>
 import CustomerReviewForm from '../components/CustomerReviewForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         CustomerReviewForm,
     },
@@ -29,6 +33,8 @@ export default {
     methods: {
         async createCustomerReview(form) {
             try {
+                form.post = form.post_field;
+                delete form.post_field;
                 await form.post('/admin/customer-reviews');
                 this.$snackbar(`Отзыв ${form.name} успешно добавлен`);
                 await this.$router.push({ name: 'customer-reviews.index' });
