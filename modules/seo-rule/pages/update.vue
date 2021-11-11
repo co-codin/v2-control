@@ -1,19 +1,29 @@
 <template>
     <div>
         <page-header h1="Редактирование SEO правила" :breadcrumbs="breadcrumbs" />
-        <seo-rule-form v-if="seoRule" :seo-rule="seoRule" is-updating @send="updateSeoRule" />
-        <seo-relation-form :seo="seo" class="mt-3" @send="updateSeoRuleSeo" />
+        <template v-if="!$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <seo-rule-form v-if="seoRule" :seo-rule="seoRule" is-updating @send="updateSeoRule" />
+                </form-block>
+                <form-block title="SEO">
+                    <seo-relation-form :seo="seo" class="mt-3" @send="updateSeoRuleSeo" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import SeoRuleForm from '../components/SeoRuleForm';
 import SeoRule from '~/modules/seo-rule/models/SeoRule';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 import SeoRelationForm from '~/components/forms/SeoRelationForm';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         SeoRuleForm,
         SeoRelationForm,
         PageHeader,
