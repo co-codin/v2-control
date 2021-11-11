@@ -2,7 +2,9 @@
     <div>
         <page-header h1="Добавление атрибута" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <attribute-form @send="createAttribute" />
+            <form-block title="Основная информация">
+                <attribute-form @send="createAttribute" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -10,9 +12,11 @@
 <script>
 import AttributeForm from '../components/AttributeForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         AttributeForm,
     },

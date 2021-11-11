@@ -1,27 +1,23 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Добавление валюты</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card class="pa-2">
-            <currency-form @send="createCurrency">
-                <template slot="buttons">
-                    <v-btn type="submit">Добавить</v-btn>
-                </template>
-            </currency-form>
-        </v-card>
+    <div>
+        <page-header h1="Добавление валюты" :breadcrumbs="breadcrumbs" />
+        <v-expansion-panels :value="0">
+            <form-block title="Основная информация">
+                <currency-form @send="createCurrency" />
+            </form-block>
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import CurrencyForm from '../components/CurrencyForm';
+import FormBlock from '~/components/forms/FormBlock';
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
+        PageHeader,
+        FormBlock,
         CurrencyForm,
     },
     data: () => ({
