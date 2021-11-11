@@ -111,7 +111,10 @@ export default {
         isUpdatingSlug: false,
         productRules: [
             (v) => {
-                return v && /^[a-zA-Z0-9\-\_]$/.test(v);
+                if (v && /^[a-zA-Z0-9\-\_]$/.test(v)) {
+                    return true;
+                }
+                return false;
             },
         ],
     }),

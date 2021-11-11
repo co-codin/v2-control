@@ -10,7 +10,7 @@
         @input="$emit('input', $event)"
         @keyup="searchItems($event.target.value)"
     >
-        <template slot="no-data">
+        <template v-if="searchInput" slot="no-data">
             <div class="pl-2 pr-2">Ничего не найдено. <v-btn text @click="addValue">Добавить?</v-btn></div>
         </template>
     </v-autocomplete>
@@ -66,9 +66,14 @@ export default {
             this.isLoading = false;
         },
         async addValue() {
-            const fieldValue = new FieldValue({ value: this.searchInput });
             try {
-                await fieldValue.save();
+                const { data } = await this.$axios.$post('/admin/field-values', {
+                    value: this.searchInput,
+                });
+                this.loadedItems.push({
+                    data: [data],
+                });
+                this.$snackbar(`${this.searchInput} добавлен`);
             } catch (e) {
                 this.$snackbar('Произошла ошибка при создании');
             }
