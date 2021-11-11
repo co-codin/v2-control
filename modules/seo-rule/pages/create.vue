@@ -1,16 +1,22 @@
 <template>
     <div>
         <page-header h1="Добавление SEO правила" :breadcrumbs="breadcrumbs" />
-        <seo-rule-form @send="createSeoRule" />
+        <v-expansion-panels :value="0">
+            <form-block title="Основная информация">
+                <seo-rule-form @send="createSeoRule" />
+            </form-block>
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import SeoRuleForm from '../components/SeoRuleForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         SeoRuleForm,
         PageHeader,
     },

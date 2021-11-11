@@ -2,7 +2,9 @@
     <div>
         <page-header h1="Добавление страницы" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <page-form @send="createPage" />
+            <form-block title="Основная информация">
+                <page-form @send="createPage" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -10,9 +12,11 @@
 <script>
 import PageForm from '../components/PageForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         PageForm,
     },

@@ -1,27 +1,23 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Добавление категории</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card class="pa-2">
-            <question-category-form @send="createQuestionCategory">
-                <template slot="buttons">
-                    <v-btn type="submit">Добавить</v-btn>
-                </template>
-            </question-category-form>
-        </v-card>
+    <div>
+        <page-header h1="Добавление категории вопроса" :breadcrumbs="breadcrumbs" />
+        <v-expansion-panels :value="0">
+            <form-block title="Основная информация">
+                <question-category-form @send="createQuestionCategory" />
+            </form-block>
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import QuestionCategoryForm from '../components/QuestionCategoryForm';
+import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
+        PageHeader,
         QuestionCategoryForm,
     },
     data: () => ({

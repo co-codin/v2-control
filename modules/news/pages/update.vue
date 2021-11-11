@@ -1,30 +1,28 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <page-header h1="Редактирование новости" :breadcrumbs="breadcrumbs"></page-header>
-
-        <v-card :loading="isLoading" class="mb-3">
-            <v-card-title> Основная информация </v-card-title>
-            <v-card-text v-if="news">
-                <news-form :news="news" is-updating @send="updateNews" />
-            </v-card-text>
-        </v-card>
-
-        <v-card :loading="isLoading">
-            <v-card-title> SEO </v-card-title>
-            <v-card-text v-if="news">
-                <seo-relation-form :seo="seo" @send="updateNewsSeo" />
-            </v-card-text>
-        </v-card>
+    <div>
+        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
+        <template v-if="news && !$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <news-form :news="news" is-updating @send="updateNews" />
+                </form-block>
+                <form-block title="SEO">
+                    <seo-relation-form :seo="seo" @send="updateNewsSeo" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import NewsForm from '../components/NewsForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         SeoRelationForm,
         NewsForm,

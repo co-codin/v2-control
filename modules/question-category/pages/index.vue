@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Производители" :breadcrumbs="breadcrumbs"></page-header>
+        <page-header h1="Категории вопросов" :breadcrumbs="breadcrumbs"></page-header>
 
         <div class="mb-2">
             <v-btn :to="{ name: 'question-categories.create' }"> Добавить категории </v-btn>
@@ -82,7 +82,7 @@ export default {
                 { text: 'Статус', value: 'status.description', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
+            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список категорий' }],
             filters: [
                 {
                     label: 'Название',

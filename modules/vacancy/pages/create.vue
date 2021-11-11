@@ -2,7 +2,9 @@
     <div>
         <page-header h1="Добавление вакансии" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <vacancy-form @send="createVacancy" />
+            <form-block title="Основная информация">
+                <vacancy-form @send="createVacancy" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -10,9 +12,11 @@
 <script>
 import PageHeader from '~/components/common/PageHeader';
 import VacancyForm from '~/modules/vacancy/components/VacancyForm';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         VacancyForm,
         PageHeader,
     },

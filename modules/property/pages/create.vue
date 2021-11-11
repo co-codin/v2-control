@@ -1,27 +1,23 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Добавление характеристики</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card class="pa-2">
-            <property-form @send="createProperty">
-                <template slot="buttons">
-                    <v-btn type="submit">Добавить</v-btn>
-                </template>
-            </property-form>
-        </v-card>
+    <div>
+        <page-header h1="Добавление характеристики" :breadcrumbs="breadcrumbs" />
+        <v-expansion-panels :value="0">
+            <form-block title="Основная информация">
+                <property-form @send="createProperty" />
+            </form-block>
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import PropertyForm from '../components/PropertyForm';
+import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
+        PageHeader,
         PropertyForm,
     },
     data: () => ({

@@ -1,18 +1,24 @@
 <template>
     <div>
         <page-header h1="Редактирование достижения" :breadcrumbs="breadcrumbs" />
-        <v-expansion-panels v-if="achievement">
-            <achievement-form :achievement="achievement" is-updating @send="updateAchievement" />
-        </v-expansion-panels>
+        <template v-if="!$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <achievement-form :achievement="achievement" is-updating @send="updateAchievement" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import AchievementForm from '../components/AchievementForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         AchievementForm,
     },

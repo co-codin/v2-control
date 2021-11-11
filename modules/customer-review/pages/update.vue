@@ -1,18 +1,24 @@
 <template>
     <div>
-        <page-header h1="Редактирование производителя" :breadcrumbs="breadcrumbs" />
-        <v-expansion-panels v-if="customer_review">
-            <customer-review-form :customer-review="customer_review" is-updating @send="updateCustomerReview" />
-        </v-expansion-panels>
+        <page-header h1="Редактирование отзыва" :breadcrumbs="breadcrumbs" />
+        <template v-if="!$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <customer-review-form :customer-review="customer_review" is-updating @send="updateCustomerReview" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import CustomerReviewForm from '../components/CustomerReviewForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         CustomerReviewForm,
     },

@@ -1,18 +1,24 @@
 <template>
     <div>
-        <page-header h1="Редактирование экспорта" :breadcrumbs="breadcrumbs" />
-        <v-expansion-panels v-if="exportItem">
-            <export-form :export="exportItem" is-updating @send="updateExport" />
-        </v-expansion-panels>
+        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
+        <template v-if="exportItem && !$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <export-form :export="exportItem" is-updating @send="updateExport" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import PageHeader from '~/components/common/PageHeader';
 import ExportForm from '~/modules/export/components/ExportForm';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         ExportForm,
         PageHeader,
     },

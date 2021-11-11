@@ -1,22 +1,22 @@
 <template>
     <div>
-        <page-header h1="Добавление новости" :breadcrumbs="breadcrumbs"></page-header>
-        <v-card class="pa-2">
-            <news-form @send="createNews">
-                <template slot="buttons">
-                    <v-btn type="submit">Добавить</v-btn>
-                </template>
-            </news-form>
-        </v-card>
+        <page-header h1="Добавление новости" :breadcrumbs="breadcrumbs" />
+        <v-expansion-panels :value="0">
+            <form-block title="Основная информация">
+                <news-form @send="createNews" />
+            </form-block>
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import NewsForm from '../components/NewsForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         NewsForm,
     },

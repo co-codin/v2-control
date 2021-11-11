@@ -86,7 +86,6 @@ export default {
                 { text: 'Тип', align: 'left', value: 'type.description' },
                 { text: 'Частота', align: 'left', value: 'type.description' },
                 { text: 'Название файла', align: 'left', value: 'filename', sortable: false },
-                { text: 'Фильтр', align: 'left', value: 'filter', sortable: false },
 
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
@@ -121,7 +120,7 @@ export default {
         this.showLoading();
 
         const response = await Export.select({
-            exports: ['id', 'name', 'type', 'filename', 'frequency', 'filter'],
+            exports: ['id', 'name', 'type', 'filename', 'frequency'],
         })
             .params(this.queryParams)
             .get();

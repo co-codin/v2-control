@@ -1,27 +1,23 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Добавление достижения</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card class="pa-2">
-            <achievement-form @send="createAchievement">
-                <template slot="buttons">
-                    <v-btn type="submit">Добавить</v-btn>
-                </template>
-            </achievement-form>
-        </v-card>
+    <div>
+        <page-header h1="Добавление достижения" :breadcrumbs="breadcrumbs" />
+        <v-expansion-panels :value="0">
+            <form-block title="Основная информация">
+                <achievement-form @send="createAchievement" />
+            </form-block>
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import AchievementForm from '../components/AchievementForm';
+import FormBlock from '~/components/forms/FormBlock';
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
+        PageHeader,
+        FormBlock,
         AchievementForm,
     },
     data: () => ({

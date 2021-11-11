@@ -2,7 +2,9 @@
     <div>
         <page-header h1="Добавление вопроса" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <question-form @send="createQuestion" />
+            <form-block title="Основная информация">
+                <question-form @send="createQuestion" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -10,9 +12,11 @@
 <script>
 import QuestionForm from '../components/QuestionForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         QuestionForm,
     },

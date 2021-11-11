@@ -12,7 +12,7 @@
 <script>
 import ProductForm from '../components/ProductForm';
 import PageHeader from '~/components/common/PageHeader';
-import FormBlock from "~/components/forms/FormBlock";
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {

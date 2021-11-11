@@ -1,27 +1,23 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="d-flex align-center py-3">
-            <div>
-                <div class="display-1">Добавление публикации</div>
-                <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
-            </div>
-        </div>
-
-        <v-card class="pa-2">
-            <publication-form @send="createPublication">
-                <template slot="buttons">
-                    <v-btn type="submit">Добавить</v-btn>
-                </template>
-            </publication-form>
-        </v-card>
+    <div>
+        <page-header h1="Добавление публикации" :breadcrumbs="breadcrumbs" />
+        <v-expansion-panels :value="0">
+            <form-block title="Основная информация">
+                <publication-form @send="createPublication" />
+            </form-block>
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import PublicationForm from '../components/PublicationForm';
+import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
+        PageHeader,
         PublicationForm,
     },
     data: () => ({

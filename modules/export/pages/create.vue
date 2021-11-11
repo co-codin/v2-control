@@ -2,7 +2,9 @@
     <div>
         <page-header h1="Добавление экспорта" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <export-form @send="createExport" />
+            <form-block title="Основная информация">
+                <export-form @send="createExport" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -10,9 +12,11 @@
 <script>
 import ExportForm from '../components/ExportForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         ExportForm,
         PageHeader,
     },

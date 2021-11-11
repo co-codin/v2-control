@@ -2,17 +2,21 @@
     <div>
         <page-header h1="Добавление категории" :breadcrumbs="breadcrumbs"></page-header>
         <v-expansion-panels :value="0">
-            <category-form @send="createCategory" />
+            <form-block title="Основная информация">
+                <category-form @send="createCategory" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import CategoryForm from '../components/CategoryForm';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         CategoryForm,
     },

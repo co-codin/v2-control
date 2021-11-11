@@ -1,18 +1,24 @@
 <template>
     <div>
-        <page-header h1="Редактирование атрибута" :breadcrumbs="breadcrumbs" />
-        <v-expansion-panels v-if="attribute">
-            <attribute-form :attribute="attribute" is-updating @send="updateAttribute" />
-        </v-expansion-panels>
+        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
+        <template v-if="attribute && !$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <attribute-form :attribute="attribute" is-updating @send="updateAttribute" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import AttributeForm from '~/modules/attribute/components/AttributeForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         AttributeForm,
     },

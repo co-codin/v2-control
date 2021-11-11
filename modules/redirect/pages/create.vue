@@ -1,16 +1,22 @@
 <template>
     <div>
         <page-header h1="Добавление редиректа" :breadcrumbs="breadcrumbs" />
-        <redirect-form @send="createRedirect" />
+        <v-expansion-panels :value="0">
+            <form-block title="Основная информация">
+                <redirect-form @send="createRedirect" />
+            </form-block>
+        </v-expansion-panels>
     </div>
 </template>
 
 <script>
 import RedirectForm from '../components/RedirectForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         RedirectForm,
         PageHeader,
     },

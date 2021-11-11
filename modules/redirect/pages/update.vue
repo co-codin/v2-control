@@ -1,17 +1,25 @@
 <template>
     <div>
         <page-header h1="Редактирование редиректа" :breadcrumbs="breadcrumbs" />
-        <redirect-form v-if="redirect" :seo-rule="redirect" is-updating @send="updateRedirect" />
+        <template v-if="!$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <redirect-form v-if="redirect" :redirect="redirect" is-updating @send="updateRedirect" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import Redirect from '~/modules/redirect/models/Redirect';
-import RedirectForm from "~/modules/redirect/components/RedirectForm";
+import RedirectForm from '~/modules/redirect/components/RedirectForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         RedirectForm,
         PageHeader,
     },
