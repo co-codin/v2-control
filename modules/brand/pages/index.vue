@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Производители" :breadcrumbs="breadcrumbs"></page-header>
+        <page-header h1="Производители" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
             <v-btn :to="{ name: 'brands.create' }"> Добавить производителя </v-btn>
