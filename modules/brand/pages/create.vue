@@ -2,7 +2,9 @@
     <div>
         <page-header h1="Добавление производителя" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
-            <brand-form @send="createBrand" />
+            <form-block title="Основная информация">
+                <brand-form @send="createBrand" />
+            </form-block>
         </v-expansion-panels>
     </div>
 </template>
@@ -10,9 +12,11 @@
 <script>
 import BrandForm from '../components/BrandForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         BrandForm,
     },
