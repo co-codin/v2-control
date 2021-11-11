@@ -1,18 +1,24 @@
 <template>
     <div>
         <page-header h1="Редактирование вопроса" :breadcrumbs="breadcrumbs" />
-        <v-expansion-panels v-if="question">
-            <question-form :question="question" is-updating @send="updateQuestion" />
-        </v-expansion-panels>
+        <template v-if="!$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <question-form :question="question" is-updating @send="updateQuestion" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import QuestionForm from '../components/QuestionForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         QuestionForm,
     },
