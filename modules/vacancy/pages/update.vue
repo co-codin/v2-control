@@ -1,18 +1,24 @@
 <template>
     <div>
-        <page-header h1="Редактирование вакансии" :breadcrumbs="breadcrumbs" />
-        <v-expansion-panels v-if="vacancy">
-            <vacancy-form :vacancy="vacancy" is-updating @send="updateVacancy" />
-        </v-expansion-panels>
+        <page-header h1="Редактирование производителя" :breadcrumbs="breadcrumbs" />
+        <template v-if="!$fetchState.pending">
+            <v-expansion-panels>
+                <form-block title="Основная информация">
+                    <vacancy-form :vacancy="vacancy" is-updating @send="updateVacancy" />
+                </form-block>
+            </v-expansion-panels>
+        </template>
     </div>
 </template>
 
 <script>
 import VacancyForm from '../components/VacancyForm';
 import PageHeader from '~/components/common/PageHeader';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
     components: {
+        FormBlock,
         PageHeader,
         VacancyForm,
     },

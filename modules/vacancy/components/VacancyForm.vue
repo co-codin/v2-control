@@ -1,50 +1,45 @@
 <template>
-    <v-expansion-panel>
-        <v-expansion-panel-header class="title">Основная информация</v-expansion-panel-header>
-        <v-expansion-panel-content>
-            <v-form @submit.prevent="$emit('send', form)">
-                <v-text-field
-                    v-model="form.name"
-                    label="Название"
-                    :error-messages="form.errors.get('name')"
-                    :error="form.errors.has('name')"
-                />
+    <v-form @submit.prevent="$emit('send', form)">
+        <v-text-field
+            v-model="form.name"
+            label="Название"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+        />
 
-                <v-text-field
-                    v-model="form.slug"
-                    label="Ссылка"
-                    :error-messages="form.errors.get('slug')"
-                    :error="form.errors.has('slug')"
-                />
+        <v-text-field
+            v-model="form.slug"
+            label="Ссылка"
+            :error-messages="form.errors.get('slug')"
+            :error="form.errors.has('slug')"
+        />
 
-                <v-select
-                    v-model="form.status"
-                    label="Статус"
-                    :items="statusLabels"
-                    :error-messages="form.errors.get('status')"
-                    :error="form.errors.has('status')"
-                />
+        <v-select
+            v-model="form.status"
+            label="Статус"
+            :items="statusLabels"
+            :error-messages="form.errors.get('status')"
+            :error="form.errors.has('status')"
+        />
 
-                <v-textarea
-                    v-model="form.short_description"
-                    label="Краткое описание"
-                    :error-messages="form.errors.get('short_description')"
-                    :error="form.errors.has('short_description')"
-                />
-                <v-input
-                    label="Подробное описание"
-                    :error-messages="form.errors.get('full_description')"
-                    :error="form.errors.has('full_description')"
-                >
-                    <content-editor v-model="form.full_description" />
-                </v-input>
+        <v-textarea
+            v-model="form.short_description"
+            label="Краткое описание"
+            :error-messages="form.errors.get('short_description')"
+            :error="form.errors.has('short_description')"
+        />
+        <v-input
+            label="Подробное описание"
+            :error-messages="form.errors.get('full_description')"
+            :error="form.errors.has('full_description')"
+        >
+            <content-editor v-model="form.full_description" />
+        </v-input>
 
-                <slot name="buttons">
-                    <v-btn type="submit">Сохранить</v-btn>
-                </slot>
-            </v-form>
-        </v-expansion-panel-content>
-    </v-expansion-panel>
+        <slot name="buttons">
+            <v-btn type="submit">Сохранить</v-btn>
+        </slot>
+    </v-form>
 </template>
 
 <script>
