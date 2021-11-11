@@ -73,6 +73,7 @@ export default {
             this.$emit('input', currentValue);
         },
         getItemTextByValue(value) {
+            console.log(value);
             return this.items.find((item) => item.value === +value)?.text;
         },
     },
