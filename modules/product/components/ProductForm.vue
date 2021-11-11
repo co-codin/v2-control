@@ -198,7 +198,7 @@ export default {
 
             this.isUpdatingSlug = true;
 
-            const slugItems = [];
+            let slugItems = [];
 
             if (this.categories.length === 1) {
                 slugItems.push(first(this.categories).product_name);
@@ -218,10 +218,14 @@ export default {
                 slugItems.push(this.form.name);
             }
 
-            this.form.slug = slugItems
-                .map((word) => slugify(word, { lower: true }))
-                .join('-')
-                .replace(/[^a-z0-9-]/gi, '');
+            slugItems = slugItems.filter((slugItem) => slugItem !== null);
+
+            if (slugItems.length) {
+                this.form.slug = slugItems
+                    .map((word) => slugify(word, { lower: true }))
+                    .join('-')
+                    .replace(/[^a-z0-9-]/gi, '');
+            }
 
             this.isUpdatingSlug = false;
         }, 200),

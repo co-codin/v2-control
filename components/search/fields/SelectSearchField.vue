@@ -51,7 +51,7 @@ export default {
         toInputValue() {
             if (this.multiple) {
                 const arrayValue = !Array.isArray(this.value) ? Array(this.value) : this.value;
-                return arrayValue.filter((value) => value).map((value) => +value);
+                return arrayValue.filter((value) => value).map((value) => (typeof value === Number ? +value : value));
             }
             return +this.value;
         },
@@ -73,7 +73,9 @@ export default {
             this.$emit('input', currentValue);
         },
         getItemTextByValue(value) {
-            return this.items.find((item) => item.value === +value)?.text;
+            const data = this.items.find((item) => ((item.value === typeof value) === Number ? +value : value))?.text;
+
+            return data;
         },
     },
 };

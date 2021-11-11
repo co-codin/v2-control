@@ -1,8 +1,7 @@
-import Model from "~/models/Model";
+import Model from '~/models/Model';
 
-export default class FieldValue extends Model
-{
-  resource() {
-    return 'field-values';
-  }
+export default class FieldValue extends Model {
+    resource() {
+        return 'field-values';
+    }
 }

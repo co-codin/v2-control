@@ -129,12 +129,12 @@ export default {
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
                 {
-                    label: 'Иметь брошюра',
+                    label: 'Есть брошюра',
                     name: 'has_booklet',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
                 {
-                    label: 'Иметь видео',
+                    label: 'Есть видео',
                     name: 'has_video',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
@@ -143,14 +143,12 @@ export default {
                     name: 'unique_content',
                     component: () => import('@/components/search/fields/SelectSearchField'),
                     items: uniqueContentList,
-                    multiple: true,
                 },
                 {
                     label: 'Нет уникального контента',
                     name: 'no_unique_content',
                     component: () => import('@/components/search/fields/SelectSearchField'),
                     items: uniqueContentList,
-                    multiple: true,
                 },
                 {
                     label: 'Главная категория',
