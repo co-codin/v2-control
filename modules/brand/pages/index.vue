@@ -144,11 +144,13 @@ export default {
         this.showLoading();
 
         const response = await Brand.select({
-            brands: ['id', 'name', 'slug', 'status', 'created_at'],
+            brands: ['id', 'name', 'slug', 'status', 'country_id', 'created_at'],
         })
             .with('country')
             .params(this.queryParams)
             .get();
+
+        console.log(response.data);
 
         this.brands = Brand.hydrate(response.data);
 
