@@ -1,6 +1,6 @@
 <template>
-    <div class="file-field-wrap">
-        <div v-if="isUploaded">
+    <div>
+        <div v-if="isUploaded" class="file-field-wrap">
             <div class="v-label v-label-active theme--light">
                 {{ $attrs.label }}
             </div>
@@ -26,6 +26,7 @@
                 </v-col>
             </v-row>
         </div>
+
         <v-file-input v-else :value="value" v-bind="$attrs" @change="$emit('input', $event)"></v-file-input>
     </div>
 </template>
@@ -77,6 +78,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+//.gallery-form > div {
+//    width: 33%;
+//    padding: 15px;
+//}
 .file-field-wrap {
     width: 33%;
     padding: 15px;

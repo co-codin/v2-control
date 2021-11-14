@@ -6,7 +6,7 @@
             <v-btn :to="{ name: 'brands.create' }"> Добавить производителя </v-btn>
         </div>
 
-        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
@@ -97,6 +97,11 @@ export default {
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
             filters: [
                 {
+                    label: 'Быстрый поиск',
+                    name: 'live',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
                     label: 'Название',
                     name: 'name',
                     component: () => import('@/components/search/fields/TextSearchField'),
@@ -127,6 +132,11 @@ export default {
                     name: 'is_in_home',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
+                {
+                    label: 'Страна',
+                    name: 'country_id',
+                    component: () => import('@/components/forms/FieldValueAutocomplete'),
+                },
             ],
         };
     },
@@ -134,7 +144,7 @@ export default {
         this.showLoading();
 
         const response = await Brand.select({
-            brands: ['id', 'name', 'slug', 'status', 'created_at'],
+            brands: ['id', 'name', 'slug', 'status', 'country_id', 'created_at'],
         })
             .with('country')
             .params(this.queryParams)
@@ -147,20 +157,6 @@ export default {
     },
     head: {
         title: 'Производители',
-    },
-    async mounted() {
-        const { data } = await this.$axios.$get('/field-values');
-        this.filters.push({
-            label: 'Страна',
-            name: 'country_id',
-            component: () => import('@/components/search/fields/SelectSearchField'),
-            items: data.map((item) => {
-                return {
-                    text: item.value,
-                    value: item.id,
-                };
-            }),
-        });
     },
     methods: {
         async deleteBrand(brand) {
