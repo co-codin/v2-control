@@ -150,8 +150,6 @@ export default {
             .params(this.queryParams)
             .get();
 
-        console.log(response.data);
-
         this.brands = Brand.hydrate(response.data);
 
         this.setTotal(response.meta.total);
