@@ -7,6 +7,7 @@
         :value="value"
         item-value="id"
         item-text="value"
+        :multiple="multiple"
         @input="$emit('input', $event)"
         @keyup="searchItems($event.target.value)"
     >
@@ -26,6 +27,9 @@ export default {
         },
         value: {
             default: null,
+        },
+        multiple: {
+            default: false,
         },
     },
     data: () => ({
@@ -70,9 +74,12 @@ export default {
                 const { data } = await this.$axios.$post('/admin/field-values', {
                     value: this.searchInput,
                 });
+                console.log(this.loadedItems);
                 this.loadedItems.push({
                     data: [data],
                 });
+                console.log(data);
+                console.log(this.loadedItems);
                 this.$snackbar(`${this.searchInput} добавлен`);
             } catch (e) {
                 this.$snackbar('Произошла ошибка при создании');
