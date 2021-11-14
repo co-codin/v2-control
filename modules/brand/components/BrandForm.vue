@@ -31,6 +31,7 @@
             :error-messages="form.errors.get('is_in_home')"
             :error="form.errors.has('is_in_home')"
         />
+
         <file-field
             v-model="form.image"
             label="Логотип"
@@ -39,6 +40,7 @@
             prepend-icon="mdi-image"
             @input="form.is_image_changed = true"
         />
+
         <field-value-autocomplete
             v-model="form.country_id"
             label="Страна"
