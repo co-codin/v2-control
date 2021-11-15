@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Редактирование новости" :breadcrumbs="breadcrumbs" />
         <template v-if="news && !$fetchState.pending">
             <v-expansion-panels>
                 <form-block title="Основная информация">
