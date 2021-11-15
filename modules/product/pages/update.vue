@@ -1,7 +1,7 @@
 <template>
     <div>
-        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
         <template v-if="product && !$fetchState.pending">
+            <page-header :h1="`Редактирование товара ${product.name}`" :breadcrumbs="breadcrumbs" />
             <v-expansion-panels>
                 <form-block title="Основная информация">
                     <product-form is-updating @send="updateProduct" />

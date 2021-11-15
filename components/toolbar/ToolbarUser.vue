@@ -8,7 +8,7 @@
 
         <!-- user menu list -->
         <v-list dense nav>
-            <v-list-item @click.prevent="logout">
+            <v-list-item @click="logout">
                 <v-list-item-icon>
                     <v-icon small>mdi-logout-variant</v-icon>
                 </v-list-item-icon>
@@ -32,6 +32,7 @@ export default {
     methods: {
         async logout() {
             await this.$auth.logout('local');
+            this.$router.push({ name: 'login' });
         },
     },
 };
