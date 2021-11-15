@@ -7,15 +7,15 @@
 
 <script>
 export default {
-  props: {
-    h1: {
-      type: String,
-      required: true,
+    props: {
+        h1: {
+            type: String,
+            required: true,
+        },
+        breadcrumbs: {
+            type: Array,
+            default: () => [],
+        },
     },
-    breadcrumbs: {
-      type: Array,
-      default: () => ([]),
-    },
-  }
-}
+};
 </script>
