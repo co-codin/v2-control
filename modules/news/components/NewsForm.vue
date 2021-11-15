@@ -30,15 +30,12 @@
             :error="form.errors.has('slug')"
         />
 
-        <v-input
-            label="Главная фотография"
-            dense
+        <file-field
+            v-model="form.image"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             @input="form.is_image_changed = true"
-        >
-            <file-uploader v-model="form.image" />
-        </v-input>
+        />
 
         <v-input
             label="Короткое описание"
@@ -93,9 +90,11 @@ import 'flatpickr/dist/flatpickr.css';
 import { Russian } from 'flatpickr/dist/l10n/ru.js';
 import ContentEditor from '~/components/editors/ContentEditor';
 import FileUploader from '~/components/FileUploader';
+import FileField from '~/components/forms/FileField';
 
 export default {
     components: {
+        FileField,
         FileUploader,
         ContentEditor,
         flatPickr,
@@ -144,8 +143,6 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.news || {});
-
-        this.form.image = this.form.image ? `${this.$config.app.storageUrl}/${this.form.image}` : null;
     },
 };
 </script>
