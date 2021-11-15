@@ -96,9 +96,9 @@ export default {
             description: null,
         },
         typeLabels: [
-            { value: 1, text: 'Список галочек' },
-            { value: 2, text: 'Слайдер' },
-            { value: 3, text: 'Галочка' },
+            { value: 1, text: 'Хранилище' },
+            { value: 2, text: 'Шаг' },
+            { value: 3, text: 'Значение для поиска' },
         ],
         form: null,
     }),
