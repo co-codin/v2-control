@@ -35,14 +35,7 @@
 
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
-                        <v-btn
-                            icon
-                            width="22"
-                            height="22"
-                            target="_blank"
-                            link
-                            :href="`${$config.app.siteUrl}/publications/${item.slug}`"
-                        >
+                        <v-btn icon width="22" height="22" target="_blank" link :href="`${item.url}`">
                             <external-link-icon class="h-6 w-6" />
                         </v-btn>
                         <v-btn
