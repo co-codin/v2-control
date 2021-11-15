@@ -71,7 +71,7 @@ export default {
         },
 
         openImage() {
-            window.open(this.url);
+            window.open(`${this.$config.app.storageUrl}/${this.value}`);
         },
     },
 };
