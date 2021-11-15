@@ -2,6 +2,18 @@
     <div>
         <template v-if="product && !$fetchState.pending">
             <page-header :h1="`Редактирование товара ${product.name}`" :breadcrumbs="breadcrumbs" />
+            <div class="mb-2">
+                <v-btn
+                    icon
+                    width="22"
+                    height="22"
+                    target="_blank"
+                    link
+                    :href="`${$config.app.siteUrl}/product/${product.slug}/${product.id}`"
+                >
+                    <external-link-icon class="h-6 w-6" />
+                </v-btn>
+            </div>
             <v-expansion-panels>
                 <form-block title="Основная информация">
                     <product-form is-updating @send="updateProduct" />
@@ -49,9 +61,11 @@ import ProductConfiguratorForm from '~/modules/product/components/ProductConfigu
 import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
 import ProductBenefitsForm from '~/modules/product/components/ProductBenefitsForm';
 import ProductFormUniqueContent from '~/modules/product/components/ProductFormUniqueContent';
+import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 
 export default {
     components: {
+        ExternalLinkIcon,
         ProductFormUniqueContent,
         PageHeader,
         FormBlock,
