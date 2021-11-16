@@ -44,7 +44,9 @@
                                 <v-card flat>
                                     <v-card-text>
                                         <v-text-field
+                                            class="mt-1"
                                             label="Цена"
+                                            type="number"
                                             :error-messages="form.errors.get(`variations.${index}.price`)"
                                             :error="form.errors.has(`variations.${index}.price`)"
                                             dense
@@ -53,7 +55,9 @@
                                             "
                                         />
                                         <v-text-field
+                                            class="mt-1"
                                             label="Предыдущая цена"
+                                            type="number"
                                             :error-messages="form.errors.get(`variations.${index}.previous_price`)"
                                             :error="form.errors.has(`variations.${index}.previous_price`)"
                                             dense
