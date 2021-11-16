@@ -12,8 +12,7 @@
                 placeholder="Выберите дату"
                 class="date-picker-input"
                 name="published_at"
-            >
-            </flat-pickr>
+            />
         </v-input>
 
         <v-text-field
@@ -35,6 +34,7 @@
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             @input="form.is_image_changed = true"
+            @delete="form.image = null"
         />
 
         <v-input
@@ -122,7 +122,7 @@ export default {
             view_num: null,
         },
         configPicker: {
-            dateFormat: 'Y-m-d H:i',
+            dateFormat: 'Y-m-d',
             enableTime: true,
             locale: Russian,
         },
@@ -138,6 +138,7 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.news || {});
+        this.form.published_at = this.$dayjs(this.news.published_at, 'DD-MM-YYYY').format('YYYY-MM-DD');
     },
 };
 </script>

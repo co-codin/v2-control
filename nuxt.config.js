@@ -63,7 +63,7 @@ export default {
     dayjs: {
         locales: ['ru'],
         defaultLocale: 'ru',
-        plugins: ['relativeTime', 'advancedFormat'],
+        plugins: ['relativeTime', 'advancedFormat', 'customParseFormat'],
     },
 
     auth: {
