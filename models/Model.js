@@ -38,7 +38,7 @@ export default class Model extends BaseModel {
 
     asDate(field) {
         moment.locale('ru');
-        return moment(this[field]);
+        return moment(this[field], 'DD-MM-YYYY');
     }
 
     static query() {
