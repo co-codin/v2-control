@@ -59,6 +59,7 @@
                             <v-spacer class="d-none d-lg-block"></v-spacer>
 
                             <v-spacer class="d-block d-sm-none"></v-spacer>
+                            <h4 class="mr-2">{{ $auth.user.name }}</h4>
 
                             <toolbar-user />
                         </div>
