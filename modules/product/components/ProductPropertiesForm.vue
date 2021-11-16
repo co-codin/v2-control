@@ -135,17 +135,10 @@
         </v-row>
         <v-dialog v-model="newPropertyPopup" max-width="600" width="600">
             <v-card tile outlined>
-                <v-form @submit.prevent="createProperty">
-                    <v-card-title> Создание сквозной характеристики </v-card-title>
-                    <v-card-text>
-                        <property-form @send="createProperty" />
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn type="submit" small color="green" class="white--text text-uppercase"
-                            >Создать характеристику
-                        </v-btn>
-                    </v-card-actions>
-                </v-form>
+                <v-card-title> Создание сквозной характеристики </v-card-title>
+                <v-card-text>
+                    <property-form @send="createProperty" />
+                </v-card-text>
             </v-card>
         </v-dialog>
     </v-form>
