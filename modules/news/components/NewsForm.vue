@@ -89,13 +89,12 @@ import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import { Russian } from 'flatpickr/dist/l10n/ru.js';
 import ContentEditor from '~/components/editors/ContentEditor';
-import FileUploader from '~/components/FileUploader';
 import FileField from '~/components/forms/FileField';
+import { statusLabels } from '~/enums';
 
 export default {
     components: {
         FileField,
-        FileUploader,
         ContentEditor,
         flatPickr,
     },
@@ -127,12 +126,8 @@ export default {
             enableTime: true,
             locale: Russian,
         },
-        statusLabels: [
-            { value: 1, text: 'Active' },
-            { value: 2, text: 'Inactive' },
-            { value: 3, text: 'Only By Url' },
-        ],
         form: null,
+        statusLabels,
     }),
     watch: {
         news(value) {
