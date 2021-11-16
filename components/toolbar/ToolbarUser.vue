@@ -1,8 +1,8 @@
 <template>
     <v-menu offset-y left transition="slide-y-transition">
         <template #activator="{ on }">
-            <v-btn icon class="elevation-2" v-on="on">
-                {{ $auth.user.name }}
+            <v-btn class="elevation-2" v-on="on">
+                {{ $auth.user.email }}
             </v-btn>
         </template>
 
