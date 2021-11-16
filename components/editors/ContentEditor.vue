@@ -45,9 +45,9 @@ export default {
             fd.append('file', blobInfo.blob(), blobInfo.filename());
             fd.append('resize', 1);
             this.$axios
-                .post('/tools/admin/upload', fd)
+                .post('/admin/upload', fd)
                 .then(({ data }) => {
-                    success(process.env.UPLOADS_BASE_URL + data);
+                    success(`${this.$config.app.storageUrl}/${data}`);
                 })
                 .catch((error) => {
                     failure(error.response.data.errors.file[0]);
