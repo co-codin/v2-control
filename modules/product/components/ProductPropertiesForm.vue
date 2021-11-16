@@ -200,8 +200,7 @@ export default {
             product: 'product/product',
         }),
         importantProperties() {
-            return this.form?.properties || [];
-            // return this.form?.properties?.filter((property) => property.is_important) || [];
+            return this.form?.properties?.filter((property) => property.is_important) || [];
         },
     },
     mounted() {
