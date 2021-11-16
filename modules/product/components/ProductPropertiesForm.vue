@@ -226,6 +226,7 @@ export default {
                     ...property.pivot,
                     id: property.id,
                     name: property.name,
+                    is_multiple: property.is_multiple,
                 }))
                 .sort((a, b) => {
                     let ret = 0;

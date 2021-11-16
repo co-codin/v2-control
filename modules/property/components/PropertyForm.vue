@@ -5,14 +5,14 @@
             label="Название"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
-        ></v-text-field>
+        />
 
         <v-text-field
             v-model="form.key"
             label="Ссылка"
             :error-messages="form.errors.get('key')"
             :error="form.errors.has('key')"
-        ></v-text-field>
+        />
 
         <v-input
             label="Описание"
@@ -26,6 +26,12 @@
         <v-checkbox v-model="form.is_hidden_from_product" label="Скрыть со страницы товара" />
         <v-checkbox v-model="form.is_hidden_from_comparison" label="Скрыть из сравнения" />
         <v-checkbox v-model="form.is_numeric" label="Число" />
+        <v-checkbox
+            v-model="form.is_multiple"
+            label="Многочисленно"
+            :error-messages="form.errors.get('is_in_home')"
+            :error="form.errors.has('is_in_home')"
+        />
         <slot name="buttons">
             <v-btn type="submit">Сохранить</v-btn>
         </slot>
@@ -58,6 +64,7 @@ export default {
             is_hidden_from_product: false,
             is_hidden_from_comparison: false,
             is_numeric: false,
+            is_multiple: false,
         },
         form: null,
     }),
