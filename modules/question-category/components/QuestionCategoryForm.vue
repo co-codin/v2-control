@@ -9,7 +9,7 @@
 
         <v-text-field
             v-model="form.slug"
-            label="Название"
+            label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
         />

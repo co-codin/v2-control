@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Характеристики" :breadcrumbs="breadcrumbs"></page-header>
+        <page-header h1="Характеристики" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
             <v-btn :to="{ name: 'properties.create' }"> Добавить характеристику </v-btn>
@@ -77,7 +77,7 @@ export default {
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
+            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список Характеристик' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="SEO правила" :breadcrumbs="breadcrumbs"></page-header>
+        <page-header h1="SEO правила" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
             <v-btn :to="{ name: 'seo-rules.create' }"> Добавить SEO правило </v-btn>

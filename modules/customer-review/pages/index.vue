@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
+    <div>
         <page-header h1="Отзывы" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
@@ -82,7 +82,7 @@ export default {
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
+            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список отзывов' }],
             filters: [
                 {
                     label: 'Название',

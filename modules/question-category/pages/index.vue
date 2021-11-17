@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Категории вопросов" :breadcrumbs="breadcrumbs"></page-header>
+        <page-header h1="Категории вопросов" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
             <v-btn :to="{ name: 'question-categories.create' }"> Добавить категории </v-btn>
