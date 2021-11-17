@@ -6,7 +6,7 @@
             <v-btn :to="{ name: 'properties.create' }"> Добавить характеристику </v-btn>
         </div>
 
-        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
@@ -52,7 +52,7 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import Property from '../models/Property';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
@@ -72,12 +72,18 @@ export default {
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Ссылка', align: 'left', value: 'key' },
+                { text: 'Ключ', align: 'left', value: 'key' },
+                { text: 'Единица измерения', align: 'left', value: 'unit' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
             filters: [
+                {
+                    label: 'Быстрый поиск',
+                    name: 'live',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
                 {
                     label: 'Название',
                     name: 'name',
@@ -89,7 +95,7 @@ export default {
                     component: () => import('@/components/search/fields/ComboBoxSearchField'),
                 },
                 {
-                    label: 'Ссылка',
+                    label: 'Ключ',
                     name: 'key',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
@@ -110,7 +116,7 @@ export default {
         this.showLoading();
 
         const response = await Property.select({
-            properties: ['id', 'name', 'key', 'created_at'],
+            properties: ['id', 'name', 'key', 'unit', 'created_at'],
         })
             .params(this.queryParams)
             .get();
