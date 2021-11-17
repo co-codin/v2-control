@@ -5,6 +5,7 @@
             :error-messages="form.errors.get('parent_id')"
             :error="form.errors.has('parent_id')"
             dense
+            :multiple="false"
         >
             <treeselect
                 v-model="form.parent_id"
@@ -23,17 +24,17 @@
         />
 
         <v-text-field
-            v-model="form.product_name"
-            label="Имя продукта"
-            :error-messages="form.errors.get('product_name')"
-            :error="form.errors.has('product_name')"
-        />
-
-        <v-text-field
             v-model="form.slug"
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+        />
+
+        <v-text-field
+            v-model="form.product_name"
+            label="Имя продукта"
+            :error-messages="form.errors.get('product_name')"
+            :error="form.errors.has('product_name')"
         />
 
         <file-field

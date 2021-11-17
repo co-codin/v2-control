@@ -35,6 +35,16 @@
 
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
+                        <v-btn
+                            icon
+                            width="22"
+                            height="22"
+                            target="_blank"
+                            link
+                            :href="`${$config.app.siteUrl}/store/${item.slug}`"
+                        >
+                            <external-link-icon class="h-6 w-6" />
+                        </v-btn>
                         <v-btn icon width="22" height="22" :to="{ name: 'categories.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
