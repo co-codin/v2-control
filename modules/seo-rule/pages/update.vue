@@ -44,7 +44,7 @@ export default {
         this.isLoading = false;
     },
     head: {
-        title: 'Редактирование достижения',
+        title: 'Редактирование SEO правила',
     },
     methods: {
         async updateSeoRule(form) {

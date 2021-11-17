@@ -2,7 +2,7 @@
     <v-form @submit.prevent="$emit('send', form)">
         <v-text-field
             v-model="form.name"
-            label="Название"
+            label="Комментарий"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
         />

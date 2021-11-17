@@ -47,10 +47,6 @@
                         <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteAttribute(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
-
-                        <v-btn icon width="22" height="22">
-                            <dots-horizontal-icon class="h-6 w-6" />
-                        </v-btn>
                     </div>
                 </template>
             </v-data-table>
