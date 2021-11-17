@@ -51,10 +51,6 @@
                         <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteExport(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
-
-                        <v-btn icon width="22" height="22">
-                            <dots-horizontal-icon class="h-6 w-6" />
-                        </v-btn>
                     </div>
                 </template>
             </v-data-table>
@@ -82,7 +78,7 @@ export default {
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
-                { text: 'Название', align: 'left', value: 'name' },
+                { text: 'Комментарий', align: 'left', value: 'name' },
                 { text: 'Тип', align: 'left', value: 'type.description' },
                 { text: 'Частота', align: 'left', value: 'type.description' },
                 { text: 'Название файла', align: 'left', value: 'filename', sortable: false },
@@ -92,7 +88,7 @@ export default {
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список достижений' }],
             filters: [
                 {
-                    label: 'Название',
+                    label: 'Комментарий',
                     name: 'name',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
