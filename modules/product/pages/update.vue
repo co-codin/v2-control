@@ -7,14 +7,13 @@
             />
             <div class="mb-2">
                 <v-btn
-                    icon
-                    width="22"
-                    height="22"
                     target="_blank"
                     link
                     :href="`${$config.app.siteUrl}/product/${product.slug}/${product.id}`"
+                    color="info"
+                    dark
                 >
-                    <external-link-icon class="h-6 w-6" /> Посмотреть на сайте
+                    <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
                 </v-btn>
             </div>
             <v-expansion-panels>
