@@ -6,7 +6,7 @@
             <v-btn :to="{ name: 'categories.create' }"> Добавить категорию </v-btn>
         </div>
 
-        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
@@ -35,6 +35,16 @@
 
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
+                        <v-btn
+                            icon
+                            width="22"
+                            height="22"
+                            target="_blank"
+                            link
+                            :href="`${$config.app.siteUrl}/store/${item.slug}`"
+                        >
+                            <external-link-icon class="h-6 w-6" />
+                        </v-btn>
                         <v-btn icon width="22" height="22" :to="{ name: 'categories.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
@@ -79,6 +89,16 @@ export default {
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список категорий' }],
             filters: [
+                {
+                    label: 'Быстрый поиск',
+                    name: 'live',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
+                    label: 'Главная категория',
+                    name: 'parent_id',
+                    component: () => import('@/components/search/fields/CategoryTreeSearchField'),
+                },
                 {
                     label: 'Название',
                     name: 'name',

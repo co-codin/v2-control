@@ -5,6 +5,7 @@
             :error-messages="form.errors.get('parent_id')"
             :error="form.errors.has('parent_id')"
             dense
+            :multiple="false"
         >
             <treeselect
                 v-model="form.parent_id"
@@ -23,17 +24,17 @@
         />
 
         <v-text-field
-            v-model="form.product_name"
-            label="Имя продукта"
-            :error-messages="form.errors.get('product_name')"
-            :error="form.errors.has('product_name')"
-        />
-
-        <v-text-field
             v-model="form.slug"
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+        />
+
+        <v-text-field
+            v-model="form.product_name"
+            label="Имя продукта"
+            :error-messages="form.errors.get('product_name')"
+            :error="form.errors.has('product_name')"
         />
 
         <file-field
@@ -69,10 +70,11 @@
         />
 
         <v-switch
-            v-model="form.is_hidden_in_parents"
-            label="Скрыть товары из родительской категории"
-            :error-messages="form.errors.get('is_hidden_in_parents')"
-            :error="form.errors.has('is_hidden_in_parents')"
+            v-if="!isUpdating"
+            v-model="form.attach_default_filters"
+            label="Применить фильтры по умолчанию"
+            :error-messages="form.errors.get('attach_default_filters')"
+            :error="form.errors.has('attach_default_filters')"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -90,6 +92,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import { mapGetters, mapActions } from 'vuex';
 import FileField from '../../../components/forms/FileField';
 import ContentEditor from '~/components/editors/ContentEditor';
+import { statusLabels } from '~/enums';
 
 export default {
     components: {
@@ -116,17 +119,13 @@ export default {
             product_name: null,
             full_description: null,
             is_in_home: false,
-            is_hidden_in_parents: false,
-            status: null,
+            status: 2,
             is_image_changed: false,
+            attach_default_filters: false,
         },
-        statusLabels: [
-            { value: 1, text: 'Отображается на сайте' },
-            { value: 2, text: 'Скрыто' },
-            { value: 3, text: 'Доступно только по URL' },
-            { value: 4, text: 'Удалено' },
-        ],
         form: null,
+        statusLabels,
+        isUpdatingSlug: false,
     }),
     computed: {
         ...mapGetters({
