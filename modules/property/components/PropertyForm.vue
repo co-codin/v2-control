@@ -52,10 +52,10 @@
         />
 
         <v-switch
-            v-model="form.is_multiple"
-            label="Многочисленно"
-            :error-messages="form.errors.get('is_multiple')"
-            :error="form.errors.has('is_multiple')"
+            v-model="form.is_boolean"
+            label="Только Да или Нет"
+            :error-messages="form.errors.get('is_boolean')"
+            :error="form.errors.has('is_boolean')"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -93,7 +93,7 @@ export default {
             is_hidden_from_product: false,
             is_hidden_from_comparison: false,
             is_numeric: false,
-            is_multiple: false,
+            is_boolean: false,
         },
         form: null,
     }),
