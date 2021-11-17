@@ -73,6 +73,7 @@ export default {
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ключ', align: 'left', value: 'key' },
+                { text: 'Единица измерения', align: 'left', value: 'unit' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
@@ -115,7 +116,7 @@ export default {
         this.showLoading();
 
         const response = await Property.select({
-            properties: ['id', 'name', 'key', 'created_at'],
+            properties: ['id', 'name', 'key', 'unit', 'created_at'],
         })
             .params(this.queryParams)
             .get();

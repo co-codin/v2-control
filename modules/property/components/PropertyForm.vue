@@ -14,6 +14,13 @@
             :error="form.errors.has('key')"
         />
 
+        <v-text-field
+            v-model="form.unit"
+            label="Единица измерения"
+            :error-messages="form.errors.get('unit')"
+            :error="form.errors.has('unit')"
+        />
+
         <v-input
             label="Описание"
             dense
@@ -23,18 +30,39 @@
             <content-editor v-model="form.description"> </content-editor>
         </v-input>
 
-        <v-checkbox v-model="form.is_hidden_from_product" label="Скрыть со страницы товара" />
-        <v-checkbox v-model="form.is_hidden_from_comparison" label="Скрыть из сравнения" />
-        <v-checkbox v-model="form.is_numeric" label="Число" />
-        <v-checkbox
+        <v-switch
+            v-model="form.is_hidden_from_product"
+            label="Скрыть со страницы товара"
+            :error-messages="form.errors.get('is_hidden_from_product')"
+            :error="form.errors.has('is_hidden_from_product')"
+        />
+
+        <v-switch
+            v-model="form.is_hidden_from_comparison"
+            label="Скрыть из сравнения"
+            :error-messages="form.errors.get('is_hidden_from_comparison')"
+            :error="form.errors.has('is_hidden_from_comparison')"
+        />
+
+        <v-switch
+            v-model="form.is_numeric"
+            label="Ввод только числовых значений"
+            :error-messages="form.errors.get('is_numeric')"
+            :error="form.errors.has('is_numeric')"
+        />
+
+        <v-switch
             v-model="form.is_multiple"
             label="Многочисленно"
-            :error-messages="form.errors.get('is_in_home')"
-            :error="form.errors.has('is_in_home')"
+            :error-messages="form.errors.get('is_multiple')"
+            :error="form.errors.has('is_multiple')"
         />
-        <slot name="buttons">
-            <v-btn type="submit">Сохранить</v-btn>
-        </slot>
+
+        <v-row class="expansion-panel-actions mt-5">
+            <v-col>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+            </v-col>
+        </v-row>
     </v-form>
 </template>
 
@@ -60,6 +88,7 @@ export default {
         formDefaults: {
             name: null,
             key: null,
+            unit: null,
             description: null,
             is_hidden_from_product: false,
             is_hidden_from_comparison: false,
