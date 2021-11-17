@@ -90,7 +90,6 @@ import { Form } from 'form-backend-validation';
 import Treeselect from '@riophae/vue-treeselect';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import { mapGetters, mapActions } from 'vuex';
-import { debounce } from 'lodash';
 import FileField from '../../../components/forms/FileField';
 import ContentEditor from '~/components/editors/ContentEditor';
 import { statusLabels } from '~/enums';
@@ -126,6 +125,7 @@ export default {
         },
         form: null,
         statusLabels,
+        isUpdatingSlug: false,
     }),
     computed: {
         ...mapGetters({
@@ -172,7 +172,6 @@ export default {
         inputParent(value) {
             if (value === undefined) this.form.parent_id = null;
         },
-        updateSlug: debounce(async function () {}),
     },
 };
 </script>
