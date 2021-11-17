@@ -103,6 +103,11 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
+                    label: 'Главная категория',
+                    name: 'categories.is_main',
+                    component: () => import('@/components/search/fields/CategoryTreeSearchField'),
+                },
+                {
                     label: 'Категории',
                     name: 'categories.id',
                     component: () => import('@/components/search/fields/CategoryTreeSearchField'),
@@ -149,11 +154,6 @@ export default {
                     name: 'no_unique_content',
                     component: () => import('@/components/search/fields/SelectSearchField'),
                     items: uniqueContentList,
-                },
-                {
-                    label: 'Главная категория',
-                    name: 'categories.is_main',
-                    component: () => import('@/components/search/fields/CategoryTreeSearchField'),
                 },
             ],
         };
