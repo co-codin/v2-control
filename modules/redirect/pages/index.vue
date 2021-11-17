@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Редиректы" :breadcrumbs="breadcrumbs"></page-header>
+        <page-header h1="Редиректы" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
             <v-btn :to="{ name: 'redirects.create' }"> Добавить редирект </v-btn>
@@ -62,7 +62,7 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import Redirect from '../models/Redirect';
-import PageHeader from "~/components/common/PageHeader";
+import PageHeader from '~/components/common/PageHeader';
 import CopyLabel from '~/components/common/CopyLabel';
 
 export default {
@@ -86,9 +86,7 @@ export default {
                 { text: 'Куда', align: 'left', value: 'destination' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [
-                { text: 'Главная', href: '/' }, { text: 'Редиректы' },
-            ],
+            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Редиректы' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

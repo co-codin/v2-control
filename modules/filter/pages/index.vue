@@ -52,8 +52,7 @@
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import Filter from '../models/Filter';
-import PageHeader from "~/components/common/PageHeader";
-
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
@@ -85,7 +84,7 @@ export default {
                 { value: 2, text: 'Слайдер' },
                 { value: 3, text: 'Галочка' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
+            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список фильтров' }],
             formFilters: [
                 {
                     label: 'Название',

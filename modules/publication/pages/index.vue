@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-column flex-grow-1">
+    <div>
         <page-header h1="Публикации" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
