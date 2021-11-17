@@ -1,7 +1,10 @@
 <template>
     <div>
         <template v-if="product && !$fetchState.pending">
-            <page-header :h1="`Редактирование товара ${product.name}`" :breadcrumbs="breadcrumbs" />
+            <page-header
+                :h1="`Редактирование товара ${product.brand.name} ${product.name}`"
+                :breadcrumbs="breadcrumbs"
+            />
             <div class="mb-2">
                 <v-btn
                     icon
@@ -11,7 +14,7 @@
                     link
                     :href="`${$config.app.siteUrl}/product/${product.slug}/${product.id}`"
                 >
-                    <external-link-icon class="h-6 w-6" />
+                    <external-link-icon class="h-6 w-6" /> Посмотреть на сайте
                 </v-btn>
             </div>
             <v-expansion-panels>
