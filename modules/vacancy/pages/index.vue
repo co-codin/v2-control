@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Вакансии" :breadcrumbs="breadcrumbs"></page-header>
+        <page-header h1="Вакансии" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
             <v-btn :to="{ name: 'vacancies.create' }"> Добавить вакансию </v-btn>

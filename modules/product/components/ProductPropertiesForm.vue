@@ -20,8 +20,8 @@
                                             label="Значение"
                                             item-text="value"
                                             item-value="id"
-                                            :multiple="property.is_multiple"
-                                            :chips="property.is_multiple"
+                                            :multiple="property.is_boolean"
+                                            :chips="property.is_boolean"
                                             :items="getItemsByIds(property.field_value_ids)"
                                             deletable-chips
                                             :query-params="{ sort: 'valueLength' }"
@@ -172,7 +172,7 @@ export default {
         },
         propertyFormDefaults: {
             name: null,
-            is_multiple: false,
+            is_boolean: false,
         },
         newProperty: null,
         newPropertyPopup: false,
@@ -227,7 +227,7 @@ export default {
                     ...property.pivot,
                     id: property.id,
                     name: property.name,
-                    is_multiple: property.is_multiple,
+                    is_boolean: property.is_boolean,
                 }))
                 .sort((a, b) => {
                     let ret = 0;
@@ -269,7 +269,7 @@ export default {
             this.form.properties.push({
                 id: data.id,
                 name: data.name,
-                is_multiple: data.is_multiple,
+                is_boolean: data.is_boolean,
                 field_value_ids: null,
             });
             this.newPropertyPopup = false;
