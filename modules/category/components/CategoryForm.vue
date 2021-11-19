@@ -44,13 +44,14 @@
             :error="form.errors.has('image')"
             prepend-icon="mdi-image"
             @input="form.is_image_changed = true"
+            @delete="form.image = null"
         />
 
         <wysiwyg-field
+            v-model="form.full_description"
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-            v-model="form.full_description"
         />
 
         <v-select
@@ -93,7 +94,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import { mapGetters, mapActions } from 'vuex';
 import FileField from '../../../components/forms/FileField';
 import { statusLabels } from '~/enums';
-import WysiwygField from "~/components/forms/WysiwygField";
+import WysiwygField from '~/components/forms/WysiwygField';
 
 export default {
     components: {

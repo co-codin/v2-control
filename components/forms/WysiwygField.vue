@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import ContentEditor from "~/components/editors/ContentEditor";
+import ContentEditor from '~/components/editors/ContentEditor';
 
 export default {
+    components: {
+        ContentEditor,
+    },
     props: {
         value: {
             default: null,
         },
-    },
-    components: {
-        ContentEditor,
     },
 };
 </script>
