@@ -189,7 +189,12 @@ export default {
             this.updateSlug();
         },
         getCategoryText(category) {
-            return `${category.name} (${category.ancestorsPath})`;
+            let name;
+            name = category.name;
+            if (category.ancestorsPath) {
+                name += ` (${category.ancestorsPath})`;
+            }
+            return name;
         },
         updateSlug: debounce(async function () {
             if (this.isUpdating && this.form.slug) {
