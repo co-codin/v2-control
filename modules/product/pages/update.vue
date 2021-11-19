@@ -11,7 +11,6 @@
                     link
                     :href="`${$config.app.siteUrl}/product/${product.slug}/${product.id}`"
                     color="info"
-                    dark
                 >
                     <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
                 </v-btn>

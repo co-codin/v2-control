@@ -47,7 +47,7 @@ export default {
 
     actions: {
         async createConfigurator({ state, commit }, productId) {
-            commit('CLEAR_FORM');
+            // commit('CLEAR_FORM');
             await this.$axios.put(`/admin/products/${productId}/configurator`, state.form.data());
         },
     },

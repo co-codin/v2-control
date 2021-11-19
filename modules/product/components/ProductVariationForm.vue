@@ -33,6 +33,7 @@
                                                 class="white--text"
                                                 color="red"
                                                 @click="removeVariation(index)"
+                                                :disabled="form.variations.length < 2"
                                             >
                                                 Удалить модификацию
                                             </v-btn>
@@ -44,6 +45,7 @@
                                 <v-card flat>
                                     <v-card-text>
                                         <v-text-field
+                                            :value="variation.price"
                                             class="mt-1"
                                             label="Цена"
                                             type="number"
@@ -57,6 +59,7 @@
                                         <v-text-field
                                             class="mt-1"
                                             label="Предыдущая цена"
+                                            :value="variation.previous_price"
                                             type="number"
                                             :error-messages="form.errors.get(`variations.${index}.previous_price`)"
                                             :error="form.errors.has(`variations.${index}.previous_price`)"
@@ -68,6 +71,7 @@
                                         />
                                         <v-select
                                             label="Валюта"
+                                            :value="variation.currency_id"
                                             :items="currencyLabels"
                                             :error-messages="form.errors.get(`variations.${index}.currency_id`)"
                                             :error="form.errors.has(`variations.${index}.currency_id`)"
@@ -78,7 +82,8 @@
                                             "
                                         />
                                         <v-switch
-                                            label="Цена отображается?"
+                                            inset
+                                            :value="variation.is_price_visible"
                                             :error-messages="form.errors.get(`variations.${index}.is_price_visible`)"
                                             :error="form.errors.has(`variations.${index}.is_price_visible`)"
                                             dense
@@ -90,19 +95,8 @@
                                                     })
                                             "
                                         />
-                                        <v-select
-                                            label="Наличие"
-                                            :items="availabilityLabels"
-                                            :error-messages="form.errors.get(`variations.${index}.availability`)"
-                                            :error="form.errors.has(`variations.${index}.availability`)"
-                                            dense
-                                            @change="
-                                                (value) =>
-                                                    updateField({ field: `variations.${index}.availability`, value })
-                                            "
-                                        />
                                         <v-switch
-                                            label="Отображается на сайте?"
+                                            :value="variation.is_enabled"
                                             :error-messages="form.errors.get(`variations.${index}.is_enabled`)"
                                             :error="form.errors.has(`variations.${index}.is_enabled`)"
                                             dense

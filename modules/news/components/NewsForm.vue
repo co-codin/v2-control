@@ -46,6 +46,8 @@
             <content-editor v-model="form.short_description" />
         </v-input>
 
+        <block-editor />
+
         <v-input
             label="Полное описание"
             dense
@@ -91,12 +93,14 @@ import { Russian } from 'flatpickr/dist/l10n/ru.js';
 import ContentEditor from '~/components/editors/ContentEditor';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
+import BlockEditor from "~/components/forms/block-editor/BlockEditor";
 
 export default {
     components: {
         FileField,
         ContentEditor,
         flatPickr,
+        BlockEditor,
     },
     props: {
         news: {
