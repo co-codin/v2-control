@@ -33,6 +33,7 @@
             label="Скрыть со страницы товара"
             :error-messages="form.errors.get('is_hidden_from_product')"
             :error="form.errors.has('is_hidden_from_product')"
+            inset
         />
 
         <v-switch
@@ -40,6 +41,7 @@
             label="Скрыть из сравнения"
             :error-messages="form.errors.get('is_hidden_from_comparison')"
             :error="form.errors.has('is_hidden_from_comparison')"
+            inset
         />
 
         <v-switch
@@ -47,6 +49,7 @@
             label="Ввод только числовых значений"
             :error-messages="form.errors.get('is_numeric')"
             :error="form.errors.has('is_numeric')"
+            inset
         />
 
         <v-switch
@@ -54,6 +57,7 @@
             label="Только Да или Нет"
             :error-messages="form.errors.get('is_boolean')"
             :error="form.errors.has('is_boolean')"
+            inset
         />
 
         <v-row class="expansion-panel-actions mt-5">

@@ -5,6 +5,7 @@
             label="Включить"
             :error-messages="form.errors.get('is_enabled')"
             :error="form.errors.has('is_enabled')"
+            inset
         />
         <template v-if="Boolean(form.is_enabled)">
             <v-textarea

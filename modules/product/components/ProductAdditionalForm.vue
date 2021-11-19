@@ -12,12 +12,14 @@
                 label="Доступен тест-драйв?"
                 :error-messages="form.errors.get('has_test_drive')"
                 :error="form.errors.has('has_test_drive')"
+                inset
             />
             <v-switch
                 v-model="form.is_in_home"
                 label="Отображать на главной?"
                 :error-messages="form.errors.get('is_in_home')"
                 :error="form.errors.has('is_in_home')"
+                inset
             />
             <v-text-field
                 v-model="form.warranty"

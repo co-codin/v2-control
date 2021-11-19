@@ -12,6 +12,7 @@
             label="По умолчанию"
             :error-messages="form.errors.get('is_default')"
             :error="form.errors.has('is_default')"
+            inset
         />
         <v-row class="expansion-panel-actions mt-5">
             <v-col>

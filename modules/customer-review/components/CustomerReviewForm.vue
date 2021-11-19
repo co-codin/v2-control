@@ -26,6 +26,7 @@
             label="Отображать на главной"
             :error-messages="form.errors.get('is_in_home')"
             :error="form.errors.has('is_in_home')"
+            inset
         />
 
         <v-select

@@ -66,6 +66,7 @@
             label="Отображать на главной"
             :error-messages="form.errors.get('is_in_home')"
             :error="form.errors.has('is_in_home')"
+            inset
         />
 
         <v-switch
@@ -74,6 +75,7 @@
             label="Применить фильтры по умолчанию"
             :error-messages="form.errors.get('attach_default_filters')"
             :error="form.errors.has('attach_default_filters')"
+            inset
         />
 
         <v-row class="expansion-panel-actions mt-5">

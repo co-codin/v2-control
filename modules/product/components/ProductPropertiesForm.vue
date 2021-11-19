@@ -41,6 +41,7 @@
                                             v-model="property.is_important"
                                             label="Отображать в блоке 'Коротко о товаре'"
                                             dense
+                                            inset
                                         />
                                         <div class="text-center mt-1">
                                             <v-btn small color="red" class="white--text" @click="removeProperty(index)"
