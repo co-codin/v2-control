@@ -59,11 +59,12 @@
             :error="form.errors.has('status')"
         />
 
-        <v-checkbox
+        <v-switch
             v-model="form.is_in_home"
             label="Отображать на главной"
             :error-messages="form.errors.get('is_in_home')"
             :error="form.errors.has('is_in_home')"
+            inset
         />
 
         <v-text-field

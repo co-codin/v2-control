@@ -1,5 +1,5 @@
 <template>
-    <v-checkbox v-model="isChecked" :label="label" @click.prevent="handleUniqueContent" />
+    <v-switch v-model="isChecked" :label="label" @click.prevent="handleUniqueContent" inset />
 </template>
 
 <script>

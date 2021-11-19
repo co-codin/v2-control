@@ -22,11 +22,12 @@
             :error="form.errors.has('rate')"
         />
 
-        <v-checkbox
+        <v-switch
             v-model="form.is_main"
             label="Главная валюта"
             :error-messages="form.errors.get('is_main')"
             :error="form.errors.has('is_main')"
+            inset
         />
 
         <slot name="buttons">

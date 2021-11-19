@@ -7,11 +7,12 @@
             :error="form.errors.has('name')"
         />
 
-        <v-checkbox
+        <v-switch
             v-model="form.is_enabled"
-            label="Отображать на главной"
+            label="Отображать на сайте?"
             :error-messages="form.errors.get('is_enabled')"
             :error="form.errors.has('is_enabled')"
+            inset
         />
 
         <file-field

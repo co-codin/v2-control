@@ -47,19 +47,21 @@
             :error="form.errors.has('description')"
         ></v-textarea>
 
-        <v-checkbox
+        <v-switch
             v-model="form.is_default"
             label="По умолчанию"
             :error-messages="form.errors.get('is_default')"
             :error="form.errors.has('is_default')"
-        ></v-checkbox>
+            inset
+        />
 
-        <v-checkbox
+        <v-switch
             v-model="form.is_enabled"
             label="Подключено"
             :error-messages="form.errors.get('is_enabled')"
             :error="form.errors.has('is_enabled')"
-        ></v-checkbox>
+            inset
+        />
 
         <slot name="buttons">
             <v-btn type="submit">Сохранить</v-btn>
