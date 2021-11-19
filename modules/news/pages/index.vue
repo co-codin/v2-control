@@ -49,10 +49,10 @@
                         >
                             <external-link-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" :to="{ name: 'news.update', params: { id: item.id } }">
+                        <v-btn icon width="22" height="22" class="mx-1" :to="{ name: 'news.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteNews(item)">
+                        <v-btn icon width="22" height="22" @click.prevent="deleteNews(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
                     </div>

@@ -83,7 +83,11 @@
                                         />
                                         <v-switch
                                             inset
+                                            label="Отображать цену на сайте?"
                                             :value="variation.is_price_visible"
+                                            :input-value="variation.is_price_visible"
+                                            :true-value="true"
+                                            :false-value="false"
                                             :error-messages="form.errors.get(`variations.${index}.is_price_visible`)"
                                             :error="form.errors.has(`variations.${index}.is_price_visible`)"
                                             dense
@@ -96,7 +100,12 @@
                                             "
                                         />
                                         <v-switch
+                                            inset
+                                            label="Доступно на сайте?"
                                             :value="variation.is_enabled"
+                                            :input-value="variation.is_enabled"
+                                            :true-value="true"
+                                            :false-value="false"
                                             :error-messages="form.errors.get(`variations.${index}.is_enabled`)"
                                             :error="form.errors.has(`variations.${index}.is_enabled`)"
                                             dense

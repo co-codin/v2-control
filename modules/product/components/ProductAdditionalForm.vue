@@ -31,13 +31,12 @@
                 :error-messages="form.errors.get('short_description')"
                 :error="form.errors.has('short_description')"
             />
-            <v-input
+            <wysiwyg-field
                 label="Подробное описание"
                 :error-messages="form.errors.get('full_description')"
                 :error="form.errors.has('full_description')"
-            >
-                <content-editor v-model="form.full_description" />
-            </v-input>
+                v-model="form.full_description"
+            />
             <v-row class="expansion-panel-actions mt-5">
                 <v-col>
                     <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -51,12 +50,12 @@
 import { mapGetters } from 'vuex';
 import Form from 'form-backend-validation';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
-import ContentEditor from '~/components/editors/ContentEditor';
+import WysiwygField from "~/components/forms/WysiwygField";
 
 export default {
     components: {
         FieldValueAutocomplete,
-        ContentEditor,
+        WysiwygField,
     },
     data: () => ({
         form: null,

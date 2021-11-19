@@ -21,14 +21,12 @@
             :error="form.errors.has('unit')"
         />
 
-        <v-input
+        <wysiwyg-field
             label="Описание"
-            dense
             :error-messages="form.errors.get('description')"
             :error="form.errors.has('description')"
-        >
-            <content-editor v-model="form.description"> </content-editor>
-        </v-input>
+            v-model="form.description"
+        />
 
         <v-switch
             v-model="form.is_hidden_from_product"
@@ -68,11 +66,11 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import ContentEditor from '~/components/editors/ContentEditor';
+import WysiwygField from "~/components/forms/WysiwygField";
 
 export default {
     components: {
-        ContentEditor,
+        WysiwygField,
     },
     props: {
         property: {

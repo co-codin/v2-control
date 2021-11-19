@@ -37,25 +37,19 @@
             @delete="form.image = null"
         />
 
-        <v-input
+        <wysiwyg-field
             label="Короткое описание"
-            dense
             :error-messages="form.errors.get('short_description')"
             :error="form.errors.has('short_description')"
-        >
-            <content-editor v-model="form.short_description" />
-        </v-input>
+            v-model="form.short_description"
+        />
 
-        <block-editor />
-
-        <v-input
-            label="Полное описание"
-            dense
+        <wysiwyg-field
+            label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-        >
-            <content-editor v-model="form.full_description" />
-        </v-input>
+            v-model="form.full_description"
+        />
 
         <v-select
             v-model="form.status"
@@ -90,17 +84,15 @@ import { Form } from 'form-backend-validation';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import { Russian } from 'flatpickr/dist/l10n/ru.js';
-import ContentEditor from '~/components/editors/ContentEditor';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
-import BlockEditor from "~/components/forms/block-editor/BlockEditor";
+import WysiwygField from "~/components/forms/WysiwygField";
 
 export default {
     components: {
         FileField,
-        ContentEditor,
         flatPickr,
-        BlockEditor,
+        WysiwygField,
     },
     props: {
         news: {

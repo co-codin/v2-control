@@ -18,13 +18,12 @@
             :error-messages="form.errors.get('website')"
             :error="form.errors.has('website')"
         />
-        <v-input
+        <wysiwyg-field
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-        >
-            <content-editor v-model="form.full_description" />
-        </v-input>
+            v-model="form.full_description"
+        />
         <v-switch
             v-model="form.is_in_home"
             label="Отображать на главной"
@@ -66,14 +65,14 @@
 import { Form } from 'form-backend-validation';
 import FileField from '../../../components/forms/FileField';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
-import ContentEditor from '~/components/editors/ContentEditor';
 import { statusLabels } from '~/enums';
+import WysiwygField from "~/components/forms/WysiwygField";
 
 export default {
     components: {
         FileField,
         FieldValueAutocomplete,
-        ContentEditor,
+        WysiwygField,
     },
     props: {
         brand: {

@@ -30,13 +30,12 @@
             :error="form.errors.has('slug')"
         />
 
-        <v-input
+        <wysiwyg-field
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-        >
-            <content-editor v-model="form.full_description" />
-        </v-input>
+            v-model="form.full_description"
+        />
 
         <v-select
             v-model="form.status"
@@ -58,13 +57,13 @@
 import { Form } from 'form-backend-validation';
 import Treeselect from '@riophae/vue-treeselect';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
-import ContentEditor from '~/components/editors/ContentEditor';
 import { statusLabels } from '~/enums';
 import { toTree } from '~/helpers';
+import WysiwygField from "~/components/forms/WysiwygField";
 
 export default {
     components: {
-        ContentEditor,
+        WysiwygField,
         Treeselect,
     },
     props: {

@@ -67,9 +67,12 @@
                 </div>
             </form-block>
             <form-block title="Особенность">
-                <v-input label="Особенность">
-                    <content-editor v-model="form.benefits.benefit" />
-                </v-input>
+                <wysiwyg-field
+                    label="Особенность"
+                    :error-messages="form.errors.get('benefits')"
+                    :error="form.errors.has('benefits')"
+                    v-model="form.benefits"
+                />
             </form-block>
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
@@ -84,12 +87,12 @@
 import Form from 'form-backend-validation';
 import { mapGetters } from 'vuex';
 import FormBlock from '~/components/forms/FormBlock';
-import ContentEditor from '~/components/editors/ContentEditor';
+import WysiwygField from "~/components/forms/WysiwygField";
 
 export default {
     components: {
         FormBlock,
-        ContentEditor,
+        WysiwygField,
     },
     data() {
         return {

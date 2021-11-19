@@ -45,10 +45,10 @@
                         >
                             <external-link-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" :to="{ name: 'categories.update', params: { id: item.id } }">
+                        <v-btn icon width="22" height="22" class="mx-1" :to="{ name: 'categories.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" class="mx-1" @click="deleteCategory(item)">
+                        <v-btn icon width="22" height="22" @click="deleteCategory(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
                     </div>

@@ -46,13 +46,12 @@
             @input="form.is_image_changed = true"
         />
 
-        <v-input
+        <wysiwyg-field
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-        >
-            <content-editor v-model="form.full_description" />
-        </v-input>
+            v-model="form.full_description"
+        />
 
         <v-select
             v-model="form.status"
@@ -91,14 +90,14 @@ import Treeselect from '@riophae/vue-treeselect';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import { mapGetters, mapActions } from 'vuex';
 import FileField from '../../../components/forms/FileField';
-import ContentEditor from '~/components/editors/ContentEditor';
 import { statusLabels } from '~/enums';
+import WysiwygField from "~/components/forms/WysiwygField";
 
 export default {
     components: {
         Treeselect,
         FileField,
-        ContentEditor,
+        WysiwygField,
     },
     props: {
         category: {

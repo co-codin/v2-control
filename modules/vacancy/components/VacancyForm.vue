@@ -28,13 +28,13 @@
             :error-messages="form.errors.get('short_description')"
             :error="form.errors.has('short_description')"
         />
-        <v-input
+
+        <wysiwyg-field
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-        >
-            <content-editor v-model="form.full_description" />
-        </v-input>
+            v-model="form.full_description"
+        />
 
         <slot name="buttons">
             <v-btn type="submit">Сохранить</v-btn>
@@ -44,11 +44,13 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import ContentEditor from '~/components/editors/ContentEditor';
+import WysiwygField from "~/components/forms/WysiwygField";
 import { statusLabels } from '~/enums';
 
 export default {
-    components: { ContentEditor },
+    components: {
+        WysiwygField,
+    },
     props: {
         vacancy: {
             type: Object | null,

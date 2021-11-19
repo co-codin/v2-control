@@ -38,7 +38,7 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions">
+                    <div class="actions text-no-wrap">
                         <v-btn
                             icon
                             width="22"
@@ -50,10 +50,6 @@
 
                         <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteAchievement(item)">
                             <trash-icon class="h-6 w-6" />
-                        </v-btn>
-
-                        <v-btn icon width="22" height="22">
-                            <dots-horizontal-icon class="h-6 w-6" />
                         </v-btn>
                     </div>
                 </template>
