@@ -8,13 +8,18 @@
                             {{ information.description || '(не заполнено)' }}
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
-                            <v-text-field
+                            <v-select
                                 v-model="information.icon"
                                 label="Иконка"
                                 :error-messages="form.errors.get(`benefits.information.${index}.icon`)"
                                 :error="form.errors.has(`benefits.information.${index}.icon`)"
                                 dense
-                            />
+                                :items="icons"
+                            >
+                                <template #prepend-inner>
+                                    <svg-icon v-if="information.icon" :name="`site-icons/${information.icon}`" />
+                                </template>
+                            </v-select>
                             <v-text-field
                                 v-model="information.description"
                                 label="Значение"
@@ -111,11 +116,13 @@ import Form from 'form-backend-validation';
 import { mapGetters } from 'vuex';
 import FormBlock from '~/components/forms/FormBlock';
 import WysiwygField from "~/components/forms/WysiwygField";
+import SvgIcon from "~/components/SvgIcon";
 
 export default {
     components: {
         FormBlock,
         WysiwygField,
+        SvgIcon,
     },
     data() {
         return {
@@ -127,6 +134,30 @@ export default {
                     information: null,
                 },
             },
+            icons: [
+                "arrow",
+                "arrow-up",
+                "burger-menu",
+                "cart",
+                "chip-close",
+                "close-popup",
+                "compare",
+                "download",
+                "flag",
+                "heart",
+                "heart-empty",
+                "infinite",
+                "note",
+                "note-black",
+                "plus",
+                "plus-filters",
+                "question-info",
+                "remove",
+                "reset",
+                "search",
+                "user",
+                "warranty",
+            ],
         };
     },
     computed: {
