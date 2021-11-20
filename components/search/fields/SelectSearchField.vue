@@ -73,8 +73,7 @@ export default {
             this.$emit('input', currentValue);
         },
         getItemTextByValue(value) {
-            const data = this.items.find((item) => ((item.value === typeof value) === Number ? +value : value))?.text;
-
+            const data = this.items.find((item) => item.value === (typeof value === Number ? +value : value))?.text;
             return data;
         },
     },

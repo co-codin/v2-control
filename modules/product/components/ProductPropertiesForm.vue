@@ -30,11 +30,15 @@
                                         <v-text-field
                                             v-model="property.pretty_key"
                                             label="Отформатированное название для страницы товара"
+                                            :error-messages="form.errors.get(`form.properties.${index}.pretty_key`)"
+                                            :error="form.errors.has(`form.properties.${index}.pretty_key`)"
                                             dense
                                         />
                                         <v-text-field
                                             v-model="property.pretty_value"
                                             label="Отформатированное значение для страницы товара"
+                                            :error-messages="form.errors.get(`form.properties.${index}.pretty_value`)"
+                                            :error="form.errors.has(`form.properties.${index}.pretty_value`)"
                                             dense
                                         />
                                         <v-switch
