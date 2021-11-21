@@ -33,8 +33,6 @@ export default {
     methods: {
         async createCustomerReview(form) {
             try {
-                form.post = form.post_field;
-                delete form.post_field;
                 await form.post('/admin/customer-reviews');
                 this.$snackbar(`Отзыв ${form.name} успешно добавлен`);
                 await this.$router.push({ name: 'customer-reviews.index' });

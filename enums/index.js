@@ -1,6 +1,7 @@
 import { enumToSelectArray } from './helpers';
 
 import { Status, statusDescriptions, statusLabels } from '~/enums/modules/Status';
+import { urlRules } from '~/enums/rules';
 
 const uniqueContentList = [
     { value: 'booklet', text: 'Брошюра' },
@@ -35,4 +36,5 @@ export {
     uniqueContentList,
     exportTypeLabels,
     frequencyLabels,
+    urlRules,
 };

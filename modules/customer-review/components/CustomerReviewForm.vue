@@ -1,20 +1,27 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
         <v-text-field
+            v-model="form.name"
+            label="Имя"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+        />
+
+        <v-text-field
             v-model="form.company_name"
-            label="Название"
+            label="Компания"
             :error-messages="form.errors.get('company_name')"
             :error="form.errors.has('company_name')"
         />
 
         <v-text-field
-            v-model="form.post_field"
-            label="Пост"
-            :error-messages="form.errors.get('post')"
-            :error="form.errors.has('post')"
+            v-model="form.author"
+            label="Автор"
+            :error-messages="form.errors.get('author')"
+            :error="form.errors.has('author')"
         />
 
-        <v-text-field
+        <wysiwyg-field
             v-model="form.comment"
             label="Коментарий"
             :error-messages="form.errors.get('comment')"
@@ -37,6 +44,36 @@
             :error="form.errors.has('type')"
         />
 
+        <file-field
+            v-model="form.logo"
+            label="Логотип"
+            :error-messages="form.errors.get('logo')"
+            :error="form.errors.has('logo')"
+            prepend-icon="mdi-image"
+            @input="form.is_image_changed = true"
+            @delete="form.logo = null"
+        />
+
+        <file-field
+            v-model="form.review_file"
+            :is-image="false"
+            label="Отзыв в формате PDF"
+            :error-messages="form.errors.get('review_file')"
+            :error="form.errors.has('review_file')"
+            prepend-icon="mdi-image"
+            @input="form.is_image_changed = true"
+            @delete="form.review_file = null"
+        />
+
+        <v-text-field
+            v-model="form.video"
+            prepend-icon="mdi-youtube"
+            label="Видеообзор"
+            :error-messages="form.errors.get('video')"
+            :error="form.errors.has('video')"
+            :rules="urlRules"
+        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -47,8 +84,12 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import WysiwygField from '~/components/forms/WysiwygField';
+import FileField from '~/components/forms/FileField';
+import { urlRules } from '~/enums';
 
 export default {
+    components: { FileField, WysiwygField },
     props: {
         customerReview: {
             type: Object | null,
@@ -62,10 +103,15 @@ export default {
     data: () => ({
         formDefaults: {
             company_name: null,
-            post_field: null,
+            name: null,
+            author: null,
             type: 1,
             comment: null,
             is_in_home: false,
+            logo: null,
+            is_image_changed: false,
+            review_file: null,
+            video: '',
         },
         typeLabels: [
             { value: 1, text: 'Гос' },
@@ -73,16 +119,17 @@ export default {
             { value: 3, text: 'Частный центр' },
         ],
         form: null,
+        urlRules,
     }),
     watch: {
-        brand(value) {
+        customerReview(value) {
             this.form.populate(value);
         },
     },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
-            .populate(this.brand || {});
+            .populate(this.customerReview || {});
     },
 };
 </script>

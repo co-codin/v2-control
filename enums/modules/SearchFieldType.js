@@ -1,4 +1,4 @@
 export const Status = Object.freeze({
-  TextField: "text-field",
-  DropDown: "drop-down",
+    TextField: 'text-field',
+    DropDown: 'drop-down',
 });
