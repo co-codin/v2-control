@@ -16,7 +16,7 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Характеристики', link: '/properties' },
                 { icon: 'mdi-cash-usd-outline', text: 'Фильтры', link: '/filters' },
                 { icon: 'mdi-cash-usd-outline', text: 'Валюты', link: '/currencies' },
-                { icon: 'mdi-cash-usd-outline', text: 'Добавить экспорт', link: '/exports' },
+                { icon: 'mdi-cash-usd-outline', text: 'Экспорты', link: '/exports' },
                 { icon: 'mdi-cash-usd-outline', text: 'Атрибуты', link: '/attributes' },
             ],
         },
