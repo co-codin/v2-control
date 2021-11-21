@@ -45,7 +45,13 @@
                         >
                             <external-link-icon class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon width="22" height="22" class="mx-1" :to="{ name: 'categories.update', params: { id: item.id } }">
+                        <v-btn
+                            icon
+                            width="22"
+                            height="22"
+                            class="mx-1"
+                            :to="{ name: 'categories.update', params: { id: item.id } }"
+                        >
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
                         <v-btn icon width="22" height="22" @click="deleteCategory(item)">
@@ -95,7 +101,7 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Главная категория',
+                    label: 'Родительская категория',
                     name: 'parent_id',
                     component: () => import('@/components/search/fields/CategoryTreeSearchField'),
                 },
