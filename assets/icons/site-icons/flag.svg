@@ -1,0 +1,8 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M8 6H15.5556L17.4444 8.78571H24V19H17.4444L15.5556 16.2143H8.94444"
+        stroke="black"
+        stroke-width="2"
+    />
+    <line x1="8" y1="5" x2="8" y2="27" stroke="black" stroke-width="2" />
+</svg>

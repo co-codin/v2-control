@@ -58,7 +58,12 @@ export default {
 
     buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],
 
-    modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dayjs'],
+    modules: [
+        '@nuxtjs/axios',
+        '@nuxtjs/auth',
+        '@nuxtjs/dayjs',
+        '@nuxtjs/svg',
+    ],
 
     dayjs: {
         locales: ['ru'],

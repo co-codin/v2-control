@@ -8,8 +8,25 @@
                             {{ information.description || '(не заполнено)' }}
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
-                            <v-text-field v-model="information.icon" label="Иконка" dense />
-                            <v-text-field v-model="information.description" label="Значение" dense />
+                            <v-select
+                                v-model="information.icon"
+                                label="Иконка"
+                                :error-messages="form.errors.get(`benefits.information.${index}.icon`)"
+                                :error="form.errors.has(`benefits.information.${index}.icon`)"
+                                dense
+                                :items="icons"
+                            >
+                                <template #prepend-inner>
+                                    <svg-icon v-if="information.icon" :name="`site-icons/${information.icon}`" />
+                                </template>
+                            </v-select>
+                            <v-text-field
+                                v-model="information.description"
+                                label="Значение"
+                                :error-messages="form.errors.get(`benefits.information.${index}.description`)"
+                                :error="form.errors.has(`benefits.information.${index}.description`)"
+                                dense
+                            />
                             <div class="text-center mt-1">
                                 <v-btn small class="white--text" color="red" @click="removeInformation(index)">
                                     Удалить
@@ -46,8 +63,19 @@
                             }}
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
-                            <v-text-field v-model="chip.value" label="Значение" dense />
-                            <v-text-field v-model="chip.description" label="Описание" dense />
+                            <v-text-field
+                                v-model="chip.value"
+                                label="Значение"
+                                :error-messages="form.errors.get(`benefits.chips.${index}.value`)"
+                                :error="form.errors.has(`benefits.chips.${index}.value`)"
+                                dense />
+                            <v-text-field
+                                v-model="chip.description"
+                                label="Описание"
+                                :error-messages="form.errors.get(`benefits.chips.${index}.description`)"
+                                :error="form.errors.has(`benefits.chips.${index}.description`)"
+                                dense
+                            />
                             <div class="text-center mt-1">
                                 <v-btn small class="white--text" color="red" @click="removeChip(index)">
                                     Удалить фишку
@@ -87,23 +115,49 @@
 import Form from 'form-backend-validation';
 import { mapGetters } from 'vuex';
 import FormBlock from '~/components/forms/FormBlock';
-import WysiwygField from '~/components/forms/WysiwygField';
+import WysiwygField from "~/components/forms/WysiwygField";
+import SvgIcon from "~/components/SvgIcon";
 
 export default {
     components: {
         FormBlock,
         WysiwygField,
+        SvgIcon,
     },
     data() {
         return {
             form: null,
             formDefaults: {
                 benefits: {
-                    chips: [],
-                    benefit: '',
-                    information: [],
+                    chips: null,
+                    benefit: null,
+                    information: null,
                 },
             },
+            icons: [
+                "arrow",
+                "arrow-up",
+                "burger-menu",
+                "cart",
+                "chip-close",
+                "close-popup",
+                "compare",
+                "download",
+                "flag",
+                "heart",
+                "heart-empty",
+                "infinite",
+                "note",
+                "note-black",
+                "plus",
+                "plus-filters",
+                "question-info",
+                "remove",
+                "reset",
+                "search",
+                "user",
+                "warranty",
+            ],
         };
     },
     computed: {
@@ -129,8 +183,8 @@ export default {
     },
     methods: {
         saveBenefits() {
-            this.form.patch(`/admin/products/${this.product.id}`).then((resp) => {
-                this.$snackbar(`Особенности товара успешно обновлена`);
+            this.form.patch(`/admin/products/${this.product.id}`).then(() => {
+                this.$snackbar(`Особенности товара успешно обновлены`);
             });
         },
         addChip() {
