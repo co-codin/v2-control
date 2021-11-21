@@ -118,14 +118,14 @@ export default {
         this.showLoading();
 
         const response = await Filter.select({
-            filters: ['id', 'name', 'slug', 'type', 'created_at'],
+            filters: ['id', 'name', 'slug', 'type', 'category_id', 'created_at'],
         })
             .with('category')
             .params(this.queryParams)
             .get();
 
         this.filters = Filter.hydrate(response.data);
-
+        console.log(this.filters);
         this.setTotal(response.meta.total);
         this.hideLoading();
     },
