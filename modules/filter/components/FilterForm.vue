@@ -1,10 +1,12 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <categories-tree-field
+        <category-tree-search-field
+            v-model="form.category_id"
             label="Категория"
-            :value="form.category_id"
-            :error-messages="form.errors.get('category_id')"
-            :error="form.errors.has('category_id')"
+            :error-messages="form.errors.get('categories')"
+            :error="form.errors.has('categories')"
+            name="category_id"
+            :multiple="false"
         />
 
         <v-select
@@ -73,9 +75,10 @@
 import { Form } from 'form-backend-validation';
 import { mapActions, mapGetters } from 'vuex';
 import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
+import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
-    components: { CategoriesTreeField },
+    components: { CategoryTreeSearchField, CategoriesTreeField },
     props: {
         filter: {
             type: Object | null,
@@ -98,9 +101,9 @@ export default {
             description: null,
         },
         typeLabels: [
-            { value: 1, text: 'Хранилище' },
-            { value: 2, text: 'Шаг' },
-            { value: 3, text: 'Значение для поиска' },
+            { value: 1, text: 'Список галочек' },
+            { value: 2, text: 'Слайдер' },
+            { value: 3, text: 'Галочка' },
         ],
         form: null,
     }),
@@ -119,6 +122,7 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.filter || {});
+        this.form.type = this.filter.value;
         await this.getCategories();
         await this.getProperties();
     },

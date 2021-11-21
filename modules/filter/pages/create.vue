@@ -12,9 +12,11 @@
 <script>
 import FilterForm from '../components/FilterForm';
 import FormBlock from '~/components/forms/FormBlock';
+import PageHeader from '~/components/common/PageHeader'
 
 export default {
     components: {
+        PageHeader,
         FormBlock,
         FilterForm,
     },
