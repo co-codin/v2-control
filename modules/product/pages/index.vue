@@ -104,7 +104,7 @@ export default {
                 },
                 {
                     label: 'Главная категория',
-                    name: 'categories.is_main',
+                    name: 'categories.parent_category_id',
                     component: () => import('@/components/search/fields/CategoryTreeSearchField'),
                 },
                 {
