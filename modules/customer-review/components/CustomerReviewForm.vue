@@ -1,20 +1,27 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
         <v-text-field
+            v-model="form.name"
+            label="Имя"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+        />
+
+        <v-text-field
             v-model="form.company_name"
-            label="Название"
+            label="Компания"
             :error-messages="form.errors.get('company_name')"
             :error="form.errors.has('company_name')"
         />
 
         <v-text-field
-            v-model="form.post_field"
-            label="Пост"
-            :error-messages="form.errors.get('post')"
-            :error="form.errors.has('post')"
+            v-model="form.author"
+            label="Автор"
+            :error-messages="form.errors.get('author')"
+            :error="form.errors.has('author')"
         />
 
-        <v-text-field
+        <wysiwyg-field
             v-model="form.comment"
             label="Коментарий"
             :error-messages="form.errors.get('comment')"
@@ -47,8 +54,10 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import WysiwygField from '~/components/forms/WysiwygField';
 
 export default {
+    components: { WysiwygField },
     props: {
         customerReview: {
             type: Object | null,
