@@ -148,7 +148,7 @@ export default {
                         parents.push(parent);
                         parent = this.categories.filter((category) => category.id === parent.parent_id);
                     }
-                    form.slug = `${parents.map((parent) => parent.slug).join('/')}/`;
+                    form.slug = `${parents.map((parent) => parent.slug).join('/')}`;
                 }
             },
             deep: true,
