@@ -61,6 +61,7 @@ import Form from 'form-backend-validation';
 import FileUploader from '~/components/FileUploader';
 import FormBlock from '~/components/forms/FormBlock';
 import FileField from '~/components/forms/FileField';
+import { urlRules } from '~/enums';
 
 export default {
     components: {
@@ -87,14 +88,7 @@ export default {
                 is_image_changed: false,
             },
             newImages: [],
-            urlRules: [
-                (v) => {
-                    if (v && /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/.test(v)) {
-                        return true;
-                    }
-                    return false;
-                },
-            ],
+            urlRules,
         };
     },
     computed: {
