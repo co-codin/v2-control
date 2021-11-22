@@ -23,9 +23,16 @@
             />
             <v-text-field
                 v-model="form.warranty"
+                type="number"
                 label="Гарантия"
                 :error-messages="form.errors.get('warranty')"
                 :error="form.errors.has('warranty')"
+            />
+            <wysiwyg-field
+                v-model="form.warranty_info"
+                label="Информация о гарантии"
+                :error-messages="form.errors.get('warranty_info')"
+                :error="form.errors.has('warranty_info')"
             />
             <v-textarea
                 v-model="form.short_description"
@@ -34,10 +41,10 @@
                 :error="form.errors.has('short_description')"
             />
             <wysiwyg-field
+                v-model="form.full_description"
                 label="Подробное описание"
                 :error-messages="form.errors.get('full_description')"
                 :error="form.errors.has('full_description')"
-                v-model="form.full_description"
             />
             <v-row class="expansion-panel-actions mt-5">
                 <v-col>
@@ -52,7 +59,7 @@
 import { mapGetters } from 'vuex';
 import Form from 'form-backend-validation';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
-import WysiwygField from "~/components/forms/WysiwygField";
+import WysiwygField from '~/components/forms/WysiwygField';
 
 export default {
     components: {
@@ -66,6 +73,7 @@ export default {
             has_test_drive: false,
             is_in_home: false,
             warranty: null,
+            warranty_info: null,
             short_description: null,
             full_description: null,
         },
