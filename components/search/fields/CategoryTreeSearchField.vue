@@ -4,22 +4,23 @@
             <treeselect
                 :value="value"
                 :multiple="multiple"
-                :options="options"
+                :options="categoryTree"
                 :normalizer="normalizer"
                 @input="$emit('input', $event)"
             />
         </v-input>
 
-        <portal v-if="chips" :to="`filter-${name}-chips`">
-            <v-chip
-                v-for="chip in chips"
-                :key="chip.value"
-                close
-                :input-value="chip.value"
-                @click="removeChip(chip.value)"
-            >
-                {{ chip.label }}
-            </v-chip>
+        <portal v-if="chips.length" :to="`filter-${name}-chips`">
+            <div>
+                <v-chip
+                    v-for="(chip, index) in chips"
+                    :key="'category-' + index"
+                    close
+                    @click:close="removeChip(chip.value)"
+                >
+                    {{ chip.label }}
+                </v-chip>
+            </div>
         </portal>
     </div>
 </template>
@@ -27,7 +28,7 @@
 <script>
 import Treeselect from '@riophae/vue-treeselect';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
-import { toTree, fetchAllEntries } from '../../../helpers';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     components: {
@@ -50,38 +51,28 @@ export default {
             default: true,
         },
     },
-    data() {
-        return {
-            entries: [],
-        };
-    },
     computed: {
-        options() {
-            return toTree(this.entries);
-        },
+        ...mapGetters({
+            categoryTree: 'category/categoryTree',
+            categories: 'category/categories',
+        }),
         chips() {
-            console.log(this.value);
             if (!this.value) {
                 return [];
             }
             return [this.value].flat().map((id) => ({
                 value: id,
-                label: this.entries.find((entry) => entry.id === +id)?.name,
+                label: this.categories.find((entry) => entry.id === +id)?.name,
             }));
         },
     },
     async created() {
-        this.entries = await fetchAllEntries((page) => {
-            return this.$axios.get('/categories', {
-                params: {
-                    'page[size]': 100,
-                    'page[number]': page,
-                    'fields[categories]': 'id,name,parent_id',
-                },
-            });
-        });
+        await this.getCategories();
     },
     methods: {
+        ...mapActions({
+            getCategories: 'category/getCategories',
+        }),
         normalizer(node) {
             return {
                 id: node.id,
