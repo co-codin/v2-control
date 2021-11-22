@@ -60,6 +60,7 @@ export default {
             return toTree(this.entries);
         },
         chips() {
+            console.log(this.value);
             if (!this.value) {
                 return [];
             }
