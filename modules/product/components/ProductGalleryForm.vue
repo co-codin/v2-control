@@ -8,6 +8,7 @@
                 :error="form.errors.has('image')"
                 prepend-icon="mdi-image"
                 @input="form.is_image_changed = true"
+                @delete="form.image = null"
             />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
