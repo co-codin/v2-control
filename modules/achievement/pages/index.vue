@@ -97,7 +97,7 @@ export default {
                 {
                     label: 'ID',
                     name: 'id',
-                    component: () => import('@/components/search/fields/ComboBoxSearchField'),
+                    component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
                     label: 'Статус',
