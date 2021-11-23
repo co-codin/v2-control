@@ -1,19 +1,6 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-input
-            label="Дата"
-            dense
-            :error-messages="form.errors.get('published_at')"
-            :error="form.errors.has('published_at')"
-        >
-            <flat-pickr
-                v-model="form.published_at"
-                :config="configPicker"
-                placeholder="Выберите дату"
-                class="date-picker-input"
-                name="published_at"
-            />
-        </v-input>
+
 
         <v-text-field
             v-model="form.name"
@@ -82,9 +69,6 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import flatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
-import { Russian } from 'flatpickr/dist/l10n/ru.js';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
 import WysiwygField from "~/components/forms/WysiwygField";
@@ -92,7 +76,6 @@ import WysiwygField from "~/components/forms/WysiwygField";
 export default {
     components: {
         FileField,
-        flatPickr,
         WysiwygField,
     },
     props: {
@@ -125,6 +108,7 @@ export default {
         },
         form: null,
         statusLabels,
+        menu_published_at: false,
     }),
     watch: {
         news(value) {
