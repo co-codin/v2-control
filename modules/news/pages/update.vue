@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Редактирование новости" :breadcrumbs="breadcrumbs" />
         <template v-if="news && !$fetchState.pending">
-            <v-expansion-panels>
+            <v-expansion-panels :value="0">
                 <form-block title="Основная информация">
                     <news-form :news="news" is-updating @send="updateNews" />
                 </form-block>
