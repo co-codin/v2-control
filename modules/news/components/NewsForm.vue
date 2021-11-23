@@ -1,6 +1,37 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-
+        <v-menu
+            ref="menu_published_at"
+            v-model="menu_published_at"
+            :close-on-content-click="false"
+            :return-value.sync="form.published_at"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+        >
+            <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="form.published_at"
+                    label="Дата"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    :error-messages="form.errors.get('published_at')"
+                    :error="form.errors.has('published_at')"
+                    v-on="on"
+                ></v-text-field>
+            </template>
+            <v-date-picker
+                v-model="form.published_at"
+                no-title
+                scrollable
+                locale="ru-RU"
+            >
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="menu_published_at = false">Отмена</v-btn>
+                <v-btn text color="primary" @click="$refs.menu_published_at.save(form.published_at)">OK</v-btn>
+            </v-date-picker>
+        </v-menu>
 
         <v-text-field
             v-model="form.name"
