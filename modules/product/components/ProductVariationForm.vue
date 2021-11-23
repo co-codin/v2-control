@@ -56,7 +56,6 @@
                                         />
                                         <v-text-field
                                             :value="variation.price"
-                                            class="mt-1"
                                             label="Цена"
                                             type="number"
                                             :error-messages="form.errors.get(`variations.${index}.price`)"
@@ -67,7 +66,6 @@
                                             "
                                         />
                                         <v-text-field
-                                            class="mt-1"
                                             label="Предыдущая цена"
                                             :value="variation.previous_price"
                                             type="number"
