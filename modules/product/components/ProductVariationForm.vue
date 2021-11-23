@@ -44,6 +44,16 @@
                             <v-tab-item key="commerce">
                                 <v-card flat>
                                     <v-card-text>
+                                        <field-value-autocomplete
+                                            :value="variation.condition_id"
+                                            label="Состояние"
+                                            :error-messages="form.errors.get(`variations.${index}.condition_id`)"
+                                            :error="form.errors.has(`variations.${index}.condition_id`)"
+                                            dense
+                                            @input="
+                                                (value) => updateField({ field: `variations.${index}.condition_id`, value })
+                                            "
+                                        />
                                         <v-text-field
                                             :value="variation.price"
                                             class="mt-1"
@@ -130,8 +140,12 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import FieldValueAutocomplete from "~/components/forms/FieldValueAutocomplete";
 
 export default {
+    components: {
+        FieldValueAutocomplete,
+    },
     data() {
         return {
             currencyLabels: [

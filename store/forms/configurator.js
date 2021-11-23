@@ -28,6 +28,7 @@ export default {
                 availability: 1,
                 is_price_visible: false,
                 is_enabled: false,
+                condition_id: null,
             });
         },
         INIT_FORM(state) {
