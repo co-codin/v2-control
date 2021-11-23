@@ -30,7 +30,7 @@
                 </template>
 
                 <template #item.published_at="{ item }">
-                    <div>{{ item.asDate('published_at').fromNow() }}</div>
+                    <div v-if="item.published_at">{{ item.asDate('published_at').fromNow() }}</div>
                 </template>
 
                 <template #item.action="{ item }">
