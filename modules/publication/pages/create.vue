@@ -34,7 +34,7 @@ export default {
         async createPublication(form) {
             try {
                 await form.post('/admin/publications');
-                this.$snackbar(`Публикация ${form.name} успешно добавлена`);
+                this.$snackbar(`Публикация успешно добавлена`);
                 await this.$router.push({ name: 'publications.index' });
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при создании публикации: ${e.message}`);
