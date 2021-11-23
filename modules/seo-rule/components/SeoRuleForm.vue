@@ -14,10 +14,10 @@
         />
 
         <wysiwyg-field
+            v-model="form.text"
             label="Текст"
             :error-messages="form.errors.get('text')"
             :error="form.errors.has('text')"
-            v-model="form.text"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -30,7 +30,7 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import WysiwygField from "~/components/forms/WysiwygField";
+import WysiwygField from '~/components/forms/WysiwygField';
 
 export default {
     components: {
