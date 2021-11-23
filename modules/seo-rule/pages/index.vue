@@ -77,7 +77,7 @@ export default {
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'url' },
-                { text: 'Текст', align: 'left', value: 'url', sortable: false },
+                { text: 'Текст', align: 'left', value: 'text', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'SEO правила' }],
