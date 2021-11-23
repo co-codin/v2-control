@@ -101,11 +101,6 @@ export default {
             published_at: null,
             view_num: null,
         },
-        configPicker: {
-            dateFormat: 'Y-m-d',
-            enableTime: true,
-            locale: Russian,
-        },
         form: null,
         statusLabels,
         menu_published_at: false,
