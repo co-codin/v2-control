@@ -61,7 +61,6 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, statusDescriptions } from '@/enums';
 import Achievement from '~/modules/achievement/models/Achievement';
 import PageHeader from '~/components/common/PageHeader';
 
@@ -98,12 +97,6 @@ export default {
                     label: 'ID',
                     name: 'id',
                     component: () => import('@/components/search/fields/ComboBoxSearchField'),
-                },
-                {
-                    label: 'Статус',
-                    name: 'is_enabled',
-                    component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: enumToSelectArray(statusDescriptions),
                 },
             ],
         };

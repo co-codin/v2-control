@@ -1,10 +1,10 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
         <v-text-field
-            v-model="form.name"
-            label="Имя"
-            :error-messages="form.errors.get('name')"
-            :error="form.errors.has('name')"
+            v-model="form.position"
+            label="Должность"
+            :error-messages="form.errors.get('position')"
+            :error="form.errors.has('position')"
         />
 
         <v-text-field
@@ -103,7 +103,7 @@ export default {
     data: () => ({
         formDefaults: {
             company_name: null,
-            name: null,
+            position: null,
             author: null,
             type: 1,
             comment: null,
