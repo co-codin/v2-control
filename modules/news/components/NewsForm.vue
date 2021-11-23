@@ -1,14 +1,11 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-
         <date-picker-field
             v-model="form.published_at"
             label="Дата"
             :error-messages="form.errors.get('published_at')"
             :error="form.errors.has('published_at')"
         />
-
-
         <v-text-field
             v-model="form.name"
             label="Заголовок"
@@ -67,10 +64,11 @@
             :error-messages="form.errors.get('view_num')"
             :error="form.errors.has('view_num')"
         />
-
-        <slot name="buttons">
-            <v-btn type="submit">Сохранить</v-btn>
-        </slot>
+        <v-row class="expansion-panel-actions mt-5">
+            <v-col>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+            </v-col>
+        </v-row>
     </v-form>
 </template>
 
@@ -122,7 +120,6 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.news || {});
-        this.form.published_at = this.$dayjs(this.news.published_at, 'DD-MM-YYYY').format('YYYY-MM-DD');
     },
 };
 </script>
