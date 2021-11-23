@@ -39,8 +39,14 @@ export default {
         ],
     }),
     async fetch() {
-        this.seoRule = await SeoRule.with('seo').$find(this.$route.params.id);
-        this.seo = this.seoRule.seo || {};
+        const { data } = await this.$axios.get(`/seo-rules/${this.$route.params.id}`, {
+            params: {
+                include: ['seo'],
+            },
+        });
+
+        this.seoRule = data.data;
+        this.seo = data.data.seo || {};
         this.isLoading = false;
     },
     head: {
