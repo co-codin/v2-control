@@ -72,8 +72,14 @@ export default {
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Тип', value: 'type.description' },
+                { text: 'Ссылка', align: 'left', value: 'slug', sortable: false },
+                {
+                    text: 'Тип',
+                    value: 'type.description',
+                    sort(a, b) {
+                        console.log(a, b);
+                    },
+                },
                 { text: 'Категории', align: 'left', value: 'category.name', sortable: false },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
@@ -125,7 +131,6 @@ export default {
             .get();
 
         this.filters = Filter.hydrate(response.data);
-        console.log(this.filters);
         this.setTotal(response.meta.total);
         this.hideLoading();
     },

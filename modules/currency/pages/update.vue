@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Редактирование товара" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Редактирование валюты" :breadcrumbs="breadcrumbs" />
         <template v-if="currency && !$fetchState.pending">
             <v-expansion-panels>
                 <form-block title="Основная информация">
