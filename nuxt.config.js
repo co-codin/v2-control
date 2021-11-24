@@ -54,22 +54,12 @@ export default {
         { src: '~/filters/formatDate.js' },
         { src: '~plugins/vue-api-query' },
         { src: '~plugins/directives/digits-only' },
+        { src: '~plugins/dayjs' },
     ],
 
     buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],
 
-    modules: [
-        '@nuxtjs/axios',
-        '@nuxtjs/auth',
-        '@nuxtjs/dayjs',
-        '@nuxtjs/svg',
-    ],
-
-    dayjs: {
-        locales: ['ru'],
-        defaultLocale: 'ru',
-        plugins: ['relativeTime', 'advancedFormat', 'customParseFormat'],
-    },
+    modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/svg'],
 
     auth: {
         localStorage: false,
