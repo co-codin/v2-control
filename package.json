@@ -24,8 +24,6 @@
     "flag-icon-css": "^3.4.6",
     "form-backend-validation": "^2.4.0",
     "lodash": "^4.17.15",
-    "moment": "^2.29.1",
-    "moment-timezone": "^0.5.31",
     "nuxt": "^2.15.3",
     "portal-vue": "^2.1.7",
     "qs": "^6.10.1",

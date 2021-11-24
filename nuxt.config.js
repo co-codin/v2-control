@@ -51,7 +51,6 @@ export default {
         { src: '~/filters/lowercase.js' },
         { src: '~/filters/uppercase.js' },
         { src: '~/filters/formatCurrency.js' },
-        { src: '~/filters/formatDate.js' },
         { src: '~plugins/vue-api-query' },
         { src: '~plugins/directives/digits-only' },
         { src: '~plugins/dayjs' },
