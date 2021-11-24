@@ -1,5 +1,5 @@
 import { Model as BaseModel } from 'vue-api-query';
-import moment from 'moment';
+import dayjs from '~/helpers/dayjs';
 
 export default class Model extends BaseModel {
     baseUrl = '';
@@ -37,8 +37,7 @@ export default class Model extends BaseModel {
     }
 
     asDate(field) {
-        moment.locale('ru');
-        return moment(this[field]);
+        return dayjs(this[field]);
     }
 
     static query() {

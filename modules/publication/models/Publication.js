@@ -1,4 +1,3 @@
-import moment from 'moment';
 import Model from '@/models/Model';
 
 export default class Publication extends Model {
