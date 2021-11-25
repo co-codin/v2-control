@@ -14,6 +14,7 @@
                 @input="$emit('input', $event)"
                 v-bind="Object.assign({}, attrs, $attrs)"
                 v-on="on"
+                clearable
             />
         </template>
         <v-date-picker

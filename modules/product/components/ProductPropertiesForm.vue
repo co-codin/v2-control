@@ -30,20 +30,22 @@
                                         <v-text-field
                                             v-model="property.pretty_key"
                                             label="Отформатированное название для страницы товара"
-                                            :error-messages="form.errors.get(`form.properties.${index}.pretty_key`)"
-                                            :error="form.errors.has(`form.properties.${index}.pretty_key`)"
+                                            :error-messages="form.errors.get(`properties.${index}.pretty_key`)"
+                                            :error="form.errors.has(`properties.${index}.pretty_key`)"
                                             dense
                                         />
                                         <v-text-field
                                             v-model="property.pretty_value"
                                             label="Отформатированное значение для страницы товара"
-                                            :error-messages="form.errors.get(`form.properties.${index}.pretty_value`)"
-                                            :error="form.errors.has(`form.properties.${index}.pretty_value`)"
+                                            :error-messages="form.errors.get(`properties.${index}.pretty_value`)"
+                                            :error="form.errors.has(`properties.${index}.pretty_value`)"
                                             dense
                                         />
                                         <v-switch
                                             v-model="property.is_important"
                                             label="Отображать в блоке 'Коротко о товаре'"
+                                            :error-messages="form.errors.get(`properties.${index}.is_important`)"
+                                            :error="form.errors.has(`properties.${index}.is_important`)"
                                             dense
                                             inset
                                         />
@@ -98,31 +100,31 @@
                             <div v-else>
                                 <v-expansion-panels>
                                     <draggable v-model="draggableItems" @update="updatePropertyPositions">
-                                        <v-expansion-panel
-                                            v-for="(property, index) in importantProperties"
-                                            :key="property.id"
-                                        >
-                                            <v-expansion-panel-header class="title">{{
-                                                property.name
-                                            }}</v-expansion-panel-header>
-                                            <v-expansion-panel-content>
-                                                <v-text-field
-                                                    v-model="property.important_value"
-                                                    label="Отформатированное значение для блока 'Коротко о товаре'"
-                                                    dense
-                                                    required
-                                                />
-                                                <div class="text-center mt-1">
-                                                    <v-btn
-                                                        small
-                                                        color="red"
-                                                        class="white--text"
-                                                        @click="property.is_important = false"
+                                        <div v-for="(property, index) in form.properties" :key="property.id">
+                                            <v-expansion-panel v-if="property.is_important">
+                                                <v-expansion-panel-header class="title">{{
+                                                        property.name
+                                                    }}</v-expansion-panel-header>
+                                                <v-expansion-panel-content>
+                                                    <v-text-field
+                                                        v-model="property.important_value"
+                                                        label="Отформатированное значение для блока 'Коротко о товаре'"
+                                                        dense
+                                                        :error-messages="form.errors.get(`properties.${index}.important_value`)"
+                                                        :error="form.errors.has(`properties.${index}.important_value`)"
+                                                    />
+                                                    <div class="text-center mt-1">
+                                                        <v-btn
+                                                            small
+                                                            color="red"
+                                                            class="white--text"
+                                                            @click="property.is_important = false"
                                                         >Удалить из блока "Коротко о товаре"</v-btn
-                                                    >
-                                                </div>
-                                            </v-expansion-panel-content>
-                                        </v-expansion-panel>
+                                                        >
+                                                    </div>
+                                                </v-expansion-panel-content>
+                                            </v-expansion-panel>
+                                        </div>
                                     </draggable>
                                 </v-expansion-panels>
                             </div>
@@ -274,6 +276,7 @@ export default {
                 id: data.id,
                 name: data.name,
                 is_boolean: data.is_boolean,
+                important_value: null,
                 field_value_ids: null,
             });
             this.newPropertyPopup = false;

@@ -29,6 +29,12 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
+                <template #item.url="{ item }">
+                    <div style="max-width: 300px;">
+                        {{ item.url }}
+                    </div>
+                </template>
+
                 <template #item.published_at="{ item }">
                     <div v-if="item.published_at">{{ item.asDate('published_at').fromNow() }}</div>
                 </template>
@@ -60,7 +66,6 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, statusDescriptions } from '@/enums';
 import Publication from '../models/Publication';
 import PageHeader from '~/components/common/PageHeader';
 
@@ -82,7 +87,7 @@ export default {
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'url' },
                 { text: 'Источник', align: 'left', value: 'source' },
-                { text: 'Дата создания', align: 'left', value: 'published_at' },
+                { text: 'Дата публикации', align: 'left', value: 'published_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список публикаций' }],
@@ -108,7 +113,7 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Подключено',
+                    label: 'Отображается на сайте',
                     name: 'is_enabled',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
