@@ -29,6 +29,12 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
+                <template #item.status="{ item }">
+                    <div class="font-weight-bold text-no-wrap">
+                        {{ statusLabels.find((el) => el.value === item.status).text }}
+                    </div>
+                </template>
+
                 <template #item.published_at="{ item }">
                     <div v-if="item.published_at">{{ item.asDate('published_at').fromNow() }}</div>
                 </template>
@@ -84,6 +90,7 @@ export default {
     data() {
         return {
             news: [],
+            statusLabels,
             searchForm: {
                 name: null,
                 is_in_home: null,
@@ -94,7 +101,7 @@ export default {
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
                 { text: 'Дата новости', align: 'left', value: 'published_at' },
-                { text: 'Статус', value: 'status.description' },
+                { text: 'Статус', value: 'status' },
                 { text: 'На главной', value: 'is_in_home' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
