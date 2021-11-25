@@ -29,6 +29,12 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
+                <template #item.type="{ item }">
+                    <div class="font-weight-bold text-no-wrap">
+                        {{ typeLabels.find((el) => el.value === item.type).text }}
+                    </div>
+                </template>
+
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
@@ -53,6 +59,7 @@ import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import Filter from '../models/Filter';
 import PageHeader from '~/components/common/PageHeader';
+import { typeLabels } from '~/enums';
 
 export default {
     components: {
@@ -63,6 +70,7 @@ export default {
     data() {
         return {
             filters: [],
+            typeLabels,
             searchForm: {
                 name: null,
                 category_id: null,
@@ -75,20 +83,11 @@ export default {
                 { text: 'Ссылка', align: 'left', value: 'slug', sortable: false },
                 {
                     text: 'Тип',
-                    value: 'type.description',
-                    sort(a, b) {
-                        console.log(a, b);
-                    },
+                    value: 'type',
                 },
                 { text: 'Категории', align: 'left', value: 'category.name', sortable: false },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
-            ],
-            typeList: [
-                { value: null, text: 'Не важно' },
-                { value: 1, text: 'Список галочек' },
-                { value: 2, text: 'Слайдер' },
-                { value: 3, text: 'Галочка' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список фильтров' }],
             formFilters: [
