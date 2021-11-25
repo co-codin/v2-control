@@ -60,7 +60,6 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, statusDescriptions } from '@/enums';
 import Publication from '../models/Publication';
 import PageHeader from '~/components/common/PageHeader';
 

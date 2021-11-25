@@ -71,7 +71,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { enumToSelectArray, statusDescriptions, statusLabels } from '@/enums';
+import { statusLabels } from '@/enums';
 import News from '../models/News';
 import PageHeader from '~/components/common/PageHeader';
 
