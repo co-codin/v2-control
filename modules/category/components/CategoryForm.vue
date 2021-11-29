@@ -1,20 +1,13 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-input
+        <category-tree-search-field
+            v-model="form.parent_id"
             label="Родительская категория"
             :error-messages="form.errors.get('parent_id')"
             :error="form.errors.has('parent_id')"
-            dense
             :multiple="false"
-        >
-            <treeselect
-                v-model="form.parent_id"
-                placeholder="Выберите родительскую категорию"
-                :options="categoryTree"
-                :normalizer="normalizer"
-                @input="inputParent"
-            />
-        </v-input>
+            name="parent_id"
+        />
 
         <v-text-field
             v-model="form.name"
@@ -89,16 +82,16 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import Treeselect from '@riophae/vue-treeselect';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import { mapGetters, mapActions } from 'vuex';
 import FileField from '../../../components/forms/FileField';
 import { statusLabels } from '~/enums';
 import WysiwygField from '~/components/forms/WysiwygField';
+import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
     components: {
-        Treeselect,
+        CategoryTreeSearchField,
         FileField,
         WysiwygField,
     },
@@ -166,14 +159,6 @@ export default {
         ...mapActions({
             getCategories: 'category/getCategories',
         }),
-        normalizer: (item) => ({
-            id: item.id,
-            label: item.name || item.label,
-            children: item.children && item.children.length > 0 ? item.children : undefined,
-        }),
-        inputParent(value) {
-            if (value === undefined) this.form.parent_id = null;
-        },
     },
 };
 </script>

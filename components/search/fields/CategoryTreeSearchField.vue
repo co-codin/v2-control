@@ -1,13 +1,19 @@
 <template>
     <div>
-        <v-input :label="label">
-            <treeselect
-                :value="value"
-                :multiple="multiple"
-                :options="categoryTree"
-                :normalizer="normalizer"
-                @input="$emit('input', $event)"
-            />
+        <v-input>
+            <div class="input-custom">
+                <template @slot="label">
+                    {{ label }}
+                </template>
+                <treeselect
+                    class="mt-1"
+                    :value="value"
+                    :multiple="multiple"
+                    :options="categoryTree"
+                    :normalizer="normalizer"
+                    @input="$emit('input', $event)"
+                />
+            </div>
         </v-input>
 
         <portal v-if="chips.length" :to="`filter-${name}-chips`">
@@ -88,3 +94,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.input-custom {
+    flex-direction: column;
+}
+</style>
