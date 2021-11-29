@@ -6,7 +6,7 @@
             <v-btn :to="{ name: 'filters.create' }"> Добавить фильтр </v-btn>
         </div>
 
-        <advanced-search-form :filters="formFilters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="formFilters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
@@ -92,6 +92,11 @@ export default {
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список фильтров' }],
             formFilters: [
                 {
+                    label: 'Быстрый поиск',
+                    name: 'live',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
                     label: 'Название',
                     name: 'name',
                     component: () => import('@/components/search/fields/TextSearchField'),
@@ -99,7 +104,7 @@ export default {
                 {
                     label: 'ID',
                     name: 'id',
-                    component: () => import('@/components/search/fields/ComboBoxSearchField'),
+                    component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
                     label: 'Ссылка',

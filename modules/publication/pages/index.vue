@@ -6,7 +6,7 @@
             <v-btn :to="{ name: 'publications.create' }"> Добавить публикацию </v-btn>
         </div>
 
-        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
@@ -27,6 +27,12 @@
             >
                 <template #item.id="{ item }">
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
+                </template>
+
+                <template #item.url="{ item }">
+                    <div style="max-width: 300px;">
+                        {{ item.url }}
+                    </div>
                 </template>
 
                 <template #item.published_at="{ item }">
@@ -81,11 +87,16 @@ export default {
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'url' },
                 { text: 'Источник', align: 'left', value: 'source' },
-                { text: 'Дата создания', align: 'left', value: 'published_at' },
+                { text: 'Дата публикации', align: 'left', value: 'published_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список публикаций' }],
             filters: [
+                {
+                    label: 'Быстрый поиск',
+                    name: 'live',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
                 {
                     label: 'Название',
                     name: 'name',
@@ -94,7 +105,7 @@ export default {
                 {
                     label: 'ID',
                     name: 'id',
-                    component: () => import('@/components/search/fields/ComboBoxSearchField'),
+                    component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
                     label: 'Ссылка',
@@ -102,7 +113,7 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Подключено',
+                    label: 'Отображается на сайте',
                     name: 'is_enabled',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },

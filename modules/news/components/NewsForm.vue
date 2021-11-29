@@ -1,20 +1,11 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-input
+        <date-picker-field
+            v-model="form.published_at"
             label="Дата"
-            dense
             :error-messages="form.errors.get('published_at')"
             :error="form.errors.has('published_at')"
-        >
-            <flat-pickr
-                v-model="form.published_at"
-                :config="configPicker"
-                placeholder="Выберите дату"
-                class="date-picker-input"
-                name="published_at"
-            />
-        </v-input>
-
+        />
         <v-text-field
             v-model="form.name"
             label="Заголовок"
@@ -73,27 +64,26 @@
             :error-messages="form.errors.get('view_num')"
             :error="form.errors.has('view_num')"
         />
-
-        <slot name="buttons">
-            <v-btn type="submit">Сохранить</v-btn>
-        </slot>
+        <v-row class="expansion-panel-actions mt-5">
+            <v-col>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+            </v-col>
+        </v-row>
     </v-form>
 </template>
 
 <script>
 import { Form } from 'form-backend-validation';
-import flatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
-import { Russian } from 'flatpickr/dist/l10n/ru.js';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
 import WysiwygField from "~/components/forms/WysiwygField";
+import DatePickerField from "~/components/forms/DatePickerField";
 
 export default {
     components: {
         FileField,
-        flatPickr,
         WysiwygField,
+        DatePickerField,
     },
     props: {
         news: {
@@ -118,11 +108,6 @@ export default {
             published_at: null,
             view_num: null,
         },
-        configPicker: {
-            dateFormat: 'Y-m-d',
-            enableTime: true,
-            locale: Russian,
-        },
         form: null,
         statusLabels,
     }),
@@ -135,7 +120,6 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.news || {});
-        this.form.published_at = this.$dayjs(this.news.published_at, 'DD-MM-YYYY').format('YYYY-MM-DD');
     },
 };
 </script>
