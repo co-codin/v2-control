@@ -15,13 +15,26 @@
                                         property.name
                                     }}</v-expansion-panel-header>
                                     <v-expansion-panel-content>
+                                        <v-select
+                                            v-if="property.is_boolean"
+                                            v-model="property.field_value_ids"
+                                            label="Значение"
+                                            :items="booleanItems"
+                                        />
+                                        <v-text-field
+                                            v-else-if="property.is_numeric"
+                                            v-model="property.field_value_ids"
+                                            type="number"
+                                            label="Значение"
+                                        />
                                         <field-value-autocomplete
+                                            v-else
                                             v-model="property.field_value_ids"
                                             label="Значение"
                                             item-text="value"
                                             item-value="id"
-                                            :multiple="property.is_boolean"
-                                            :chips="property.is_boolean"
+                                            :multiple="true"
+                                            :chips="true"
                                             :items="getItemsByIds(property.field_value_ids)"
                                             deletable-chips
                                             :query-params="{ sort: 'valueLength' }"
@@ -184,6 +197,10 @@ export default {
         newPropertyPopup: false,
         tab: 'properties',
         draggableItems: null,
+        booleanItems: [
+            { text: 'Да', value: 1 },
+            { text: 'Нет', value: 0 },
+        ],
     }),
     async created() {
         const valueIds = this.product.properties
@@ -234,6 +251,7 @@ export default {
                     id: property.id,
                     name: property.name,
                     is_boolean: property.is_boolean,
+                    is_numeric: property.is_numeric,
                 }))
                 .sort((a, b) => {
                     let ret = 0;
