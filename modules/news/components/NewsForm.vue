@@ -6,6 +6,7 @@
             :error-messages="form.errors.get('published_at')"
             :error="form.errors.has('published_at')"
         />
+
         <v-text-field
             v-model="form.name"
             label="Заголовок"
@@ -22,6 +23,7 @@
 
         <file-field
             v-model="form.image"
+            label="Фотография"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             @input="form.is_image_changed = true"
@@ -29,17 +31,17 @@
         />
 
         <wysiwyg-field
+            v-model="form.short_description"
             label="Короткое описание"
             :error-messages="form.errors.get('short_description')"
             :error="form.errors.has('short_description')"
-            v-model="form.short_description"
         />
 
         <wysiwyg-field
+            v-model="form.full_description"
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-            v-model="form.full_description"
         />
 
         <v-select
@@ -76,8 +78,8 @@
 import { Form } from 'form-backend-validation';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
-import WysiwygField from "~/components/forms/WysiwygField";
-import DatePickerField from "~/components/forms/DatePickerField";
+import WysiwygField from '~/components/forms/WysiwygField';
+import DatePickerField from '~/components/forms/DatePickerField';
 
 export default {
     components: {
