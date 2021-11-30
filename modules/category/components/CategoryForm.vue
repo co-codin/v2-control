@@ -1,5 +1,12 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
+        <v-text-field
+            v-model="form.name"
+            label="Название"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+        />
+
         <category-tree-search-field
             v-model="form.parent_id"
             label="Родительская категория"
@@ -7,13 +14,6 @@
             :error="form.errors.has('parent_id')"
             :multiple="false"
             name="parent_id"
-        />
-
-        <v-text-field
-            v-model="form.name"
-            label="Название"
-            :error-messages="form.errors.get('name')"
-            :error="form.errors.has('name')"
         />
 
         <v-text-field
