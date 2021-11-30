@@ -49,7 +49,6 @@
             label="Логотип"
             :error-messages="form.errors.get('logo')"
             :error="form.errors.has('logo')"
-            prepend-icon="mdi-image"
             @input="form.is_image_changed = true"
             @delete="form.logo = null"
         />
@@ -105,7 +104,7 @@ export default {
             company_name: null,
             position: null,
             author: null,
-            type: 1,
+            type: null,
             comment: null,
             is_in_home: false,
             logo: null,

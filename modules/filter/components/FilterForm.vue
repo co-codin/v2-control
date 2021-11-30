@@ -65,20 +65,21 @@
             inset
         />
 
-        <slot name="buttons">
-            <v-btn type="submit">Сохранить</v-btn>
-        </slot>
+        <v-row class="expansion-panel-actions mt-5">
+            <v-col>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+            </v-col>
+        </v-row>
     </v-form>
 </template>
 
 <script>
 import { Form } from 'form-backend-validation';
 import { mapActions, mapGetters } from 'vuex';
-import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
-    components: { CategoryTreeSearchField, CategoriesTreeField },
+    components: { CategoryTreeSearchField },
     props: {
         filter: {
             type: Object | null,

@@ -30,21 +30,23 @@
         />
 
         <wysiwyg-field
+            v-model="form.full_description"
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-            v-model="form.full_description"
         />
 
-        <slot name="buttons">
-            <v-btn type="submit">Сохранить</v-btn>
-        </slot>
+        <v-row class="expansion-panel-actions mt-5">
+            <v-col>
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+            </v-col>
+        </v-row>
     </v-form>
 </template>
 
 <script>
 import { Form } from 'form-backend-validation';
-import WysiwygField from "~/components/forms/WysiwygField";
+import WysiwygField from '~/components/forms/WysiwygField';
 import { statusLabels } from '~/enums';
 
 export default {
