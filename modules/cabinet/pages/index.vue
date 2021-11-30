@@ -125,7 +125,7 @@ export default {
                 await cabinet.delete();
 
                 this.$snackbar(`Кабинет ${cabinet.name} успешно удален`);
-                this.attributes = this.attributes.filter((item) => item.id !== cabinet.id);
+                this.cabinets = this.cabinets.filter((item) => item.id !== cabinet.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }
