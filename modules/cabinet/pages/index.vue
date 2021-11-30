@@ -50,6 +50,7 @@ import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import PageHeader from '~/components/common/PageHeader';
 import Cabinet from '~/modules/cabinet/models/Cabinet';
+import { statusLabels } from '~/enums';
 
 export default {
     components: {
@@ -62,14 +63,13 @@ export default {
             cabinets: [],
             searchForm: {
                 name: null,
-                is_default: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
                 { text: 'Категория', align: 'left', value: 'category.name' },
-                { text: 'Статус', align: 'left', value: 'status' },
+                { text: 'Статус', value: 'status.description', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список кабинетов' }],
@@ -93,6 +93,7 @@ export default {
                     label: 'Статус',
                     name: 'status',
                     component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: statusLabels,
                 },
             ],
         };
@@ -101,9 +102,9 @@ export default {
         this.showLoading();
 
         const response = await Cabinet.select({
-            attributes: ['id', 'name', 'slug', 'status', 'category_id'],
-            category: ['id', 'name'],
+            cabinets: ['id', 'name', 'slug', 'status', 'category_id'],
         })
+            .with('category')
             .params(this.queryParams)
             .get();
 
