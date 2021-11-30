@@ -18,6 +18,7 @@
             :item-text="getCategoryText"
             @change="updateMainCategory"
         />
+
         <entity-autocomplete-field
             v-model="form.brand_id"
             url="/brands"
@@ -34,6 +35,7 @@
             cache-items
             @input="updateSlug"
         />
+
         <v-text-field
             v-model="form.name"
             label="Модель"
@@ -41,6 +43,7 @@
             :error="form.errors.has('name')"
             @input="updateSlug"
         />
+
         <v-text-field
             v-model="form.slug"
             label="Ссылка"
@@ -65,6 +68,18 @@
             item-text="text"
             item-value="value"
         />
+
+        <v-select
+            v-if="isUpdating"
+            v-model="form.group_id"
+            label="Группа"
+            :items="groupLabels"
+            :error-messages="form.errors.get('group_id')"
+            :error="form.errors.has('group_id')"
+            item-text="text"
+            item-value="value"
+        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -81,7 +96,7 @@ import { mapGetters } from 'vuex';
 import Category from '~/modules/category/models/Category';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
-import { Status, statusLabels } from '~/enums';
+import { Status, statusLabels, groupLabels } from '~/enums';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
@@ -105,9 +120,11 @@ export default {
             status: Status.Inactive,
             full_description: null,
             image: null,
+            group_id: null,
         },
         categories: [],
         statusLabels,
+        groupLabels,
         isUpdatingSlug: false,
         productRules: [
             (v) => {

@@ -1,5 +1,5 @@
 <template>
-    <v-switch v-model="isChecked" :label="label" @click.prevent="handleUniqueContent" inset />
+    <v-switch v-model="isChecked" :label="label" inset @click.prevent="handleUniqueContent" />
 </template>
 
 <script>
@@ -47,6 +47,7 @@ export default {
                     object: this.object,
                 },
             });
+            this.$snackbar('Данные успешно обновлены');
             await this.getUniqueContent();
         },
 
