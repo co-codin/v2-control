@@ -18,6 +18,23 @@
                 </v-col>
             </v-row>
         </form-block>
+        <form-block title="Видеообзор">
+            <v-text-field
+                v-model="form.video"
+                prepend-icon="mdi-youtube"
+                label="Видеообзор"
+                :error-messages="form.errors.get('video')"
+                :error="form.errors.has('video')"
+                :rules="urlRules"
+            />
+            <v-row class="expansion-panel-actions mt-3">
+                <v-col>
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                        >Сохранить</v-btn
+                    >
+                </v-col>
+            </v-row>
+        </form-block>
         <form-block title="Дополнительные фотографии">
             <v-form class="gallery-form">
                 <file-field
@@ -28,23 +45,6 @@
                 />
             </v-form>
             <file-uploader v-model="newImages" :multiple="true" :max="10" :object-format="true" />
-            <v-row class="expansion-panel-actions mt-3">
-                <v-col>
-                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
-                        >Сохранить</v-btn
-                    >
-                </v-col>
-            </v-row>
-        </form-block>
-        <form-block title="Видеообзор">
-            <v-text-field
-                v-model="form.video"
-                prepend-icon="mdi-youtube"
-                label="Видеообзор"
-                :error-messages="form.errors.get('video')"
-                :error="form.errors.has('video')"
-                :rules="urlRules"
-            />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
                     <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
