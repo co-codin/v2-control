@@ -107,6 +107,18 @@
                                                     })
                                             "
                                         />
+                                        <v-select
+                                            label="Наличие"
+                                            :value="variation.availability"
+                                            :items="availabilityLabels"
+                                            :error-messages="form.errors.get(`variations.${index}.availability`)"
+                                            :error="form.errors.has(`variations.${index}.availability`)"
+                                            dense
+                                            @change="
+                                                (value) =>
+                                                    updateField({ field: `variations.${index}.availability`, value })
+                                            "
+                                        />
                                         <v-switch
                                             inset
                                             label="Доступно на сайте?"
