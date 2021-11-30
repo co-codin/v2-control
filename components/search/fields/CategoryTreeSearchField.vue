@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-input>
+        <v-input hide-details>
             <div class="input-custom">
                 <template @slot="label">
                     {{ label }}
