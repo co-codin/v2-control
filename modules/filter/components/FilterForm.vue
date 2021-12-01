@@ -123,7 +123,6 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.filter || {});
-        this.form.type = this.filter.value;
         await this.getCategories();
         await this.getProperties();
     },
