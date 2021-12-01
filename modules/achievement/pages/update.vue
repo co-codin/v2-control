@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Редактирование достижения" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
-            <v-expansion-panels>
+            <v-expansion-panels v-model="openedPanel" multiple>
                 <form-block title="Основная информация">
                     <achievement-form :achievement="achievement" is-updating @send="updateAchievement" />
                 </form-block>
@@ -25,6 +25,7 @@ export default {
     data: () => ({
         achievement: null,
         isLoading: true,
+        openedPanel: [],
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },
             { text: 'Список достижений', href: '/achievements' },
@@ -43,8 +44,8 @@ export default {
         async updateAchievement(form) {
             try {
                 await form.put(`/admin/achievements/${this.$route.params.id}`);
+                this.openedPanel = [];
                 this.$snackbar(`Достижение успешно обновлено`);
-                await this.$router.push({ name: 'achievements.index' });
             } catch (e) {
                 this.$snackbar(`Приозошла ошибка при обновлении достижения: ${e.message}`);
             }
