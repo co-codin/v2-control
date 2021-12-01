@@ -66,7 +66,7 @@ export default {
     },
     created() {
         this.form = Form.create(this.formDefaults)
-            .withOptions({ http: this.$axios })
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.achievement || {});
     },
 };
