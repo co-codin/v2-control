@@ -2,18 +2,21 @@
     <v-form @submit.prevent="$emit('send', form)">
         <v-input
             v-if="pages.length"
-            label="Родительская страницы"
+            hide-details
             :error-messages="form.errors.get('parent_id')"
             :error="form.errors.has('parent_id')"
             dense
         >
-            <treeselect
-                v-model="form.parent_id"
-                placeholder="Выберите родительскую страницу"
-                :options="pages"
-                :normalizer="normalizer"
-                @input="inputParent"
-            />
+            <div class="input-custom">
+                <template @slot="label"> Родительская страница </template>
+                <treeselect
+                    v-model="form.parent_id"
+                    placeholder="Выберите родительскую страницу"
+                    :options="pages"
+                    :normalizer="normalizer"
+                    @input="inputParent"
+                />
+            </div>
         </v-input>
 
         <v-text-field
@@ -31,10 +34,10 @@
         />
 
         <wysiwyg-field
+            v-model="form.full_description"
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-            v-model="form.full_description"
         />
 
         <v-select
@@ -59,7 +62,7 @@ import Treeselect from '@riophae/vue-treeselect';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import { statusLabels } from '~/enums';
 import { toTree } from '~/helpers';
-import WysiwygField from "~/components/forms/WysiwygField";
+import WysiwygField from '~/components/forms/WysiwygField';
 
 export default {
     components: {
@@ -81,6 +84,7 @@ export default {
             name: null,
             slug: null,
             status: null,
+            parent_id: null,
             full_description: null,
         },
         form: null,
@@ -113,3 +117,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.input-custom {
+    flex-direction: column;
+}
+</style>
