@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Form from 'form-backend-validation';
 import FileField from '~/components/forms/FileField';
 
@@ -39,10 +39,14 @@ export default {
     },
 
     methods: {
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+        }),
         async save() {
             try {
                 await this.form.patch(`admin/products/${this.product.id}`);
                 this.$snackbar(`Брошюра товара успешно обновлена`);
+                this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(e.message);
             }

@@ -68,7 +68,8 @@
                                 label="Значение"
                                 :error-messages="form.errors.get(`benefits.chips.${index}.value`)"
                                 :error="form.errors.has(`benefits.chips.${index}.value`)"
-                                dense />
+                                dense
+                            />
                             <v-text-field
                                 v-model="chip.description"
                                 label="Описание"
@@ -113,10 +114,10 @@
 
 <script>
 import Form from 'form-backend-validation';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import FormBlock from '~/components/forms/FormBlock';
-import WysiwygField from "~/components/forms/WysiwygField";
-import SvgIcon from "~/components/SvgIcon";
+import WysiwygField from '~/components/forms/WysiwygField';
+import SvgIcon from '~/components/SvgIcon';
 
 export default {
     components: {
@@ -135,28 +136,28 @@ export default {
                 },
             },
             icons: [
-                "arrow",
-                "arrow-up",
-                "burger-menu",
-                "cart",
-                "chip-close",
-                "close-popup",
-                "compare",
-                "download",
-                "flag",
-                "heart",
-                "heart-empty",
-                "infinite",
-                "note",
-                "note-black",
-                "plus",
-                "plus-filters",
-                "question-info",
-                "remove",
-                "reset",
-                "search",
-                "user",
-                "warranty",
+                'arrow',
+                'arrow-up',
+                'burger-menu',
+                'cart',
+                'chip-close',
+                'close-popup',
+                'compare',
+                'download',
+                'flag',
+                'heart',
+                'heart-empty',
+                'infinite',
+                'note',
+                'note-black',
+                'plus',
+                'plus-filters',
+                'question-info',
+                'remove',
+                'reset',
+                'search',
+                'user',
+                'warranty',
             ],
         };
     },
@@ -182,10 +183,17 @@ export default {
         }
     },
     methods: {
-        saveBenefits() {
-            this.form.patch(`/admin/products/${this.product.id}`).then(() => {
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+        }),
+        async saveBenefits() {
+            try {
+                await this.form.patch(`/admin/products/${this.product.id}`);
                 this.$snackbar(`Особенности товара успешно обновлены`);
-            });
+                this.closeAllPanels();
+            } catch (e) {
+                this.$snackbar(`Произошла ошибка при сохранении: ${e.message}`);
+            }
         },
         addChip() {
             if (!this.form.benefits.chips) {

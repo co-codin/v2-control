@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
     props: {
         label: {
@@ -36,19 +38,26 @@ export default {
     },
 
     methods: {
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+        }),
         async handleUniqueContent() {
-            await this.$axios({
-                method: 'post',
-                url: this.hasContent ? '/unique-content/destroy' : '/unique-content',
-                baseURL: this.$config.app.contentUrl,
-                data: {
-                    field: this.field,
-                    module: this.module,
-                    object: this.object,
-                },
-            });
-            this.$snackbar('Данные успешно обновлены');
-            await this.getUniqueContent();
+            try {
+                await this.$axios({
+                    method: 'post',
+                    url: this.hasContent ? '/unique-content/destroy' : '/unique-content',
+                    baseURL: this.$config.app.contentUrl,
+                    data: {
+                        field: this.field,
+                        module: this.module,
+                        object: this.object,
+                    },
+                });
+                this.$snackbar('Данные успешно обновлены');
+                await this.getUniqueContent();
+            } catch (e) {
+                this.$snackbar(e.message);
+            }
         },
 
         async getUniqueContent() {

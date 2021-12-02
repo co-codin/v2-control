@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Form from 'form-backend-validation';
 import FileUploader from '~/components/FileUploader';
 import FormBlock from '~/components/forms/FormBlock';
@@ -103,12 +103,16 @@ export default {
             .populate(this.product || {});
     },
     methods: {
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+        }),
         async sendForm() {
             this.form.images = this.form.images.concat(this.newImages);
             try {
                 await this.form.patch(`admin/products/${this.product.id}`);
                 this.$snackbar(`Галерея товара успешно обновлена`);
                 this.editing = false;
+                this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(e.message);
             }
