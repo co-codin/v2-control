@@ -15,7 +15,7 @@
                     <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
                 </v-btn>
             </div>
-            <v-expansion-panels>
+            <v-expansion-panels v-model="openedPanel">
                 <form-block title="Основная информация">
                     <product-form is-updating @send="updateProduct" />
                 </form-block>
@@ -97,7 +97,17 @@ export default {
         ...mapGetters({
             product: 'product/product',
             productSeo: 'product/productSeo',
+            openedPanel: 'helper/openedPanel',
         }),
+        openedPanel: {
+            get() {
+                return this.$store.state.helper.openedPanel;
+                // return this.openedPanel;
+            },
+            set(index) {
+                this.$store.commit('helper/updatePanel', index);
+            },
+        },
     },
     methods: {
         ...mapActions({
