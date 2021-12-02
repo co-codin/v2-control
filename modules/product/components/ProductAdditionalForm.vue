@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Form from 'form-backend-validation';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import WysiwygField from '~/components/forms/WysiwygField';
@@ -89,10 +89,14 @@ export default {
             .populate(this.product || {});
     },
     methods: {
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+        }),
         async save() {
             try {
                 await this.form.patch(`/admin/products/${this.product.id}`);
                 this.$snackbar(`Дополнительная информация успешно сохранена`);
+                this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при сохранении: ${e.message}`);
             }

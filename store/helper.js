@@ -2,17 +2,15 @@ const helper = {
     namespaced: true,
 
     state: () => ({
-        openedPanel: [],
+        openedPanel: null,
     }),
 
     mutations: {
         closeAllPanels(state) {
-            state.openedPanel = [];
+            state.openedPanel = null;
         },
         updatePanel(state, index) {
-            if (index) {
-                state.openedPanel.push(index);
-            }
+            state.openedPanel = index;
         },
     },
 

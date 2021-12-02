@@ -103,7 +103,8 @@ export default {
                 return this.$store.state.helper.openedPanel;
             },
             set(index) {
-                this.$store.commit('helper/updatePanel', index);
+                this.closeAllPanels();
+                this.updatePanel(index);
             },
         },
     },
@@ -113,6 +114,7 @@ export default {
         }),
         ...mapMutations({
             closeAllPanels: 'helper/closeAllPanels',
+            updatePanel: 'helper/updatePanel',
         }),
         async updateProduct(form) {
             try {
