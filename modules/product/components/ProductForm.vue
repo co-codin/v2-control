@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="send">
+    <v-form @submit.prevent="$emit('send', form)">
         <category-tree-search-field
             label="Категории"
             :value="categoryIds"
@@ -92,7 +92,7 @@
 import Form from 'form-backend-validation';
 import { first, debounce } from 'lodash';
 import slugify from 'slugify';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 import Category from '~/modules/category/models/Category';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import Brand from '~/modules/brand/models/Brand';
@@ -167,9 +167,6 @@ export default {
         }
     },
     methods: {
-        ...mapMutations({
-            closeAllPanels: 'helper/closeAllPanels',
-        }),
         async updateCategories(ids) {
             const { mainCategoryId } = this;
             this.form.categories = ids.map((id) => ({
@@ -254,10 +251,6 @@ export default {
 
             this.isUpdatingSlug = false;
         }, 200),
-        async send() {
-            await this.$emit('send', this.form);
-            this.closeAllPanels();
-        },
     },
 };
 </script>

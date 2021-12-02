@@ -11,7 +11,7 @@ const helper = {
         },
         updatePanel(state, index) {
             if (index) {
-                state.openedPanel.push(data);
+                state.openedPanel.push(index);
             }
         },
     },

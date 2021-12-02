@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import ProductForm from '../components/ProductForm';
 import ProductDocumentsForm from '~/modules/product/components/ProductDocumentsForm';
 import ProductAdditionalForm from '~/modules/product/components/ProductAdditionalForm';
@@ -97,12 +97,10 @@ export default {
         ...mapGetters({
             product: 'product/product',
             productSeo: 'product/productSeo',
-            openedPanel: 'helper/openedPanel',
         }),
         openedPanel: {
             get() {
                 return this.$store.state.helper.openedPanel;
-                // return this.openedPanel;
             },
             set(index) {
                 this.$store.commit('helper/updatePanel', index);
@@ -113,10 +111,14 @@ export default {
         ...mapActions({
             getProduct: 'product/getProduct',
         }),
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+        }),
         async updateProduct(form) {
             try {
                 await form.put(`/admin/products/${this.product.id}`);
                 this.$snackbar(`Товар успешно обновлен`);
+                this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обновлении товара: ${e.message}`);
             }
@@ -125,6 +127,7 @@ export default {
             try {
                 await form.patch(`/admin/products/${this.product.id}/seo`);
                 this.$snackbar(`SEO товара успешно обновлено`);
+                this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обоновлении seo у товара: ${e.message}`);
             }
