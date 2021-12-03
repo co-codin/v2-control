@@ -6,70 +6,72 @@
                     Регулирующие документы
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <v-tabs v-model="tab" grow background-color="transparent">
-                        <v-tab v-for="item in tabs" :key="item.key">
-                            {{ item.tab }}
-                        </v-tab>
-                        <v-tabs-items v-model="tab" style="width: 100%">
-                            <v-tab-item key="information">
-                                <v-card flat>
-                                    <v-card-text>
-                                        <v-text-field
-                                            label="Название"
-                                            dense
-                                        />
-                                        <v-divider class="my-2" />
-                                        <div class="text-center">
-                                            <v-btn
-                                                small
-                                                class="white--text"
-                                                color="red"
-                                            >
-                                                Удалить группу
-                                            </v-btn>
-                                        </div>
-                                    </v-card-text>
-                                </v-card>
-                            </v-tab-item>
-                            <v-tab-item key="documents">
-                                <v-card flat>
-                                    <v-card-text>
-                                        <v-expansion-panels>
-                                            <v-expansion-panel>
-                                                <v-expansion-panel-header class="title">
-                                                    Постановление Правительства РФ от 16 апреля 2012 г. N 291
-                                                </v-expansion-panel-header>
-                                                <v-expansion-panel-content>
-                                                    <v-text-field
-                                                        label="Название"
-                                                        dense
-                                                    />
-                                                    <v-select
-                                                        label="Тип"
-                                                        :items="typeLabels"
-                                                        dense
-                                                    />
-                                                    <v-divider class="my-2" />
-                                                    <div class="text-center">
-                                                        <v-btn
-                                                            small
-                                                            class="white--text"
-                                                            color="red"
-                                                        >
-                                                            Удалить документ
-                                                        </v-btn>
-                                                    </div>
-                                                </v-expansion-panel-content>
-                                            </v-expansion-panel>
-                                        </v-expansion-panels>
-                                        <div class="mt-2">
-                                            <v-btn link small color="primary" outlined> Добавить документ </v-btn>
-                                        </div>
-                                    </v-card-text>
-                                </v-card>
-                            </v-tab-item>
-                        </v-tabs-items>
-                    </v-tabs>
+                    <v-row>
+                        <v-tabs v-model="tab" grow background-color="transparent">
+                            <v-tab v-for="item in tabs" :key="item.key">
+                                {{ item.tab }}
+                            </v-tab>
+                            <v-tabs-items v-model="tab" style="width: 100%">
+                                <v-tab-item key="information">
+                                    <v-card flat>
+                                        <v-card-text>
+                                            <v-text-field
+                                                label="Название"
+                                                dense
+                                            />
+                                            <v-divider class="my-2" />
+                                            <div class="text-center">
+                                                <v-btn
+                                                    small
+                                                    class="white--text"
+                                                    color="red"
+                                                >
+                                                    Удалить группу
+                                                </v-btn>
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+                                <v-tab-item key="documents">
+                                    <v-card flat>
+                                        <v-card-text>
+                                            <v-expansion-panels>
+                                                <v-expansion-panel>
+                                                    <v-expansion-panel-header class="title">
+                                                        Постановление Правительства РФ от 16 апреля 2012 г. N 291
+                                                    </v-expansion-panel-header>
+                                                    <v-expansion-panel-content>
+                                                        <v-text-field
+                                                            label="Название"
+                                                            dense
+                                                        />
+                                                        <v-select
+                                                            label="Тип"
+                                                            :items="typeLabels"
+                                                            dense
+                                                        />
+                                                        <v-divider class="my-2" />
+                                                        <div class="text-center">
+                                                            <v-btn
+                                                                small
+                                                                class="white--text"
+                                                                color="red"
+                                                            >
+                                                                Удалить документ
+                                                            </v-btn>
+                                                        </div>
+                                                    </v-expansion-panel-content>
+                                                </v-expansion-panel>
+                                            </v-expansion-panels>
+                                            <div class="mt-2">
+                                                <v-btn link small color="primary" outlined> Добавить документ </v-btn>
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+                            </v-tabs-items>
+                        </v-tabs>
+                    </v-row>
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
