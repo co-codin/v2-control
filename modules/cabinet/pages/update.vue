@@ -1,6 +1,17 @@
 <template>
     <div>
         <page-header h1="Редактирование кабинета" :breadcrumbs="breadcrumbs" />
+        <div class="mb-2">
+            <v-btn
+                target="_blank"
+                link
+                :href="``"
+                color="info"
+                dark
+            >
+                <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
+            </v-btn>
+        </div>
         <template v-if="!$fetchState.pending">
             <v-expansion-panels>
                 <form-block title="Основная информация">
@@ -21,6 +32,7 @@
 </template>
 
 <script>
+import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
@@ -36,6 +48,7 @@ export default {
         SeoRelationForm,
         CabinetDocumentsForm,
         CabinetCategoriesForm,
+        ExternalLinkIcon,
     },
     data: () => ({
         cabinet: null,
