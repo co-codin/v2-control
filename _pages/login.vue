@@ -1,8 +1,8 @@
 <template>
     <v-form ref="form" @submit.prevent="login">
-        <v-text-field v-model="email" label="E-mail" required />
+        <v-text-field v-model="email" label="E-mail" required autofocus />
 
-        <v-text-field type="password" v-model="password" label="Пароль" required />
+        <v-text-field v-model="password" type="password" label="Пароль" required autofocus />
 
         <v-btn type="submit" color="primary" class="mr-4">Войти</v-btn>
     </v-form>
@@ -15,6 +15,11 @@ export default {
         email: '',
         password: '',
     }),
+
+    // mounted() {
+    //     console.log(this.email);
+    //     console.log(this.password);
+    // },
 
     methods: {
         async login() {
