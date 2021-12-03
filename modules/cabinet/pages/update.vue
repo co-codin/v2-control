@@ -23,6 +23,9 @@
                 <form-block title="Документы">
                     <cabinet-documents-form />
                 </form-block>
+                <form-block title="Требования">
+                    <cabinet-requirements-form />
+                </form-block>
                 <form-block title="SEO">
                     <seo-relation-form :seo="seo" @send="updateCabinetSeo" />
                 </form-block>
@@ -39,6 +42,7 @@ import FormBlock from '~/components/forms/FormBlock';
 import CabinetForm from '~/modules/cabinet/components/CabinetForm';
 import CabinetDocumentsForm from "~/modules/cabinet/components/CabinetDocumentsForm";
 import CabinetCategoriesForm from "~/modules/cabinet/components/CabinetCategoriesForm";
+import CabinetRequirementsForm from "~/modules/cabinet/components/CabinetRequirementsForm";
 
 export default {
     components: {
@@ -49,6 +53,7 @@ export default {
         CabinetDocumentsForm,
         CabinetCategoriesForm,
         ExternalLinkIcon,
+        CabinetRequirementsForm,
     },
     data: () => ({
         cabinet: null,
