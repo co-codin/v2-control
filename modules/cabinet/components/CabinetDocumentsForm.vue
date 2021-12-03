@@ -41,13 +41,23 @@
                                                         Постановление Правительства РФ от 16 апреля 2012 г. N 291
                                                     </v-expansion-panel-header>
                                                     <v-expansion-panel-content>
+                                                        <v-select
+                                                            label="Тип"
+                                                            :items="typeLabels"
+                                                            dense
+                                                        />
                                                         <v-text-field
                                                             label="Название"
                                                             dense
                                                         />
                                                         <v-select
-                                                            label="Тип"
-                                                            :items="typeLabels"
+                                                            label="Источник"
+                                                            :items="sourceLabels"
+                                                            :value="2"
+                                                            dense
+                                                        />
+                                                        <v-text-field
+                                                            label="Ссылка"
                                                             dense
                                                         />
                                                         <v-divider class="my-2" />
@@ -96,9 +106,18 @@ export default {
                 value: "documents/document1.pdf", // or link, eg "https://yandex.ru"
             },
         ],
-        typeLabels: [
+        sourceLabels: [
             {id: 1, text: 'Файл'},
             {id: 2, text: 'Ссылка'},
+        ],
+        typeLabels: [
+            {id: 1, text: 'Брошюра'},
+            {id: 2, text: 'Сертификат РУ'},
+            {id: 3, text: 'Сертификат ДС'},
+            {id: 4, text: 'Технические характеристики'},
+            {id: 5, text: 'Инструкция'},
+            {id: 6, text: 'Каталог'},
+            {id: 7, text: 'Стандарты оснащения'},
         ],
         tab: null,
         tabs: [
