@@ -112,6 +112,7 @@ export default {
                 await this.form.patch(`admin/products/${this.product.id}`);
                 this.$snackbar(`Галерея товара успешно обновлена`);
                 this.editing = false;
+                this.$nuxt.refresh();
                 this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(e.message);

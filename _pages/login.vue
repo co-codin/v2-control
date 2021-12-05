@@ -16,11 +16,6 @@ export default {
         password: '',
     }),
 
-    // mounted() {
-    //     console.log(this.email);
-    //     console.log(this.password);
-    // },
-
     methods: {
         async login() {
             try {
