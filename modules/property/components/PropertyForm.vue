@@ -22,10 +22,10 @@
         />
 
         <wysiwyg-field
+            v-model="form.description"
             label="Описание"
             :error-messages="form.errors.get('description')"
             :error="form.errors.has('description')"
-            v-model="form.description"
         />
 
         <v-switch
@@ -45,6 +45,7 @@
         />
 
         <v-switch
+            v-if="!form.is_boolean"
             v-model="form.is_numeric"
             label="Ввод только числовых значений"
             :error-messages="form.errors.get('is_numeric')"
@@ -53,6 +54,7 @@
         />
 
         <v-switch
+            v-if="!form.is_numeric"
             v-model="form.is_boolean"
             label="Только Да или Нет"
             :error-messages="form.errors.get('is_boolean')"
@@ -70,7 +72,7 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import WysiwygField from "~/components/forms/WysiwygField";
+import WysiwygField from '~/components/forms/WysiwygField';
 
 export default {
     components: {
@@ -102,6 +104,12 @@ export default {
     watch: {
         property(value) {
             this.form.populate(value);
+        },
+        form: {
+            handler(value) {
+                this.form = value;
+            },
+            deep: true,
         },
     },
     created() {
