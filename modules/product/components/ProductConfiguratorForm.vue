@@ -40,6 +40,7 @@ export default {
             initForm: 'forms/configurator/INIT_FORM',
             fillForm: 'forms/configurator/FILL_FORM',
             fillErrors: 'forms/configurator/FILL_ERRORS',
+            closeAllPanels: 'helper/closeAllPanels',
         }),
         ...mapActions({
             createConfigurator: 'forms/configurator/createConfigurator',
@@ -48,6 +49,7 @@ export default {
             try {
                 await this.createConfigurator(this.product.id);
                 this.$snackbar(`Конфигуратор успешно обновлен`);
+                this.closeAllPanels();
             } catch (e) {
                 const errors = e?.response?.data?.errors;
                 if (errors) {

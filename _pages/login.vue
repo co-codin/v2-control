@@ -1,8 +1,15 @@
 <template>
-    <v-form ref="form" @submit.prevent="login">
-        <v-text-field v-model="email" label="E-mail" required />
+    <v-form @submit.prevent="login">
+        <v-text-field v-model="email" placeholder=" " persistent-placeholder label="E-mail" required />
 
-        <v-text-field type="password" v-model="password" label="Пароль" required />
+        <v-text-field
+            v-model="password"
+            placeholder=" "
+            persistent-placeholder
+            type="password"
+            label="Пароль"
+            required
+        />
 
         <v-btn type="submit" color="primary" class="mr-4">Войти</v-btn>
     </v-form>
@@ -12,8 +19,8 @@
 export default {
     layout: 'auth',
     data: () => ({
-        email: '',
-        password: '',
+        email: null,
+        password: null,
     }),
 
     methods: {

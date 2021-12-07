@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="$emit('send', form)">
+    <v-form @submit.prevent="linkProperties">
         <v-row>
             <v-tabs v-model="tab" grow background-color="transparent">
                 <v-tab key="properties"> Характеристики </v-tab>
@@ -116,14 +116,16 @@
                                         <div v-for="(property, index) in form.properties" :key="property.id">
                                             <v-expansion-panel v-if="property.is_important">
                                                 <v-expansion-panel-header class="title">{{
-                                                        property.name
-                                                    }}</v-expansion-panel-header>
+                                                    property.name
+                                                }}</v-expansion-panel-header>
                                                 <v-expansion-panel-content>
                                                     <v-text-field
                                                         v-model="property.important_value"
                                                         label="Отформатированное значение для блока 'Коротко о товаре'"
                                                         dense
-                                                        :error-messages="form.errors.get(`properties.${index}.important_value`)"
+                                                        :error-messages="
+                                                            form.errors.get(`properties.${index}.important_value`)
+                                                        "
                                                         :error="form.errors.has(`properties.${index}.important_value`)"
                                                     />
                                                     <div class="text-center mt-1">
@@ -132,7 +134,7 @@
                                                             color="red"
                                                             class="white--text"
                                                             @click="property.is_important = false"
-                                                        >Удалить из блока "Коротко о товаре"</v-btn
+                                                            >Удалить из блока "Коротко о товаре"</v-btn
                                                         >
                                                     </div>
                                                 </v-expansion-panel-content>
@@ -148,9 +150,7 @@
         </v-row>
         <v-row class="expansion-panel-actions">
             <v-col>
-                <v-btn type="submit" color="green" class="white--text text-uppercase" @click="linkProperties"
-                    >Сохранить</v-btn
-                >
+                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
             </v-col>
         </v-row>
         <v-dialog v-model="newPropertyPopup" max-width="600" width="600">
@@ -166,7 +166,7 @@
 
 <script>
 import Form from 'form-backend-validation';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Sortable from 'sortablejs';
 import draggable from 'vuedraggable';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
@@ -232,6 +232,9 @@ export default {
     },
     beforeDestroy() {},
     methods: {
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+        }),
         getItemsByIds(ids) {
             if (!ids) {
                 return [];
@@ -303,6 +306,7 @@ export default {
             try {
                 await this.form.put(`admin/products/${this.$route.params.id}/properties`);
                 this.$snackbar(`Характиристики товара успешно обновлены`);
+                this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(e.message);
             }
