@@ -10,6 +10,7 @@
         :multiple="multiple"
         @input="$emit('input', $event)"
         @keyup="searchItems($event.target.value)"
+        clearable
     >
         <template v-if="searchInput" slot="no-data">
             <div class="pl-2 pr-2">Ничего не найдено. <v-btn text @click="addValue">Добавить?</v-btn></div>
