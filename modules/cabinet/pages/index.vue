@@ -30,7 +30,7 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions">
+                    <div class="actions text-no-wrap">
                         <v-btn icon width="22" height="22" :to="{ name: 'cabinets.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
