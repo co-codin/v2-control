@@ -29,6 +29,16 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
+                <template #item.category.name="{ item }">
+                    <div>
+                        {{
+                            item.category.parent_id
+                                ? item.category.parent.name + ' / ' + item.category.name
+                                : item.category.name
+                        }}
+                    </div>
+                </template>
+
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
@@ -164,12 +174,14 @@ export default {
         const response = await Product.select({
             products: ['id', 'name', 'brand_id', 'slug', 'status', 'created_at'],
             brand: ['id', 'name'],
-            category: ['id', 'name'],
+            category: ['id', 'name', 'parent_id'],
             categories: ['id', 'name'],
         })
-            .with('brand', 'category', 'categories')
+            .with('brand', 'category.parent', 'categories')
             .params(this.queryParams)
             .get();
+
+        console.log(response.data);
 
         this.products = Product.hydrate(response.data);
 
