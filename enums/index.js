@@ -2,6 +2,7 @@ import { enumToSelectArray } from './helpers';
 
 import { Status, statusDescriptions, statusLabels } from '~/enums/modules/Status';
 import { type, typeLabels, typeDescriptions } from '~/enums/modules/Type';
+import { Group, groupLabels, groupDescriptions } from '~/enums/modules/ProductGroup';
 import { urlRules } from '~/enums/rules';
 
 const uniqueContentList = [
@@ -41,4 +42,7 @@ export {
     type,
     typeLabels,
     typeDescriptions,
+    Group,
+    groupLabels,
+    groupDescriptions,
 };

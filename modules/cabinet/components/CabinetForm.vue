@@ -1,24 +1,5 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-input
-            v-if="pages.length"
-            hide-details
-            :error-messages="form.errors.get('parent_id')"
-            :error="form.errors.has('parent_id')"
-            dense
-        >
-            <div class="input-custom">
-                <template @slot="label"> Родительская страница </template>
-                <treeselect
-                    v-model="form.parent_id"
-                    placeholder="Выберите родительскую страницу"
-                    :options="pages"
-                    :normalizer="normalizer"
-                    @input="inputParent"
-                />
-            </div>
-        </v-input>
-
         <v-text-field
             v-model="form.name"
             label="Название"
@@ -33,11 +14,30 @@
             :error="form.errors.has('slug')"
         />
 
+        <category-tree-search-field
+            v-model="form.category_id"
+            label="Категория"
+            :error-messages="form.errors.get('category_id')"
+            :error="form.errors.has('category_id')"
+            :multiple="false"
+            name="category_id"
+        />
+
         <wysiwyg-field
             v-model="form.full_description"
+            class="mt-2"
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
+        />
+
+        <file-field
+            v-model="form.image"
+            label="Фотография"
+            :error-messages="form.errors.get('image')"
+            :error="form.errors.has('image')"
+            prepend-icon="mdi-image"
+            @input="form.is_image_changed = true"
         />
 
         <v-select
@@ -58,19 +58,15 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import Treeselect from '@riophae/vue-treeselect';
-import '@riophae/vue-treeselect/dist/vue-treeselect.css';
-import { statusLabels } from '~/enums';
-import { toTree } from '~/helpers';
+import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 import WysiwygField from '~/components/forms/WysiwygField';
+import FileField from '~/components/forms/FileField';
+import { statusLabels } from '~/enums';
 
 export default {
-    components: {
-        WysiwygField,
-        Treeselect,
-    },
+    components: { FileField, WysiwygField, CategoryTreeSearchField },
     props: {
-        page: {
+        cabinet: {
             type: Object | null,
             default: () => ({}),
         },
@@ -83,43 +79,24 @@ export default {
         formDefaults: {
             name: null,
             slug: null,
-            status: null,
-            parent_id: null,
+            category_id: null,
             full_description: null,
+            image: null,
+            is_image_changed: false,
+            status: 1,
         },
         form: null,
         statusLabels,
-        pages: [],
     }),
     watch: {
-        page(value) {
+        attribute(value) {
             this.form.populate(value);
         },
     },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
-            .populate(this.page || {});
-    },
-    async mounted() {
-        const { data } = await this.$axios.$get('/pages/all');
-        this.pages = toTree(data);
-    },
-    methods: {
-        normalizer: (item) => ({
-            id: item.id,
-            label: item.name || item.label,
-            children: item.children && item.children.length > 0 ? item.children : undefined,
-        }),
-        inputParent(value) {
-            if (value === undefined) this.form.parent_id = null;
-        },
+            .populate(this.cabinet || {});
     },
 };
 </script>
-
-<style scoped>
-.input-custom {
-    flex-direction: column;
-}
-</style>

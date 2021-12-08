@@ -150,7 +150,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
-import FieldValueAutocomplete from "~/components/forms/FieldValueAutocomplete";
+import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 
 export default {
     components: {

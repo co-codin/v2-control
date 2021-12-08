@@ -1,5 +1,19 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
+        <v-text-field
+            v-model="form.name"
+            label="Название"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+        />
+
+        <v-text-field
+            v-model="form.slug"
+            label="Ссылка"
+            :error-messages="form.errors.get('slug')"
+            :error="form.errors.has('slug')"
+        />
+
         <category-tree-search-field
             v-model="form.category_id"
             label="Категория"
@@ -7,6 +21,14 @@
             :error="form.errors.has('categories')"
             name="category_id"
             :multiple="false"
+        />
+
+        <v-select
+            v-model="form.type"
+            :items="typeLabels"
+            label="Тип"
+            :error-messages="form.errors.get('type')"
+            :error="form.errors.has('type')"
         />
 
         <v-select
@@ -18,36 +40,14 @@
             item-value="id"
             :error-messages="form.errors.get('property_id')"
             :error="form.errors.has('property_id')"
-        ></v-select>
-
-        <v-text-field
-            v-model="form.name"
-            label="Название"
-            :error-messages="form.errors.get('name')"
-            :error="form.errors.has('name')"
-        ></v-text-field>
-
-        <v-text-field
-            v-model="form.slug"
-            label="Ссылка"
-            :error-messages="form.errors.get('slug')"
-            :error="form.errors.has('slug')"
-        ></v-text-field>
-
-        <v-select
-            v-model="form.type"
-            :items="typeLabels"
-            label="Тип"
-            :error-messages="form.errors.get('type')"
-            :error="form.errors.has('type')"
-        ></v-select>
+        />
 
         <v-textarea
             v-model="form.description"
             label="Описание"
             :error-messages="form.errors.get('description')"
             :error="form.errors.has('description')"
-        ></v-textarea>
+        />
 
         <v-switch
             v-model="form.is_default"
@@ -113,6 +113,9 @@ export default {
             categories: 'category/categories',
             properties: 'property/properties',
         }),
+        filteredProperties() {
+            return this.properties;
+        },
     },
     watch: {
         filter(value) {
@@ -123,7 +126,6 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.filter || {});
-        this.form.type = this.filter.value;
         await this.getCategories();
         await this.getProperties();
     },

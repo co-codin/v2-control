@@ -19,6 +19,7 @@ import { vacancyRoutes } from './modules/vacancy/router';
 import { exportRoutes } from './modules/export/router';
 import { attributeRoutes } from './modules/attribute/router';
 import { canonicalRoutes } from './modules/canonical/router';
+import { cabinetRoutes } from './modules/cabinet/router';
 
 export default {
     ssr: false,
@@ -138,6 +139,7 @@ export default {
                     ...exportRoutes(resolve),
                     ...attributeRoutes(resolve),
                     ...canonicalRoutes(resolve),
+                    ...cabinetRoutes(resolve),
                 ]
             );
         },
