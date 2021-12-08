@@ -6,6 +6,9 @@
                 <form-block title="Основная информация">
                     <cabinet-form :cabinet="cabinet" is-updating @send="updateCabinet" />
                 </form-block>
+                <form-block title="Дополнительная информация">
+                    <cabinet-additional-form :cabinet="cabinet" />
+                </form-block>
                 <form-block title="SEO">
                     <seo-relation-form :seo="seo" @send="updateCabinetSeo" />
                 </form-block>
@@ -19,9 +22,11 @@ import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
 import CabinetForm from '~/modules/cabinet/components/CabinetForm';
+import CabinetAdditionalForm from '~/modules/cabinet/components/CabinetAdditionalForm';
 
 export default {
     components: {
+        CabinetAdditionalForm,
         CabinetForm,
         FormBlock,
         PageHeader,
