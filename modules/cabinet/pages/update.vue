@@ -1,13 +1,30 @@
 <template>
     <div>
         <page-header h1="Редактирование кабинета" :breadcrumbs="breadcrumbs" />
+        <div class="mb-2">
+            <v-btn
+                target="_blank"
+                link
+                :href="``"
+                color="info"
+                dark
+            >
+                <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
+            </v-btn>
+        </div>
         <template v-if="!$fetchState.pending">
             <v-expansion-panels>
                 <form-block title="Основная информация">
                     <cabinet-form :cabinet="cabinet" is-updating @send="updateCabinet" />
                 </form-block>
-                <form-block title="Дополнительная информация">
-                    <cabinet-additional-form :cabinet="cabinet" />
+                <form-block title="Оснащение">
+                    <cabinet-categories-form />
+                </form-block>
+                <form-block title="Документы">
+                    <cabinet-documents-form />
+                </form-block>
+                <form-block title="Требования">
+                    <cabinet-requirements-form />
                 </form-block>
                 <form-block title="SEO">
                     <seo-relation-form :seo="seo" @send="updateCabinetSeo" />
@@ -18,19 +35,25 @@
 </template>
 
 <script>
+import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
 import CabinetForm from '~/modules/cabinet/components/CabinetForm';
-import CabinetAdditionalForm from '~/modules/cabinet/components/CabinetAdditionalForm';
+import CabinetDocumentsForm from "~/modules/cabinet/components/CabinetDocumentsForm";
+import CabinetCategoriesForm from "~/modules/cabinet/components/CabinetCategoriesForm";
+import CabinetRequirementsForm from "~/modules/cabinet/components/CabinetRequirementsForm";
 
 export default {
     components: {
-        CabinetAdditionalForm,
         CabinetForm,
         FormBlock,
         PageHeader,
         SeoRelationForm,
+        CabinetDocumentsForm,
+        CabinetCategoriesForm,
+        ExternalLinkIcon,
+        CabinetRequirementsForm,
     },
     data: () => ({
         cabinet: null,

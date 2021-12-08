@@ -11,7 +11,7 @@
             <v-textarea
                 v-model="form.title"
                 rows="3"
-                label="Заголовок страницы"
+                label="Заголовок страницы (title)"
                 :error-messages="form.errors.get('title')"
                 :error="form.errors.has('title')"
             />
@@ -25,7 +25,7 @@
             <v-textarea
                 v-model="form.description"
                 rows="3"
-                label="Описание"
+                label="Описание (description)"
                 :error-messages="form.errors.get('description')"
                 :error="form.errors.has('description')"
             />

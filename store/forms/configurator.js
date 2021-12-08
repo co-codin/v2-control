@@ -25,7 +25,7 @@ export default {
                 previous_price: null,
                 currency_id: 1,
                 name: null,
-                availability: 1,
+                availability: 2,
                 is_price_visible: false,
                 is_enabled: false,
                 condition_id: null,

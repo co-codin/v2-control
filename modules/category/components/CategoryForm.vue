@@ -1,11 +1,5 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-text-field
-            v-model="form.name"
-            label="Название"
-            :error-messages="form.errors.get('name')"
-            :error="form.errors.has('name')"
-        />
 
         <category-tree-search-field
             v-model="form.parent_id"
@@ -14,13 +8,28 @@
             :error="form.errors.has('parent_id')"
             :multiple="false"
             name="parent_id"
+            @input="updateSlug"
+        />
+
+        <v-text-field
+            v-model="form.name"
+            @input="updateSlug"
+            label="Название"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
         />
 
         <v-text-field
             v-model="form.slug"
             label="Ссылка"
+            :loading="isUpdatingSlug"
+            append-icon="mdi-refresh"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+            @click:append="
+                form.slug = null;
+                updateSlug();
+            "
         />
 
         <v-text-field
@@ -87,6 +96,9 @@ import FileField from '../../../components/forms/FileField';
 import { statusLabels } from '~/enums';
 import WysiwygField from '~/components/forms/WysiwygField';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
+import {debounce, first} from "lodash";
+import Brand from "~/modules/brand/models/Brand";
+import slugify from "slugify";
 
 export default {
     components: {
@@ -131,20 +143,6 @@ export default {
         category(value) {
             this.form.populate(value);
         },
-        form: {
-            handler(form) {
-                if (form.parent_id && !form.slug) {
-                    const parents = [];
-                    let parent = this.categories.filter((category) => category.id === form.parent_id)[0];
-                    while (parent.id) {
-                        parents.push(parent);
-                        parent = this.categories.filter((category) => category.id === parent.parent_id);
-                    }
-                    form.slug = `${parents.map((parent) => parent.slug).join('/')}`;
-                }
-            },
-            deep: true,
-        },
     },
     async mounted() {
         await this.getCategories();
@@ -158,6 +156,31 @@ export default {
         ...mapActions({
             getCategories: 'category/getCategories',
         }),
+        updateSlug: debounce(async function () {
+            if (this.isUpdating && this.form.slug) {
+                return;
+            }
+            this.isUpdatingSlug = true;
+            let slugItems = [];
+            if (this.form.parent_id) {
+                let categoryId = this.form.parent_id;
+                do {
+                    let category = this.categories.find((item) => item.id === categoryId);
+                    slugItems.unshift(category?.name);
+                    categoryId = category?.parent_id;
+                }
+                while(categoryId);
+            }
+            slugItems.push(this.form.name);
+            slugItems = slugItems.filter(Boolean);
+            if (slugItems.length) {
+                this.form.slug = slugItems
+                    .map((word) => slugify(word, { lower: true }))
+                    .join('/')
+                    .replace(/[^a-z\/0-9-]/gi, '');
+            }
+            this.isUpdatingSlug = false;
+        }, 200),
     },
 };
 </script>
