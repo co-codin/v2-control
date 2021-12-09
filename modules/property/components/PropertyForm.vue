@@ -6,21 +6,35 @@
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
         />
-
         <v-text-field
             v-model="form.key"
             label="Ключ"
             :error-messages="form.errors.get('key')"
             :error="form.errors.has('key')"
         />
+        <v-switch
+            v-if="!form.is_boolean"
+            v-model="form.is_numeric"
+            label="Ввод только числовых значений"
+            :error-messages="form.errors.get('is_numeric')"
+            :error="form.errors.has('is_numeric')"
+            inset
+        />
 
+        <v-switch
+            v-if="!form.is_numeric"
+            v-model="form.is_boolean"
+            label="Только Да или Нет"
+            :error-messages="form.errors.get('is_boolean')"
+            :error="form.errors.has('is_boolean')"
+            inset
+        />
         <v-text-field
             v-model="form.unit"
             label="Единица измерения"
             :error-messages="form.errors.get('unit')"
             :error="form.errors.has('unit')"
         />
-
         <wysiwyg-field
             v-model="form.description"
             label="Описание"
@@ -41,24 +55,6 @@
             label="Скрыть из сравнения"
             :error-messages="form.errors.get('is_hidden_from_comparison')"
             :error="form.errors.has('is_hidden_from_comparison')"
-            inset
-        />
-
-        <v-switch
-            v-if="!form.is_boolean"
-            v-model="form.is_numeric"
-            label="Ввод только числовых значений"
-            :error-messages="form.errors.get('is_numeric')"
-            :error="form.errors.has('is_numeric')"
-            inset
-        />
-
-        <v-switch
-            v-if="!form.is_numeric"
-            v-model="form.is_boolean"
-            label="Только Да или Нет"
-            :error-messages="form.errors.get('is_boolean')"
-            :error="form.errors.has('is_boolean')"
             inset
         />
 

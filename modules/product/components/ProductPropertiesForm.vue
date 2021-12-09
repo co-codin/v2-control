@@ -20,12 +20,8 @@
                                             v-model="property.field_value_ids"
                                             label="Значение"
                                             :items="booleanItems"
-                                        />
-                                        <v-text-field
-                                            v-else-if="property.is_numeric"
-                                            v-model="property.field_value_ids"
-                                            type="number"
-                                            label="Значение"
+                                            clearable
+                                            dense
                                         />
                                         <field-value-autocomplete
                                             v-else
@@ -199,7 +195,7 @@ export default {
         draggableItems: null,
         booleanItems: [
             { text: 'Да', value: 1 },
-            { text: 'Нет', value: 0 },
+            { text: 'Нет', value: 2 },
         ],
     }),
     async created() {
@@ -285,6 +281,11 @@ export default {
                 id: this.newProperty.id,
                 name: this.newProperty.name,
                 field_value_ids: null,
+                pretty_key: null,
+                pretty_value: null,
+                is_boolean: this.newProperty.is_boolean,
+                important_value: null,
+                is_important: false,
             });
             this.newProperty = null;
         },
@@ -292,15 +293,20 @@ export default {
             this.newPropertyPopup = true;
         },
         async createProperty(form) {
-            const { data } = await form.post('/admin/properties');
-            this.form.properties.push({
-                id: data.id,
-                name: data.name,
-                is_boolean: data.is_boolean,
-                important_value: null,
-                field_value_ids: null,
-            });
-            this.newPropertyPopup = false;
+            try {
+                const { data } = await form.post('/admin/properties');
+                this.form.properties.push({
+                    id: data.id,
+                    name: data.name,
+                    is_boolean: data.is_boolean,
+                    important_value: null,
+                    field_value_ids: null,
+                    is_important: false,
+                });
+                this.newPropertyPopup = false;
+            } catch (e) {
+                this.$snackbar(`Произошла ошибка при создании характеристики: ${e.message}`);
+            }
         },
         async linkProperties() {
             try {
@@ -312,7 +318,7 @@ export default {
             }
         },
         updatePropertyPositions(e, l) {
-            console.log(e, l);
+
         },
     },
 };

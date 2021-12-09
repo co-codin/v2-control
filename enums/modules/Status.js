@@ -15,3 +15,9 @@ export const statusLabels = [
     { value: 2, text: 'Скрыто' },
     { value: 3, text: 'Доступно только по URL' },
 ];
+
+export const productReviewStatusLabels = [
+    { value: 1, text: 'На рассмотрении' },
+    { value: 2, text: 'Опубликован' },
+    { value: 3, text: 'Отклонен' },
+];
