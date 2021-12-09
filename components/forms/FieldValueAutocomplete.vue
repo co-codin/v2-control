@@ -1,14 +1,14 @@
 <template>
     <v-autocomplete
         v-bind="$attrs"
-        :items="fieldItems"
+        :items="loadedItems"
         :loading="isLoading"
         :search-input.sync="searchInput"
         :value="value"
         item-value="id"
         item-text="value"
         :multiple="multiple"
-        @input="$emit('input', $event)"
+        @change="$emit('input', $event)"
         @keyup="searchItems($event.target.value)"
         clearable
     >
@@ -25,6 +25,7 @@ export default {
     props: {
         items: {
             type: Array,
+            default: () => [],
         },
         value: {
             default: null,
@@ -33,15 +34,12 @@ export default {
             default: false,
         },
     },
-    data: () => ({
-        isLoading: false,
-        loadedItems: null,
-        searchInput: null,
-    }),
-    computed: {
-        fieldItems() {
-            return this.loadedItems ? this.loadedItems : this.items;
-        },
+    data() {
+        return {
+            isLoading: false,
+            loadedItems: [ ...this.items ],
+            searchInput: null,
+        }
     },
     watch: {
         '$attrs.value': async function () {
@@ -49,7 +47,7 @@ export default {
         },
     },
     async created() {
-        if (this.value && !this.items) {
+        if (this.value && !this.loadedItems.length) {
             await this.loadItems();
         }
     },
@@ -57,10 +55,11 @@ export default {
         async searchItems(query) {
             if (!query) return;
             this.isLoading = true;
-            this.loadedItems = await FieldValue.select('id', 'value')
+            const items = await FieldValue.select('id', 'value')
                 .where('value', query)
                 .orderBy('valueLength')
                 .$get();
+            this.loadedItems = this.loadedItems.concat(items);
             this.isLoading = false;
         },
         async loadItems() {
@@ -76,6 +75,7 @@ export default {
                     value: this.searchInput,
                 });
                 this.loadedItems.push(new FieldValue(data));
+                this.$emit('input', this.multiple ? [...this.value, data.id] : data.id);
                 this.$snackbar(`${this.searchInput} добавлен`);
             } catch (e) {
                 this.$snackbar('Произошла ошибка при создании');
