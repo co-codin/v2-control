@@ -6,7 +6,7 @@
             <v-btn :to="{ name: 'canonicals.create' }"> Добавить каноническую ссылку </v-btn>
         </div>
 
-        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
@@ -77,6 +77,11 @@ export default {
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список канонических ссылок' }],
             filters: [
+                {
+                    label: 'Быстрый поиск',
+                    name: 'live',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
                 {
                     label: 'Страница',
                     name: 'url',

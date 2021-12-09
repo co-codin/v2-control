@@ -30,7 +30,7 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions">
+                    <div class="actions text-no-wrap">
                         <v-btn icon width="22" height="22" :to="{ name: 'cabinets.update', params: { id: item.id } }">
                             <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
@@ -68,7 +68,6 @@ export default {
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Категория', align: 'left', value: 'category.name' },
                 { text: 'Статус', value: 'status.description', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
@@ -102,9 +101,8 @@ export default {
         this.showLoading();
 
         const response = await Cabinet.select({
-            cabinets: ['id', 'name', 'slug', 'status', 'category_id'],
+            cabinets: ['id', 'name', 'slug', 'status'],
         })
-            .with('category')
             .params(this.queryParams)
             .get();
 

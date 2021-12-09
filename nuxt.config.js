@@ -20,6 +20,7 @@ import { exportRoutes } from './modules/export/router';
 import { attributeRoutes } from './modules/attribute/router';
 import { canonicalRoutes } from './modules/canonical/router';
 import { cabinetRoutes } from './modules/cabinet/router';
+import { productReviewRoutes } from './modules/product-review/router';
 
 export default {
     ssr: false,
@@ -140,6 +141,7 @@ export default {
                     ...attributeRoutes(resolve),
                     ...canonicalRoutes(resolve),
                     ...cabinetRoutes(resolve),
+                    ...productReviewRoutes(resolve),
                 ]
             );
         },

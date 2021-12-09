@@ -43,7 +43,6 @@ export default {
                 include: ['seo'],
             },
         });
-        data.data.status = data.data.status.value;
         this.seo = data.data.seo || {};
         this.news = data.data;
         this.isLoading = false;
