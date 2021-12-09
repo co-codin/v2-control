@@ -74,7 +74,7 @@ export default {
             },
         },
         cookie: {
-            prefix: 'control_auth.',
+            prefix: 'controlauth.',
             options: {
                 expires: 183,
             },
