@@ -20,12 +20,7 @@
                                             v-model="property.field_value_ids"
                                             label="Значение"
                                             :items="booleanItems"
-                                        />
-                                        <v-text-field
-                                            v-else-if="property.is_numeric"
-                                            v-model="property.field_value_ids"
-                                            type="number"
-                                            label="Значение"
+                                            clearable
                                         />
                                         <field-value-autocomplete
                                             v-else
@@ -199,7 +194,7 @@ export default {
         draggableItems: null,
         booleanItems: [
             { text: 'Да', value: 1 },
-            { text: 'Нет', value: 0 },
+            { text: 'Нет', value: 2 },
         ],
     }),
     async created() {
