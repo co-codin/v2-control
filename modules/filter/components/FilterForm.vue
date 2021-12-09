@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="$emit('send', form)">
+    <v-form @submit.prevent="send">
         <v-text-field
             v-model="form.name"
             label="Название"
@@ -49,21 +49,36 @@
             :error="form.errors.has('description')"
         />
 
-        <v-switch
-            v-model="form.is_default"
-            label="По умолчанию"
-            :error-messages="form.errors.get('is_default')"
-            :error="form.errors.has('is_default')"
-            inset
+        <v-select
+            v-if="!isUpdating"
+            v-model="form.facet.name"
+            label="Системное поле"
+            :items="systemFilters"
+            item-text="name_ru"
+            item-value="name"
+            :error-messages="form.errors.get('facet.name')"
+            :error="form.errors.has('facet.name')"
         />
 
-        <v-switch
-            v-model="form.is_enabled"
-            label="Подключено"
-            :error-messages="form.errors.get('is_enabled')"
-            :error="form.errors.has('is_enabled')"
-            inset
-        />
+        <template v-if="!isUpdating">
+            <v-select
+                v-if="systemFilterValues"
+                v-model="form.facet.value"
+                label="Значение для поиска"
+                :items="systemFilterValues"
+                item-text="text"
+                item-value="value"
+                :error-messages="form.errors.get('facet.value')"
+                :error="form.errors.has('facet.value')"
+            />
+            <v-text-field
+                v-else
+                v-model="form.facet.value"
+                label="Значение для поиска"
+                :error-messages="form.errors.get('facet.value')"
+                :error="form.errors.has('facet.value')"
+            />
+        </template>
 
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
@@ -77,6 +92,7 @@
 import { Form } from 'form-backend-validation';
 import { mapActions, mapGetters } from 'vuex';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
+import { systemFilters } from '~/enums';
 
 export default {
     components: { CategoryTreeSearchField },
@@ -97,9 +113,12 @@ export default {
             type: null,
             category_id: null,
             property_id: null,
-            is_default: false,
-            is_enabled: false,
             description: null,
+            facet: {
+                name: null,
+                value: null,
+                path: null,
+            },
         },
         typeLabels: [
             { value: 1, text: 'Список галочек' },
@@ -107,14 +126,26 @@ export default {
             { value: 3, text: 'Галочка' },
         ],
         form: null,
+        systemFilters,
     }),
     computed: {
         ...mapGetters({
             categories: 'category/categories',
             properties: 'property/properties',
         }),
-        filteredProperties() {
-            return this.properties;
+        systemFilter() {
+            if (this.form.facet.name) {
+                return systemFilters.find((filter) => {
+                    return filter.name === this.form.facet.name;
+                });
+            }
+        },
+        systemFilterValues() {
+            if (this.systemFilter) {
+                if (this.systemFilter.allowedValues) {
+                    return this.systemFilter.allowedValues;
+                }
+            }
         },
     },
     watch: {
@@ -134,6 +165,12 @@ export default {
             getCategories: 'category/getCategories',
             getProperties: 'property/getProperties',
         }),
+        send() {
+            if (this.systemFilter.path) {
+                this.form.facet.path = this.systemFilter.path;
+            }
+            this.$emit('send', this.form);
+        },
     },
 };
 </script>
