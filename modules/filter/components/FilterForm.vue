@@ -49,21 +49,34 @@
             :error="form.errors.has('description')"
         />
 
-        <field-value-autocomplete
+        <v-select
             v-if="!isUpdating"
             v-model="form.facet.name"
             label="Системное поле"
+            :items="systemFilters"
+            item-text="name_ru"
+            item-value="name"
             :error-messages="form.errors.get('facet.name')"
             :error="form.errors.has('facet.name')"
         />
 
-        <v-text-field
-            v-if="!isUpdating"
-            v-model="form.facet.value"
-            label="Значение для поиска"
-            :error-messages="form.errors.get('facet.value')"
-            :error="form.errors.has('facet.value')"
-        />
+        <template v-if="!isUpdating">
+            <v-select
+                v-if="systemFilterValues"
+                v-model="form.facet.value"
+                label="Значение для поиска"
+                :items="systemFilterValues"
+                :error-messages="form.errors.get('facet.value')"
+                :error="form.errors.has('facet.value')"
+            />
+            <v-text-field
+                v-else
+                v-model="form.facet.value"
+                label="Значение для поиска"
+                :error-messages="form.errors.get('facet.value')"
+                :error="form.errors.has('facet.value')"
+            />
+        </template>
 
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
@@ -77,10 +90,10 @@
 import { Form } from 'form-backend-validation';
 import { mapActions, mapGetters } from 'vuex';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
-import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
+import { systemFilters } from '~/enums';
 
 export default {
-    components: { FieldValueAutocomplete, CategoryTreeSearchField },
+    components: { CategoryTreeSearchField },
     props: {
         filter: {
             type: Object | null,
@@ -111,14 +124,23 @@ export default {
             { value: 3, text: 'Галочка' },
         ],
         form: null,
+        systemFilters,
     }),
     computed: {
         ...mapGetters({
             categories: 'category/categories',
             properties: 'property/properties',
         }),
-        filteredProperties() {
-            return this.properties;
+        systemFilterValues() {
+            if (this.form.facet.name) {
+                const filter = systemFilters.find((filter) => {
+                    return filter.name === this.form.facet.name;
+                });
+
+                if (filter.allowedValues) {
+                    return filter.allowedValues;
+                }
+            }
         },
     },
     watch: {
