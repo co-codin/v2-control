@@ -1,24 +1,26 @@
 <template>
-    <field-value-autocomplete
-        v-model="form.facet.name"
-        label="Системное поле"
-        :error-messages="form.errors.get('facet.name')"
-        :error="form.errors.has('facet.name')"
-    />
+    <v-form @submit.prevent="save">
+        <field-value-autocomplete
+            v-model="form.facet.name"
+            label="Системное поле"
+            :error-messages="form.errors.get('facet.name')"
+            :error="form.errors.has('facet.name')"
+        />
 
-    <v-text-field
-        v-model="form.facet.path"
-        label="Путь"
-        :error-messages="form.errors.get('facet.path')"
-        :error="form.errors.has('facet.path')"
-    />
+        <v-text-field
+            v-model="form.facet.path"
+            label="Путь"
+            :error-messages="form.errors.get('facet.path')"
+            :error="form.errors.has('facet.path')"
+        />
 
-    <v-text-field
-        v-model="form.facet.value"
-        label="Значение для поиска"
-        :error-messages="form.errors.get('facet.value')"
-        :error="form.errors.has('facet.value')"
-    />
+        <v-text-field
+            v-model="form.facet.value"
+            label="Значение для поиска"
+            :error-messages="form.errors.get('facet.value')"
+            :error="form.errors.has('facet.value')"
+        />
+    </v-form>
 </template>
 
 <script>
