@@ -49,20 +49,20 @@
             :error="form.errors.has('description')"
         />
 
-        <v-switch
-            v-model="form.is_default"
-            label="По умолчанию"
-            :error-messages="form.errors.get('is_default')"
-            :error="form.errors.has('is_default')"
-            inset
+        <field-value-autocomplete
+            v-if="!isUpdating"
+            v-model="form.facet.name"
+            label="Системное поле"
+            :error-messages="form.errors.get('facet.name')"
+            :error="form.errors.has('facet.name')"
         />
 
-        <v-switch
-            v-model="form.is_enabled"
-            label="Подключено"
-            :error-messages="form.errors.get('is_enabled')"
-            :error="form.errors.has('is_enabled')"
-            inset
+        <v-text-field
+            v-if="!isUpdating"
+            v-model="form.facet.value"
+            label="Значение для поиска"
+            :error-messages="form.errors.get('facet.value')"
+            :error="form.errors.has('facet.value')"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -77,9 +77,10 @@
 import { Form } from 'form-backend-validation';
 import { mapActions, mapGetters } from 'vuex';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
+import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 
 export default {
-    components: { CategoryTreeSearchField },
+    components: { FieldValueAutocomplete, CategoryTreeSearchField },
     props: {
         filter: {
             type: Object | null,
@@ -97,9 +98,12 @@ export default {
             type: null,
             category_id: null,
             property_id: null,
-            is_default: false,
-            is_enabled: false,
             description: null,
+            facet: {
+                name: null,
+                value: null,
+                path: null,
+            },
         },
         typeLabels: [
             { value: 1, text: 'Список галочек' },
