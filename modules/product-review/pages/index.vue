@@ -40,6 +40,14 @@
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
 
+                <template #item.created_at="{ item }">
+                    <div>{{ item.asDate('created_at').fromNow() }}</div>
+                </template>
+
+                <template #item.rating="{ item }">
+                    <div> {{ item.ratings.main }} </div>
+                </template>
+
                 <template #item.status="{ item }">
                     <v-chip small :color="item.color" dark>{{ item.status.description }}</v-chip>
                 </template>
@@ -62,12 +70,21 @@
 
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
+<!--                        <v-btn-->
+<!--                            icon-->
+<!--                            width="22"-->
+<!--                            height="22"-->
+<!--                            class="mr-1"-->
+<!--                            @click="showReview(item)"-->
+<!--                        >-->
+<!--                            <eye-icon width="24" height="24" class="h-6 w-6" />-->
+<!--                        </v-btn>-->
                         <v-btn
                             v-if="!item.isApproved"
                             icon
                             width="22"
                             height="22"
-                            class="mx-1"
+                            class="mr-1"
                             @click="approveReview(item)"
                         >
                             <check-circle-icon class="h-6 w-6" />
@@ -98,6 +115,39 @@
                 </template>
             </v-data-table>
         </v-card>
+        <v-dialog
+            v-if="showReviewDetailsPopup"
+            v-model="showReviewDetailsPopup"
+            width="500"
+        >
+            <v-card>
+                <v-card-title
+                    class="headline grey lighten-2"
+                    primary-title
+                >
+                    Подробно об оставленном отзывы
+                </v-card-title>
+
+                <v-card-text>
+
+                    <div>
+                        <b>Опыт использования:</b> {{ selectedReview.experience.description }}
+                    </div>
+
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="primary"
+                        text
+                        @click="dialog = false"
+                    >
+                        I accept
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -109,6 +159,7 @@ import PageHeader from '~/components/common/PageHeader';
 import {productReviewStatusLabels} from "~/enums";
 import CheckCircleIcon from '~/components/heroicons/CheckCircleIcon';
 import XCircleIcon from '~/components/heroicons/XCircleIcon';
+import EyeIcon from '~/components/heroicons/XCircleIcon';
 
 export default {
     components: {
@@ -116,6 +167,7 @@ export default {
         AdvancedSearchForm,
         CheckCircleIcon,
         XCircleIcon,
+        EyeIcon,
     },
     mixins: [DatatableMixin],
     data() {
@@ -132,6 +184,11 @@ export default {
                 { text: 'Товар', align: 'left', value: 'product_id' },
                 { text: 'Статус', value: 'status' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
+                { text: 'Опыт использования', align: 'left', value: 'experience.description' },
+                { text: 'Общая оценка', align: 'left', value: 'rating' },
+                { text: 'Достоинства', align: 'left', value: 'advantages' },
+                { text: 'Недостатки', align: 'left', value: 'disadvantages' },
+                { text: 'Комментарий', align: 'left', value: 'comment' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Отзывы к товарам' }],
@@ -153,6 +210,8 @@ export default {
                     items: productReviewStatusLabels,
                 },
             ],
+            showReviewDetailsPopup: false,
+            selectedReview: null,
         };
     },
     async fetch() {
@@ -206,6 +265,10 @@ export default {
             } catch (e) {
                 this.$snackbar(e.message);
             }
+        },
+        showReview(review) {
+            this.selectedReview = review;
+            this.showReviewDetailsPopup = true;
         },
     },
 };
