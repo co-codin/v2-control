@@ -5,6 +5,8 @@ import { type, typeLabels, typeDescriptions } from '~/enums/modules/Type';
 import { Group, groupLabels, groupDescriptions } from '~/enums/modules/ProductGroup';
 import { urlRules } from '~/enums/rules';
 
+import { systemFilters } from '~/enums/modules/SystemFilter';
+
 const uniqueContentList = [
     { value: 'booklet', text: 'Брошюра' },
     { value: 'video', text: 'Видеообзор' },
@@ -45,4 +47,5 @@ export {
     Group,
     groupLabels,
     groupDescriptions,
+    systemFilters,
 };
