@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="$emit('send', form)">
+    <v-form @submit.prevent="send">
         <v-text-field
             v-model="form.name"
             label="Название"
@@ -66,6 +66,8 @@
                 v-model="form.facet.value"
                 label="Значение для поиска"
                 :items="systemFilterValues"
+                item-text="text"
+                item-value="value"
                 :error-messages="form.errors.get('facet.value')"
                 :error="form.errors.has('facet.value')"
             />
@@ -131,14 +133,17 @@ export default {
             categories: 'category/categories',
             properties: 'property/properties',
         }),
-        systemFilterValues() {
+        systemFilter() {
             if (this.form.facet.name) {
-                const filter = systemFilters.find((filter) => {
+                return systemFilters.find((filter) => {
                     return filter.name === this.form.facet.name;
                 });
-
-                if (filter.allowedValues) {
-                    return filter.allowedValues;
+            }
+        },
+        systemFilterValues() {
+            if (this.systemFilter) {
+                if (this.systemFilter.allowedValues) {
+                    return this.systemFilter.allowedValues;
                 }
             }
         },
@@ -160,6 +165,12 @@ export default {
             getCategories: 'category/getCategories',
             getProperties: 'property/getProperties',
         }),
+        send() {
+            if (this.systemFilter.path) {
+                this.form.facet.path = this.systemFilter.path;
+            }
+            this.$emit('send', this.form);
+        },
     },
 };
 </script>

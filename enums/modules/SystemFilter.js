@@ -3,7 +3,7 @@ export const systemFilters = [
         name_ru: 'Статус',
         name: 'status',
         type: 'terms',
-        availableValues: [
+        allowedValues: [
             {
                 text: 'Активные товары',
                 value: 1,
