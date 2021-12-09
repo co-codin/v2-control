@@ -7,7 +7,7 @@
             <v-btn class="ml-2" :to="{ name: 'question-categories.index' }"> Категории вопросов </v-btn>
         </div>
 
-        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
@@ -87,6 +87,11 @@ export default {
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список вопросов' }],
             filters: [
+                {
+                    label: 'Быстрый поиск',
+                    name: 'live',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
                 {
                     label: 'Вопрос',
                     name: 'question',
