@@ -53,7 +53,7 @@
                 </template>
 
                 <template #item.product_id="{ item }">
-                    <div>
+                    <div class="text-no-wrap">
                         {{ item.product.brand.name }} {{ item.product.name }}
                         <v-btn
                             icon
