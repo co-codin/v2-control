@@ -18,9 +18,7 @@ export default {
                     '.editor-class { position:absolute; margin: 4px 8px; width: calc(100% - 16px); height: 80%; }',
                 height: 300,
                 plugins: [
-                    'advlist autolink lists link image charmap print preview anchor',
-                    'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table code help wordcount paste',
+                    'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
                 ],
                 toolbar:
                     'undo redo | formatselect | bold italic backcolor | \
@@ -31,6 +29,7 @@ export default {
                 paste_preprocess: (pl, data) => {
                     data.content = this.cleanFormat(data);
                 },
+                toolbar_sticky: true,
             },
         };
     },
