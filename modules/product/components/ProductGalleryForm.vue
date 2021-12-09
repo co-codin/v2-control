@@ -7,7 +7,7 @@
                 :error-messages="form.errors.get('image')"
                 :error="form.errors.has('image')"
                 prepend-icon="mdi-image"
-                @input="form.is_image_changed = true"
+                @input="form.is_main_image_changed = true"
                 @delete="form.image = null"
             />
             <v-row class="expansion-panel-actions mt-3">
@@ -24,10 +24,17 @@
                     v-for="(image, index) in form.images"
                     :key="'image-' + index"
                     v-model="form.images[index].image"
+                    @input="form.is_images_changed = true"
                     @delete="removeImage"
                 />
             </v-form>
-            <file-uploader v-model="newImages" :multiple="true" :max="10" :object-format="true" />
+            <file-uploader
+                v-model="newImages"
+                :multiple="true"
+                :max="10"
+                :object-format="true"
+                @input="form.is_images_changed = true"
+            />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
                     <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
@@ -86,7 +93,8 @@ export default {
                 image: null,
                 video: null,
                 images: [],
-                is_image_changed: false,
+                is_main_image_changed: false,
+                is_images_changed: false,
             },
             newImages: [],
             urlRules,
@@ -112,13 +120,14 @@ export default {
                 await this.form.patch(`admin/products/${this.product.id}`);
                 this.$snackbar(`Галерея товара успешно обновлена`);
                 this.editing = false;
-                this.$nuxt.refresh();
-                this.closeAllPanels();
+                // this.$nuxt.refresh();
+                // this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(e.message);
             }
         },
         removeImage(value) {
+            this.form.is_images_changed = true;
             this.form.images = this.form.images.filter((image) => image.image !== value);
         },
     },
