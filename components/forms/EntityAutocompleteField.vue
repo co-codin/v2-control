@@ -9,6 +9,9 @@
 </template>
 
 <script>
+import {debounce} from "lodash";
+import FieldValue from "~/models/FieldValue";
+
 export default {
     props: {
         url: {
@@ -32,7 +35,7 @@ export default {
         items: [],
     }),
     methods: {
-        async searchItems(query) {
+        searchItems: debounce(async function (query) {
             if (!query) {
                 return;
             }
@@ -46,7 +49,7 @@ export default {
                 this.$snackbar(e.message);
             }
             this.isLoading = false;
-        },
+        }, 200),
         async loadItems() {
             if (!this.$attrs.value) return;
             this.isLoading = true;

@@ -1,18 +1,19 @@
 <template>
     <div>
-        <page-header h1="Редактирование фильтра" :breadcrumbs="breadcrumbs" />
         <template v-if="filter && !$fetchState.pending">
+            <page-header
+                :h1="`Редактирование фильтра ${filter.name}`"
+                :breadcrumbs="breadcrumbs"
+            />
             <v-expansion-panels v-model="openedPanel">
                 <form-block title="Основная информация">
                     <filter-form :filter="filter" is-updating @send="updateFilter" />
                 </form-block>
-
                 <form-block title="Настройки фильтрации">
-                    <filter-setting-form :filter="filter" @send="updateFilter" />
+                    <filter-facet-form :filter="filter" @save="filter = $event" />
                 </form-block>
-
                 <form-block title="SEO">
-                    <filter-seo-form :filter="filter" @send="updateFilter" />
+                    <filter-seo-form :filter="filter" @save="filter = $event" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -24,8 +25,10 @@ import { mapMutations } from 'vuex';
 import FilterForm from '../components/FilterForm';
 import FormBlock from '~/components/forms/FormBlock';
 import PageHeader from '~/components/common/PageHeader';
-import FilterSettingForm from '~/modules/filter/components/FilterSettingForm';
+import FilterFacetForm from '~/modules/filter/components/FilterFacetForm';
 import FilterSeoForm from '~/modules/filter/components/FilterSeoForm';
+import Filter from "~/modules/filter/models/Filter";
+import {merge} from 'lodash';
 
 export default {
     components: {
@@ -33,7 +36,7 @@ export default {
         PageHeader,
         FormBlock,
         FilterForm,
-        FilterSettingForm,
+        FilterFacetForm,
     },
     data: () => ({
         filter: null,
@@ -45,8 +48,13 @@ export default {
         ],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/filters/${this.$route.params.id}`);
-        this.filter = data.data;
+        const filter = await Filter.$find(this.$route.params.id);
+        filter.options = merge({
+            seoPrefix: null,
+            seoTagLabel: null,
+            seoTagLabels: null,
+        }, filter.options || {});
+        this.filter = filter;
         this.isLoading = false;
     },
     head: {
