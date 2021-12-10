@@ -80,9 +80,19 @@ export default {
         },
     },
     created() {
-        this.form = Form.create(this.formDefaults)
-            .withOptions({ http: this.$axios })
-            .populate(this.filter || {});
+        this.form = Form.create(this.formDefaults).withOptions({ http: this.$axios });
+
+        if (!this.filter.facet) {
+            this.form.populate({
+                facet: {
+                    name: null,
+                    path: null,
+                    value: null,
+                },
+            });
+        } else {
+            this.form.populate(this.filter);
+        }
     },
     methods: {
         send() {

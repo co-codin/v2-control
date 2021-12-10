@@ -12,7 +12,7 @@
                 </form-block>
 
                 <form-block title="SEO">
-                    <filter-seo-form />
+                    <filter-seo-form :filter="filter" @send="updateFilter" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -63,6 +63,7 @@ export default {
             },
         },
     },
+    created() {},
     methods: {
         ...mapMutations({
             closeAllPanels: 'helper/closeAllPanels',
