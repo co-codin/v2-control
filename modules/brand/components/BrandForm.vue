@@ -40,7 +40,6 @@
             prepend-icon="mdi-image"
             @input="form.is_image_changed = true"
         />
-
         <field-value-autocomplete
             v-model="form.country_id"
             label="Страна"

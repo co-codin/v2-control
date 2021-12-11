@@ -12,7 +12,7 @@
 <script>
 import FilterForm from '../components/FilterForm';
 import FormBlock from '~/components/forms/FormBlock';
-import PageHeader from '~/components/common/PageHeader'
+import PageHeader from '~/components/common/PageHeader';
 
 export default {
     components: {
@@ -33,9 +33,9 @@ export default {
     methods: {
         async createFilter(form) {
             try {
-                await form.post('/admin/filters');
-                this.$snackbar(`Фильтр ${form.name} успешно добавлен`);
-                await this.$router.push({ name: 'filters.index' });
+                const { data } = await form.post('/admin/filters');
+                this.$snackbar(`Фильтр успешно добавлен`);
+                await this.$router.push({ name: 'filters.update', params: { id: data.id } });
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при создании фильта: ${e.message}`);
             }
