@@ -23,7 +23,7 @@
                     <product-additional-form />
                 </form-block>
                 <form-block title="Системные галереи">
-                    <product-gallery-form />
+                    <product-media-form />
                 </form-block>
                 <form-block title="Документы">
                     <product-documents-form />
@@ -56,7 +56,7 @@ import ProductAdditionalForm from '~/modules/product/components/ProductAdditiona
 import SeoRelationForm from '~/components/forms/SeoRelationForm';
 import PageHeader from '../../../components/common/PageHeader';
 import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
-import ProductGalleryForm from '~/modules/product/components/ProductGalleryForm';
+import ProductMediaForm from "~/modules/product/components/ProductMediaForm";
 import FormBlock from '~/components/forms/FormBlock';
 import ProductConfiguratorForm from '~/modules/product/components/ProductConfiguratorForm';
 import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
@@ -76,9 +76,9 @@ export default {
         ProductVariationForm,
         ProductAdditionalForm,
         ProductConfiguratorForm,
-        ProductGalleryForm,
         ProductPropertiesForm,
         SeoRelationForm,
+        ProductMediaForm,
     },
     data: () => ({
         breadcrumbs: [
