@@ -1,17 +1,17 @@
 <template>
     <div>
         <page-header h1="Редактирование кабинета" :breadcrumbs="breadcrumbs" />
-        <div class="mb-2">
-            <v-btn
-                target="_blank"
-                link
-                :href="``"
-                color="info"
-                dark
-            >
-                <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
-            </v-btn>
-        </div>
+        <!--        <div class="mb-2">-->
+        <!--            <v-btn-->
+        <!--                target="_blank"-->
+        <!--                link-->
+        <!--                :href="``"-->
+        <!--                color="info"-->
+        <!--                dark-->
+        <!--            >-->
+        <!--                <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте-->
+        <!--            </v-btn>-->
+        <!--        </div>-->
         <template v-if="!$fetchState.pending">
             <v-expansion-panels>
                 <form-block title="Основная информация">
@@ -40,9 +40,9 @@ import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
 import CabinetForm from '~/modules/cabinet/components/CabinetForm';
-import CabinetDocumentsForm from "~/modules/cabinet/components/CabinetDocumentsForm";
-import CabinetCategoriesForm from "~/modules/cabinet/components/CabinetCategoriesForm";
-import CabinetRequirementsForm from "~/modules/cabinet/components/CabinetRequirementsForm";
+import CabinetDocumentsForm from '~/modules/cabinet/components/CabinetDocumentsForm';
+import CabinetCategoriesForm from '~/modules/cabinet/components/CabinetCategoriesForm';
+import CabinetRequirementsForm from '~/modules/cabinet/components/CabinetRequirementsForm';
 
 export default {
     components: {

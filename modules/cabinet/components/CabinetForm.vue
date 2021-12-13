@@ -14,15 +14,6 @@
             :error="form.errors.has('slug')"
         />
 
-        <category-tree-search-field
-            v-model="form.category_id"
-            label="Категория"
-            :error-messages="form.errors.get('category_id')"
-            :error="form.errors.has('category_id')"
-            :multiple="false"
-            name="category_id"
-        />
-
         <wysiwyg-field
             v-model="form.full_description"
             class="mt-2"
@@ -80,7 +71,6 @@ export default {
         formDefaults: {
             name: null,
             slug: null,
-            category_id: null,
             full_description: null,
             image: null,
             is_image_changed: false,

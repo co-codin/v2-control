@@ -2,32 +2,22 @@
     <v-form @submit.prevent="saveDocuments">
         <v-expansion-panels>
             <v-expansion-panel>
-                <v-expansion-panel-header class="title">
-                    Регулирующие документы
-                </v-expansion-panel-header>
+                <v-expansion-panel-header class="title"> Регулирующие документы </v-expansion-panel-header>
                 <v-expansion-panel-content>
                     <v-row>
                         <v-tabs v-model="tab" grow background-color="transparent">
                             <v-tab v-for="item in tabs" :key="item.key">
                                 {{ item.tab }}
                             </v-tab>
+
                             <v-tabs-items v-model="tab" style="width: 100%">
                                 <v-tab-item key="information">
                                     <v-card flat>
                                         <v-card-text>
-                                            <v-text-field
-                                                label="Название"
-                                                dense
-                                            />
+                                            <v-text-field label="Название" dense />
                                             <v-divider class="my-2" />
                                             <div class="text-center">
-                                                <v-btn
-                                                    small
-                                                    class="white--text"
-                                                    color="red"
-                                                >
-                                                    Удалить группу
-                                                </v-btn>
+                                                <v-btn small class="white--text" color="red"> Удалить группу </v-btn>
                                             </div>
                                         </v-card-text>
                                     </v-card>
@@ -41,32 +31,18 @@
                                                         Постановление Правительства РФ от 16 апреля 2012 г. N 291
                                                     </v-expansion-panel-header>
                                                     <v-expansion-panel-content>
-                                                        <v-select
-                                                            label="Тип"
-                                                            :items="typeLabels"
-                                                            dense
-                                                        />
-                                                        <v-text-field
-                                                            label="Название"
-                                                            dense
-                                                        />
+                                                        <v-select label="Тип" :items="typeLabels" dense />
+                                                        <v-text-field label="Название" dense />
                                                         <v-select
                                                             label="Источник"
                                                             :items="sourceLabels"
                                                             :value="2"
                                                             dense
                                                         />
-                                                        <v-text-field
-                                                            label="Ссылка"
-                                                            dense
-                                                        />
+                                                        <v-text-field label="Ссылка" dense />
                                                         <v-divider class="my-2" />
                                                         <div class="text-center">
-                                                            <v-btn
-                                                                small
-                                                                class="white--text"
-                                                                color="red"
-                                                            >
+                                                            <v-btn small class="white--text" color="red">
                                                                 Удалить документ
                                                             </v-btn>
                                                         </div>
@@ -103,21 +79,21 @@ export default {
             {
                 name: null,
                 type: 1, // File
-                value: "documents/document1.pdf", // or link, eg "https://yandex.ru"
+                value: 'documents/document1.pdf', // or link, eg "https://yandex.ru"
             },
         ],
         sourceLabels: [
-            {id: 1, text: 'Файл'},
-            {id: 2, text: 'Ссылка'},
+            { id: 1, text: 'Файл' },
+            { id: 2, text: 'Ссылка' },
         ],
         typeLabels: [
-            {id: 1, text: 'Брошюра'},
-            {id: 2, text: 'Сертификат РУ'},
-            {id: 3, text: 'Сертификат ДС'},
-            {id: 4, text: 'Технические характеристики'},
-            {id: 5, text: 'Инструкция'},
-            {id: 6, text: 'Каталог'},
-            {id: 7, text: 'Стандарты оснащения'},
+            { id: 1, text: 'Брошюра' },
+            { id: 2, text: 'Сертификат РУ' },
+            { id: 3, text: 'Сертификат ДС' },
+            { id: 4, text: 'Технические характеристики' },
+            { id: 5, text: 'Инструкция' },
+            { id: 6, text: 'Каталог' },
+            { id: 7, text: 'Стандарты оснащения' },
         ],
         tab: null,
         tabs: [

@@ -15,19 +15,10 @@
                                 <v-tab-item key="information">
                                     <v-card flat>
                                         <v-card-text>
-                                            <v-text-field
-                                                label="Название"
-                                                dense
-                                            />
+                                            <v-text-field label="Название" dense />
                                             <v-divider class="my-2" />
                                             <div class="text-center">
-                                                <v-btn
-                                                    small
-                                                    class="white--text"
-                                                    color="red"
-                                                >
-                                                    Удалить группу
-                                                </v-btn>
+                                                <v-btn small class="white--text" color="red"> Удалить группу </v-btn>
                                             </div>
                                         </v-card-text>
                                     </v-card>
@@ -41,21 +32,11 @@
                                                         Площадь кабинета
                                                     </v-expansion-panel-header>
                                                     <v-expansion-panel-content>
-                                                        <v-text-field
-                                                            label="Название"
-                                                            dense
-                                                        />
-                                                        <v-text-field
-                                                            label="Значение"
-                                                            dense
-                                                        />
+                                                        <v-text-field label="Название" dense />
+                                                        <v-text-field label="Значение" dense />
                                                         <v-divider class="my-2" />
                                                         <div class="text-center">
-                                                            <v-btn
-                                                                small
-                                                                class="white--text"
-                                                                color="red"
-                                                            >
+                                                            <v-btn small class="white--text" color="red">
                                                                 Удалить требование
                                                             </v-btn>
                                                         </div>
@@ -92,22 +73,19 @@ export default {
             {
                 name: null,
                 type: 1, // File
-                value: "documents/document1.pdf", // or link, eg "https://yandex.ru"
+                value: 'documents/document1.pdf', // or link, eg "https://yandex.ru"
             },
         ],
         typeLabels: [
-            {id: 1, text: 'Файл'},
-            {id: 2, text: 'Ссылка'},
+            { id: 1, text: 'Файл' },
+            { id: 2, text: 'Ссылка' },
         ],
         tab: null,
         tabs: [
             { tab: 'О группе', key: 'information' },
             { tab: 'Список требований', key: 'requirements' },
         ],
-        groups: [
-            { name: 'Процедурный кабинет' },
-            { name: 'Смотровая' },
-        ],
+        groups: [{ name: 'Процедурный кабинет' }, { name: 'Смотровая' }],
     }),
     methods: {
         saveRequirements() {
