@@ -17,12 +17,12 @@
                 <!--                <form-block title="Документы">-->
                 <!--                    <cabinet-documents-form />-->
                 <!--                </form-block>-->
-                <!--                <form-block title="Требования">-->
-                <!--                    <cabinet-requirements-form />-->
-                <!--                </form-block>-->
-                <!--                <form-block title="SEO">-->
-                <!--                    <seo-relation-form :seo="cabinetSeo" @send="updateCabinetSeo" />-->
-                <!--                </form-block>-->
+                <form-block title="Требования">
+                    <cabinet-requirements-form />
+                </form-block>
+                <form-block title="SEO">
+                    <seo-relation-form :seo="cabinetSeo" @send="updateCabinetSeo" />
+                </form-block>
             </v-expansion-panels>
         </template>
     </div>

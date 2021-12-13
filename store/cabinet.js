@@ -9,6 +9,21 @@ export default {
     mutations: {
         SET_CABINET(state, data) {
             data.status = data.status.value;
+            data.categories = data.categories
+                .map((category) => ({
+                    ...category.pivot,
+                    id: category.id,
+                }))
+                .sort((a, b) => {
+                    let ret = 0;
+                    if (a.name < b.name) {
+                        ret = -1;
+                    }
+                    if (a.name > b.name) {
+                        ret = 1;
+                    }
+                    return ret;
+                });
             state.cabinet = data;
         },
         SET_CABINET_SEO(state, data) {

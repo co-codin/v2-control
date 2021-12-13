@@ -12,11 +12,35 @@
                         name="category"
                         :multiple="false"
                         class="mb-3"
+                        @input="(value) => updateField({ field: `categories.${index}.id`, value })"
                     />
 
-                    <v-text-field v-model="category.name" label="Название" dense />
-                    <v-text-field v-model="category.count" label="Количество" dense />
-                    <v-text-field v-model="category.price" label="Цена" dense />
+                    <v-text-field
+                        :value="category.name"
+                        label="Название"
+                        dense
+                        :error-messages="form.errors.get(`categories.${index}.name`)"
+                        :error="form.errors.has(`categories.${index}.name`)"
+                        @input="(value) => updateField({ field: `categories.${index}.name`, value })"
+                    />
+                    <v-text-field
+                        :value="category.count"
+                        type="number"
+                        label="Количество"
+                        dense
+                        :error-messages="form.errors.get(`categories.${index}.count`)"
+                        :error="form.errors.has(`categories.${index}.count`)"
+                        @input="(value) => updateField({ field: `categories.${index}.count`, value })"
+                    />
+                    <v-text-field
+                        :value="category.price"
+                        type="number"
+                        label="Цена"
+                        dense
+                        :error-messages="form.errors.get(`categories.${index}.price`)"
+                        :error="form.errors.has(`categories.${index}.price`)"
+                        @input="(value) => updateField({ field: `categories.${index}.price`, value })"
+                    />
                     <v-divider class="my-2" />
                     <div class="text-center">
                         <v-btn small class="white--text" color="red" @click="removeCategory(index)">
@@ -62,6 +86,7 @@ export default {
             initForm: 'forms/cabinet/INIT_FORM',
             fillForm: 'forms/cabinet/FILL_FORM',
             fillErrors: 'forms/cabinet/FILL_ERRORS',
+            updateField: 'forms/cabinet/UPDATE_FIELD',
             closeAllPanels: 'helper/closeAllPanels',
             removeCategory: 'forms/cabinet/REMOVE_CATEGORY',
             addCategory: 'forms/cabinet/ADD_CATEGORY',
@@ -70,10 +95,9 @@ export default {
             createCategories: 'forms/cabinet/createCategories',
         }),
         async save() {
-            console.log(this.form);
-            // await this.createCategories(this.cabinet.id);
-            // this.$snackbar(`Категории успешно обновлены`);
-            // this.closeAllPanels();
+            await this.createCategories(this.cabinet.id);
+            this.$snackbar(`Категории успешно обновлены`);
+            this.closeAllPanels();
         },
     },
 };
