@@ -19,21 +19,59 @@
             </v-row>
         </form-block>
         <form-block title="Дополнительные фотографии">
-            <v-form class="gallery-form">
-                <file-field
-                    v-for="(image, index) in galleryForm.images"
-                    :key="'image-' + index"
-                    v-model="galleryForm.images[index].image"
-                    @input="galleryForm.is_images_changed = true"
-                    @delete="removeImage"
-                />
-            </v-form>
+            <v-expansion-panels>
+                <v-expansion-panel v-for="(item, index) in galleryForm.images" :key="index">
+                    <v-expansion-panel-header class="title">
+                        <div>
+                            <div class="d-flex align-center">
+                                <div>
+                                    <v-img
+                                        max-height="70"
+                                        max-width="70"
+                                        :src="`http://localhost:8000/storage/${item.image}`"
+                                    />
+                                </div>
+                                <div class="ml-2">
+                                    Фотография {{ index + 1 }}
+                                </div>
+                            </div>
+                        </div>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-img
+                            max-height="200"
+                            max-width="200"
+                            :src="`http://localhost:8000/storage/${item.image}`"
+                            class="mb-3"
+                        />
+                        <v-text-field
+                            v-model="galleryForm.images[index].caption"
+                            label="Описание"
+                            dense
+                        />
+                        <v-text-field
+                            v-model="galleryForm.images[index].alt"
+                            label="Alt"
+                            dense
+                        /><v-divider class="my-2" />
+                        <div class="text-center">
+                            <v-btn
+                                small
+                                class="white--text"
+                                color="red"
+                                @click="deleteImage(1)"
+                            >
+                                Удалить фотографию
+                            </v-btn>
+                        </div>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
             <file-uploader
-                v-model="newImages"
                 :multiple="true"
                 :max="10"
                 :object-format="true"
-                @input="galleryForm.is_images_changed = true"
+                @upload="addImage"
             />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
@@ -96,9 +134,7 @@ export default {
             },
             galleryFormDefaults: {
                 images: [],
-                is_images_changed: false,
             },
-            newImages: [],
             urlRules,
             imageForm: null,
             galleryForm: null,
@@ -152,7 +188,7 @@ export default {
         async saveGallery() {
             this.galleryForm.images = this.form.images.concat(this.newImages);
             try {
-                await this.galleryForm.patch(`admin/products/${this.product.id}`);
+                await this.galleryForm.patch(`/admin/products/${this.product.id}/images`);
                 this.$snackbar(`Галерея товара успешно обновлена`);
                 this.editing = false;
                 this.$nuxt.refresh();
@@ -164,6 +200,17 @@ export default {
         removeImage(value) {
             this.galleryForm.is_images_changed = true;
             this.galleryForm.images = this.galleryForm.images.filter((image) => image.image !== value);
+        },
+        deleteImage(index) {
+            this.galleryForm.images.splice(index, 1);
+        },
+        addImage(e) {
+            this.galleryForm.images.push({
+                image: e.file,
+                position: null,
+                caption: null,
+                alt: null,
+            });
         },
     },
 };

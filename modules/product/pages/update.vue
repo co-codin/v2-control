@@ -40,7 +40,7 @@
                 <form-block title="SEO">
                     <seo-relation-form :seo="productSeo" @send="updateProductSeo" />
                 </form-block>
-                <form-block title="Уникальный контент">
+                <form-block v-if="false" title="Уникальный контент">
                     <product-form-unique-content v-if="$auth.loggedIn" :product-id="product.id" />
                 </form-block>
             </v-expansion-panels>

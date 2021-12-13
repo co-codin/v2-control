@@ -1,47 +1,6 @@
 <template>
     <div class="image-uploader-wrap">
-        <client-only>
-            <template v-if="!objectFormat">
-                <draggable v-model="files" class="drag-wrap">
-                    <div v-for="(image, i) in files" :key="i" class="col dragg" :class="{ fullsize: onlyOne }">
-                        <div class="image-preview">
-                            <div class="image-preview-wrap">
-                                <template v-if="checkType(image) === 'image'">
-                                    <img v-if="likeFile" :src="base64_images[i]" alt />
-                                    <img v-else :src="`${$config.app.storageUrl}/` + image" alt />
-                                </template>
-                                <div v-else class="image-uploader-empty-bg file"></div>
-                                <div class="file-name">
-                                    <p>{{ checkName(image) }}</p>
-                                </div>
-                                <div class="delete" @click="deleteImage(i)"></div>
-                            </div>
-                        </div>
-                    </div>
-                </draggable>
-            </template>
-            <template v-else>
-                <draggable v-model="files" class="drag-wrap" @change="sortImages">
-                    <div
-                        v-for="(image, i) in files"
-                        :key="`${image.image}-${i}`"
-                        class="col dragg"
-                        :class="{ fullsize: onlyOne }"
-                    >
-                        <div class="image-preview">
-                            <div class="image-preview-wrap">
-                                <template v-if="checkType(image.image) === 'image'">
-                                    <file-field v-model="image.image" />
-                                </template>
-                                <div v-else class="image-uploader-empty-bg file"></div>
-                                <div class="delete" @click="deleteImage(i)"></div>
-                            </div>
-                        </div>
-                    </div>
-                </draggable>
-            </template>
-        </client-only>
-        <div v-if="!maxLoaded" class="col col-uploader" :class="{ fullsize: !isLoaded }">
+        <div class="col col-uploader">
             <div
                 class="image-uploader"
                 :class="{ dragging: isDragging }"
@@ -52,12 +11,9 @@
             >
                 <div class="image-uploader-empty-bg"></div>
                 <div class="image-uploader-empty-text">
-                    <p v-if="!isLoaded">
+                    <p>
                         <label :for="uploaderId">Нажмите на ссылку</label>, чтобы выбрать файлы или просто перетащите их
                         сюда
-                    </p>
-                    <p v-else>
-                        <label :for="uploaderId">Добавить фото</label>
                     </p>
                     <input :id="uploaderId" type="file" :multiple="multiple" @change="onInputChange" />
                 </div>
@@ -71,24 +27,9 @@
 
 <script>
 import mime from 'mime-types';
-import draggable from 'vuedraggable';
-import FileField from '~/components/forms/FileField';
 
 export default {
-    components: {
-        FileField,
-        draggable,
-    },
     props: {
-        value: {
-            default() {
-                return '';
-            },
-        },
-        max: {
-            type: Number,
-            default: 1,
-        },
         multiple: {
             type: Boolean,
             default: false,
@@ -115,19 +56,10 @@ export default {
             type: Boolean,
             default: true,
         },
-        likeFile: {
-            type: Boolean,
-            default: false,
-        },
-        objectFormat: {
-            type: Boolean,
-            default: false,
-        },
     },
     data: () => ({
         isDragging: false,
         dragCount: 0,
-        files: [],
         id: null,
         errors: [],
         base64_images: [],
@@ -135,18 +67,6 @@ export default {
     computed: {
         uploaderId() {
             return `uploader_${this.id}`;
-        },
-        isLoaded() {
-            return this.files.length > 0;
-        },
-        onlyOne() {
-            return this.files.length === 1 && this.maxLoaded;
-        },
-        maxLoaded() {
-            if (this.multiple) {
-                return this.files.length === this.max;
-            }
-            return this.files.length === 1;
         },
         maxSizeConvert() {
             return this.maxSize * 1024;
@@ -164,63 +84,20 @@ export default {
             rules.dimensions = dimensions;
             return rules;
         },
-        sortedFiles() {
-            return this.files.map((img, ind) => {
-                return {
-                    image: img.image,
-                    position: ind + 1,
-                };
-            });
-        },
-    },
-    watch: {
-        files(val) {
-            let value = val;
-            if (!this.multiple) {
-                value = value[0];
-            }
-            if (typeof value === 'undefined') {
-                value = null;
-            }
-            this.$emit('input', value);
-        },
     },
     mounted() {
-        if (this.value === null) {
-            this.files = [];
-        } else {
-            this.files = this.value.length ? this.files.concat(this.value) : [];
-        }
         this.id = Math.random().toString(36).substr(2, 10);
     },
     methods: {
         checkType(file) {
-            if (
-                (this.likeFile && mime.lookup(file.name).match('image.*')) ||
-                (!this.likeFile && mime.lookup(file).match('image.*'))
-            ) {
-                return 'image';
-            }
-            return 'document';
+            return mime.lookup(file).match('image.*') ? 'image' : 'document';
         },
         checkName(file) {
-            if (this.likeFile) {
-                return file.name;
-            }
             return file.replace(/^.*[\\\/]/, '');
         },
         async onInputChange(e) {
             const { files } = e.target;
-            if (this.multiple) {
-                if (this.files.length + files.length > this.max) {
-                    return false;
-                }
-            }
-            if (this.likeFile) {
-                this.addImagesLikeFile(files);
-            } else {
-                await this.uploadImages(files);
-            }
+            await this.uploadImages(files);
             e.target.value = null;
         },
         onDragEnter(e) {
@@ -240,16 +117,7 @@ export default {
             e.stopPropagation();
             this.isDragging = false;
             const { files } = e.dataTransfer;
-            if (this.multiple) {
-                if (this.files.length + files.length > this.max) {
-                    return false;
-                }
-            }
-            if (this.likeFile) {
-                this.addImagesLikeFile(files);
-            } else {
-                await this.uploadImages(files);
-            }
+            await this.uploadImages(files);
         },
         async addImage(file) {
             this.errors = [];
@@ -276,14 +144,9 @@ export default {
                     },
                 })
                 .then(({ data }) => {
-                    if (this.objectFormat) {
-                        this.files.push({
-                            image: data,
-                            position: null,
-                        });
-                    } else {
-                        this.files.push(data);
-                    }
+                    this.$emit('upload', {
+                        file: data,
+                    });
                 })
                 .catch((error) => {
                     this.errors.push(error.response.data.errors.file[0]);
@@ -294,48 +157,8 @@ export default {
                 await this.addImage(files[i]);
             }
         },
-        addImagesLikeFile(files) {
-            this.errors = [];
-            [...files].forEach(async (file) => {
-                if (this.onlyImages) {
-                    if (!file.type.match('image.*')) {
-                        this.errors.push('Можно загружать только картинки');
-                        return false;
-                    }
-                }
-                if (this.maxSizeConvert) {
-                    if (file.size > this.maxSizeConvert) {
-                        this.errors.push('Слишком большой файл');
-                        return false;
-                    }
-                }
-                const load_promise = new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.addEventListener(
-                        'load',
-                        () => {
-                            this.base64_images.push(reader.result);
-                            resolve();
-                        },
-                        false
-                    );
-                    reader.readAsDataURL(file);
-                });
-                await load_promise;
-                this.files.push(file);
-                return true;
-            });
-        },
         deleteImage(i) {
             this.files.splice(i, 1);
-            if (this.objectFormat) {
-                this.files = [...this.sortedFiles];
-            }
-            if (this.likeFile) {
-                this.base64_images.splice(i, 1);
-            }
-        },
-        sortImages() {
             this.files = [...this.sortedFiles];
         },
     },
@@ -349,18 +172,13 @@ p
   display: flex
   flex-wrap: wrap
 .image-uploader-wrap
-  display: flex
-  flex: 1 0 100%
-  flex-wrap: wrap
   min-height: 160px
   margin-left: -10px
   margin-right: -10px
   margin-bottom: 10px
   >.col
-    flex: 0 0 300px
     padding-left: 10px
     padding-right: 10px
-    max-width: 300px
     >div
       margin-bottom: 10px
   >div
