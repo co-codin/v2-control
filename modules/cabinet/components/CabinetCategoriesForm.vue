@@ -1,23 +1,33 @@
 <template>
-    <v-form @submit.prevent="saveCategories">
+    <v-form @submit.prevent="save">
         <v-expansion-panels>
-            <v-expansion-panel>
-                <v-expansion-panel-header class="title"> Аппараты УЗИ </v-expansion-panel-header>
+            <v-expansion-panel v-for="(category, index) in form.categories" :key="index">
+                <v-expansion-panel-header class="title">
+                    #{{ index + 1 }}. {{ category.name || '(без названия)' }}
+                </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <category-tree-search-field label="Категория" name="category" :multiple="false" class="mb-3" />
+                    <category-tree-search-field
+                        :value="category.id"
+                        label="Категория"
+                        name="category"
+                        :multiple="false"
+                        class="mb-3"
+                    />
 
-                    <v-text-field label="Название" dense />
-                    <v-text-field label="Количество" dense />
-                    <v-text-field label="Цена" dense />
+                    <v-text-field v-model="category.name" label="Название" dense />
+                    <v-text-field v-model="category.count" label="Количество" dense />
+                    <v-text-field v-model="category.price" label="Цена" dense />
                     <v-divider class="my-2" />
                     <div class="text-center">
-                        <v-btn small class="white--text" color="red"> Удалить категорию </v-btn>
+                        <v-btn small class="white--text" color="red" @click="removeCategory(index)">
+                            Удалить категорию
+                        </v-btn>
                     </div>
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined> Добавить категорию </v-btn>
+            <v-btn link small color="primary" outlined @click="addCategory"> Добавить категорию </v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
@@ -28,14 +38,43 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
     components: {
         CategoryTreeSearchField,
     },
+    computed: {
+        ...mapGetters({
+            cabinet: 'cabinet/cabinet',
+            form: 'forms/cabinet/form',
+        }),
+    },
+    created() {
+        this.initForm();
+        this.fillForm({
+            categories: this.cabinet?.categories || [],
+        });
+    },
     methods: {
-        saveCategories() {},
+        ...mapMutations({
+            initForm: 'forms/cabinet/INIT_FORM',
+            fillForm: 'forms/cabinet/FILL_FORM',
+            fillErrors: 'forms/cabinet/FILL_ERRORS',
+            closeAllPanels: 'helper/closeAllPanels',
+            removeCategory: 'forms/cabinet/REMOVE_CATEGORY',
+            addCategory: 'forms/cabinet/ADD_CATEGORY',
+        }),
+        ...mapActions({
+            createCategories: 'forms/cabinet/createCategories',
+        }),
+        async save() {
+            console.log(this.form);
+            // await this.createCategories(this.cabinet.id);
+            // this.$snackbar(`Категории успешно обновлены`);
+            // this.closeAllPanels();
+        },
     },
 };
 </script>
