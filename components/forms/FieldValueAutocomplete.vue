@@ -20,6 +20,7 @@
 
 <script>
 import FieldValue from '~/models/FieldValue';
+import {debounce} from "lodash";
 
 export default {
     props: {
@@ -52,7 +53,7 @@ export default {
         }
     },
     methods: {
-        async searchItems(query) {
+        searchItems: debounce(async function (query) {
             if (!query) return;
             this.isLoading = true;
             const items = await FieldValue.select('id', 'value')
@@ -61,7 +62,7 @@ export default {
                 .$get();
             this.loadedItems = this.loadedItems.concat(items);
             this.isLoading = false;
-        },
+        }, 200),
         async loadItems() {
             this.isLoading = true;
             this.loadedItems = await FieldValue.select('id', 'value')

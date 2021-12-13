@@ -2,37 +2,16 @@
     <v-form @submit.prevent="saveCategories">
         <v-expansion-panels>
             <v-expansion-panel>
-                <v-expansion-panel-header class="title">
-                    Аппараты УЗИ
-                </v-expansion-panel-header>
+                <v-expansion-panel-header class="title"> Аппараты УЗИ </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <category-tree-search-field
-                        label="Категория"
-                        name="category"
-                        :multiple="false"
-                        class="mb-3"
-                    />
-                    <v-text-field
-                        label="Название"
-                        dense
-                    />
-                    <v-text-field
-                        label="Количество"
-                        dense
-                    />
-                    <v-text-field
-                        label="Цена"
-                        dense
-                    />
+                    <category-tree-search-field label="Категория" name="category" :multiple="false" class="mb-3" />
+
+                    <v-text-field label="Название" dense />
+                    <v-text-field label="Количество" dense />
+                    <v-text-field label="Цена" dense />
                     <v-divider class="my-2" />
                     <div class="text-center">
-                        <v-btn
-                            small
-                            class="white--text"
-                            color="red"
-                        >
-                            Удалить категорию
-                        </v-btn>
+                        <v-btn small class="white--text" color="red"> Удалить категорию </v-btn>
                     </div>
                 </v-expansion-panel-content>
             </v-expansion-panel>
@@ -49,16 +28,14 @@
 </template>
 
 <script>
-import CategoryTreeSearchField from "~/components/search/fields/CategoryTreeSearchField";
+import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
     components: {
         CategoryTreeSearchField,
     },
     methods: {
-        saveCategories() {
-
-        },
+        saveCategories() {},
     },
 };
 </script>
