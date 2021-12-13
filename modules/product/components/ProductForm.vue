@@ -118,8 +118,6 @@ export default {
             name: null,
             slug: null,
             status: Status.Inactive,
-            full_description: null,
-            image: null,
             group_id: null,
         },
         categories: [],
