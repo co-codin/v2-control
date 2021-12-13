@@ -13,9 +13,9 @@
         <!--            </v-btn>-->
         <!--        </div>-->
         <template v-if="!$fetchState.pending">
-            <v-expansion-panels>
+            <v-expansion-panels v-model="openedPanel">
                 <form-block title="Основная информация">
-                    <cabinet-form :cabinet="cabinet" is-updating @send="updateCabinet" />
+                    <cabinet-form is-updating @send="updateCabinet" />
                 </form-block>
                 <form-block title="Оснащение">
                     <cabinet-categories-form />
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
@@ -58,7 +59,6 @@ export default {
     data: () => ({
         cabinet: null,
         seo: null,
-        isLoading: true,
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },
             { text: 'Список кабинетов', href: '/cabinets' },
@@ -66,20 +66,34 @@ export default {
         ],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/cabinets/${this.$route.params.id}`, {
-            params: {
-                include: ['seo'],
-            },
-        });
-        data.data.status = data.data.status.value;
-        this.seo = data.data.seo || {};
-        this.cabinet = data.data;
-        this.isLoading = false;
+        await this.getCabinet(this.$route.params.id);
     },
     head: {
         title: 'Редактирование кабинета',
     },
+    computed: {
+        ...mapGetters({
+            cabinet: 'cabinet/cabinet',
+            cabinetSeo: 'cabinet/cabinetSeo',
+        }),
+        openedPanel: {
+            get() {
+                return this.$store.state.helper.openedPanel;
+            },
+            set(index) {
+                this.closeAllPanels();
+                this.updatePanel(index);
+            },
+        },
+    },
     methods: {
+        ...mapActions({
+            getCabinet: 'cabinet/getCabinet',
+        }),
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+            updatePanel: 'helper/updatePanel',
+        }),
         async updateCabinet(form) {
             try {
                 await form.put(`/admin/cabinets/${this.$route.params.id}`);

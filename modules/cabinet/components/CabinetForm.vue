@@ -50,18 +50,14 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
+import { mapGetters } from 'vuex';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
 
 export default {
-    components: { FileField, WysiwygField, CategoryTreeSearchField },
+    components: { FileField, WysiwygField },
     props: {
-        cabinet: {
-            type: Object | null,
-            default: () => ({}),
-        },
         isUpdating: {
             type: Boolean,
             default: false,
@@ -79,8 +75,13 @@ export default {
         form: null,
         statusLabels,
     }),
+    computed: {
+        ...mapGetters({
+            cabinet: 'cabinet/cabinet',
+        }),
+    },
     watch: {
-        attribute(value) {
+        cabinet(value) {
             this.form.populate(value);
         },
     },
