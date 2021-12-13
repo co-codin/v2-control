@@ -1,5 +1,4 @@
 import Cabinet from '~/modules/cabinet/models/Cabinet';
-import Product from '~/modules/product/models/Product';
 
 export default {
     state: () => ({
@@ -9,6 +8,7 @@ export default {
 
     mutations: {
         SET_CABINET(state, data) {
+            data.status = data.status.value;
             state.cabinet = data;
         },
         SET_CABINET_SEO(state, data) {

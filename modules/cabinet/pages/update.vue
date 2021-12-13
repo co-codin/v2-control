@@ -1,17 +1,11 @@
 <template>
     <div>
         <page-header h1="Редактирование кабинета" :breadcrumbs="breadcrumbs" />
-        <!--        <div class="mb-2">-->
-        <!--            <v-btn-->
-        <!--                target="_blank"-->
-        <!--                link-->
-        <!--                :href="``"-->
-        <!--                color="info"-->
-        <!--                dark-->
-        <!--            >-->
-        <!--                <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте-->
-        <!--            </v-btn>-->
-        <!--        </div>-->
+        <div class="mb-2">
+            <v-btn target="_blank" link :href="``" color="info" dark>
+                <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
+            </v-btn>
+        </div>
         <template v-if="!$fetchState.pending">
             <v-expansion-panels v-model="openedPanel">
                 <form-block title="Основная информация">
@@ -27,7 +21,7 @@
                     <cabinet-requirements-form />
                 </form-block>
                 <form-block title="SEO">
-                    <seo-relation-form :seo="seo" @send="updateCabinetSeo" />
+                    <seo-relation-form :seo="cabinetSeo" @send="updateCabinetSeo" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -57,8 +51,6 @@ export default {
         CabinetRequirementsForm,
     },
     data: () => ({
-        cabinet: null,
-        seo: null,
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },
             { text: 'Список кабинетов', href: '/cabinets' },
@@ -98,7 +90,8 @@ export default {
             try {
                 await form.put(`/admin/cabinets/${this.$route.params.id}`);
                 this.$snackbar(`Кабинет успешно обновлен`);
-                await this.$router.push({ name: 'cabinets.index' });
+                this.closeAllPanels();
+                this.$nuxt.refresh();
             } catch (e) {
                 this.$snackbar(`Приозошла ошибка при обновлении кабинета: ${e.message}`);
             }
@@ -107,7 +100,8 @@ export default {
             try {
                 await form.patch(`/admin/cabinets/${this.$route.params.id}/seo`);
                 this.$snackbar(`SEO кабинета успешно обновлено`);
-                await this.$router.push({ name: 'cabinets.index' });
+                this.closeAllPanels();
+                this.$nuxt.refresh();
             } catch (e) {
                 this.$snackbar(`Прозиошла ошибка при обоновлении seo у кабинета: ${e.message}`);
             }
