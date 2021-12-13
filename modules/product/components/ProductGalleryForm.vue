@@ -2,17 +2,17 @@
     <v-expansion-panels>
         <form-block title="Основная фотография">
             <file-field
-                v-model="form.image"
+                v-model="imageForm.image"
                 label="Главная фотография"
-                :error-messages="form.errors.get('image')"
-                :error="form.errors.has('image')"
+                :error-messages="imageForm.errors.get('image')"
+                :error="imageForm.errors.has('image')"
                 prepend-icon="mdi-image"
-                @input="form.is_main_image_changed = true"
-                @delete="form.image = null"
+                @input="imageForm.is_main_image_changed = true"
+                @delete="imageForm.image = null"
             />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
-                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="saveMainImage"
                         >Сохранить</v-btn
                     >
                 </v-col>
@@ -21,10 +21,10 @@
         <form-block title="Дополнительные фотографии">
             <v-form class="gallery-form">
                 <file-field
-                    v-for="(image, index) in form.images"
+                    v-for="(image, index) in galleryForm.images"
                     :key="'image-' + index"
-                    v-model="form.images[index].image"
-                    @input="form.is_images_changed = true"
+                    v-model="galleryForm.images[index].image"
+                    @input="galleryForm.is_images_changed = true"
                     @delete="removeImage"
                 />
             </v-form>
@@ -33,11 +33,11 @@
                 :multiple="true"
                 :max="10"
                 :object-format="true"
-                @input="form.is_images_changed = true"
+                @input="galleryForm.is_images_changed = true"
             />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
-                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="saveGallery"
                         >Сохранить</v-btn
                     >
                 </v-col>
@@ -45,16 +45,15 @@
         </form-block>
         <form-block title="Видеообзор">
             <v-text-field
-                v-model="form.video"
+                v-model="videoForm.video"
                 prepend-icon="mdi-youtube"
                 label="Видеообзор"
-                :error-messages="form.errors.get('video')"
-                :error="form.errors.has('video')"
-                :rules="urlRules"
+                :error-messages="videoForm.errors.get('video')"
+                :error="videoForm.errors.has('video')"
             />
             <v-row class="expansion-panel-actions mt-3">
                 <v-col>
-                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="sendForm"
+                    <v-btn type="submit" color="green" class="white--text text-uppercase" @click.prevent="saveVideo"
                         >Сохранить</v-btn
                     >
                 </v-col>
@@ -88,16 +87,22 @@ export default {
     data() {
         return {
             editing: false,
-            form: null,
-            formDefaults: {
-                image: null,
-                video: null,
-                images: [],
+            imageFormDefaults: {
                 is_main_image_changed: false,
+                image: null,
+            },
+            videoFormDefaults: {
+                video: null,
+            },
+            galleryFormDefaults: {
+                images: [],
                 is_images_changed: false,
             },
             newImages: [],
             urlRules,
+            imageForm: null,
+            galleryForm: null,
+            videoForm: null,
         };
     },
     computed: {
@@ -106,7 +111,15 @@ export default {
         }),
     },
     created() {
-        this.form = Form.create(this.formDefaults)
+        this.imageForm = Form.create(this.imageFormDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate(this.product || {});
+
+        this.videoForm = Form.create(this.videoFormDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate(this.product || {});
+
+        this.galleryForm = Form.create(this.galleryFormDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.product || {});
     },
@@ -114,10 +127,32 @@ export default {
         ...mapMutations({
             closeAllPanels: 'helper/closeAllPanels',
         }),
-        async sendForm() {
-            this.form.images = this.form.images.concat(this.newImages);
+        async saveMainImage() {
             try {
-                await this.form.patch(`admin/products/${this.product.id}`);
+                await this.imageForm.patch(`admin/products/${this.product.id}`);
+                this.$snackbar(`Основная фотография товара успешно обновлена`);
+                this.editing = false;
+                this.$nuxt.refresh();
+                this.closeAllPanels();
+            } catch (e) {
+                this.$snackbar(e.message);
+            }
+        },
+        async saveVideo() {
+            try {
+                await this.videoForm.patch(`admin/products/${this.product.id}`);
+                this.$snackbar(`Видео товара успешно обновлено`);
+                this.editing = false;
+                this.$nuxt.refresh();
+                this.closeAllPanels();
+            } catch (e) {
+                this.$snackbar(e.message);
+            }
+        },
+        async saveGallery() {
+            this.galleryForm.images = this.form.images.concat(this.newImages);
+            try {
+                await this.galleryForm.patch(`admin/products/${this.product.id}`);
                 this.$snackbar(`Галерея товара успешно обновлена`);
                 this.editing = false;
                 this.$nuxt.refresh();
@@ -127,8 +162,8 @@ export default {
             }
         },
         removeImage(value) {
-            this.form.is_images_changed = true;
-            this.form.images = this.form.images.filter((image) => image.image !== value);
+            this.galleryForm.is_images_changed = true;
+            this.galleryForm.images = this.galleryForm.images.filter((image) => image.image !== value);
         },
     },
 };
