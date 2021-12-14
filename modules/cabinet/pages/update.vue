@@ -14,9 +14,9 @@
                 <form-block title="Оснащение">
                     <cabinet-categories-form />
                 </form-block>
-                <!--                <form-block title="Документы">-->
-                <!--                    <cabinet-documents-form />-->
-                <!--                </form-block>-->
+                <form-block title="Документы">
+                    <cabinet-documents-form />
+                </form-block>
                 <form-block title="Требования">
                     <cabinet-requirements-form />
                 </form-block>

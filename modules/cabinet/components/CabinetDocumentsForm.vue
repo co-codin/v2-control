@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="saveDocuments">
+    <v-form @submit.prevent="save">
         <v-expansion-panels>
             <v-expansion-panel>
                 <v-expansion-panel-header class="title"> Регулирующие документы </v-expansion-panel-header>
@@ -102,9 +102,7 @@ export default {
         ],
     }),
     methods: {
-        saveDocuments() {
-            alert('saving');
-        },
+        save() {},
     },
 };
 </script>
