@@ -97,9 +97,9 @@ export default {
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id', cellClass: 'text-no-wrap' },
-                { text: 'Производитель', align: 'left', value: 'brand.name' },
+                { text: 'Производитель', align: 'left', value: 'brand.name', sortable: false },
                 { text: 'Модель', align: 'left', value: 'name' },
-                { text: 'Категория', align: 'left', value: 'category.name' },
+                { text: 'Категория', align: 'left', value: 'category.name', sortable: false },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Статус', value: 'status.description', sortable: false },

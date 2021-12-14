@@ -3,7 +3,13 @@
         <v-alert dense type="info" outlined>
             В скором времени здесь появится возможность подгрузки сертификатов и прочей документации
         </v-alert>
-        <file-field v-model="form.booklet" :is-image="false" label="Брошюра" @delete="form.booklet = null" />
+        <file-field
+            v-model="form.booklet"
+            :is-image="false"
+            label="Брошюра"
+            @input="form.is_booklet_changed = true"
+            @delete="form.booklet = null; form.is_booklet_changed = true"
+        />
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -25,6 +31,7 @@ export default {
         form: null,
         formDefaults: {
             booklet: null,
+            is_booklet_changed: false,
         },
     }),
     computed: {
@@ -44,8 +51,9 @@ export default {
         }),
         async save() {
             try {
-                await this.form.patch(`admin/products/${this.product.id}`);
+                await this.form.patch(`admin/products/${this.product.id}?_method=patch`);
                 this.$snackbar(`Брошюра товара успешно обновлена`);
+                this.$nuxt.refresh();
                 this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(e.message);

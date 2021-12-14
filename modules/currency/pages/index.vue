@@ -73,8 +73,7 @@ export default {
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Сокращение', align: 'left', value: 'iso_code' },
                 { text: 'Курс', value: 'rate' },
-
-                { text: 'Главная валюта', align: 'is_main', value: 'created_at' },
+                { text: 'Главная валюта', align: 'left', value: 'is_main' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список валют' }],
@@ -101,7 +100,7 @@ export default {
         this.showLoading();
 
         const response = await Currency.select({
-            currencies: ['id', 'name', 'iso_code', 'is_main'],
+            currencies: ['id', 'name', 'iso_code', 'is_main', 'rate'],
         })
             .params(this.queryParams)
             .get();

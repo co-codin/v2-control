@@ -11,6 +11,7 @@
                     :multiple="multiple"
                     :options="categoryTree"
                     :normalizer="normalizer"
+                    value-consists-of="LEAF_PRIORITY"
                     @input="$emit('input', $event)"
                 />
             </div>

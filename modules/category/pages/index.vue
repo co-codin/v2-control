@@ -158,9 +158,7 @@ export default {
             }
             try {
                 await category.delete();
-
-                this.$snackbar(`Производитель ${category.name} успешно удален`);
-
+                this.$snackbar(`Категория ${category.name} успешно удалена`);
                 this.categories = this.categories.filter((item) => item.id !== category.id);
             } catch (e) {
                 this.$snackbar(e.message);

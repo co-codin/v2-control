@@ -30,11 +30,15 @@
                 </template>
 
                 <template #item.source="{ item }">
-                    <copy-label :text="item.source"></copy-label>
+                    <div style="max-width: 300px;">
+                        {{ item.source }}
+                    </div>
                 </template>
 
                 <template #item.destination="{ item }">
-                    <copy-label :text="item.destination"></copy-label>
+                    <div style="max-width: 300px;">
+                        {{ item.destination }}
+                    </div>
                 </template>
 
                 <template #item.action="{ item }">
