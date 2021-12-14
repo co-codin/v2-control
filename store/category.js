@@ -25,7 +25,7 @@ const category = {
 
     actions: {
         async getCategories({ commit }) {
-            const { data } = await this.$axios.$get('/categories/all');
+            const { data } = await this.$axios.$get('/categories/all?sort=name');
             commit('setCategories', data);
         },
     },
