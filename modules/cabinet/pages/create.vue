@@ -3,13 +3,14 @@
         <page-header h1="Добавление кабинета" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
             <form-block title="Основная информация">
-                <cabinet-form @send="createCabinet" />
+                <cabinet-form />
             </form-block>
         </v-expansion-panels>
     </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
 import CabinetForm from '~/modules/cabinet/components/CabinetForm';
@@ -30,16 +31,18 @@ export default {
     head: {
         title: 'Добавление кабинетов',
     },
+    computed: {
+        ...mapGetters({
+            form: 'forms/cabinet/form',
+        }),
+    },
+    created() {
+        this.initForm();
+    },
     methods: {
-        async createCabinet(form) {
-            try {
-                await form.post('/admin/cabinets');
-                this.$snackbar(`Кабинет ${form.name} успешно добавлен`);
-                await this.$router.push({ name: 'cabinets.index' });
-            } catch (e) {
-                this.$snackbar(`Произошла ошибка при создании кабинета: ${e.message}`);
-            }
-        },
+        ...mapMutations({
+            initForm: 'forms/cabinet/INIT_FORM',
+        }),
     },
 };
 </script>

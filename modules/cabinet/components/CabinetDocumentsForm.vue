@@ -16,7 +16,20 @@
                                 <v-tab-item key="information">
                                     <v-card flat>
                                         <v-card-text>
-                                            <v-text-field label="Название" dense />
+                                            <v-text-field
+                                                label="Название"
+                                                dense
+                                                :value="document.group_name"
+                                                :error-messages="form.errors.get(`documents.${index}.group_name`)"
+                                                :error="form.errors.has(`documents.${index}.group_name`)"
+                                                @input="
+                                                    (value) =>
+                                                        updateField({
+                                                            field: `documents.${index}.group_name`,
+                                                            value,
+                                                        })
+                                                "
+                                            />
                                             <v-divider class="my-2" />
                                             <div class="text-center">
                                                 <v-btn small class="white--text" color="red" @click="removeDocument">

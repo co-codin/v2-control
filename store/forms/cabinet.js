@@ -52,17 +52,22 @@ export default {
         ADD_DOCUMENT(state) {
             state.form.documents.push({
                 group_name: null,
-                name: null,
-                type: null,
-                source: null,
-                file: null,
-                link: null,
+                docs: [
+                    {
+                        name: null,
+                        type: null,
+                        source: null,
+                        file: null,
+                        link: null,
+                    },
+                ],
             });
-            console.log(state.form.documents);
         },
         REMOVE_DOCUMENT(state, index) {
             state.form.documents.splice(index, 1);
         },
+        ADD_DOC(state, index) {},
+        REMOVE_DOC(state, index) {},
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },
@@ -82,6 +87,9 @@ export default {
         async createCategories({ state, commit }, cabinetId) {
             commit('CLEAR_FORM');
             await this.$axios.put(`/admin/cabinets/${cabinetId}/categories`, state.form.data());
+        },
+        async createCabinet({ state }) {
+            await this.$axios.post(`/admin/cabinets`, state.form.data());
         },
         async updateCabinet({ state }, cabinetId) {
             await this.$axios.patch(`/admin/cabinets/${cabinetId}`, state.form.data());
