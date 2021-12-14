@@ -6,6 +6,7 @@ export default {
         form: null,
         formDefaults: {
             categories: [],
+            requirements: [],
         },
     }),
 
@@ -27,6 +28,15 @@ export default {
                 price: null,
             });
         },
+        ADD_REQUIREMENT(state) {
+            state.form.requirements.push({
+                key: null,
+                value: null,
+            });
+        },
+        REMOVE_REQUIREMENT(state, index) {
+            state.form.requirements.splice(index, 1);
+        },
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },
@@ -46,6 +56,10 @@ export default {
         async createCategories({ state, commit }, cabinetId) {
             commit('CLEAR_FORM');
             await this.$axios.put(`/admin/cabinets/${cabinetId}/categories`, state.form.data());
+        },
+        async createRequirements({ state, commit }, cabinetId) {
+            commit('CLEAR_FORM');
+            await this.$axios.patch(`/admin/cabinets/${cabinetId}`, state.form.data());
         },
     },
 };

@@ -22,6 +22,14 @@
             :error="form.errors.has('full_description')"
         />
 
+        <wysiwyg-field
+            v-model="form.welcome_text"
+            class="mt-2"
+            label="Приветственный текст"
+            :error-messages="form.errors.get('welcome_text')"
+            :error="form.errors.has('welcome_text')"
+        />
+
         <file-field
             v-model="form.image"
             label="Фотография"
@@ -71,6 +79,7 @@ export default {
             name: null,
             slug: null,
             full_description: null,
+            welcome_text: null,
             image: null,
             is_image_changed: false,
             status: 1,
