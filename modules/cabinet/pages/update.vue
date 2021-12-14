@@ -1,21 +1,15 @@
 <template>
     <div>
         <page-header h1="Редактирование кабинета" :breadcrumbs="breadcrumbs" />
-        <!--        <div class="mb-2">-->
-        <!--            <v-btn-->
-        <!--                target="_blank"-->
-        <!--                link-->
-        <!--                :href="``"-->
-        <!--                color="info"-->
-        <!--                dark-->
-        <!--            >-->
-        <!--                <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте-->
-        <!--            </v-btn>-->
-        <!--        </div>-->
+        <div class="mb-2">
+            <v-btn target="_blank" link :href="``" color="info" dark>
+                <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
+            </v-btn>
+        </div>
         <template v-if="!$fetchState.pending">
-            <v-expansion-panels>
+            <v-expansion-panels v-model="openedPanel">
                 <form-block title="Основная информация">
-                    <cabinet-form :cabinet="cabinet" is-updating @send="updateCabinet" />
+                    <cabinet-form is-updating />
                 </form-block>
                 <form-block title="Оснащение">
                     <cabinet-categories-form />
@@ -27,7 +21,7 @@
                     <cabinet-requirements-form />
                 </form-block>
                 <form-block title="SEO">
-                    <seo-relation-form :seo="seo" @send="updateCabinetSeo" />
+                    <seo-relation-form :seo="cabinetSeo" @send="updateCabinetSeo" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -35,6 +29,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
@@ -56,9 +51,6 @@ export default {
         CabinetRequirementsForm,
     },
     data: () => ({
-        cabinet: null,
-        seo: null,
-        isLoading: true,
         breadcrumbs: [
             { text: 'Главная', disabled: false, href: '/' },
             { text: 'Список кабинетов', href: '/cabinets' },
@@ -66,34 +58,44 @@ export default {
         ],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/cabinets/${this.$route.params.id}`, {
-            params: {
-                include: ['seo'],
-            },
-        });
-        data.data.status = data.data.status.value;
-        this.seo = data.data.seo || {};
-        this.cabinet = data.data;
-        this.isLoading = false;
+        await this.getCabinet(this.$route.params.id);
+        this.initForm();
+        this.fillForm(this.cabinet);
     },
     head: {
         title: 'Редактирование кабинета',
     },
-    methods: {
-        async updateCabinet(form) {
-            try {
-                await form.put(`/admin/cabinets/${this.$route.params.id}`);
-                this.$snackbar(`Кабинет успешно обновлен`);
-                await this.$router.push({ name: 'cabinets.index' });
-            } catch (e) {
-                this.$snackbar(`Приозошла ошибка при обновлении кабинета: ${e.message}`);
-            }
+    computed: {
+        ...mapGetters({
+            cabinet: 'cabinet/cabinet',
+            cabinetSeo: 'cabinet/cabinetSeo',
+        }),
+        openedPanel: {
+            get() {
+                return this.$store.state.helper.openedPanel;
+            },
+            set(index) {
+                this.closeAllPanels();
+                this.updatePanel(index);
+            },
         },
+    },
+    methods: {
+        ...mapActions({
+            getCabinet: 'cabinet/getCabinet',
+        }),
+        ...mapMutations({
+            initForm: 'forms/cabinet/INIT_FORM',
+            fillForm: 'forms/cabinet/FILL_FORM',
+            closeAllPanels: 'helper/closeAllPanels',
+            updatePanel: 'helper/updatePanel',
+        }),
         async updateCabinetSeo(form) {
             try {
                 await form.patch(`/admin/cabinets/${this.$route.params.id}/seo`);
                 this.$snackbar(`SEO кабинета успешно обновлено`);
-                await this.$router.push({ name: 'cabinets.index' });
+                this.closeAllPanels();
+                this.$nuxt.refresh();
             } catch (e) {
                 this.$snackbar(`Прозиошла ошибка при обоновлении seo у кабинета: ${e.message}`);
             }
