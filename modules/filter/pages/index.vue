@@ -39,6 +39,10 @@
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
 
+                <template #item.category="{ item }">
+                    <div v-html="item.fullCategoryPath"></div>
+                </template>
+
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
                         <v-btn icon width="22" height="22" :to="{ name: 'filters.update', params: { id: item.id } }">
@@ -85,7 +89,7 @@ export default {
                     text: 'Тип',
                     value: 'type',
                 },
-                { text: 'Категории', align: 'left', value: 'category.name', sortable: false },
+                { text: 'Категории', align: 'left', value: 'category', sortable: false },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
@@ -129,8 +133,10 @@ export default {
 
         const response = await Filter.select({
             filters: ['id', 'name', 'slug', 'type', 'category_id', 'created_at'],
+            category: ['id', 'name', '_lft', '_rgt'],
+            'category.ancestors': ['id', '_lft', '_rgt', 'name'],
         })
-            .with('category')
+            .with('category', 'category.ancestors')
             .params(this.queryParams)
             .get();
 
