@@ -1,5 +1,6 @@
 import Form from 'form-backend-validation';
 import { set } from 'lodash';
+import { objectToFormData } from 'form-backend-validation/dist/util';
 
 export default {
     state: () => ({
@@ -89,13 +90,16 @@ export default {
             await this.$axios.put(`/admin/cabinets/${cabinetId}/categories`, state.form.data());
         },
         async createCabinet({ state }) {
-            await this.$axios.post(`/admin/cabinets`, state.form.data());
+            const data = objectToFormData(state.form.data());
+            await this.$axios.post(`/admin/cabinets`, data);
         },
         async updateCabinet({ state }, cabinetId) {
-            await this.$axios.patch(`/admin/cabinets/${cabinetId}`, state.form.data());
+            const data = objectToFormData(state.form.data());
+            await this.$axios.post(`/admin/cabinets/${cabinetId}?_method=patch`, data);
         },
         async createDocuments({ state, commit }, cabinetId) {
-            await this.$axios.put(`/admin/cabinets/${cabinetId}/documents`, state.form.data());
+            const data = objectToFormData(state.form.data());
+            await this.$axios.put(`/admin/cabinets/${cabinetId}/documents`, data);
         },
     },
 };
