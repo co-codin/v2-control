@@ -14,6 +14,7 @@ export default {
             status: 1,
             categories: [],
             requirements: [],
+            documents: [],
         },
     }),
 
@@ -25,6 +26,7 @@ export default {
             state.form.populate({
                 ...data,
                 requirements: data.requirements || [],
+                documents: data.documents || [],
             });
         },
         REMOVE_CATEGORY(state, index) {
