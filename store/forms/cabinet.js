@@ -20,10 +20,12 @@ export default {
     mutations: {
         UPDATE_FIELD(state, { field, value }) {
             set(state.form, field, value);
-            console.log(value);
         },
         FILL_FORM(state, data) {
-            state.form.populate(data);
+            state.form.populate({
+                ...data,
+                requirements: data.requirements || [],
+            });
         },
         REMOVE_CATEGORY(state, index) {
             state.form.categories.splice(index, 1);
@@ -65,8 +67,8 @@ export default {
             commit('CLEAR_FORM');
             await this.$axios.put(`/admin/cabinets/${cabinetId}/categories`, state.form.data());
         },
-        async updateCabinet({ state, commit }, cabinetId) {
-            await this.$axios.put(`/admin/cabinets/${cabinetId}`, state.form.data());
+        async updateCabinet({ state }, cabinetId) {
+            await this.$axios.patch(`/admin/cabinets/${cabinetId}`, state.form.data());
         },
     },
 };

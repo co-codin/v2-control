@@ -43,14 +43,23 @@ export default {
             closeAllPanels: 'helper/closeAllPanels',
             addRequirement: 'forms/cabinet/ADD_REQUIREMENT',
             removeRequirement: 'forms/cabinet/REMOVE_REQUIREMENT',
+            fillErrors: 'forms/cabinet/FILL_ERRORS',
         }),
         ...mapActions({
             createRequirements: 'forms/cabinet/updateCabinet',
         }),
         async save() {
-            await this.createRequirements(this.cabinet.id);
-            this.$snackbar(`Требования успешно обновлены`);
-            this.closeAllPanels();
+            try {
+                await this.createRequirements(this.cabinet.id);
+                this.$snackbar(`Требования успешно обновлены`);
+                this.closeAllPanels();
+            } catch (e) {
+                const errors = e?.response?.data?.errors;
+                if (errors) {
+                    this.fillErrors(errors);
+                }
+                this.$snackbar(`Произошла ошибка при обновлении требований: ${e.message}`);
+            }
         },
     },
 };

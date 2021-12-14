@@ -90,16 +90,6 @@ export default {
             closeAllPanels: 'helper/closeAllPanels',
             updatePanel: 'helper/updatePanel',
         }),
-        async updateCabinet(form) {
-            try {
-                await form.put(`/admin/cabinets/${this.$route.params.id}`);
-                this.$snackbar(`Кабинет успешно обновлен`);
-                this.closeAllPanels();
-                this.$nuxt.refresh();
-            } catch (e) {
-                this.$snackbar(`Приозошла ошибка при обновлении кабинета: ${e.message}`);
-            }
-        },
         async updateCabinetSeo(form) {
             try {
                 await form.patch(`/admin/cabinets/${this.$route.params.id}/seo`);

@@ -42,8 +42,8 @@
             prepend-icon="mdi-image"
             @input="
                 (value) => {
-                    updateField({ field: 'is_image_changed', value: true });
                     updateField({ field: 'image', value });
+                    updateField({ field: 'is_image_changed', value: true });
                 }
             "
             @delete="
