@@ -1,85 +1,87 @@
 <template>
     <v-form @submit.prevent="saveGallery">
         <v-expansion-panels>
-            <v-expansion-panel v-for="(item, index) in form.images" :key="index">
-                <v-expansion-panel-header class="title">
-                    <div>
-                        <div class="d-flex align-center">
-                            <div>
-                                <v-img
-                                    max-height="70"
-                                    max-width="70"
-                                    :src="`${$config.app.storageUrl}/${item.image}`"
-                                />
-                            </div>
-                            <div class="ml-2">
-                                Фотография {{ index + 1 }}
+            <draggable v-model="form.images" @end="updateImagePositions" style="width:100%">
+                <v-expansion-panel v-for="(item, index) in form.images" :key="index">
+                    <v-expansion-panel-header class="title">
+                        <div>
+                            <div class="d-flex align-center">
+                                <div>
+                                    <v-img
+                                        max-height="70"
+                                        max-width="70"
+                                        :src="`${$config.app.storageUrl}/${item.image}`"
+                                    />
+                                </div>
+                                <div class="ml-2">
+                                    Фотография {{ index + 1 }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                    <v-row>
-                        <v-tabs v-model="tab" grow background-color="transparent">
-                            <v-tab v-for="tab in tabs" :key="tab.key">
-                                {{ tab.name }}
-                            </v-tab>
-                        </v-tabs>
-                        <v-tabs-items v-model="tab" style="width: 100%">
-                            <v-tab-item key="image">
-                                <v-card flat>
-                                    <v-card-text>
-                                        <v-img
-                                            max-height="200"
-                                            max-width="200"
-                                            :src="`${$config.app.storageUrl}/${item.image}`"
-                                            class="mb-3"
-                                        />
-                                        <v-divider class="my-2" />
-                                        <div class="text-center">
-                                            <v-btn
-                                                small
-                                                class="white--text"
-                                                color="red"
-                                                @click="deleteImage(index)"
-                                            >
-                                                Удалить фотографию
-                                            </v-btn>
-                                        </div>
-                                    </v-card-text>
-                                </v-card>
-                            </v-tab-item>
-                            <v-tab-item key="metadata">
-                                <v-card flat>
-                                    <v-card-text>
-                                        <v-text-field
-                                            v-model="form.images[index].caption"
-                                            label="Описание"
-                                            dense
-                                            :error-messages="form.errors.get(`images.${index}.caption`)"
-                                            :error="form.errors.has(`images.${index}.caption`)"
-                                        />
-                                        <v-text-field
-                                            v-model="form.images[index].alt"
-                                            label="Alt"
-                                            dense
-                                            :error-messages="form.errors.get(`images.${index}.alt`)"
-                                            :error="form.errors.has(`images.${index}.alt`)"
-                                        />
-                                        <v-text-field
-                                            v-model="form.images[index].title"
-                                            label="Title"
-                                            dense
-                                            :error-messages="form.errors.get(`images.${index}.title`)"
-                                            :error="form.errors.has(`images.${index}.title`)"
-                                        />
-                                    </v-card-text>
-                                </v-card>
-                            </v-tab-item>
-                        </v-tabs-items>
-                    </v-row>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-row>
+                            <v-tabs v-model="tab" grow background-color="transparent">
+                                <v-tab v-for="tab in tabs" :key="tab.key">
+                                    {{ tab.name }}
+                                </v-tab>
+                            </v-tabs>
+                            <v-tabs-items v-model="tab" style="width: 100%">
+                                <v-tab-item key="image">
+                                    <v-card flat>
+                                        <v-card-text>
+                                            <v-img
+                                                max-height="200"
+                                                max-width="200"
+                                                :src="`${$config.app.storageUrl}/${item.image}`"
+                                                class="mb-3"
+                                            />
+                                            <v-divider class="my-2" />
+                                            <div class="text-center">
+                                                <v-btn
+                                                    small
+                                                    class="white--text"
+                                                    color="red"
+                                                    @click="deleteImage(index)"
+                                                >
+                                                    Удалить фотографию
+                                                </v-btn>
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+                                <v-tab-item key="metadata">
+                                    <v-card flat>
+                                        <v-card-text>
+                                            <v-text-field
+                                                v-model="form.images[index].caption"
+                                                label="Описание"
+                                                dense
+                                                :error-messages="form.errors.get(`images.${index}.caption`)"
+                                                :error="form.errors.has(`images.${index}.caption`)"
+                                            />
+                                            <v-text-field
+                                                v-model="form.images[index].alt"
+                                                label="Alt"
+                                                dense
+                                                :error-messages="form.errors.get(`images.${index}.alt`)"
+                                                :error="form.errors.has(`images.${index}.alt`)"
+                                            />
+                                            <v-text-field
+                                                v-model="form.images[index].title"
+                                                label="Title"
+                                                dense
+                                                :error-messages="form.errors.get(`images.${index}.title`)"
+                                                :error="form.errors.has(`images.${index}.title`)"
+                                            />
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+                            </v-tabs-items>
+                        </v-row>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </draggable>
         </v-expansion-panels>
         <file-uploader
             :multiple="true"
@@ -101,12 +103,14 @@ import Form from 'form-backend-validation';
 import FileUploader from '~/components/FileUploader';
 import FormBlock from '~/components/forms/FormBlock';
 import FileField from '~/components/forms/FileField';
+import draggable from "vuedraggable";
 
 export default {
     components: {
         FormBlock,
         FileUploader,
         FileField,
+        draggable,
     },
     data() {
         return {
@@ -157,6 +161,13 @@ export default {
                 caption: null,
                 alt: null,
                 title: null,
+            });
+            this.updateImagePositions();
+        },
+        updateImagePositions() {
+            let i = 0;
+            this.form.images.forEach(item => {
+                item.position = ++i;
             });
         },
     },
