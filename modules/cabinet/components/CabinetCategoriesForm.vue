@@ -24,6 +24,7 @@
                         @input="(value) => updateField({ field: `categories.${index}.name`, value })"
                     />
                     <v-text-field
+                        class="mt-2"
                         :value="category.count"
                         type="number"
                         label="Количество"
@@ -33,6 +34,7 @@
                         @input="(value) => updateField({ field: `categories.${index}.count`, value })"
                     />
                     <v-text-field
+                        class="mt-2"
                         :value="category.price"
                         type="number"
                         label="Цена"
@@ -75,18 +77,10 @@ export default {
             form: 'forms/cabinet/form',
         }),
     },
-    created() {
-        this.initForm();
-        this.fillForm({
-            categories: this.cabinet?.categories || [],
-        });
-    },
     methods: {
         ...mapMutations({
-            initForm: 'forms/cabinet/INIT_FORM',
-            fillForm: 'forms/cabinet/FILL_FORM',
-            fillErrors: 'forms/cabinet/FILL_ERRORS',
             updateField: 'forms/cabinet/UPDATE_FIELD',
+            fillErrors: 'forms/cabinet/FILL_ERRORS',
             closeAllPanels: 'helper/closeAllPanels',
             removeCategory: 'forms/cabinet/REMOVE_CATEGORY',
             addCategory: 'forms/cabinet/ADD_CATEGORY',
@@ -95,9 +89,17 @@ export default {
             createCategories: 'forms/cabinet/createCategories',
         }),
         async save() {
-            await this.createCategories(this.cabinet.id);
-            this.$snackbar(`Категории успешно обновлены`);
-            this.closeAllPanels();
+            try {
+                await this.createCategories(this.cabinet.id);
+                this.$snackbar(`Категории успешно обновлены`);
+                this.closeAllPanels();
+            } catch (e) {
+                const errors = e?.response?.data?.errors;
+                if (errors) {
+                    this.fillErrors(errors);
+                }
+                this.$snackbar(`Произошла ошибка при обновлении категорий: ${e.message}`);
+            }
         },
     },
 };

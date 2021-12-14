@@ -1,54 +1,66 @@
 <template>
-    <v-form @submit.prevent="$emit('send', form)">
+    <v-form @submit.prevent="save">
         <v-text-field
-            v-model="form.name"
+            :value="form.name"
             label="Название"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
+            @input="(value) => updateField({ field: 'name', value })"
         />
 
         <v-text-field
-            v-model="form.slug"
+            :value="form.slug"
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+            @input="(value) => updateField({ field: 'slug', value })"
         />
 
         <wysiwyg-field
-            v-model="form.full_description"
+            :value="form.full_description"
             class="mt-2"
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
+            @input="(value) => updateField({ field: 'full_description', value })"
         />
 
         <wysiwyg-field
-            v-model="form.welcome_text"
+            :value="form.welcome_text"
             class="mt-2"
             label="Приветственный текст"
             :error-messages="form.errors.get('welcome_text')"
             :error="form.errors.has('welcome_text')"
+            @input="(value) => updateField({ field: 'welcome_text', value })"
         />
 
         <file-field
-            v-model="form.image"
+            :value="form.image"
             label="Фотография"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             prepend-icon="mdi-image"
-            @input="form.is_image_changed = true"
+            @input="
+                (value) => {
+                    updateField({ field: 'is_image_changed', value: true });
+                    updateField({ field: 'image', value });
+                }
+            "
             @delete="
-                form.image = null;
-                form.is_image_changed = true;
+                () => {
+                    updateField({ field: 'is_image_changed', value: true });
+                    updateField({ field: 'image', value: null });
+                }
             "
         />
 
         <v-select
-            v-model="form.status"
+            :value="form.status"
             label="Статус"
             :items="statusLabels"
             :error-messages="form.errors.get('status')"
             :error="form.errors.has('status')"
+            @change="(value) => updateField({ field: 'status', value })"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -60,8 +72,7 @@
 </template>
 
 <script>
-import { Form } from 'form-backend-validation';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
@@ -75,32 +86,36 @@ export default {
         },
     },
     data: () => ({
-        formDefaults: {
-            name: null,
-            slug: null,
-            full_description: null,
-            welcome_text: null,
-            image: null,
-            is_image_changed: false,
-            status: 1,
-        },
-        form: null,
         statusLabels,
     }),
     computed: {
         ...mapGetters({
             cabinet: 'cabinet/cabinet',
+            form: 'forms/cabinet/form',
         }),
     },
-    watch: {
-        cabinet(value) {
-            this.form.populate(value);
+    methods: {
+        ...mapActions({
+            updateCabinet: 'forms/cabinet/updateCabinet',
+        }),
+        ...mapMutations({
+            updateField: 'forms/cabinet/UPDATE_FIELD',
+            closeAllPanels: 'helper/closeAllPanels',
+            fillErrors: 'forms/cabinet/FILL_ERRORS',
+        }),
+        async save() {
+            try {
+                await this.updateCabinet(this.cabinet.id);
+                this.$snackbar(`Категории успешно обновлены`);
+                this.closeAllPanels();
+            } catch (e) {
+                const errors = e?.response?.data?.errors;
+                if (errors) {
+                    this.fillErrors(errors);
+                }
+                this.$snackbar(`Произошла ошибка при обновлении категорий: ${e.message}`);
+            }
         },
-    },
-    created() {
-        this.form = Form.create(this.formDefaults)
-            .withOptions({ http: this.$axios })
-            .populate(this.cabinet || {});
     },
 };
 </script>

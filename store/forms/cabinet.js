@@ -5,6 +5,13 @@ export default {
     state: () => ({
         form: null,
         formDefaults: {
+            name: null,
+            slug: null,
+            full_description: null,
+            welcome_text: null,
+            image: null,
+            is_image_changed: false,
+            status: 1,
             categories: [],
             requirements: [],
         },
@@ -13,6 +20,7 @@ export default {
     mutations: {
         UPDATE_FIELD(state, { field, value }) {
             set(state.form, field, value);
+            console.log(value);
         },
         FILL_FORM(state, data) {
             state.form.populate(data);
@@ -57,9 +65,8 @@ export default {
             commit('CLEAR_FORM');
             await this.$axios.put(`/admin/cabinets/${cabinetId}/categories`, state.form.data());
         },
-        async createRequirements({ state, commit }, cabinetId) {
-            commit('CLEAR_FORM');
-            await this.$axios.patch(`/admin/cabinets/${cabinetId}`, state.form.data());
+        async updateCabinet({ state, commit }, cabinetId) {
+            await this.$axios.put(`/admin/cabinets/${cabinetId}`, state.form.data());
         },
     },
 };

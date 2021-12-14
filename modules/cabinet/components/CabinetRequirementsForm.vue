@@ -8,13 +8,15 @@
                     <v-text-field label="Значение" dense />
                     <v-divider class="my-2" />
                     <div class="text-center">
-                        <v-btn small class="white--text" color="red"> Удалить требование </v-btn>
+                        <v-btn small class="white--text" color="red" @click="removeRequirement(index)">
+                            Удалить требование
+                        </v-btn>
                     </div>
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined> Добавить требование </v-btn>
+            <v-btn link small color="primary" outlined @click="addRequirement"> Добавить требование </v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
@@ -35,22 +37,15 @@ export default {
             form: 'forms/cabinet/form',
         }),
     },
-    created() {
-        this.initForm();
-        this.fillForm(this.cabinet);
-    },
     methods: {
         ...mapMutations({
-            initForm: 'forms/cabinet/INIT_FORM',
-            fillForm: 'forms/cabinet/FILL_FORM',
-            fillErrors: 'forms/cabinet/FILL_ERRORS',
             updateField: 'forms/cabinet/UPDATE_FIELD',
             closeAllPanels: 'helper/closeAllPanels',
             addRequirement: 'forms/cabinet/ADD_REQUIREMENT',
             removeRequirement: 'forms/cabinet/REMOVE_REQUIREMENT',
         }),
         ...mapActions({
-            createRequirements: 'forms/cabinet/createRequirements',
+            createRequirements: 'forms/cabinet/updateCabinet',
         }),
         async save() {
             await this.createRequirements(this.cabinet.id);

@@ -9,7 +9,7 @@
         <template v-if="!$fetchState.pending">
             <v-expansion-panels v-model="openedPanel">
                 <form-block title="Основная информация">
-                    <cabinet-form is-updating @send="updateCabinet" />
+                    <cabinet-form is-updating />
                 </form-block>
                 <form-block title="Оснащение">
                     <cabinet-categories-form />
@@ -59,6 +59,8 @@ export default {
     }),
     async fetch() {
         await this.getCabinet(this.$route.params.id);
+        this.initForm();
+        this.fillForm(this.cabinet);
     },
     head: {
         title: 'Редактирование кабинета',
@@ -83,6 +85,8 @@ export default {
             getCabinet: 'cabinet/getCabinet',
         }),
         ...mapMutations({
+            initForm: 'forms/cabinet/INIT_FORM',
+            fillForm: 'forms/cabinet/FILL_FORM',
             closeAllPanels: 'helper/closeAllPanels',
             updatePanel: 'helper/updatePanel',
         }),
