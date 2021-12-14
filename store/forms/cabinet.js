@@ -53,22 +53,16 @@ export default {
         ADD_DOCUMENT(state) {
             state.form.documents.push({
                 group_name: null,
-                docs: [
-                    {
-                        name: null,
-                        type: null,
-                        source: null,
-                        file: null,
-                        link: null,
-                    },
-                ],
+                name: null,
+                type: null,
+                source: null,
+                file: null,
+                link: null,
             });
         },
         REMOVE_DOCUMENT(state, index) {
             state.form.documents.splice(index, 1);
         },
-        ADD_DOC(state, index) {},
-        REMOVE_DOC(state, index) {},
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },
@@ -99,7 +93,7 @@ export default {
         },
         async createDocuments({ state, commit }, cabinetId) {
             const data = objectToFormData(state.form.data());
-            await this.$axios.put(`/admin/cabinets/${cabinetId}/documents`, data);
+            await this.$axios.post(`/admin/cabinets/${cabinetId}/documents?_method=put`, data);
         },
     },
 };
