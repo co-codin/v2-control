@@ -42,7 +42,7 @@ export default {
 
     actions: {
         async getCabinet({ commit }, id) {
-            const cabinet = await Cabinet.query().with('seo', 'categories').$find(id);
+            const cabinet = await Cabinet.query().with('seo', 'categories', 'documents').$find(id);
             commit('SET_CABINET', cabinet);
             commit('SET_CABINET_SEO', cabinet.seo || {});
         },

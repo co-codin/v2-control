@@ -146,7 +146,6 @@ export default {
             .get();
 
         this.cities = City.hydrate(response.data);
-        console.log(this.cities);
 
         this.setTotal(response.meta.total);
         this.hideLoading();

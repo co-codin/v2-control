@@ -97,6 +97,7 @@ export default {
     methods: {
         ...mapActions({
             updateCabinet: 'forms/cabinet/updateCabinet',
+            createCabinet: 'forms/cabinet/createCabinet',
         }),
         ...mapMutations({
             updateField: 'forms/cabinet/UPDATE_FIELD',
@@ -105,9 +106,13 @@ export default {
         }),
         async save() {
             try {
-                await this.updateCabinet(this.cabinet.id);
-                this.$snackbar(`Категории успешно обновлены`);
-                this.closeAllPanels();
+                if (this.isUpdating) {
+                    await this.updateCabinet(this.cabinet.id);
+                    this.$snackbar(`Категории успешно обновлены`);
+                    this.closeAllPanels();
+                } else {
+                    await this.createCabinet();
+                }
             } catch (e) {
                 const errors = e?.response?.data?.errors;
                 if (errors) {

@@ -181,8 +181,6 @@ export default {
             .params(this.queryParams)
             .get();
 
-        console.log(response.data);
-
         this.products = Product.hydrate(response.data);
 
         this.setTotal(response.meta.total);
