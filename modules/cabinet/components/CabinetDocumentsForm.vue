@@ -1,7 +1,7 @@
 <template>
     <v-form @submit.prevent="save">
         <v-expansion-panels>
-            <v-expansion-panel v-for="(document, index) in form.documents" :key="index">
+            <v-expansion-panel v-for="(document, index) in form.documents" :key="'document-' + index">
                 <v-expansion-panel-header class="title">
                     #{{ index + 1 }}. {{ document.group_name || '(без названия)' }}
                 </v-expansion-panel-header>
@@ -94,19 +94,51 @@
                                                                     })
                                                             "
                                                         />
-                                                        <v-text-field label="Ссылка" dense />
+                                                        <v-text-field
+                                                            v-if="document.source === 1"
+                                                            label="Ссылка"
+                                                            :value="document.link"
+                                                            dense
+                                                            :error-messages="form.errors.get(`documents.${index}.link`)"
+                                                            :error="form.errors.has(`documents.${index}.link`)"
+                                                            @input="
+                                                                (value) =>
+                                                                    updateField({
+                                                                        field: `documents.${index}.link`,
+                                                                        value,
+                                                                    })
+                                                            "
+                                                        />
+                                                        <file-field
+                                                            v-if="document.source === 2"
+                                                            :is-image="false"
+                                                            :value="document.file"
+                                                            label="Файл"
+                                                            :error-messages="form.errors.get('image')"
+                                                            :error="form.errors.has('image')"
+                                                            @input="
+                                                                (value) => {
+                                                                    updateField({
+                                                                        field: `documents.${index}.file`,
+                                                                        value,
+                                                                    });
+                                                                }
+                                                            "
+                                                        />
                                                         <v-divider class="my-2" />
                                                         <div class="text-center">
-                                                            <v-btn small class="white--text" color="red">
+                                                            <v-btn
+                                                                small
+                                                                class="white--text"
+                                                                color="red"
+                                                                @click="removeDocument(index)"
+                                                            >
                                                                 Удалить документ
                                                             </v-btn>
                                                         </div>
                                                     </v-expansion-panel-content>
                                                 </v-expansion-panel>
                                             </v-expansion-panels>
-                                            <div class="mt-2">
-                                                <v-btn link small color="primary" outlined> Добавить документ </v-btn>
-                                            </div>
                                         </v-card-text>
                                     </v-card>
                                 </v-tab-item>
@@ -117,7 +149,7 @@
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined @click="addDocument"> Добавить группу </v-btn>
+            <v-btn link small color="primary" outlined @click="addDocument"> Добавить документ </v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
@@ -129,12 +161,14 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import FileField from '~/components/forms/FileField';
 
 export default {
+    components: { FileField },
     data: () => ({
         sourceLabels: [
-            { value: 1, text: 'Файл' },
-            { value: 2, text: 'Ссылка' },
+            { value: 1, text: 'Ссылка' },
+            { value: 2, text: 'Файл' },
         ],
         typeLabels: [
             { value: 1, text: 'Брошюра' },

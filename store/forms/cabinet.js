@@ -1,5 +1,6 @@
 import Form from 'form-backend-validation';
 import { set } from 'lodash';
+import { objectToFormData } from 'form-backend-validation/dist/util';
 
 export default {
     state: () => ({
@@ -52,22 +53,16 @@ export default {
         ADD_DOCUMENT(state) {
             state.form.documents.push({
                 group_name: null,
-                docs: [
-                    {
-                        name: null,
-                        type: null,
-                        source: null,
-                        file: null,
-                        link: null,
-                    },
-                ],
+                name: null,
+                type: null,
+                source: null,
+                file: null,
+                link: null,
             });
         },
         REMOVE_DOCUMENT(state, index) {
             state.form.documents.splice(index, 1);
         },
-        ADD_DOC(state, index) {},
-        REMOVE_DOC(state, index) {},
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },
@@ -89,13 +84,16 @@ export default {
             await this.$axios.put(`/admin/cabinets/${cabinetId}/categories`, state.form.data());
         },
         async createCabinet({ state }) {
-            await this.$axios.post(`/admin/cabinets`, state.form.data());
+            const data = objectToFormData(state.form.data());
+            await this.$axios.post(`/admin/cabinets`, data);
         },
         async updateCabinet({ state }, cabinetId) {
-            await this.$axios.patch(`/admin/cabinets/${cabinetId}`, state.form.data());
+            const data = objectToFormData(state.form.data());
+            await this.$axios.post(`/admin/cabinets/${cabinetId}?_method=patch`, data);
         },
         async createDocuments({ state, commit }, cabinetId) {
-            await this.$axios.put(`/admin/cabinets/${cabinetId}/documents`, state.form.data());
+            const data = objectToFormData(state.form.data());
+            await this.$axios.post(`/admin/cabinets/${cabinetId}/documents?_method=put`, data);
         },
     },
 };

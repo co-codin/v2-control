@@ -108,10 +108,13 @@ export default {
             try {
                 if (this.isUpdating) {
                     await this.updateCabinet(this.cabinet.id);
-                    this.$snackbar(`Категории успешно обновлены`);
+                    this.$snackbar(`Кабинет успешно обновлен`);
                     this.closeAllPanels();
+                    this.$nuxt.refresh();
                 } else {
                     await this.createCabinet();
+                    this.$snackbar(`Кабинет успешно создан`);
+                    await this.$router.push({ name: 'cabinets.index' });
                 }
             } catch (e) {
                 const errors = e?.response?.data?.errors;
