@@ -1,8 +1,10 @@
 <template>
     <v-form @submit.prevent="save">
         <v-expansion-panels>
-            <v-expansion-panel>
-                <v-expansion-panel-header class="title"> Регулирующие документы </v-expansion-panel-header>
+            <v-expansion-panel v-for="(document, index) in form.documents" :key="index">
+                <v-expansion-panel-header class="title">
+                    #{{ index + 1 }}. {{ document.group_name || '(без названия)' }}
+                </v-expansion-panel-header>
                 <v-expansion-panel-content>
                     <v-row>
                         <v-tabs v-model="tab" grow background-color="transparent">
@@ -17,7 +19,9 @@
                                             <v-text-field label="Название" dense />
                                             <v-divider class="my-2" />
                                             <div class="text-center">
-                                                <v-btn small class="white--text" color="red"> Удалить группу </v-btn>
+                                                <v-btn small class="white--text" color="red" @click="removeDocument">
+                                                    Удалить группу
+                                                </v-btn>
                                             </div>
                                         </v-card-text>
                                     </v-card>
@@ -28,16 +32,54 @@
                                             <v-expansion-panels>
                                                 <v-expansion-panel>
                                                     <v-expansion-panel-header class="title">
-                                                        Постановление Правительства РФ от 16 апреля 2012 г. N 291
+                                                        {{ document.name || '(без названия)' }}
                                                     </v-expansion-panel-header>
                                                     <v-expansion-panel-content>
-                                                        <v-select label="Тип" :items="typeLabels" dense />
-                                                        <v-text-field label="Название" dense />
+                                                        <v-select
+                                                            label="Тип"
+                                                            :items="typeLabels"
+                                                            :value="document.type"
+                                                            dense
+                                                            :error-messages="form.errors.get(`documents.${index}.type`)"
+                                                            :error="form.errors.has(`documents.${index}.type`)"
+                                                            @change="
+                                                                (value) =>
+                                                                    updateField({
+                                                                        field: `documents.${index}.type`,
+                                                                        value,
+                                                                    })
+                                                            "
+                                                        />
+                                                        <v-text-field
+                                                            label="Название"
+                                                            :value="document.name"
+                                                            dense
+                                                            :error-messages="form.errors.get(`documents.${index}.name`)"
+                                                            :error="form.errors.has(`documents.${index}.name`)"
+                                                            @input="
+                                                                (value) =>
+                                                                    updateField({
+                                                                        field: `documents.${index}.name`,
+                                                                        value,
+                                                                    })
+                                                            "
+                                                        />
                                                         <v-select
                                                             label="Источник"
                                                             :items="sourceLabels"
-                                                            :value="2"
+                                                            :value="document.source"
                                                             dense
+                                                            :error-messages="
+                                                                form.errors.get(`documents.${index}.source`)
+                                                            "
+                                                            :error="form.errors.has(`documents.${index}.source`)"
+                                                            @change="
+                                                                (value) =>
+                                                                    updateField({
+                                                                        field: `documents.${index}.source`,
+                                                                        value,
+                                                                    })
+                                                            "
                                                         />
                                                         <v-text-field label="Ссылка" dense />
                                                         <v-divider class="my-2" />
@@ -62,7 +104,7 @@
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined> Добавить группу </v-btn>
+            <v-btn link small color="primary" outlined @click="addDocument"> Добавить группу </v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
@@ -73,20 +115,22 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+
 export default {
     data: () => ({
         sourceLabels: [
-            { id: 1, text: 'Файл' },
-            { id: 2, text: 'Ссылка' },
+            { value: 1, text: 'Файл' },
+            { value: 2, text: 'Ссылка' },
         ],
         typeLabels: [
-            { id: 1, text: 'Брошюра' },
-            { id: 2, text: 'Сертификат РУ' },
-            { id: 3, text: 'Сертификат ДС' },
-            { id: 4, text: 'Технические характеристики' },
-            { id: 5, text: 'Инструкция' },
-            { id: 6, text: 'Каталог' },
-            { id: 7, text: 'Стандарты оснащения' },
+            { value: 1, text: 'Брошюра' },
+            { value: 2, text: 'Сертификат РУ' },
+            { value: 3, text: 'Сертификат ДС' },
+            { value: 4, text: 'Технические характеристики' },
+            { value: 5, text: 'Инструкция' },
+            { value: 6, text: 'Каталог' },
+            { value: 7, text: 'Стандарты оснащения' },
         ],
         tab: null,
         tabs: [
@@ -94,8 +138,36 @@ export default {
             { tab: 'Документы', key: 'documents' },
         ],
     }),
+    computed: {
+        ...mapGetters({
+            cabinet: 'cabinet/cabinet',
+            form: 'forms/cabinet/form',
+        }),
+    },
     methods: {
-        save() {},
+        ...mapMutations({
+            updateField: 'forms/cabinet/UPDATE_FIELD',
+            fillErrors: 'forms/cabinet/FILL_ERRORS',
+            closeAllPanels: 'helper/closeAllPanels',
+            removeDocument: 'forms/cabinet/REMOVE_DOCUMENT',
+            addDocument: 'forms/cabinet/ADD_DOCUMENT',
+        }),
+        ...mapActions({
+            createDocuments: 'forms/cabinet/createDocuments',
+        }),
+        async save() {
+            try {
+                await this.createDocuments(this.cabinet.id);
+                this.$snackbar(`Документы успешно обновлены`);
+                this.closeAllPanels();
+            } catch (e) {
+                const errors = e?.response?.data?.errors;
+                if (errors) {
+                    this.fillErrors(errors);
+                }
+                this.$snackbar(`Произошла ошибка при обновлении документов: ${e.message}`);
+            }
+        },
     },
 };
 </script>
