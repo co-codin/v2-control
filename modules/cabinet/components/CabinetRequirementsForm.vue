@@ -2,10 +2,26 @@
     <v-form @submit.prevent="save">
         <v-expansion-panels>
             <v-expansion-panel v-for="(requirement, index) in form.requirements" :key="index">
-                <v-expansion-panel-header class="title"> {{ requirement.key }} </v-expansion-panel-header>
+                <v-expansion-panel-header class="title">
+                    #{{ index + 1 }}. {{ requirement.key || '(без названия)' }}
+                </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <v-text-field label="Название" dense />
-                    <v-text-field label="Значение" dense />
+                    <v-text-field
+                        label="Название"
+                        dense
+                        :value="requirement.key"
+                        :error-messages="form.errors.get(`requirements.${index}.key`)"
+                        :error="form.errors.has(`requirements.${index}.key`)"
+                        @input="(value) => updateField({ field: `requirements.${index}.key`, value })"
+                    />
+                    <v-text-field
+                        label="Значение"
+                        dense
+                        :value="requirement.value"
+                        :error-messages="form.errors.get(`requirements.${index}.value`)"
+                        :error="form.errors.has(`requirements.${index}.value`)"
+                        @input="(value) => updateField({ field: `requirements.${index}.value`, value })"
+                    />
                     <v-divider class="my-2" />
                     <div class="text-center">
                         <v-btn small class="white--text" color="red" @click="removeRequirement(index)">
