@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="saveDocuments">
+    <v-form @submit.prevent="save">
         <v-expansion-panels>
             <v-expansion-panel>
                 <v-expansion-panel-header class="title"> Регулирующие документы </v-expansion-panel-header>
@@ -75,13 +75,6 @@
 <script>
 export default {
     data: () => ({
-        documents: [
-            {
-                name: null,
-                type: 1, // File
-                value: 'documents/document1.pdf', // or link, eg "https://yandex.ru"
-            },
-        ],
         sourceLabels: [
             { id: 1, text: 'Файл' },
             { id: 2, text: 'Ссылка' },
@@ -102,9 +95,7 @@ export default {
         ],
     }),
     methods: {
-        saveDocuments() {
-            alert('saving');
-        },
+        save() {},
     },
 };
 </script>

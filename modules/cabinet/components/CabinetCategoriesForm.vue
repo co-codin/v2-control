@@ -1,23 +1,59 @@
 <template>
-    <v-form @submit.prevent="saveCategories">
+    <v-form @submit.prevent="save">
         <v-expansion-panels>
-            <v-expansion-panel>
-                <v-expansion-panel-header class="title"> Аппараты УЗИ </v-expansion-panel-header>
+            <v-expansion-panel v-for="(category, index) in form.categories" :key="index">
+                <v-expansion-panel-header class="title">
+                    #{{ index + 1 }}. {{ category.name || '(без названия)' }}
+                </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <category-tree-search-field label="Категория" name="category" :multiple="false" class="mb-3" />
+                    <category-tree-search-field
+                        :value="category.id"
+                        label="Категория"
+                        name="category"
+                        :multiple="false"
+                        class="mb-3"
+                        @input="(value) => updateField({ field: `categories.${index}.id`, value })"
+                    />
 
-                    <v-text-field label="Название" dense />
-                    <v-text-field label="Количество" dense />
-                    <v-text-field label="Цена" dense />
+                    <v-text-field
+                        :value="category.name"
+                        label="Название"
+                        dense
+                        :error-messages="form.errors.get(`categories.${index}.name`)"
+                        :error="form.errors.has(`categories.${index}.name`)"
+                        @input="(value) => updateField({ field: `categories.${index}.name`, value })"
+                    />
+                    <v-text-field
+                        class="mt-2"
+                        :value="category.count"
+                        type="number"
+                        label="Количество"
+                        dense
+                        :error-messages="form.errors.get(`categories.${index}.count`)"
+                        :error="form.errors.has(`categories.${index}.count`)"
+                        @input="(value) => updateField({ field: `categories.${index}.count`, value })"
+                    />
+                    <v-text-field
+                        class="mt-2"
+                        :value="category.price"
+                        type="number"
+                        label="Цена"
+                        dense
+                        :error-messages="form.errors.get(`categories.${index}.price`)"
+                        :error="form.errors.has(`categories.${index}.price`)"
+                        @input="(value) => updateField({ field: `categories.${index}.price`, value })"
+                    />
                     <v-divider class="my-2" />
                     <div class="text-center">
-                        <v-btn small class="white--text" color="red"> Удалить категорию </v-btn>
+                        <v-btn small class="white--text" color="red" @click="removeCategory(index)">
+                            Удалить категорию
+                        </v-btn>
                     </div>
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined> Добавить категорию </v-btn>
+            <v-btn link small color="primary" outlined @click="addCategory"> Добавить категорию </v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
@@ -28,14 +64,43 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
     components: {
         CategoryTreeSearchField,
     },
+    computed: {
+        ...mapGetters({
+            cabinet: 'cabinet/cabinet',
+            form: 'forms/cabinet/form',
+        }),
+    },
     methods: {
-        saveCategories() {},
+        ...mapMutations({
+            updateField: 'forms/cabinet/UPDATE_FIELD',
+            fillErrors: 'forms/cabinet/FILL_ERRORS',
+            closeAllPanels: 'helper/closeAllPanels',
+            removeCategory: 'forms/cabinet/REMOVE_CATEGORY',
+            addCategory: 'forms/cabinet/ADD_CATEGORY',
+        }),
+        ...mapActions({
+            createCategories: 'forms/cabinet/createCategories',
+        }),
+        async save() {
+            try {
+                await this.createCategories(this.cabinet.id);
+                this.$snackbar(`Категории успешно обновлены`);
+                this.closeAllPanels();
+            } catch (e) {
+                const errors = e?.response?.data?.errors;
+                if (errors) {
+                    this.fillErrors(errors);
+                }
+                this.$snackbar(`Произошла ошибка при обновлении категорий: ${e.message}`);
+            }
+        },
     },
 };
 </script>
