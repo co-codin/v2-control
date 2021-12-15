@@ -3,7 +3,7 @@
         <page-header h1="Фильтры" :breadcrumbs="breadcrumbs"></page-header>
 
         <div class="mb-2">
-            <v-btn :to="{ name: 'filters.create' }" class="mr-2"> Добавить фильтр </v-btn>
+            <v-btn :to="{ name: 'filters.create' }" class="mr-1"> Добавить фильтр </v-btn>
             <v-btn :to="{ name: 'filters.sort' }"> Сортировка фильтров </v-btn>
         </div>
 
