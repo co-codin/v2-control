@@ -14,6 +14,7 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Категории', link: '/categories' },
                 { icon: 'mdi-cash-usd-outline', text: 'Производители', link: '/brands' },
                 { icon: 'mdi-cash-usd-outline', text: 'Характеристики', link: '/properties' },
+                { icon: 'mdi-cash-usd-outline', text: 'Значения характеристик', link: '/field-values' },
                 { icon: 'mdi-cash-usd-outline', text: 'Фильтры', link: '/filters' },
                 { icon: 'mdi-cash-usd-outline', text: 'Валюты', link: '/currencies' },
                 { icon: 'mdi-cash-usd-outline', text: 'Экспорты', link: '/exports' },
