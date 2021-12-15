@@ -90,7 +90,7 @@ export default {
                 { text: 'Куда', align: 'left', value: 'destination' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Редиректы' }],
+            breadcrumbs: [{ text: 'Редиректы' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

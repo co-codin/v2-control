@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список отзывов', href: '/customer-reviews' },
+            { text: 'Список отзывов', to: { name: 'product-reviews.index' } },
             { text: 'Добавление отзыва' },
         ],
     }),

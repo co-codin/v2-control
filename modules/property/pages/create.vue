@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список характиристик', href: '/properties' },
+            { text: 'Список характиристик', to: { name: 'properties.index' } },
             { text: 'Добавление характиристик' },
         ],
     }),

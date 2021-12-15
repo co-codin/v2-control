@@ -90,7 +90,7 @@ export default {
                 { text: 'Дата публикации', align: 'left', value: 'published_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список публикаций' }],
+            breadcrumbs: [{ text: 'Список публикаций' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

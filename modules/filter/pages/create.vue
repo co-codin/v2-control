@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список фильтров', href: '/filters' },
+            { text: 'Список фильтров', to: { name: 'filters.index' }  },
             { text: 'Добавление фильтра' },
         ],
     }),

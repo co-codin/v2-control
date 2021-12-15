@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', href: '/' },
-            { text: 'Товары', href: '/products' },
+            { text: 'Товары', to: { name: 'products.index' } },
             { text: 'Добавление товара' },
         ],
     }),

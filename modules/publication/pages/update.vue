@@ -26,8 +26,7 @@ export default {
         publication: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список публикаций', href: '/publications' },
+            { text: 'Список публикаций', to: { name: 'publications.index' } },
             { text: 'Редактирование публикации' },
         ],
     }),

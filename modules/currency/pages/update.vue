@@ -26,8 +26,7 @@ export default {
         currency: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список валют', href: '/currencies' },
+            { text: 'Список валют', to: { name: 'currencies.index' } },
             { text: 'Редактирование валюты' },
         ],
     }),

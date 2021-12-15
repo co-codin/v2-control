@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список достижений', href: '/achievements' },
+            { text: 'Список достижений', to: { name: 'achievements.index' } },
             { text: 'Добавление достижения' },
         ],
     }),

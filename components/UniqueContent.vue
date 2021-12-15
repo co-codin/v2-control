@@ -61,16 +61,21 @@ export default {
         },
 
         async getUniqueContent() {
-            const data = await this.$axios.$get('/unique-content', {
-                baseURL: process.env.CONTENT_API_URL,
-                params: {
-                    'filter[field]': this.field,
-                    'filter[module]': this.module,
-                    'filter[object]': this.object,
-                },
-            });
-            this.hasContent = data.length !== 0;
-            this.isChecked = this.hasContent;
+            try {
+                const data = await this.$axios.$get('/unique-content', {
+                    baseURL: process.env.CONTENT_API_URL,
+                    params: {
+                        'filter[field]': this.field,
+                        'filter[module]': this.module,
+                        'filter[object]': this.object,
+                    },
+                });
+                this.hasContent = data.length !== 0;
+                this.isChecked = this.hasContent;
+            }
+            catch (e) {
+                this.$snackbar(e.message);
+            }
         },
     },
 };

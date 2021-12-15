@@ -105,7 +105,7 @@ export default {
                 { text: 'Статус', value: 'status.description', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Товары' }],
+            breadcrumbs: [{ text: 'Товары' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

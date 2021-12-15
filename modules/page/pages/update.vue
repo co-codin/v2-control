@@ -32,8 +32,7 @@ export default {
         seo: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список страниц', href: '/pages' },
+            { text: 'Список страниц', to: { name: 'pages.index' } },
             { text: 'Редактирование страницы' },
         ],
     }),

@@ -86,7 +86,7 @@ export default {
                 { text: 'Позиция', align: 'left', value: 'position' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список достижений' }],
+            breadcrumbs: [{ text: 'Список достижений' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

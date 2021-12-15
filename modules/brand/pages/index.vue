@@ -94,7 +94,7 @@ export default {
                 { text: 'Страна', value: 'country.value', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список производителей' }],
+            breadcrumbs: [{ text: 'Список производителей' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

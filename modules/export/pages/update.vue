@@ -26,8 +26,7 @@ export default {
         exportItem: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список экспортов', href: '/exports' },
+            { text: 'Список экспортов', to: { name: 'exports.index' } },
             { text: 'Редактирование экспорта' },
         ],
     }),

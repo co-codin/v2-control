@@ -76,7 +76,7 @@ export default {
                 { text: 'Главная валюта', align: 'left', value: 'is_main' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список валют' }],
+            breadcrumbs: [{ text: 'Список валют' }],
             filters: [
                 {
                     label: 'Название',

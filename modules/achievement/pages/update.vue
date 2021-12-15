@@ -27,8 +27,7 @@ export default {
         isLoading: true,
         openedPanel: [],
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список достижений', href: '/achievements' },
+            { text: 'Список достижений', to: { name: 'achievements.index' } },
             { text: 'Редактирование достижения' },
         ],
     }),

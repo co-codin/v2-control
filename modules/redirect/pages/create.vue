@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Редиректы', href: '/redirects' },
+            { text: 'Редиректы', to: { name: 'redirects.index' } },
             { text: 'Добавление редиректа' },
         ],
     }),

@@ -74,7 +74,7 @@ export default {
                 { text: 'По умолчанию', align: 'left', value: 'is_default' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список атрибутов' }],
+            breadcrumbs: [{ text: 'Список атрибутов' }],
             filters: [
                 {
                     label: 'Название',

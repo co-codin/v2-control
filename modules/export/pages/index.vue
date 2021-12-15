@@ -82,7 +82,7 @@ export default {
 
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список экспортов' }],
+            breadcrumbs: [{ text: 'Список экспортов' }],
             filters: [
                 {
                     label: 'Комментарий',

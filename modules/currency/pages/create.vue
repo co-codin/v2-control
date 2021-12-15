@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список валют', href: '/currencies' },
+            { text: 'Список валют', to: { name: 'currencies.index' } },
             { text: 'Добавление валюты' },
         ],
     }),

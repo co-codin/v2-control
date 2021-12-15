@@ -33,8 +33,7 @@ export default {
         seo: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список SEO правил', href: '/seo-rules' },
+            { text: 'Список SEO правил', to: { name: 'seo-rules.index' } },
             { text: 'Редактирование SEO правила' },
         ],
     }),

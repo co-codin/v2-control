@@ -26,8 +26,7 @@ export default {
         property: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список характеристик', href: '/properties' },
+            { text: 'Список характеристик', to: { name: 'properties.index' } },
             { text: 'Редактирование характеристики' },
         ],
     }),

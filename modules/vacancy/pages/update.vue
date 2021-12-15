@@ -26,8 +26,7 @@ export default {
         vacancy: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список вакансий', href: '/vacancies' },
+            { text: 'Список вакансий', to: { name: 'vacancies.index' } },
             { text: 'Редактирование вакансии' },
         ],
     }),

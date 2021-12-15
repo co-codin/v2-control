@@ -82,8 +82,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список товаров', href: '/products' },
+            { text: 'Список товаров', to: { name: 'products.index' } },
             { text: 'Редактирование товара' },
         ],
     }),

@@ -27,8 +27,7 @@ export default {
         redirect: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Редиректы', href: '/redirects' },
+            { text: 'Редиректы', to: { name: 'redirects.index' } },
             { text: 'Редактирование редиректа' },
         ],
     }),

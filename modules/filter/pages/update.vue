@@ -42,8 +42,7 @@ export default {
         filter: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список фильтров', href: '/filters' },
+            { text: 'Список фильтров', to: { name: 'filters.index' } },
             { text: 'Редактирование фильтра' },
         ],
     }),

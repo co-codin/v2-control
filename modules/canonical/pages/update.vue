@@ -26,8 +26,7 @@ export default {
         canonical: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список канонических ссылок', href: '/canonicals' },
+            { text: 'Список канонических ссылок', to: { name: 'canonicals.index' } },
             { text: 'Редактирование канонической ссылки' },
         ],
     }),

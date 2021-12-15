@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список SEO правил', href: '/seo-rules' },
+            { text: 'Список SEO правил', to: { name: 'seo-rules.index' } },
             { text: 'Добавление SEO правила' },
         ],
     }),

@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список категорий', href: '/categories' },
+            { text: 'Список категорий', to: { name: 'categories.index' } },
             { text: 'Добавление категории' },
         ],
     }),

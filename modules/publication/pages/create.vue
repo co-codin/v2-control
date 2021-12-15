@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список публикаций', href: '/publications' },
+            { text: 'Список публикаций', to: { name: 'publications.index' } },
             { text: 'Добавление публикации' },
         ],
     }),

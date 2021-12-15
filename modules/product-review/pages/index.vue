@@ -191,7 +191,7 @@ export default {
                 { text: 'Комментарий', align: 'left', value: 'comment' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Отзывы к товарам' }],
+            breadcrumbs: [{ text: 'Отзывы к товарам' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

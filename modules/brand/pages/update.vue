@@ -32,8 +32,7 @@ export default {
         seo: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список производителей', href: '/brands' },
+            { text: 'Список производителей', to: { name: 'brands.index' } },
             { text: 'Редактирование производителя' },
         ],
     }),

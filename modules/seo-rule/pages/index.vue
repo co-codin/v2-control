@@ -79,7 +79,7 @@ export default {
                 { text: 'Ссылка', align: 'left', value: 'url' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'SEO правила' }],
+            breadcrumbs: [{ text: 'SEO правила' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

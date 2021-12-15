@@ -94,7 +94,7 @@ export default {
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список категорий' }],
+            breadcrumbs: [{ text: 'Список категорий' }],
             filters: [
                 {
                     label: 'Название',

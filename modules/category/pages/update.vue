@@ -35,8 +35,7 @@ export default {
         seo: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список категорий', href: '/categories' },
+            { text: 'Список категорий', to: { name: 'categories.index' } },
             { text: 'Редактирование категории' },
         ],
     }),

@@ -23,8 +23,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список кабинетов', href: '/cabinets' },
+            { text: 'Список кабинетов', to: { name: 'cabinets.index' } },
             { text: 'Добавление кабинетов' },
         ],
     }),

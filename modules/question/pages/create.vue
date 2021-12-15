@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список вопросов', href: '/questions' },
+            { text: 'Список вопросов', to: { name: 'questions.index' } },
             { text: 'Добавление вопроса' },
         ],
     }),

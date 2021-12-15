@@ -22,8 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список новостей', href: '/news' },
+            { text: 'Список новостей', to: { name: 'news.index' } },
             { text: 'Добавление новости' },
         ],
     }),

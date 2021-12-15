@@ -32,8 +32,7 @@ export default {
         seo: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список новостей', href: '/news' },
+            { text: 'Список новостей', to: { name: 'news.index' } },
             { text: 'Редактирование новости' },
         ],
     }),

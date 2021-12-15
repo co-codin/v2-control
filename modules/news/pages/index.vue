@@ -106,7 +106,7 @@ export default {
                 { text: 'На главной', value: 'is_in_home' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список новостей' }],
+            breadcrumbs: [{ text: 'Список новостей' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

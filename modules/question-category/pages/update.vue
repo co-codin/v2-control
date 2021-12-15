@@ -30,8 +30,7 @@ export default {
         question_category: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Главная', disabled: false, href: '/' },
-            { text: 'Список категорий вопросов', href: '/question-categories' },
+            { text: 'Список категорий вопросов', to: { name: 'question-categories.index' } },
             { text: 'Редактирование категории вопросов' },
         ],
     }),

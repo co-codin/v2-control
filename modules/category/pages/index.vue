@@ -93,7 +93,7 @@ export default {
                 { text: 'Статус', value: 'status.description', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список категорий' }],
+            breadcrumbs: [{ text: 'Список категорий' }],
             filters: [
                 {
                     label: 'Быстрый поиск',
