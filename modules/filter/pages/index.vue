@@ -125,6 +125,11 @@ export default {
                     name: 'is_in_home',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
+                {
+                    label: 'Категория',
+                    name: 'category_id',
+                    component: () => import('@/components/search/fields/CategoryTreeSearchField'),
+                },
             ],
         };
     },
