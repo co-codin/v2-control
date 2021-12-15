@@ -22,10 +22,7 @@ export default {
         PageHeader,
     },
     data: () => ({
-        breadcrumbs: [
-            { text: 'Список кабинетов', to: { name: 'cabinets.index' } },
-            { text: 'Добавление кабинетов' },
-        ],
+        breadcrumbs: [{ text: 'Список кабинетов', to: { name: 'cabinets.index' } }, { text: 'Добавление кабинетов' }],
     }),
     head: {
         title: 'Добавление кабинетов',

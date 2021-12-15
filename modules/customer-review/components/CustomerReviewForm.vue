@@ -50,7 +50,10 @@
             :error-messages="form.errors.get('logo')"
             :error="form.errors.has('logo')"
             @input="form.is_image_changed = true"
-            @delete="form.logo = null"
+            @delete="
+                form.logo = null;
+                form.is_image_changed = true;
+            "
         />
 
         <file-field
@@ -60,8 +63,11 @@
             :error-messages="form.errors.get('review_file')"
             :error="form.errors.has('review_file')"
             prepend-icon="mdi-image"
-            @input="form.is_image_changed = true"
-            @delete="form.review_file = null"
+            @input="form.is_file_changed = true"
+            @delete="
+                form.review_file = null;
+                form.is_file_changed = true;
+            "
         />
 
         <v-text-field
@@ -109,6 +115,7 @@ export default {
             is_in_home: false,
             logo: null,
             is_image_changed: false,
+            is_file_changed: false,
             review_file: null,
             video: '',
         },
