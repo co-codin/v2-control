@@ -21,6 +21,13 @@
             :error="form.errors.has('slug')"
         />
 
+        <v-text-field
+            v-model="form.category"
+            label="Рубрика"
+            :error-messages="form.errors.get('category')"
+            :error="form.errors.has('category')"
+        />
+
         <file-field
             v-model="form.image"
             label="Фотография"
@@ -101,6 +108,7 @@ export default {
         formDefaults: {
             name: null,
             slug: null,
+            category: null,
             status: 1,
             image: null,
             is_image_changed: false,
