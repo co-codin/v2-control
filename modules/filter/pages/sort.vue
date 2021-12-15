@@ -45,7 +45,11 @@ export default {
             category: null,
             filters: [],
             loading: false,
-            breadcrumbs: [{ text: 'Главная', href: '/' }, { text: 'Список фильтров' }],
+            breadcrumbs: [
+                { text: 'Главная', href: '/' },
+                { text: 'Список фильтров', href: '/filters' },
+                { text: 'Сортировка' },
+            ],
         };
     },
     computed: {
