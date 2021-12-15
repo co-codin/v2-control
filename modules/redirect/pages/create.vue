@@ -22,7 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Редиректы', to: { name: 'redirects.index' } },
+            { text: 'Список редиректов', to: { name: 'redirects.index' } },
             { text: 'Добавление редиректа' },
         ],
     }),

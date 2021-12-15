@@ -7,7 +7,7 @@
             <v-row>
                 <v-col class="pt-2">
                     <v-card>
-                        <v-img v-if="isImage" :src="url" class="white--text align-end" min-height="200px" />
+                        <v-img v-if="isImage" :src="url" class="white--text align-end" min-width="200px" min-height="200px" />
                         <v-card-title v-else>{{ value }}</v-card-title>
                         <v-card-actions>
                             <v-btn icon @click="openImage">

@@ -27,7 +27,7 @@ export default {
         redirect: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Редиректы', to: { name: 'redirects.index' } },
+            { text: 'Список редиректов', to: { name: 'redirects.index' } },
             { text: 'Редактирование редиректа' },
         ],
     }),

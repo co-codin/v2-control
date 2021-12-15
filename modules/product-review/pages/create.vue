@@ -22,7 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Список отзывов', to: { name: 'product-reviews.index' } },
+            { text: 'Список отзывов к товарам', to: { name: 'product-reviews.index' } },
             { text: 'Добавление отзыва' },
         ],
     }),

@@ -74,7 +74,7 @@ export default {
                 { text: 'Статус', align: 'left', value: 'status.description' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Вакансии' }],
+            breadcrumbs: [{ text: 'Список вакансий' }],
             filters: [
                 {
                     label: 'Быстрый поиск',

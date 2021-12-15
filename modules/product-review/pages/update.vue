@@ -26,7 +26,7 @@ export default {
         customer_review: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Список отзывов', to: { name: 'product-reviews.index' } },
+            { text: 'Список отзывов к товарам', to: { name: 'product-reviews.index' } },
             { text: 'Редактирование отзыва' },
         ],
     }),
