@@ -76,7 +76,6 @@ export default {
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
-                { text: 'Компания', align: 'left', value: 'company_name' },
                 { text: 'Автор', align: 'left', value: 'author' },
                 { text: 'Отображается на главной', value: 'isInHomeLabel' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
@@ -125,7 +124,7 @@ export default {
             try {
                 await customer_review.delete();
 
-                this.$snackbar(`Отзыв ${customer_review.company_name} успешно удален`);
+                this.$snackbar(`Отзыв успешно удален`);
                 this.customer_reviews = this.customer_reviews.filter((item) => item.id !== customer_review.id);
             } catch (e) {
                 this.$snackbar(e.message);

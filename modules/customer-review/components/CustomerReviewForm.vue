@@ -8,13 +8,6 @@
         />
 
         <v-text-field
-            v-model="form.company_name"
-            label="Компания"
-            :error-messages="form.errors.get('company_name')"
-            :error="form.errors.has('company_name')"
-        />
-
-        <v-text-field
             v-model="form.author"
             label="Автор"
             :error-messages="form.errors.get('author')"
@@ -49,8 +42,8 @@
             label="Логотип"
             :error-messages="form.errors.get('logo')"
             :error="form.errors.has('logo')"
-            @input="form.is_image_changed = true"
-            @delete="form.logo = null"
+            @input="form.is_logo_changed = true"
+            @delete="form.logo = null; form.is_logo_changed = true"
         />
 
         <file-field
@@ -60,8 +53,8 @@
             :error-messages="form.errors.get('review_file')"
             :error="form.errors.has('review_file')"
             prepend-icon="mdi-image"
-            @input="form.is_image_changed = true"
-            @delete="form.review_file = null"
+            @input="form.is_review_file_changed = true"
+            @delete="form.review_file = null; form.is_review_file_changed = true"
         />
 
         <v-text-field
@@ -108,8 +101,9 @@ export default {
             comment: null,
             is_in_home: false,
             logo: null,
-            is_image_changed: false,
+            is_logo_changed: false,
             review_file: null,
+            is_review_file_changed: false,
             video: '',
         },
         typeLabels: [

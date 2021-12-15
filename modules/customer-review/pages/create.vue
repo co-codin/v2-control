@@ -33,7 +33,7 @@ export default {
         async createCustomerReview(form) {
             try {
                 await form.post('/admin/customer-reviews');
-                this.$snackbar(`Отзыв ${form.name} успешно добавлен`);
+                this.$snackbar(`Отзыв успешно добавлен`);
                 await this.$router.push({ name: 'customer-reviews.index' });
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при создании отзыва: ${e.message}`);
