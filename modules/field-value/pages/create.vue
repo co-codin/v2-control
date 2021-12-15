@@ -22,7 +22,7 @@ export default {
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Значения характеристик', to: { name: 'field-values.index' } },
+            { text: 'Список значений характеристик', to: { name: 'field-values.index' } },
             { text: 'Добавление значения' },
         ],
     }),

@@ -27,7 +27,7 @@ export default {
         fieldValue: null,
         isLoading: true,
         breadcrumbs: [
-            { text: 'Значения характеристик', to: { name: 'field-values.index' } },
+            { text: 'Список значений характеристик', to: { name: 'field-values.index' } },
             { text: 'Редактирование значения характеристики' },
         ],
     }),
