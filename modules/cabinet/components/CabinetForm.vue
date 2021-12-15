@@ -13,6 +13,8 @@
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+            :rules="slugRules"
+            append-icon="mdi-refresh"
             @input="(value) => updateField({ field: 'slug', value })"
         />
 
@@ -87,6 +89,14 @@ export default {
     },
     data: () => ({
         statusLabels,
+        slugRules: [
+            (v) => {
+                if (v && /^[a-zA-Z0-9\-\_]$/.test(v)) {
+                    return true;
+                }
+                return false;
+            },
+        ],
     }),
     computed: {
         ...mapGetters({
