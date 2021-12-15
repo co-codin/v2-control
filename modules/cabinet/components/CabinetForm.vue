@@ -17,10 +17,7 @@
             :loading="isUpdatingSlug"
             append-icon="mdi-refresh"
             @input="(value) => updateField({ field: 'slug', value })"
-            @click:append="
-                (value) => updateField({ field: 'slug', value: null });
-                updateSlug();
-            "
+            @click:append="(value) => updateField({ field: 'slug', value: null })"
         />
 
         <wysiwyg-field
