@@ -144,18 +144,12 @@ export default {
             this.form.populate(value);
         },
     },
-    async mounted() {
-        await this.getCategories();
-    },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.category || {});
     },
     methods: {
-        ...mapActions({
-            getCategories: 'category/getCategories',
-        }),
         updateSlug: debounce(async function () {
             if (this.isUpdating && this.form.slug) {
                 return;

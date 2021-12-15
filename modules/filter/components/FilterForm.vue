@@ -199,13 +199,8 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.filter || {});
-        await this.getCategories();
     },
     methods: {
-        ...mapActions({
-            getCategories: 'category/getCategories',
-            getProperties: 'property/getProperties',
-        }),
         updateSlug() {
             if (this.isUpdating && this.form.slug) {
                 return;

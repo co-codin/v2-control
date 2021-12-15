@@ -105,7 +105,7 @@ export default {
 
     router: {
         prefetchLinks: false,
-        middleware: ['auth'],
+        middleware: ['auth', 'load-all-categories'],
         trailingSlash: false,
         extendRoutes(routes, resolve) {
             routes.splice(0, routes.length);

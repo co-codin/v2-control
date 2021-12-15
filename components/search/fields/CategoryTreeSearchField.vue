@@ -77,13 +77,7 @@ export default {
             }));
         },
     },
-    async created() {
-        await this.getCategories();
-    },
     methods: {
-        ...mapActions({
-            getCategories: 'category/getCategories',
-        }),
         normalizer(node) {
             return {
                 id: node.id,

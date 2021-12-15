@@ -22,6 +22,10 @@ const category = {
         categoryTree(state) {
             return toTree(state.categories);
         },
+
+        categoriesLoaded(state) {
+            return state.categories.length > 0;
+        },
     },
 
     actions: {
