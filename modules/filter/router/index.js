@@ -10,6 +10,11 @@ export const filterRoutes = (resolve) => [
         component: resolve(__dirname, '../pages/create.vue'),
     },
     {
+        path: '/filters/sort',
+        name: 'filters.sort',
+        component: resolve(__dirname, '../pages/sort.vue'),
+    },
+    {
         path: '/filters/:id/update',
         name: 'filters.update',
         component: resolve(__dirname, '../pages/update.vue'),
