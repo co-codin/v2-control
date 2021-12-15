@@ -2,6 +2,7 @@
     <div>
         <v-autocomplete
             :items="items"
+            :value="formattedValue"
             :loading="isLoading"
             :search-input.sync="search"
             cache-items
@@ -10,17 +11,33 @@
             v-bind="$props"
             @change="search = ''"
             @input="$emit('input', $event)"
+            dense
         >
             <template #selection="data">
-                <v-chip v-bind="data.attrs" :input-value="data.selected" close @click="data.select">
+                <v-chip small v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="removeValue(data.item)">
                     {{ data.item.name }}
                 </v-chip>
             </template>
         </v-autocomplete>
+
+        <portal v-if="chips.length" :to="`filter-${name}-chips`">
+            <div>
+                <v-chip
+                    v-for="(chip, index) in chips"
+                    :key="'category-' + index"
+                    close
+                    @click:close="removeChip(chip.value)"
+                >
+                    {{ label }}: {{ chip.label }}
+                </v-chip>
+            </div>
+        </portal>
     </div>
 </template>
 
 <script>
+import { debounce } from 'lodash';
+
 export default {
     props: {
         value: {
@@ -42,6 +59,9 @@ export default {
             type: String,
             default: 'name',
         },
+        searchColumn: {
+            type: String,
+        },
         url: {
             type: String,
             required: true,
@@ -60,15 +80,33 @@ export default {
     created() {
         this.loadItems();
     },
+    computed: {
+        chips() {
+            if (!this.value) {
+                return [];
+            }
+            return [this.value].flat().map((id) => ({
+                value: id,
+                label: this.items.find((entry) => entry.id === +id)?.name,
+            }));
+        },
+        formattedValue() {
+            if(!this.value) {
+                return [];
+            }
+
+            return this.value.map(item => +item);
+        },
+    },
     methods: {
-        async searchItems(query) {
+        searchItems: debounce(async function(query) {
             this.isLoading = true;
             const params = {};
-            params[`filter[${this.itemText}]`] = query;
+            params[`filter[${this.searchColumn ?? this.itemText}]`] = query;
             const { data } = await this.$axios.get(this.url, { params });
             this.items = data.data;
             this.isLoading = false;
-        },
+        }, 300),
         async loadItems() {
             if (!this.value) return;
             this.isLoading = true;
@@ -77,6 +115,20 @@ export default {
             const { data } = await this.$axios.get(this.url, { params });
             this.items = data.data;
             this.isLoading = false;
+        },
+        removeChip(e) {
+            const value = [...this.value];
+            value.splice(this.value.indexOf(e), 1);
+            this.$emit('input', value);
+        },
+        removeValue (item) {
+            this.removeChip(item);
+            // const value = [...this.value];
+            // value.splice(this.value.indexOf(e), 1);
+            // this.$emit('input', value);
+            //
+            // const index = this.friends.indexOf(item.name)
+            // if (index >= 0) this.friends.splice(index, 1)
         },
     },
 };

@@ -165,6 +165,12 @@ export default {
                     component: () => import('@/components/search/fields/SelectSearchField'),
                     items: uniqueContentList,
                 },
+                {
+                    label: 'Производитель',
+                    name: 'brand_id',
+                    component: () => import('@/components/search/fields/AutocompleteSearchField'),
+                    url: '/brands',
+                },
             ],
         };
     },
