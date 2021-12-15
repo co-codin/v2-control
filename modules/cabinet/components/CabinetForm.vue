@@ -14,8 +14,13 @@
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
             :rules="slugRules"
+            :loading="isUpdatingSlug"
             append-icon="mdi-refresh"
             @input="(value) => updateField({ field: 'slug', value })"
+            @click:append="
+                (value) => updateField({ field: 'slug', value: null });
+                updateSlug();
+            "
         />
 
         <wysiwyg-field
@@ -75,6 +80,8 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { debounce } from 'lodash';
+import slugify from 'slugify';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
@@ -97,6 +104,7 @@ export default {
                 return false;
             },
         ],
+        isUpdatingSlug: false,
     }),
     computed: {
         ...mapGetters({
@@ -114,6 +122,16 @@ export default {
             closeAllPanels: 'helper/closeAllPanels',
             fillErrors: 'forms/cabinet/FILL_ERRORS',
         }),
+        updateSlug: debounce(async function () {
+            if (this.isUpdating && this.form.slug) {
+                return;
+            }
+            this.isUpdatingSlug = true;
+
+            this.updateField({ field: 'slug', value: slugify(this.form.name, { lower: true }) });
+
+            this.isUpdatingSlug = false;
+        }, 200),
         async save() {
             try {
                 if (this.isUpdating) {
