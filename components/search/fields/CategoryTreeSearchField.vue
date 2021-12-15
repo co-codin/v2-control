@@ -25,7 +25,7 @@
                     close
                     @click:close="removeChip(chip.value)"
                 >
-                    {{ chip.label }}
+                    {{ label }}: {{ chip.label }}
                 </v-chip>
             </div>
         </portal>

@@ -100,6 +100,7 @@ export default {
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
+                { text: 'Рубрика', align: 'left', value: 'category' },
                 { text: 'Дата новости', align: 'left', value: 'published_at' },
                 { text: 'Статус', value: 'status' },
                 { text: 'На главной', value: 'is_in_home' },
@@ -138,6 +139,11 @@ export default {
                     name: 'is_in_home',
                     component: () => import('@/components/search/fields/BooleanSelectSearchField'),
                 },
+                {
+                    label: 'Рубрика',
+                    name: 'category',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
             ],
         };
     },
@@ -145,7 +151,7 @@ export default {
         this.showLoading();
 
         const response = await News.select({
-            news: ['id', 'name', 'slug', 'status', 'published_at', 'is_in_home'],
+            news: ['id', 'name', 'slug', 'status', 'published_at', 'is_in_home', 'category'],
         })
             .params(this.queryParams)
             .get();
