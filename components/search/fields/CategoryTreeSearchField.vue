@@ -13,7 +13,11 @@
                     :normalizer="normalizer"
                     value-consists-of="LEAF_PRIORITY"
                     @input="$emit('input', $event)"
-                />
+                >
+                    <label slot="option-label" slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }" :class="labelClassName">
+                        <span :class="{ 'text--disabled': node.raw.status.key !== 'ACTIVE' }">{{ node.label }}</span>
+                    </label>
+                </treeselect>
             </div>
         </v-input>
 
@@ -84,6 +88,7 @@ export default {
             return {
                 id: node.id,
                 label: node.name,
+                status: node.status,
                 children: node.children && node.children.length ? node.children : undefined,
             };
         },

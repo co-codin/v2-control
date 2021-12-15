@@ -1,4 +1,5 @@
 import { toTree } from '~/helpers';
+import Category from "~/modules/category/models/Category";
 
 const category = {
     namespaced: true,
@@ -25,8 +26,14 @@ const category = {
 
     actions: {
         async getCategories({ commit }) {
-            const { data } = await this.$axios.$get('/categories/all?sort=name');
-            commit('setCategories', data);
+            const categories = await Category.query()
+                .select({
+                    categories: ['id', 'name', 'parent_id', 'status'],
+                })
+                .custom('/categories/all')
+                .orderBy('name')
+                .$get();
+            commit('setCategories', categories);
         },
     },
 };
