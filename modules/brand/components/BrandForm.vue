@@ -39,6 +39,7 @@
             :error="form.errors.has('image')"
             prepend-icon="mdi-image"
             @input="form.is_image_changed = true"
+            @input="form.image = null; form.is_image_changed = true"
         />
         <field-value-autocomplete
             v-model="form.country_id"
