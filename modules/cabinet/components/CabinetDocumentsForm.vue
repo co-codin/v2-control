@@ -146,8 +146,12 @@
                                                             :is-image="false"
                                                             :value="doc.file"
                                                             label="Файл"
-                                                            :error-messages="`documents.${index}.docs.${i}.file`"
-                                                            :error="`documents.${index}.docs.${i}.file`"
+                                                            :error-messages="
+                                                                form.errors.get(`documents.${index}.docs.${i}.file`)
+                                                            "
+                                                            :error="
+                                                                form.errors.has(`documents.${index}.docs.${i}.file`)
+                                                            "
                                                             @input="
                                                                 (value) => {
                                                                     updateField({
@@ -164,7 +168,7 @@
                                                                 small
                                                                 class="white--text"
                                                                 color="red"
-                                                                @click="removeDocument(index, i)"
+                                                                @click="removeDocument({ index, i })"
                                                             >
                                                                 Удалить документ
                                                             </v-btn>

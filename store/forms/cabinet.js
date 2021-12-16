@@ -87,8 +87,8 @@ export default {
         REMOVE_DOCUMENT_GROUP(state, index) {
             state.form.documents.splice(index, 1);
         },
-        REMOVE_DOCUMENT(state, { document_index, doc_index }) {
-            state.form.documents[document_index].docs.splice(doc_index, 1);
+        REMOVE_DOCUMENT(state, data) {
+            state.form.documents[data.index].docs.splice(data.i, 1);
         },
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
