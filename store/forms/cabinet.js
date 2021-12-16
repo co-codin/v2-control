@@ -64,24 +64,20 @@ export default {
                 ],
             });
         },
-        ADD_DOCUMENT(state, document_group_id) {
-            state.form.documents
-                .filter((document) => document.document_group_id === document_group_id)
-                .docs.push({
-                    name: null,
-                    type: null,
-                    source: null,
-                    file: null,
-                    link: null,
-                });
+        ADD_DOCUMENT(state, index) {
+            state.form.documents[index].docs.push({
+                name: null,
+                type: null,
+                source: null,
+                file: null,
+                link: null,
+            });
         },
         REMOVE_DOCUMENT_GROUP(state, index) {
             state.form.documents.splice(index, 1);
         },
-        REMOVE_DOCUMENT(state, { document_group_id, index }) {
-            state.form.documents
-                .filter((document) => document.document_group_id === document_group_id)
-                .docs.splice(index, 1);
+        REMOVE_DOCUMENT(state, { document_index, doc_index }) {
+            state.form.documents[document_index].docs.splice(doc_index, 1);
         },
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });

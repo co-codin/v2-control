@@ -160,7 +160,12 @@
 
                                                         <v-divider class="my-2" />
                                                         <div class="text-center">
-                                                            <v-btn small class="white--text" color="red">
+                                                            <v-btn
+                                                                small
+                                                                class="white--text"
+                                                                color="red"
+                                                                @click="removeDocument(index, i)"
+                                                            >
                                                                 Удалить документ
                                                             </v-btn>
                                                         </div>
@@ -168,7 +173,9 @@
                                                 </v-expansion-panel>
                                             </v-expansion-panels>
                                             <div class="mt-2">
-                                                <v-btn link small color="primary" outlined> Добавить документ </v-btn>
+                                                <v-btn link small color="primary" outlined @click="addDocument(index)">
+                                                    Добавить документ
+                                                </v-btn>
                                             </div>
                                         </v-card-text>
                                     </v-card>
