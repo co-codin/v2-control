@@ -152,6 +152,14 @@
                                                             :error="
                                                                 form.errors.has(`documents.${index}.docs.${i}.file`)
                                                             "
+                                                            @delete="
+                                                                (value) => {
+                                                                    updateField({
+                                                                        field: `documents.${index}.docs.${i}.file`,
+                                                                        value: null,
+                                                                    });
+                                                                }
+                                                            "
                                                             @input="
                                                                 (value) => {
                                                                     updateField({
