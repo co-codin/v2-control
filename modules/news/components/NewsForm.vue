@@ -34,7 +34,10 @@
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             @input="form.is_image_changed = true"
-            @delete="form.image = null"
+            @delete="
+                form.image = null;
+                form.is_image_changed = true;
+            "
         />
 
         <wysiwyg-field

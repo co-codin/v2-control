@@ -5,7 +5,12 @@
             label="Название"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
-            @input="(value) => updateField({ field: 'name', value })"
+            @input="
+                (value) => {
+                    updateField({ field: 'name', value });
+                    updateSlug();
+                }
+            "
         />
 
         <v-text-field
@@ -18,8 +23,10 @@
             append-icon="mdi-refresh"
             @input="(value) => updateField({ field: 'slug', value })"
             @click:append="
-                (value) => updateField({ field: 'slug', value: null });
-                updateSlug();
+                (value) => {
+                    updateField({ field: 'slug', value: null });
+                    updateSlug();
+                }
             "
         />
 
@@ -128,7 +135,7 @@ export default {
             }
             this.isUpdatingSlug = true;
 
-            this.updateField({ field: 'slug', value: slugify(this.form.name, { lower: true }) });
+            await this.updateField({ field: 'slug', value: slugify(this.form.name, { lower: true }) });
 
             this.isUpdatingSlug = false;
         }, 200),

@@ -14,7 +14,11 @@
                     value-consists-of="LEAF_PRIORITY"
                     @input="$emit('input', $event)"
                 >
-                    <label slot="option-label" slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }" :class="labelClassName">
+                    <label
+                        slot="option-label"
+                        slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }"
+                        :class="labelClassName"
+                    >
                         <span :class="{ 'text--disabled': node.raw.status.key !== 'ACTIVE' }">{{ node.label }}</span>
                     </label>
                 </treeselect>
