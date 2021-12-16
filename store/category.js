@@ -1,5 +1,5 @@
 import { toTree } from '~/helpers';
-import Category from "~/modules/category/models/Category";
+import Category from '~/modules/category/models/Category';
 
 const category = {
     namespaced: true,
@@ -32,7 +32,7 @@ const category = {
         async getCategories({ commit }) {
             const categories = await Category.query()
                 .select({
-                    categories: ['id', 'name', 'parent_id', 'status'],
+                    categories: ['id', 'name', 'parent_id', 'status', 'product_name'],
                 })
                 .custom('/categories/all')
                 .orderBy('name')

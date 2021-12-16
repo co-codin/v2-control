@@ -12,7 +12,12 @@
                         name="category"
                         :multiple="false"
                         class="mb-3"
-                        @input="(value) => updateField({ field: `categories.${index}.id`, value })"
+                        @input="
+                            (value) => {
+                                updateField({ field: `categories.${index}.id`, value });
+                                updateName(value, index);
+                            }
+                        "
                     />
 
                     <v-text-field
@@ -65,6 +70,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { debounce } from 'lodash';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
@@ -75,6 +81,7 @@ export default {
         ...mapGetters({
             cabinet: 'cabinet/cabinet',
             form: 'forms/cabinet/form',
+            categories: 'category/categories',
         }),
     },
     methods: {
@@ -88,6 +95,13 @@ export default {
         ...mapActions({
             createCategories: 'forms/cabinet/createCategories',
         }),
+        updateName: debounce(function (id, index) {
+            const category = this.categories.find((category) => category.id === id);
+            this.updateField({
+                field: `categories.${index}.name`,
+                value: category?.product_name ? category.product_name : null,
+            });
+        }, 200),
         async save() {
             try {
                 await this.createCategories(this.cabinet.id);
