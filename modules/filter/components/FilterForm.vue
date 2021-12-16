@@ -181,7 +181,7 @@ export default {
                 params['filter[is_numeric]'] = 1;
             }
             if(this.form.type === 1) {
-                params['filter[is_boolean]'] = false;
+                params['filter[is_boolean]'] = 0;
             }
             return params;
         },
