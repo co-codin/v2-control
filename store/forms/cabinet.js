@@ -80,7 +80,6 @@ export default {
 
     actions: {
         async createCategories({ state, commit }, cabinetId) {
-            commit('CLEAR_FORM');
             await this.$axios.put(`/admin/cabinets/${cabinetId}/categories`, state.form.data());
         },
         async createCabinet({ state }) {

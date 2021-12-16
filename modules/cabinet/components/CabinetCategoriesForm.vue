@@ -12,6 +12,8 @@
                         name="category"
                         :multiple="false"
                         class="mb-3"
+                        :error-messages="form.errors.get(`categories.${index}.id`)"
+                        :error="form.errors.has(`categories.${index}.id`)"
                         @input="
                             (value) => {
                                 updateField({ field: `categories.${index}.id`, value });
@@ -103,16 +105,20 @@ export default {
             });
         }, 200),
         async save() {
-            try {
-                await this.createCategories(this.cabinet.id);
-                this.$snackbar(`Категории успешно обновлены`);
-                this.closeAllPanels();
-            } catch (e) {
-                const errors = e?.response?.data?.errors;
-                if (errors) {
-                    this.fillErrors(errors);
+            if (this.form.categories.length) {
+                try {
+                    await this.createCategories(this.cabinet.id);
+                    this.$snackbar(`Категории успешно обновлены`);
+                    this.closeAllPanels();
+                } catch (e) {
+                    const errors = e?.response?.data?.errors;
+                    if (errors) {
+                        this.fillErrors(errors);
+                    }
+                    this.$snackbar(`Произошла ошибка при обновлении категорий: ${e.message}`);
                 }
-                this.$snackbar(`Произошла ошибка при обновлении категорий: ${e.message}`);
+            } else {
+                this.$snackbar(`Категории должны заполнены`);
             }
         },
     },

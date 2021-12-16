@@ -203,16 +203,20 @@ export default {
             createDocuments: 'forms/cabinet/createDocuments',
         }),
         async save() {
-            try {
-                await this.createDocuments(this.cabinet.id);
-                this.$snackbar(`Документы успешно обновлены`);
-                this.closeAllPanels();
-            } catch (e) {
-                const errors = e?.response?.data?.errors;
-                if (errors) {
-                    this.fillErrors(errors);
+            if (this.form.documents.length) {
+                try {
+                    await this.createDocuments(this.cabinet.id);
+                    this.$snackbar(`Документы успешно обновлены`);
+                    this.closeAllPanels();
+                } catch (e) {
+                    const errors = e?.response?.data?.errors;
+                    if (errors) {
+                        this.fillErrors(errors);
+                    }
+                    this.$snackbar(`Произошла ошибка при обновлении документов: ${e.message}`);
                 }
-                this.$snackbar(`Произошла ошибка при обновлении документов: ${e.message}`);
+            } else {
+                this.$snackbar(`Документы должны заполнены`);
             }
         },
     },
