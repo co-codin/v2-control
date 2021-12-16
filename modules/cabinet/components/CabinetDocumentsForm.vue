@@ -3,7 +3,7 @@
         <v-expansion-panels>
             <v-expansion-panel v-for="(document, index) in form.documents" :key="'document-' + index">
                 <v-expansion-panel-header class="title">
-                    #{{ index + 1 }}. {{ document.group_name || '(без названия)' }}
+                    #{{ index + 1 }}. {{ document.document_group_name || '(без названия)' }}
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                     <v-row>
@@ -16,7 +16,7 @@
                                     <v-card flat>
                                         <v-card-text>
                                             <entity-autocomplete-field
-                                                :value="form.document_group_id"
+                                                :value="document.document_group_id"
                                                 url="/document-groups"
                                                 item-value="id"
                                                 item-text="name"
@@ -39,7 +39,7 @@
                                                         })
                                                 "
                                             />
-                                            <v-btn class="ml-2" small @click="openDocumentGroupPopup"
+                                            <v-btn small @click="openDocumentGroupPopup"
                                                 >Создать новую группу документа</v-btn
                                             >
                                             <v-divider class="my-2" />
@@ -196,7 +196,7 @@
         </v-row>
         <v-dialog v-model="newDocumentGroupPopup" max-width="600" width="600">
             <v-card tile outlined>
-                <v-card-title> Создание сквозной характеристики </v-card-title>
+                <v-card-title> Создание группу документа </v-card-title>
                 <v-card-text>
                     <document-group-form @send="createDocumentGroup" />
                 </v-card-text>

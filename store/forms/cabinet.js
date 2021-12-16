@@ -1,5 +1,6 @@
 import Form from 'form-backend-validation';
-import { set } from 'lodash';
+import _, { set } from 'lodash';
+
 import { objectToFormData } from 'form-backend-validation/dist/util';
 
 export default {
@@ -24,6 +25,16 @@ export default {
             set(state.form, field, value);
         },
         FILL_FORM(state, data) {
+            data.documents = _.chain(data.documents)
+                .groupBy('document_group_id')
+                .map((key, value) => {
+                    return {
+                        document_group_id: parseInt(value, 10),
+                        document_group_name: key[0].document_group.name,
+                        docs: key,
+                    };
+                })
+                .value();
             state.form.populate({
                 ...data,
                 requirements: data.requirements || [],
