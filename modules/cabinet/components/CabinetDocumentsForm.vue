@@ -39,6 +39,9 @@
                                                         })
                                                 "
                                             />
+                                            <v-btn class="ml-2" small @click="openDocumentGroupPopup"
+                                                >Создать новую группу документа</v-btn
+                                            >
                                             <v-divider class="my-2" />
                                             <div class="text-center">
                                                 <v-btn
@@ -100,6 +103,14 @@
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
             </v-col>
         </v-row>
+        <v-dialog v-model="newDocumentGroupPopup" max-width="600" width="600">
+            <v-card tile outlined>
+                <v-card-title> Создание сквозной характеристики </v-card-title>
+                <v-card-text>
+                    <document-group-form @send="createDocumentGroup" />
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-form>
 </template>
 
@@ -108,9 +119,10 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import FileField from '~/components/forms/FileField';
 import { urlRules } from '~/enums';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import DocumentGroupForm from '~/components/forms/DocumentGroupForm';
 
 export default {
-    components: { EntityAutocompleteField, FileField },
+    components: { DocumentGroupForm, EntityAutocompleteField, FileField },
     data: () => ({
         sourceLabels: [
             { value: 1, text: 'Ссылка' },
@@ -130,6 +142,7 @@ export default {
             { tab: 'О группе', key: 'information' },
             { tab: 'Документы', key: 'documents' },
         ],
+        newDocumentGroupPopup: false,
         urlRules,
     }),
     computed: {
@@ -151,6 +164,17 @@ export default {
         ...mapActions({
             createDocuments: 'forms/cabinet/createDocuments',
         }),
+        openDocumentGroupPopup() {
+            this.newDocumentGroupPopup = true;
+        },
+        async createDocumentGroup(form) {
+            try {
+                await form.post('/admin/document-groups');
+                this.newDocumentGroupPopup = false;
+            } catch (e) {
+                this.$snackbar(`Произошла ошибка при создании характеристики: ${e.message}`);
+            }
+        },
         async save() {
             if (this.form.documents.length) {
                 try {
