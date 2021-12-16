@@ -65,84 +65,98 @@
                                                         {{ doc.name || '(без названия)' }}
                                                     </v-expansion-panel-header>
                                                     <v-expansion-panel-content>
-                                                                                                                <v-select
-                                                                                                                    label="Тип"
-                                                                                                                    :items="typeLabels"
-                                                                                                                    :value="document.type"
-                                                                                                                    dense
-                                                                                                                    :error-messages="form.errors.get(`documents.${index}.type`)"
-                                                                                                                    :error="form.errors.has(`documents.${index}.type`)"
-                                                                                                                    @change="
-                                                                                                                        (value) =>
-                                                                                                                            updateField({
-                                                                                                                                field: `documents.${index}.type`,
-                                                                                                                                value,
-                                                                                                                            })
-                                                                                                                    "
-                                                                                                                />
-                                                                                                                <v-text-field
-                                                                                                                    label="Название"
-                                                                                                                    :value="document.name"
-                                                                                                                    dense
-                                                                                                                    :error-messages="form.errors.get(`documents.${index}.name`)"
-                                                                                                                    :error="form.errors.has(`documents.${index}.name`)"
-                                                                                                                    @input="
-                                                                                                                        (value) =>
-                                                                                                                            updateField({
-                                                                                                                                field: `documents.${index}.name`,
-                                                                                                                                value,
-                                                                                                                            })
-                                                                                                                    "
-                                                                                                                />
-                                                                                                                <v-select
-                                                                                                                    label="Источник"
-                                                                                                                    :items="sourceLabels"
-                                                                                                                    :value="document.source"
-                                                                                                                    dense
-                                                                                                                    :error-messages="
-                                                                                                                        form.errors.get(`documents.${index}.source`)
-                                                                                                                    "
-                                                                                                                    :error="form.errors.has(`documents.${index}.source`)"
-                                                                                                                    @change="
-                                                                                                                        (value) =>
-                                                                                                                            updateField({
-                                                                                                                                field: `documents.${index}.source`,
-                                                                                                                                value,
-                                                                                                                            })
-                                                                                                                    "
-                                                                                                                />
-                                                                                                                <v-text-field
-                                                                                                                    v-if="document.source === 1"
-                                                                                                                    label="Ссылка"
-                                                                                                                    :value="document.link"
-                                                                                                                    dense
-                                                                                                                    :rules="urlRules"
-                                                                                                                    :error-messages="form.errors.get(`documents.${index}.link`)"
-                                                                                                                    :error="form.errors.has(`documents.${index}.link`)"
-                                                                                                                    @input="
-                                                                                                                        (value) =>
-                                                                                                                            updateField({
-                                                                                                                                field: `documents.${index}.link`,
-                                                                                                                                value,
-                                                                                                                            })
-                                                                                                                    "
-                                                                                                                />
-                                                                                                                <file-field
-                                                                                                                    v-if="document.source === 2"
-                                                                                                                    :is-image="false"
-                                                                                                                    :value="document.file"
-                                                                                                                    label="Файл"
-                                                                                                                    :error-messages="form.errors.get('image')"
-                                                                                                                    :error="form.errors.has('image')"
-                                                                                                                    @input="
-                                                                                                                        (value) => {
-                                                                                                                            updateField({
-                                                                                                                                field: `documents.${index}.file`,
-                                                                                                                                value,
-                                                                                                                            });
-                                                                                                                        }
-                                                                                                                    "
-                                                                                                                />
+                                                        <v-select
+                                                            label="Тип"
+                                                            :items="typeLabels"
+                                                            :value="doc.type"
+                                                            dense
+                                                            :error-messages="
+                                                                form.errors.get(`documents.${index}.docs.${i}.type`)
+                                                            "
+                                                            :error="
+                                                                form.errors.has(`documents.${index}.docs.${i}.type`)
+                                                            "
+                                                            @change="
+                                                                (value) =>
+                                                                    updateField({
+                                                                        field: `documents.${index}.docs.${i}.type`,
+                                                                        value,
+                                                                    })
+                                                            "
+                                                        />
+                                                        <v-text-field
+                                                            label="Название"
+                                                            :value="doc.name"
+                                                            dense
+                                                            :error-messages="
+                                                                form.errors.get(`documents.${index}.docs.${i}.name`)
+                                                            "
+                                                            :error="
+                                                                form.errors.has(`documents.${index}.docs.${i}.name`)
+                                                            "
+                                                            @input="
+                                                                (value) =>
+                                                                    updateField({
+                                                                        field: `documents.${index}.docs.${i}.name`,
+                                                                        value,
+                                                                    })
+                                                            "
+                                                        />
+                                                        <v-select
+                                                            label="Источник"
+                                                            :items="sourceLabels"
+                                                            :value="doc.source"
+                                                            dense
+                                                            :error-messages="
+                                                                form.errors.get(`documents.${index}.docs.${i}.source`)
+                                                            "
+                                                            :error="
+                                                                form.errors.has(`documents.${index}.docs.${i}.source`)
+                                                            "
+                                                            @change="
+                                                                (value) =>
+                                                                    updateField({
+                                                                        field: `documents.${index}.docs.${i}.source`,
+                                                                        value,
+                                                                    })
+                                                            "
+                                                        />
+                                                        <v-text-field
+                                                            v-if="doc.source === 1"
+                                                            label="Ссылка"
+                                                            :value="doc.link"
+                                                            dense
+                                                            :rules="urlRules"
+                                                            :error-messages="
+                                                                form.errors.get(`documents.${index}.docs.${i}.link`)
+                                                            "
+                                                            :error="
+                                                                form.errors.has(`documents.${index}.docs.${i}.link`)
+                                                            "
+                                                            @input="
+                                                                (value) =>
+                                                                    updateField({
+                                                                        field: `documents.${index}.docs.${i}.link`,
+                                                                        value,
+                                                                    })
+                                                            "
+                                                        />
+                                                        <file-field
+                                                            v-if="doc.source === 2"
+                                                            :is-image="false"
+                                                            :value="doc.file"
+                                                            label="Файл"
+                                                            :error-messages="`documents.${index}.docs.${i}.file`"
+                                                            :error="`documents.${index}.docs.${i}.file`"
+                                                            @input="
+                                                                (value) => {
+                                                                    updateField({
+                                                                        field: `documents.${index}.docs.${i}.file`,
+                                                                        value,
+                                                                    });
+                                                                }
+                                                            "
+                                                        />
 
                                                         <v-divider class="my-2" />
                                                         <div class="text-center">

@@ -53,13 +53,15 @@ export default {
         ADD_DOCUMENT_GROUP(state) {
             state.form.documents.push({
                 document_group_id: null,
-                docs: {
-                    name: null,
-                    type: null,
-                    source: null,
-                    file: null,
-                    link: null,
-                },
+                docs: [
+                    {
+                        name: null,
+                        type: null,
+                        source: null,
+                        file: null,
+                        link: null,
+                    },
+                ],
             });
         },
         ADD_DOCUMENT(state, document_group_id) {
