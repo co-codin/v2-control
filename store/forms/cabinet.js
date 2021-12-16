@@ -50,18 +50,36 @@ export default {
         REMOVE_REQUIREMENT(state, index) {
             state.form.requirements.splice(index, 1);
         },
-        ADD_DOCUMENT(state) {
+        ADD_DOCUMENT_GROUP(state) {
             state.form.documents.push({
-                group_name: null,
-                name: null,
-                type: null,
-                source: null,
-                file: null,
-                link: null,
+                document_group_id: null,
+                docs: {
+                    name: null,
+                    type: null,
+                    source: null,
+                    file: null,
+                    link: null,
+                },
             });
         },
-        REMOVE_DOCUMENT(state, index) {
+        ADD_DOCUMENT(state, document_group_id) {
+            state.form.documents
+                .filter((document) => document.document_group_id === document_group_id)
+                .docs.push({
+                    name: null,
+                    type: null,
+                    source: null,
+                    file: null,
+                    link: null,
+                });
+        },
+        REMOVE_DOCUMENT_GROUP(state, index) {
             state.form.documents.splice(index, 1);
+        },
+        REMOVE_DOCUMENT(state, { document_group_id, index }) {
+            state.form.documents
+                .filter((document) => document.document_group_id === document_group_id)
+                .docs.splice(index, 1);
         },
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
