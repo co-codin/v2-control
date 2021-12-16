@@ -233,12 +233,12 @@ export default {
         ],
         typeLabels: [
             { value: 1, text: 'Брошюра' },
-            { value: 2, text: 'Сертификат РУ' },
-            { value: 3, text: 'Сертификат ДС' },
-            { value: 4, text: 'Технические характеристики' },
             { value: 5, text: 'Инструкция' },
             { value: 6, text: 'Каталог' },
             { value: 7, text: 'Стандарты оснащения' },
+            { value: 4, text: 'Технические характеристики' },
+            { value: 3, text: 'Сертификат ДС' },
+            { value: 2, text: 'Сертификат РУ' },
         ],
         tab: null,
         tabs: [
