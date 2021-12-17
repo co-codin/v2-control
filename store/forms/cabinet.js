@@ -35,16 +35,6 @@ export default {
                     };
                 })
                 .value();
-            // data.requirements = _.chain(data.requirements)
-            //     .groupBy('document_group_id')
-            //     .map((key, value) => {
-            //         return {
-            //             document_group_id: parseInt(value, 10),
-            //             document_group_name: key[0].document_group.name,
-            //             docs: key,
-            //         };
-            //     })
-            //     .value();
             state.form.populate({
                 ...data,
                 requirements: data.requirements || [],
