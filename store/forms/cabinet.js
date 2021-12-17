@@ -56,6 +56,7 @@ export default {
             state.form.requirements[index].requirements.push({
                 key: null,
                 value: null,
+                position: null,
             });
         },
         ADD_REQUIREMENT_GROUP(state) {
@@ -65,6 +66,7 @@ export default {
                     {
                         key: null,
                         value: null,
+                        position: null,
                     },
                 ],
             });
@@ -85,6 +87,7 @@ export default {
                         source: null,
                         file: null,
                         link: null,
+                        position: null,
                     },
                 ],
             });
@@ -96,6 +99,7 @@ export default {
                 source: null,
                 file: null,
                 link: null,
+                position: null,
             });
         },
         REMOVE_DOCUMENT_GROUP(state, index) {
