@@ -61,7 +61,7 @@
                                         <v-card-text>
                                             <v-expansion-panels>
                                                 <draggable
-                                                    :value="document.docs"
+                                                    :list="document.docs"
                                                     style="width: 100%"
                                                     @end="updateDocumentPositions(index)"
                                                 >
@@ -314,6 +314,7 @@ export default {
             this.form.documents[index].docs.forEach((doc, i) => {
                 this.updateField({ field: `documents.${index}.docs.${i}.position`, value: ++i });
             });
+            console.log(this.form.documents[index].docs);
         },
     },
 };
