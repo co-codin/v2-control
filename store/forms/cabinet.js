@@ -35,6 +35,16 @@ export default {
                     };
                 })
                 .value();
+            // data.requirements = _.chain(data.requirements)
+            //     .groupBy('document_group_id')
+            //     .map((key, value) => {
+            //         return {
+            //             document_group_id: parseInt(value, 10),
+            //             document_group_name: key[0].document_group.name,
+            //             docs: key,
+            //         };
+            //     })
+            //     .value();
             state.form.populate({
                 ...data,
                 requirements: data.requirements || [],
@@ -52,14 +62,28 @@ export default {
                 price: null,
             });
         },
-        ADD_REQUIREMENT(state) {
-            state.form.requirements.push({
+        ADD_REQUIREMENT(state, index) {
+            state.form.requirements[index].requirements.push({
                 key: null,
                 value: null,
             });
         },
+        ADD_REQUIREMENT_GROUP(state) {
+            state.form.requirements.push({
+                group_name: null,
+                requirements: [
+                    {
+                        key: null,
+                        value: null,
+                    },
+                ],
+            });
+        },
         REMOVE_REQUIREMENT(state, index) {
             state.form.requirements.splice(index, 1);
+        },
+        REMOVE_REQUIREMENT_GROUP(state, data) {
+            state.form.requirements[data.index].requirements.splice(data.i, 1);
         },
         ADD_DOCUMENT_GROUP(state) {
             state.form.documents.push({
