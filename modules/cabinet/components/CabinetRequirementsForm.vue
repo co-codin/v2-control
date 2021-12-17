@@ -58,7 +58,7 @@
                                                         <v-text-field
                                                             label="Название"
                                                             dense
-                                                            :value="requirement.key"
+                                                            :value="req.key"
                                                             :error-messages="
                                                                 form.errors.get(
                                                                     `requirements.${index}.requirements.${i}.key`
@@ -80,7 +80,7 @@
                                                         <v-text-field
                                                             label="Значение"
                                                             dense
-                                                            :value="requirement.value"
+                                                            :value="req.value"
                                                             :error-messages="
                                                                 form.errors.get(
                                                                     `requirements.${index}.requirements.${i}.value`
@@ -120,7 +120,7 @@
                                                     small
                                                     color="primary"
                                                     outlined
-                                                    @click="addRequirementGroup(index)"
+                                                    @click="addRequirement(index)"
                                                 >
                                                     Добавить требование
                                                 </v-btn>
@@ -131,12 +131,6 @@
                             </v-tabs-items>
                         </v-tabs>
                     </v-row>
-                    <v-divider class="my-2" />
-                    <div class="text-center">
-                        <v-btn small class="white--text" color="red" @click="removeRequirement(index)">
-                            Удалить требование
-                        </v-btn>
-                    </div>
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
