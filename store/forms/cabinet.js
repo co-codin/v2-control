@@ -79,11 +79,11 @@ export default {
                 ],
             });
         },
-        REMOVE_REQUIREMENT(state, index) {
-            state.form.requirements.splice(index, 1);
-        },
-        REMOVE_REQUIREMENT_GROUP(state, data) {
+        REMOVE_REQUIREMENT(state, data) {
             state.form.requirements[data.index].requirements.splice(data.i, 1);
+        },
+        REMOVE_REQUIREMENT_GROUP(state, index) {
+            state.form.requirements.splice(index, 1);
         },
         ADD_DOCUMENT_GROUP(state) {
             state.form.documents.push({

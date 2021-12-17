@@ -1,7 +1,7 @@
 <template>
     <v-form @submit.prevent="save">
         <v-expansion-panels>
-            <v-expansion-panel v-for="(requirement, index) in form.requirements" :key="index">
+            <v-expansion-panel v-for="(requirement, index) in form.requirements" :key="'requirement-' + index">
                 <v-expansion-panel-header class="title">
                     #{{ index + 1 }}. {{ requirement.group_name || '(без названия)' }}
                 </v-expansion-panel-header>
@@ -120,7 +120,7 @@
                                                     small
                                                     color="primary"
                                                     outlined
-                                                    @click="addRequirement(index)"
+                                                    @click="addRequirementGroup(index)"
                                                 >
                                                     Добавить требование
                                                 </v-btn>
@@ -141,7 +141,7 @@
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined @click="addRequirement"> Добавить требование </v-btn>
+            <v-btn link small color="primary" outlined @click="addRequirementGroup"> Добавить группу требования </v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
