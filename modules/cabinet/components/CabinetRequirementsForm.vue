@@ -47,72 +47,74 @@
                                     <v-card flat>
                                         <v-card-text>
                                             <v-expansion-panels>
-                                                <v-expansion-panel
-                                                    v-for="(req, i) in requirement.requirements"
-                                                    :key="'req-' + i"
-                                                >
-                                                    <v-expansion-panel-header class="title">
-                                                        {{ req.key || '(без названия)' }}
-                                                    </v-expansion-panel-header>
-                                                    <v-expansion-panel-content>
-                                                        <v-text-field
-                                                            label="Название"
-                                                            dense
-                                                            :value="req.key"
-                                                            :error-messages="
-                                                                form.errors.get(
-                                                                    `requirements.${index}.requirements.${i}.key`
-                                                                )
-                                                            "
-                                                            :error="
-                                                                form.errors.has(
-                                                                    `requirements.${index}.requirements.${i}.key`
-                                                                )
-                                                            "
-                                                            @input="
-                                                                (value) =>
-                                                                    updateField({
-                                                                        field: `requirements.${index}.requirements.${i}.key`,
-                                                                        value,
-                                                                    })
-                                                            "
-                                                        />
-                                                        <v-text-field
-                                                            label="Значение"
-                                                            dense
-                                                            :value="req.value"
-                                                            :error-messages="
-                                                                form.errors.get(
-                                                                    `requirements.${index}.requirements.${i}.value`
-                                                                )
-                                                            "
-                                                            :error="
-                                                                form.errors.has(
-                                                                    `requirements.${index}.requirements.${i}.value`
-                                                                )
-                                                            "
-                                                            @input="
-                                                                (value) =>
-                                                                    updateField({
-                                                                        field: `requirements.${index}.requirements.${i}.value`,
-                                                                        value,
-                                                                    })
-                                                            "
-                                                        />
+                                                <draggable style="width: 100%" @end="updateRequirementPositions(index)">
+                                                    <v-expansion-panel
+                                                        v-for="(req, i) in requirement.requirements"
+                                                        :key="'req-' + i"
+                                                    >
+                                                        <v-expansion-panel-header class="title">
+                                                            {{ req.key || '(без названия)' }}
+                                                        </v-expansion-panel-header>
+                                                        <v-expansion-panel-content>
+                                                            <v-text-field
+                                                                label="Название"
+                                                                dense
+                                                                :value="req.key"
+                                                                :error-messages="
+                                                                    form.errors.get(
+                                                                        `requirements.${index}.requirements.${i}.key`
+                                                                    )
+                                                                "
+                                                                :error="
+                                                                    form.errors.has(
+                                                                        `requirements.${index}.requirements.${i}.key`
+                                                                    )
+                                                                "
+                                                                @input="
+                                                                    (value) =>
+                                                                        updateField({
+                                                                            field: `requirements.${index}.requirements.${i}.key`,
+                                                                            value,
+                                                                        })
+                                                                "
+                                                            />
+                                                            <v-text-field
+                                                                label="Значение"
+                                                                dense
+                                                                :value="req.value"
+                                                                :error-messages="
+                                                                    form.errors.get(
+                                                                        `requirements.${index}.requirements.${i}.value`
+                                                                    )
+                                                                "
+                                                                :error="
+                                                                    form.errors.has(
+                                                                        `requirements.${index}.requirements.${i}.value`
+                                                                    )
+                                                                "
+                                                                @input="
+                                                                    (value) =>
+                                                                        updateField({
+                                                                            field: `requirements.${index}.requirements.${i}.value`,
+                                                                            value,
+                                                                        })
+                                                                "
+                                                            />
 
-                                                        <v-divider class="my-2" />
-                                                        <div class="text-center">
-                                                            <v-btn
-                                                                small
-                                                                class="white--text"
-                                                                color="red"
-                                                                @click="removeRequirement({ index, i })"
-                                                            >
-                                                                Удалить требование
-                                                            </v-btn>
-                                                        </div>
-                                                    </v-expansion-panel-content>
-                                                </v-expansion-panel>
+                                                            <v-divider class="my-2" />
+                                                            <div class="text-center">
+                                                                <v-btn
+                                                                    small
+                                                                    class="white--text"
+                                                                    color="red"
+                                                                    @click="removeRequirement({ index, i })"
+                                                                >
+                                                                    Удалить требование
+                                                                </v-btn>
+                                                            </div>
+                                                        </v-expansion-panel-content>
+                                                    </v-expansion-panel>
+                                                </draggable>
                                             </v-expansion-panels>
                                             <div class="mt-2">
                                                 <v-btn
@@ -147,8 +149,12 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import draggable from 'vuedraggable';
 
 export default {
+    components: {
+        draggable,
+    },
     data: () => ({
         tab: null,
         tabs: [
@@ -187,6 +193,12 @@ export default {
                 }
                 this.$snackbar(`Произошла ошибка при обновлении требований: ${e.message}`);
             }
+        },
+        updateRequirementPositions(index) {
+            const i = 0;
+            this.form.requirements[index].requirements.forEach((doc, i) => {
+                this.updateField({ field: `requirements.${index}.requirements.${i}.position`, value: ++i });
+            });
         },
     },
 };
