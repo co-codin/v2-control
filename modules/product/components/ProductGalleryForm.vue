@@ -1,7 +1,7 @@
 <template>
     <v-form @submit.prevent="saveGallery">
         <v-expansion-panels>
-            <draggable v-model="form.images" @end="updateImagePositions" style="width:100%">
+            <draggable v-model="form.images" style="width: 100%" @end="updateImagePositions">
                 <v-expansion-panel v-for="(item, index) in form.images" :key="index">
                     <v-expansion-panel-header class="title">
                         <div>
@@ -13,9 +13,7 @@
                                         :src="`${$config.app.storageUrl}/${item.image}`"
                                     />
                                 </div>
-                                <div class="ml-2">
-                                    Фотография {{ index + 1 }}
-                                </div>
+                                <div class="ml-2">Фотография {{ index + 1 }}</div>
                             </div>
                         </div>
                     </v-expansion-panel-header>
@@ -83,12 +81,7 @@
                 </v-expansion-panel>
             </draggable>
         </v-expansion-panels>
-        <file-uploader
-            :multiple="true"
-            :max="10"
-            :object-format="true"
-            @upload="addImage"
-        />
+        <file-uploader :multiple="true" :max="10" :object-format="true" @upload="addImage" />
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -100,10 +93,10 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import Form from 'form-backend-validation';
+import draggable from 'vuedraggable';
 import FileUploader from '~/components/FileUploader';
 import FormBlock from '~/components/forms/FormBlock';
 import FileField from '~/components/forms/FileField';
-import draggable from "vuedraggable";
 
 export default {
     components: {
@@ -151,7 +144,6 @@ export default {
             }
         },
         deleteImage(index) {
-            console.log(index)
             this.form.images.splice(index, 1);
         },
         addImage(e) {
@@ -166,7 +158,7 @@ export default {
         },
         updateImagePositions() {
             let i = 0;
-            this.form.images.forEach(item => {
+            this.form.images.forEach((item) => {
                 item.position = ++i;
             });
         },
