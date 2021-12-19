@@ -1,5 +1,6 @@
 import Form from 'form-backend-validation';
-import { set } from 'lodash';
+import _, { set } from 'lodash';
+
 import { objectToFormData } from 'form-backend-validation/dist/util';
 
 export default {
@@ -24,6 +25,16 @@ export default {
             set(state.form, field, value);
         },
         FILL_FORM(state, data) {
+            data.documents = _.chain(data.documents)
+                .groupBy('document_group_id')
+                .map((key, value) => {
+                    return {
+                        document_group_id: parseInt(value, 10),
+                        document_group_name: key[0].document_group.name,
+                        docs: key,
+                    };
+                })
+                .value();
             state.form.populate({
                 ...data,
                 requirements: data.requirements || [],
@@ -41,27 +52,61 @@ export default {
                 price: null,
             });
         },
-        ADD_REQUIREMENT(state) {
-            state.form.requirements.push({
+        ADD_REQUIREMENT(state, index) {
+            state.form.requirements[index].requirements.push({
                 key: null,
                 value: null,
+                position: null,
             });
         },
-        REMOVE_REQUIREMENT(state, index) {
+        ADD_REQUIREMENT_GROUP(state) {
+            state.form.requirements.push({
+                group_name: null,
+                requirements: [
+                    {
+                        key: null,
+                        value: null,
+                        position: null,
+                    },
+                ],
+            });
+        },
+        REMOVE_REQUIREMENT(state, data) {
+            state.form.requirements[data.index].requirements.splice(data.i, 1);
+        },
+        REMOVE_REQUIREMENT_GROUP(state, index) {
             state.form.requirements.splice(index, 1);
         },
-        ADD_DOCUMENT(state) {
+        ADD_DOCUMENT_GROUP(state) {
             state.form.documents.push({
-                group_name: null,
+                document_group_id: null,
+                docs: [
+                    {
+                        name: null,
+                        type: null,
+                        source: null,
+                        file: null,
+                        link: null,
+                        position: null,
+                    },
+                ],
+            });
+        },
+        ADD_DOCUMENT(state, index) {
+            state.form.documents[index].docs.push({
                 name: null,
                 type: null,
                 source: null,
                 file: null,
                 link: null,
+                position: null,
             });
         },
-        REMOVE_DOCUMENT(state, index) {
+        REMOVE_DOCUMENT_GROUP(state, index) {
             state.form.documents.splice(index, 1);
+        },
+        REMOVE_DOCUMENT(state, data) {
+            state.form.documents[data.index].docs.splice(data.i, 1);
         },
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
@@ -80,7 +125,6 @@ export default {
 
     actions: {
         async createCategories({ state, commit }, cabinetId) {
-            commit('CLEAR_FORM');
             await this.$axios.put(`/admin/cabinets/${cabinetId}/categories`, state.form.data());
         },
         async createCabinet({ state }) {

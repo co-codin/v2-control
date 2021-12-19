@@ -12,7 +12,14 @@
                         name="category"
                         :multiple="false"
                         class="mb-3"
-                        @input="(value) => updateField({ field: `categories.${index}.id`, value })"
+                        :error-messages="form.errors.get(`categories.${index}.id`)"
+                        :error="form.errors.has(`categories.${index}.id`)"
+                        @input="
+                            (value) => {
+                                updateField({ field: `categories.${index}.id`, value });
+                                updateName(value, index);
+                            }
+                        "
                     />
 
                     <v-text-field
@@ -65,6 +72,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { debounce } from 'lodash';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
@@ -75,6 +83,7 @@ export default {
         ...mapGetters({
             cabinet: 'cabinet/cabinet',
             form: 'forms/cabinet/form',
+            categories: 'category/categories',
         }),
     },
     methods: {
@@ -88,17 +97,28 @@ export default {
         ...mapActions({
             createCategories: 'forms/cabinet/createCategories',
         }),
+        updateName: debounce(function (id, index) {
+            const category = this.categories.find((category) => category.id === id);
+            this.updateField({
+                field: `categories.${index}.name`,
+                value: category?.product_name ? category.product_name : null,
+            });
+        }, 200),
         async save() {
-            try {
-                await this.createCategories(this.cabinet.id);
-                this.$snackbar(`Категории успешно обновлены`);
-                this.closeAllPanels();
-            } catch (e) {
-                const errors = e?.response?.data?.errors;
-                if (errors) {
-                    this.fillErrors(errors);
+            if (this.form.categories.length) {
+                try {
+                    await this.createCategories(this.cabinet.id);
+                    this.$snackbar(`Категории успешно обновлены`);
+                    this.closeAllPanels();
+                } catch (e) {
+                    const errors = e?.response?.data?.errors;
+                    if (errors) {
+                        this.fillErrors(errors);
+                    }
+                    this.$snackbar(`Произошла ошибка при обновлении категорий: ${e.message}`);
                 }
-                this.$snackbar(`Произошла ошибка при обновлении категорий: ${e.message}`);
+            } else {
+                this.$snackbar(`Категории должны заполнены`);
             }
         },
     },
