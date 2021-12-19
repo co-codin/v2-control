@@ -22,6 +22,8 @@ import { canonicalRoutes } from './modules/canonical/router';
 import { cabinetRoutes } from './modules/cabinet/router';
 import { productReviewRoutes } from './modules/product-review/router';
 import { fieldValueRoutes } from './modules/field-value/router';
+import { productQuestionRoutes } from './modules/product-question/router';
+import { productAnswerRoutes } from './modules/product-answer/router';
 
 export default {
     ssr: false,
@@ -145,6 +147,8 @@ export default {
                     ...cabinetRoutes(resolve),
                     ...productReviewRoutes(resolve),
                     ...fieldValueRoutes(resolve),
+                    ...productQuestionRoutes(resolve),
+                    ...productAnswerRoutes(resolve),
                 ]
             );
         },
