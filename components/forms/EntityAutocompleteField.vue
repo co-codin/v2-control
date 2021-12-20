@@ -9,8 +9,7 @@
 </template>
 
 <script>
-import {debounce} from "lodash";
-import FieldValue from "~/models/FieldValue";
+import { debounce } from 'lodash';
 
 export default {
     props: {
@@ -40,10 +39,10 @@ export default {
                 return;
             }
             this.isLoading = true;
-            const params = {...this.queryParams};
+            const params = { ...this.queryParams };
             params[`filter[${this.searchColumn}]`] = query;
             try {
-                const {data} = await this.$axios.get(this.url, {params});
+                const { data } = await this.$axios.get(this.url, { params });
                 this.items = data.data;
             } catch (e) {
                 this.$snackbar(e.message);
@@ -53,20 +52,20 @@ export default {
         async loadItems() {
             if (!this.$attrs.value) return;
             this.isLoading = true;
-            const params = {...this.queryParams};
+            const params = { ...this.queryParams };
             params[`filter[${this.filterColumn}]`] = this.$attrs.value;
-            const {data} = await this.$axios.get(this.url, {params});
+            const { data } = await this.$axios.get(this.url, { params });
             this.items = data.data;
             this.isLoading = false;
         },
     },
-    async created() {
-        await this.loadItems();
-    },
     watch: {
-        async "$attrs.value"() {
+        '$attrs.value': async function () {
             await this.loadItems();
         },
+    },
+    async created() {
+        await this.loadItems();
     },
 };
 </script>

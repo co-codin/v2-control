@@ -1,6 +1,6 @@
 import { enumToSelectArray } from './helpers';
 
-import { Status, statusDescriptions, statusLabels, productReviewStatusLabels } from '~/enums/modules/Status';
+import { Status, statusDescriptions, statusLabels, productReviewStatusLabels, productQuestionStatusLabels } from '~/enums/modules/Status';
 import { type, typeLabels, typeDescriptions } from '~/enums/modules/Type';
 import { Group, groupLabels, groupDescriptions } from '~/enums/modules/ProductGroup';
 import { urlRules } from '~/enums/rules';
@@ -48,5 +48,6 @@ export {
     groupLabels,
     groupDescriptions,
     productReviewStatusLabels,
+    productQuestionStatusLabels,
     systemFilters,
 };

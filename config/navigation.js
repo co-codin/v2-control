@@ -20,6 +20,7 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Экспорты', link: '/exports' },
                 { icon: 'mdi-cash-usd-outline', text: 'Атрибуты', link: '/attributes' },
                 { icon: 'mdi-cash-usd-outline', text: 'Отзывы к товарам', link: '/product-reviews' },
+                { icon: 'mdi-cash-usd-outline', text: 'Вопросы к товарам', link: '/product-questions' },
             ],
         },
         {

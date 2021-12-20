@@ -21,3 +21,9 @@ export const productReviewStatusLabels = [
     { value: 2, text: 'Опубликован' },
     { value: 3, text: 'Отклонен' },
 ];
+
+export const productQuestionStatusLabels = [
+    { value: 1, text: 'На рассмотрении' },
+    { value: 2, text: 'Опубликован' },
+    { value: 3, text: 'Отклонен' },
+];
