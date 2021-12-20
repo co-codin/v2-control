@@ -1,5 +1,16 @@
 <template>
     <v-form @submit.prevent="save">
+        <category-tree-search-field
+            :value="form.category_id"
+            label="Категория"
+            :error-messages="form.errors.get('category_id')"
+            :error="form.errors.has('category_id')"
+            name="category_id"
+            :multiple="false"
+            class="mb-1"
+            @input="(value) => updateField({ field: 'category_id', value })"
+        />
+
         <v-text-field
             :value="form.name"
             label="Название"
@@ -69,6 +80,7 @@
         />
 
         <v-select
+            v-if="isUpdating"
             :value="form.status"
             label="Статус"
             :items="statusLabels"
@@ -92,9 +104,10 @@ import slugify from 'slugify';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
+import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 
 export default {
-    components: { FileField, WysiwygField },
+    components: { CategoryTreeSearchField, FileField, WysiwygField },
     props: {
         isUpdating: {
             type: Boolean,
