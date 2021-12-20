@@ -26,16 +26,6 @@ export default {
             set(state.form, field, value);
         },
         FILL_FORM(state, data) {
-            data.documents = _.chain(data.documents)
-                .groupBy('document_group_id')
-                .map((key, value) => {
-                    return {
-                        document_group_id: parseInt(value, 10),
-                        document_group_name: key[0].document_group.name,
-                        docs: key,
-                    };
-                })
-                .value();
             state.form.populate({
                 ...data,
                 requirements: data.requirements || [],
@@ -80,17 +70,8 @@ export default {
         },
         ADD_DOCUMENT_GROUP(state) {
             state.form.documents.push({
-                document_group_id: null,
-                docs: [
-                    {
-                        name: null,
-                        type: null,
-                        source: null,
-                        file: null,
-                        link: null,
-                        position: null,
-                    },
-                ],
+                name: null,
+                docs: [],
             });
         },
         ADD_DOCUMENT(state, index) {
@@ -100,7 +81,6 @@ export default {
                 source: null,
                 file: null,
                 link: null,
-                position: null,
             });
         },
         REMOVE_DOCUMENT_GROUP(state, index) {
@@ -133,12 +113,10 @@ export default {
             await this.$axios.post(`/admin/cabinets`, data);
         },
         async updateCabinet({ state }, cabinetId) {
-            const data = objectToFormData(state.form.data());
-            await this.$axios.post(`/admin/cabinets/${cabinetId}?_method=patch`, data);
+            await this.$axios.put(`/admin/cabinets/${cabinetId}`, state.form.data());
         },
-        async createDocuments({ state, commit }, cabinetId) {
-            const data = objectToFormData(state.form.data());
-            await this.$axios.post(`/admin/cabinets/${cabinetId}/documents?_method=put`, data);
+        async updateCabinetDocuments({ state }, cabinetId) {
+            await this.$axios.put(`/admin/cabinets/${cabinetId}/documents`, state.form.data());
         },
     },
 };

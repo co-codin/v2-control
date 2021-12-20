@@ -10,7 +10,6 @@
             class="mb-1"
             @input="(value) => updateField({ field: 'category_id', value })"
         />
-
         <v-text-field
             :value="form.name"
             label="Название"
@@ -23,7 +22,6 @@
                 }
             "
         />
-
         <v-text-field
             :value="form.slug"
             label="Ссылка"
@@ -40,7 +38,6 @@
                 }
             "
         />
-
         <wysiwyg-field
             :value="form.full_description"
             class="mt-2"

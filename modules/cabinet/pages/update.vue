@@ -6,7 +6,13 @@
                 <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
             </v-btn>
         </div>
-        <template v-if="!$fetchState.pending">
+        <template v-if="$fetchState.pending"></template>
+        <template v-else-if="$fetchState.error">
+            <v-alert color="red" dark dense>
+                Произошла ошибка при загрузке кабинета
+            </v-alert>
+        </template>
+        <template v-else>
             <v-expansion-panels v-model="openedPanel">
                 <form-block title="Основная информация">
                     <cabinet-form is-updating />

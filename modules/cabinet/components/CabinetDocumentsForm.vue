@@ -1,9 +1,9 @@
 <template>
     <v-form @submit.prevent="save">
-        <v-expansion-panels>
+        <v-expansion-panels v-if="form">
             <v-expansion-panel v-for="(document, index) in form.documents" :key="'document-' + index">
                 <v-expansion-panel-header class="title">
-                    #{{ index + 1 }}. {{ document.document_group_name || '(без названия)' }}
+                    #{{ index + 1 }}. {{ document.name || '(без названия)' }}
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                     <v-row>
@@ -15,34 +15,21 @@
                                 <v-tab-item key="information">
                                     <v-card flat>
                                         <v-card-text>
-                                            <entity-autocomplete-field
-                                                :value="document.document_group_id"
-                                                url="/document-groups"
-                                                item-value="id"
-                                                item-text="name"
-                                                :query-params="{ sort: 'name' }"
-                                                :error-messages="
-                                                    form.errors.get(`documents.${index}.document_group_id`)
-                                                "
-                                                :error="form.errors.has(`documents.${index}.document_group_id`)"
-                                                placeholder="Введите название группу документа"
-                                                label="Группа документа"
-                                                filter-column="id"
-                                                search-column="name"
-                                                hide-no-data
-                                                cache-items
+                                            <v-text-field
+                                                label="Название группы"
+                                                :value="document.name"
+                                                dense
+                                                :error-messages="form.errors.get(`documents.${index}.name`)"
+                                                :error="form.errors.has(`documents.${index}.name`)"
                                                 @input="
                                                     (value) =>
                                                         updateField({
-                                                            field: `documents.${index}.document_group_id`,
+                                                            field: `documents.${index}.name`,
                                                             value,
                                                         })
                                                 "
                                             />
-                                            <v-btn small @click="openDocumentGroupPopup"
-                                                >Создать новую группу документа</v-btn
-                                            >
-                                            <v-divider class="my-2" />
+                                            <v-divider class="my-2"/>
                                             <div class="text-center">
                                                 <v-btn
                                                     small
@@ -60,7 +47,7 @@
                                     <v-card flat>
                                         <v-card-text>
                                             <v-expansion-panels>
-                                                <draggable style="width: 100%" @end="updateDocumentPositions(index)">
+                                                <draggable style="width: 100%">
                                                     <v-expansion-panel
                                                         v-for="(doc, i) in document.docs"
                                                         :key="'doc-' + i"
@@ -134,7 +121,6 @@
                                                                 label="Ссылка"
                                                                 :value="doc.link"
                                                                 dense
-                                                                :rules="urlRules"
                                                                 :error-messages="
                                                                     form.errors.get(`documents.${index}.docs.${i}.link`)
                                                                 "
@@ -149,36 +135,63 @@
                                                                         })
                                                                 "
                                                             />
-                                                            <file-field
-                                                                v-if="doc.source === 2"
-                                                                :is-image="false"
-                                                                :value="doc.file"
-                                                                label="Файл"
-                                                                :error-messages="
-                                                                    form.errors.get(`documents.${index}.docs.${i}.file`)
-                                                                "
-                                                                :error="
-                                                                    form.errors.has(`documents.${index}.docs.${i}.file`)
-                                                                "
-                                                                @delete="
-                                                                    (value) => {
-                                                                        updateField({
-                                                                            field: `documents.${index}.docs.${i}.file`,
-                                                                            value: null,
-                                                                        });
-                                                                    }
-                                                                "
-                                                                @input="
-                                                                    (value) => {
-                                                                        updateField({
-                                                                            field: `documents.${index}.docs.${i}.file`,
-                                                                            value,
-                                                                        });
-                                                                    }
-                                                                "
-                                                            />
 
-                                                            <v-divider class="my-2" />
+                                                            <template v-if="doc.source === 2">
+                                                                <v-row v-if="doc.file">
+                                                                    <v-col class="pt-2">
+                                                                        <v-card>
+                                                                            <v-card-title>{{ doc.file }}</v-card-title>
+                                                                            <v-card-actions>
+                                                                                <v-btn icon @click="openFile(doc.file)">
+                                                                                    <external-link-icon />
+                                                                                </v-btn>
+                                                                                <v-spacer />
+                                                                                <v-btn icon @click="copyFileLink(doc.file)">
+                                                                                    <copy-icon />
+                                                                                </v-btn>
+                                                                                <v-spacer />
+                                                                                <v-btn
+                                                                                    icon
+                                                                                    @click="updateField({ field: `documents.${index}.docs.${i}.file`, value: null})"
+                                                                                >
+                                                                                    <trash-icon width="26" />
+                                                                                </v-btn>
+                                                                            </v-card-actions>
+                                                                        </v-card>
+                                                                    </v-col>
+                                                                </v-row>
+                                                                <file-uploader v-else :only-images="false" @upload="updateField({ field: `documents.${index}.docs.${i}.file`, value: $event.file})" />
+                                                            </template>
+
+<!--                                                            <file-field-->
+<!--                                                                v-if="doc.source === 2"-->
+<!--                                                                :is-image="false"-->
+<!--                                                                :value="doc.file"-->
+<!--                                                                label="Файл"-->
+<!--                                                                :error-messages="-->
+<!--                                                                    form.errors.get(`documents.${index}.docs.${i}.file`)-->
+<!--                                                                "-->
+<!--                                                                :error="-->
+<!--                                                                    form.errors.has(`documents.${index}.docs.${i}.file`)-->
+<!--                                                                "-->
+<!--                                                                @delete="-->
+<!--                                                                    (value) => {-->
+<!--                                                                        updateField({-->
+<!--                                                                            field: `documents.${index}.docs.${i}.file`,-->
+<!--                                                                            value: null,-->
+<!--                                                                        });-->
+<!--                                                                    }-->
+<!--                                                                "-->
+<!--                                                                @input="-->
+<!--                                                                    (value) => {-->
+<!--                                                                        updateField({-->
+<!--                                                                            field: `documents.${index}.docs.${i}.file`,-->
+<!--                                                                            value,-->
+<!--                                                                        });-->
+<!--                                                                    }-->
+<!--                                                                "-->
+<!--                                                            />-->
+                                                            <v-divider class="my-2"/>
                                                             <div class="text-center">
                                                                 <v-btn
                                                                     small
@@ -208,55 +221,57 @@
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined @click="addDocumentGroup"> Добавить группу </v-btn>
+            <v-btn link small color="primary" outlined @click="addDocumentGroup"> Добавить группу</v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
             </v-col>
         </v-row>
-        <v-dialog v-model="newDocumentGroupPopup" max-width="600" width="600">
-            <v-card tile outlined>
-                <v-card-title> Создание группу документа </v-card-title>
-                <v-card-text>
-                    <document-group-form @send="createDocumentGroup" />
-                </v-card-text>
-            </v-card>
-        </v-dialog>
     </v-form>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-import FileField from '~/components/forms/FileField';
-import { urlRules } from '~/enums';
+import {mapActions, mapGetters, mapMutations} from 'vuex';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import DocumentGroupForm from '~/components/forms/DocumentGroupForm';
+import FileUploader from "~/components/FileUploader";
+import TrashIcon from '~/components/heroicons/TrashIcon';
+import EyeIcon from '~/components/heroicons/EyeIcon';
+import CopyIcon from '~/components/heroicons/CopyIcon';
+import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 
 export default {
-    components: { DocumentGroupForm, EntityAutocompleteField, FileField, draggable },
+    components: {
+        DocumentGroupForm,
+        EntityAutocompleteField,
+        draggable,
+        FileUploader,
+        EyeIcon,
+        ExternalLinkIcon,
+        CopyIcon,
+        TrashIcon,
+    },
     data: () => ({
         sourceLabels: [
-            { value: 1, text: 'Ссылка' },
-            { value: 2, text: 'Файл' },
+            {value: 1, text: 'Ссылка'},
+            {value: 2, text: 'Файл'},
         ],
         typeLabels: [
-            { value: 1, text: 'Брошюра' },
-            { value: 5, text: 'Инструкция' },
-            { value: 6, text: 'Каталог' },
-            { value: 7, text: 'Стандарты оснащения' },
-            { value: 4, text: 'Технические характеристики' },
-            { value: 3, text: 'Сертификат ДС' },
-            { value: 2, text: 'Сертификат РУ' },
+            {value: 1, text: 'Брошюра'},
+            {value: 5, text: 'Инструкция'},
+            {value: 6, text: 'Каталог'},
+            {value: 7, text: 'Стандарты оснащения'},
+            {value: 4, text: 'Технические характеристики'},
+            {value: 3, text: 'Сертификат ДС'},
+            {value: 2, text: 'Сертификат РУ'},
         ],
-        tab: null,
+        tab: 'information',
         tabs: [
-            { tab: 'О группе', key: 'information' },
-            { tab: 'Документы', key: 'documents' },
+            {tab: 'О группе', key: 'information'},
+            {tab: 'Документы', key: 'documents'},
         ],
-        newDocumentGroupPopup: false,
-        urlRules,
     }),
     computed: {
         ...mapGetters({
@@ -275,42 +290,26 @@ export default {
             addDocument: 'forms/cabinet/ADD_DOCUMENT',
         }),
         ...mapActions({
-            createDocuments: 'forms/cabinet/createDocuments',
+            updateCabinetDocuments: 'forms/cabinet/updateCabinetDocuments',
         }),
-        openDocumentGroupPopup() {
-            this.newDocumentGroupPopup = true;
-        },
-        async createDocumentGroup(form) {
-            try {
-                await form.post('/admin/document-groups');
-                this.newDocumentGroupPopup = false;
-            } catch (e) {
-                this.$snackbar(`Произошла ошибка при создании характеристики: ${e.message}`);
-            }
-        },
         async save() {
-            if (this.form.documents.length) {
-                try {
-                    await this.createDocuments(this.cabinet.id);
-                    this.$snackbar(`Документы успешно обновлены`);
-                    this.closeAllPanels();
-                } catch (e) {
-                    const errors = e?.response?.data?.errors;
-                    if (errors) {
-                        this.fillErrors(errors);
-                    }
-                    this.$snackbar(`Произошла ошибка при обновлении документов: ${e.message}`);
+            try {
+                await this.updateCabinetDocuments(this.cabinet.id);
+                this.$snackbar(`Документы успешно обновлены`);
+                this.closeAllPanels();
+            } catch (e) {
+                const errors = e?.response?.data?.errors;
+                if (errors) {
+                    this.fillErrors(errors);
                 }
-            } else {
-                this.$snackbar(`Документы должны заполнены`);
+                this.$snackbar(`Произошла ошибка при обновлении документов: ${e.message}`);
             }
         },
-        updateDocumentPositions(index) {
-            const i = 0;
-            this.form.documents[index].docs.forEach((doc, i) => {
-                this.updateField({ field: `documents.${index}.docs.${i}.position`, value: ++i });
-            });
-            // console.log(this.form.documents[index].docs);
+        openFile(file) {
+            window.open(`${this.$config.app.storageUrl}/${file}`);
+        },
+        async copyFileLink(file) {
+            await navigator.clipboard.writeText(file);
         },
     },
 };
