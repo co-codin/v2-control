@@ -19,7 +19,7 @@
                                                 :value="requirement.group_name"
                                                 :error-messages="form.errors.get(`requirements.${index}.group_name`)"
                                                 :error="form.errors.has(`requirements.${index}.group_name`)"
-                                                placeholder="Введите название группу требования"
+                                                placeholder="Введите название группу требований"
                                                 label="Группа требования"
                                                 @input="
                                                     (value) =>
@@ -137,7 +137,7 @@
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined @click="addRequirementGroup"> Добавить группу требования </v-btn>
+            <v-btn link small color="primary" outlined @click="addRequirementGroup"> Добавить группу требований </v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
