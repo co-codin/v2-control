@@ -203,7 +203,9 @@ export default {
             .map((property) => property.pivot.field_value_ids)
             .flat()
             .filter((value, index, self) => self.indexOf(value) === index);
-        const values = await FieldValue.select('id', 'value').whereIn('id', valueIds).limit(200).$get();
+        const values = await FieldValue.select('id', 'value').whereIn('id', valueIds).params({
+            "page[size]": 1000,
+        }).$get();
         this.values = Object.fromEntries(values.map((item) => [item.id, item.value]));
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
