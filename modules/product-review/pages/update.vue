@@ -2,9 +2,13 @@
     <div>
         <page-header h1="Редактирование отзыва" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
-            <v-expansion-panels>
+            <v-expansion-panels :value="0">
                 <form-block title="Основная информация">
-                    <customer-review-form :customer-review="customer_review" is-updating @send="updateCustomerReview" />
+                    <product-review-form
+                        :review="review"
+                        is-updating
+                        @send="updateProductReview"
+                    />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -12,18 +16,19 @@
 </template>
 
 <script>
-import CustomerReviewForm from '../components/CustomerReviewForm';
+import ProductReviewForm from '../components/ProductReviewForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
+import ProductReview from "~/modules/product-review/models/ProductReview";
 
 export default {
     components: {
         FormBlock,
         PageHeader,
-        CustomerReviewForm,
+        ProductReviewForm,
     },
     data: () => ({
-        customer_review: null,
+        review: null,
         isLoading: true,
         breadcrumbs: [
             { text: 'Список отзывов к товарам', to: { name: 'product-reviews.index' } },
@@ -31,19 +36,19 @@ export default {
         ],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/customer-reviews/${this.$route.params.id}`);
-        this.customer_review = data.data;
+        this.review = await ProductReview.$find(this.$route.params.id);
+        this.review.experience = this.review.experience.value;
         this.isLoading = false;
     },
     head: {
         title: 'Редактирование отзыва',
     },
     methods: {
-        async updateCustomerReview(form) {
+        async updateProductReview(form) {
             try {
-                await form.put(`/admin/customer-reviews/${this.$route.params.id}`);
+                await form.put(`/admin/product-reviews/${this.review.id}`);
                 this.$snackbar(`Отзыв успешно обновлен`);
-                await this.$router.push({ name: 'customer-reviews.index' });
+                await this.$router.push({ name: 'product-reviews.index' });
             } catch (e) {
                 this.$snackbar(`Приозошла ошибка при обновлении отзыва: ${e.message}`);
             }

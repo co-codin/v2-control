@@ -40,6 +40,10 @@
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
 
+                <template #item.is_confirmed="{ item }">
+                    <div>{{ item.is_confirmed ? 'Да' : 'Нет' }}</div>
+                </template>
+
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
@@ -70,44 +74,23 @@
 
                 <template #item.action="{ item }">
                     <div class="actions text-no-wrap">
-<!--                        <v-btn-->
-<!--                            icon-->
-<!--                            width="22"-->
-<!--                            height="22"-->
-<!--                            class="mr-1"-->
-<!--                            @click="showReview(item)"-->
-<!--                        >-->
-<!--                            <eye-icon width="24" height="24" class="h-6 w-6" />-->
-<!--                        </v-btn>-->
                         <v-btn
-                            v-if="!item.isApproved"
                             icon
                             width="22"
                             height="22"
-                            class="mr-1"
-                            @click="approveReview(item)"
+                            @click="showReview(item)"
                         >
-                            <check-circle-icon class="h-6 w-6" />
+                            <eye-icon width="24" height="24" class="h-6 w-6" />
                         </v-btn>
                         <v-btn
-                            v-if="!item.isRejected"
                             icon
                             width="22"
                             height="22"
-                            class="mr-1"
-                            @click="rejectReview(item)"
+                            class="mx-1"
+                            :to="{ name: 'product-reviews.update', params: { id: item.id } }"
                         >
-                            <x-circle-icon class="h-6 w-6" />
+                            <pencil-alt-icon class="h-6 w-6" />
                         </v-btn>
-<!--                        <v-btn-->
-<!--                            icon-->
-<!--                            width="22"-->
-<!--                            height="22"-->
-<!--                            class="mx-1"-->
-<!--                            :to="{ name: 'product-reviews.update', params: { id: item.id } }"-->
-<!--                        >-->
-<!--                            <pencil-alt-icon class="h-6 w-6" />-->
-<!--                        </v-btn>-->
                         <v-btn icon width="22" height="22" @click.prevent="deleteProductReview(item)">
                             <trash-icon class="h-6 w-6" />
                         </v-btn>
@@ -128,10 +111,52 @@
                     Подробно об оставленном отзывы
                 </v-card-title>
 
-                <v-card-text>
+                <v-card-text class="pt-2">
+                    <div>
+                        <b>Автор: </b>
+                        <template v-if="selectedReview.client.first_name">
+                            {{ selectedReview.client.first_name }}
+                        </template>
+                        <template v-if="selectedReview.client.last_name">
+                            {{ selectedReview.client.last_name }}
+                        </template>
+                    </div>
+
+                    <div>
+                        <b>Дата написания: </b> {{ selectedReview.asDate('created_at').fromNow() }}
+                    </div>
+
+                    <div>
+                        <b>Статус: </b> <v-chip small :color="selectedReview.color" dark>{{ selectedReview.status.description }}</v-chip>
+                    </div>
+
+                    <div>
+                        <b>Товар: </b>
+                        <span class="text-no-wrap">
+                            <a target="_blank" :href="`${$config.app.siteUrl}/product/${selectedReview.product.slug}/${selectedReview.product.id}`">
+                                {{ selectedReview.product.brand.name }} {{ selectedReview.product.name }}
+                            </a>
+                        </span>
+                    </div>
 
                     <div>
                         <b>Опыт использования:</b> {{ selectedReview.experience.description }}
+                    </div>
+
+                    <div>
+                        <b>Общая оценка: </b> {{ selectedReview.ratings.main }} из 5
+                    </div>
+
+                    <div>
+                        <b>Достоинства: </b> {{ selectedReview.advantages || "(не указано)" }}
+                    </div>
+
+                    <div>
+                        <b>Недостатки: </b> {{ selectedReview.disadvantages || "(не указано)" }}
+                    </div>
+
+                    <div>
+                        <b>Комментарий: </b> {{ selectedReview.comment || "(не указано)" }}
                     </div>
 
                 </v-card-text>
@@ -139,11 +164,24 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
-                        color="primary"
-                        text
-                        @click="dialog = false"
+                        v-if="!selectedReview.isApproved"
+                        color="green"
+                        outlined
+                        small
+                        @click="approveReview(selectedReview)"
                     >
-                        I accept
+                        <check-circle-icon class="h-6 w-6 mr-1" />
+                        Одобрить
+                    </v-btn>
+                    <v-btn
+                        v-if="!selectedReview.isRejected"
+                        color="red"
+                        outlined
+                        small
+                        @click="rejectReview(selectedReview)"
+                    >
+                        <x-circle-icon class="h-6 w-6 mr-1" />
+                        Отклонить
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -183,12 +221,9 @@ export default {
                 { text: 'Автор', align: 'left', value: 'author' },
                 { text: 'Товар', align: 'left', value: 'product_id' },
                 { text: 'Статус', value: 'status' },
+                { text: 'Подтвержден', value: 'is_confirmed' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Опыт использования', align: 'left', value: 'experience.description' },
-                { text: 'Общая оценка', align: 'left', value: 'rating' },
-                { text: 'Достоинства', align: 'left', value: 'advantages' },
-                { text: 'Недостатки', align: 'left', value: 'disadvantages' },
-                { text: 'Комментарий', align: 'left', value: 'comment' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Список отзывов к товарам' }],
@@ -248,6 +283,7 @@ export default {
                 });
                 this.$snackbar(`Отзыв успешно одобрен`);
                 this.$fetch();
+                this.showReviewDetailsPopup = false;
             } catch (e) {
                 this.$snackbar(e.message);
             }
@@ -262,6 +298,7 @@ export default {
                 });
                 this.$snackbar(`Отзыв успешно отклонен`);
                 this.$fetch();
+                this.showReviewDetailsPopup = false;
             } catch (e) {
                 this.$snackbar(e.message);
             }
