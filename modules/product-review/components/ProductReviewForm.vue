@@ -1,6 +1,37 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
 
+        <entity-autocomplete-field
+            v-model="form.product_id"
+            url="/products"
+            item-value="id"
+            item-text="name"
+            :query-params="{ sort: 'name' }"
+            :error-messages="form.errors.get('product_id')"
+            :error="form.errors.has('product_id')"
+            placeholder="Введите название товара"
+            label="Товар"
+            filter-column="id"
+            search-column="live"
+            hide-no-data
+            cache-items
+            clearable
+        />
+
+        <v-text-field
+            v-model="form.first_name"
+            label="Имя"
+            :error-messages="form.errors.get('first_name')"
+            :error="form.errors.has('first_name')"
+        />
+
+        <v-text-field
+            v-model="form.last_name"
+            label="Фамилия"
+            :error-messages="form.errors.get('last_name')"
+            :error="form.errors.has('last_name')"
+        />
+
         <v-select
             v-model="form.experience"
             label="Опыт использования"
@@ -68,9 +99,10 @@ import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import { urlRules } from '~/enums';
 import { productReviewStatusLabels } from "~/enums";
+import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
 
 export default {
-    components: { FileField, WysiwygField },
+    components: { FileField, WysiwygField, EntityAutocompleteField },
     props: {
         review: {
             type: Object | null,
@@ -83,6 +115,9 @@ export default {
     },
     data: () => ({
         formDefaults: {
+            product_id: null,
+            first_name: null,
+            last_name: null,
             comment: null,
             disadvantages: null,
             advantages: null,

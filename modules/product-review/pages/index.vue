@@ -2,6 +2,10 @@
     <div>
         <page-header h1="Отзывы к товарам" :breadcrumbs="breadcrumbs" />
 
+        <div class="mb-2">
+            <v-btn :to="{ name: 'product-reviews.create' }"> Добавить отзыв </v-btn>
+        </div>
+
         <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
