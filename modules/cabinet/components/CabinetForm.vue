@@ -135,7 +135,10 @@ export default {
             }
             this.isUpdatingSlug = true;
 
-            await this.updateField({ field: 'slug', value: slugify(this.form.name, { lower: true }) });
+            let slug = slugify(this.form.name, { lower: true });
+            slug = slug.replace(/[^a-z0-9-]/gi, '');
+
+            await this.updateField({ field: 'slug', value: slug });
 
             this.isUpdatingSlug = false;
         }, 200),
