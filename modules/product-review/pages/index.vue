@@ -223,7 +223,6 @@ export default {
                 { text: 'Статус', value: 'status' },
                 { text: 'Подтвержден', value: 'is_confirmed' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Опыт использования', align: 'left', value: 'experience.description' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Список отзывов к товарам' }],
