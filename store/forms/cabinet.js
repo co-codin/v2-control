@@ -7,13 +7,14 @@ export default {
     state: () => ({
         form: null,
         formDefaults: {
+            category_id: null,
             name: null,
             slug: null,
             full_description: null,
             welcome_text: null,
             image: null,
             is_image_changed: false,
-            status: 1,
+            status: 2,
             categories: [],
             requirements: [],
             documents: [],
