@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Редактирование отзыва" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
-            <v-expansion-panels>
+            <v-expansion-panels :value="0">
                 <form-block title="Основная информация">
                     <customer-review-form :customer-review="customer_review" is-updating @send="updateCustomerReview" />
                 </form-block>
