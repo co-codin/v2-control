@@ -6,6 +6,9 @@
                 <form-block title="Основная информация">
                     <category-form :category="category" is-updating @send="updateCategory" />
                 </form-block>
+                <form-block title="Критерии отзывов">
+                    <category-review-criteria-form :category="category" />
+                </form-block>
                 <form-block title="SEO">
                     <seo-relation-form :seo="seo" @send="updateCategorySeo" />
                 </form-block>
@@ -22,6 +25,7 @@ import CategoryForm from '../components/CategoryForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
+import CategoryReviewCriteriaForm from "~/modules/category/components/CategoryReviewCriteriaForm";
 
 export default {
     components: {
@@ -29,6 +33,7 @@ export default {
         PageHeader,
         SeoRelationForm,
         CategoryForm,
+        CategoryReviewCriteriaForm,
     },
     data: () => ({
         category: null,
