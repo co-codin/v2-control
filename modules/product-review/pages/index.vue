@@ -31,12 +31,7 @@
 
                 <template #item.author="{ item }">
                     <div>
-                        <template v-if="item.client.first_name">
-                            {{ item.client.first_name }}
-                        </template>
-                        <template v-if="item.client.last_name">
-                            {{ item.client.last_name }}
-                        </template>
+                        {{ item.clientName }}
                     </div>
                 </template>
 
@@ -117,13 +112,7 @@
 
                 <v-card-text class="pt-2">
                     <div>
-                        <b>Автор: </b>
-                        <template v-if="selectedReview.client.first_name">
-                            {{ selectedReview.client.first_name }}
-                        </template>
-                        <template v-if="selectedReview.client.last_name">
-                            {{ selectedReview.client.last_name }}
-                        </template>
+                        <b>Автор: </b> {{ selectedReview.clientName }}
                     </div>
 
                     <div>

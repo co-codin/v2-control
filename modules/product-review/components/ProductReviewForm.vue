@@ -51,8 +51,8 @@
         <v-switch
             v-model="form.is_confirmed"
             label="Отзыв подтвержден"
-            :error-messages="form.errors.get('ratings.main')"
-            :error="form.errors.has('ratings.main')"
+            :error-messages="form.errors.get('is_confirmed')"
+            :error="form.errors.has('is_confirmed')"
             inset
         />
 
