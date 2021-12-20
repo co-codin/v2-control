@@ -21,6 +21,23 @@
                 :error="form.errors.has('is_in_home')"
                 inset
             />
+
+            <v-switch
+                v-model="form.is_arbitrary_warranty"
+                label="Гарантия в произвольном формате"
+                :error-messages="form.errors.get('is_arbitrary_warranty')"
+                :error="form.errors.has('is_arbitrary_warranty')"
+                inset
+            />
+
+            <wysiwyg-field
+                v-if="form.is_arbitrary_warranty"
+                v-model="form.arbitrary_warranty_info"
+                label="Гарантия в произвольном формате"
+                :error-messages="form.errors.get('arbitrary_warranty_info')"
+                :error="form.errors.has('arbitrary_warranty_info')"
+            />
+
             <v-text-field
                 v-model="form.warranty"
                 type="number"
@@ -74,6 +91,8 @@ export default {
             is_in_home: false,
             warranty: null,
             warranty_info: null,
+            is_arbitrary_warranty: false,
+            arbitrary_warranty_info: null,
             short_description: null,
             full_description: null,
         },
