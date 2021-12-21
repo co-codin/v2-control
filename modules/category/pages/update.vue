@@ -5,7 +5,7 @@
             <form-block title="Основная информация">
                 <category-form :category="category" is-updating @send="updateCategory" />
             </form-block>
-            <form-block title="Критерии отзывов">
+            <form-block title="Критерии оценки отзывов">
                 <category-review-criteria-form :category="category" />
             </form-block>
             <form-block title="SEO">

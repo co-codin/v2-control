@@ -58,6 +58,7 @@ export default {
         { src: '~plugins/vue-api-query' },
         { src: '~plugins/directives/digits-only' },
         { src: '~plugins/dayjs' },
+        { src: '~plugins/random-person' },
     ],
 
     buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],

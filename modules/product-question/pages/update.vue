@@ -37,6 +37,7 @@ export default {
     }),
     async fetch() {
         this.question = await ProductQuestion.$find(this.$route.params.id);
+        this.question.status = this.question.status.value;
         this.isLoading = false;
     },
     head: {

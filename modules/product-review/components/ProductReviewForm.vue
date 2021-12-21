@@ -32,19 +32,33 @@
         </template>
 
         <template v-if="isOwnReviewForm">
-            <v-text-field
-                v-model="form.first_name"
-                label="Имя"
-                :error-messages="form.errors.get('first_name')"
-                :error="form.errors.has('first_name')"
-            />
+            <v-card outlined>
+                <v-card-title>
+                    Автор
+                </v-card-title>
+                <v-card-text>
+                    <v-text-field
+                        v-model="form.first_name"
+                        label="Имя"
+                        :error-messages="form.errors.get('first_name')"
+                        :error="form.errors.has('first_name')"
+                    />
 
-            <v-text-field
-                v-model="form.last_name"
-                label="Фамилия"
-                :error-messages="form.errors.get('last_name')"
-                :error="form.errors.has('last_name')"
-            />
+                    <v-text-field
+                        v-model="form.last_name"
+                        label="Фамилия"
+                        :error-messages="form.errors.get('last_name')"
+                        :error="form.errors.has('last_name')"
+                    />
+                    <v-btn
+                        @click="generateRandomPerson()"
+                        :loading="isLoadingRandomPerson"
+                        :disabled="isLoadingRandomPerson"
+                    >
+                        Сгенерировать новые данные
+                    </v-btn>
+                </v-card-text>
+            </v-card>
         </template>
 
         <v-select
@@ -161,6 +175,7 @@ export default {
         ],
         productReviewStatusLabels,
         ratings: null,
+        isLoadingRandomPerson: false,
     }),
     watch: {
         review(value) {
@@ -177,6 +192,7 @@ export default {
             .populate(this.review || {});
 
         this.updateRatings();
+        this.generateRandomPerson();
     },
     computed: {
         isOwnReviewForm() {
@@ -197,6 +213,21 @@ export default {
             }
 
             this.ratings = product.category.review_ratings;
+        },
+        async generateRandomPerson() {
+            this.isLoadingRandomPerson = true;
+            try {
+                const { data } = await this.$randomPerson.get('/api/person?fields=name');
+                if (!data.result) {
+                    throw new Error('Проблема с API генерации имен и фамилий');
+                }
+                this.form.first_name = data.result?.[0]?.name?.first;
+                this.form.last_name = data.result?.[0]?.name?.second;
+            }
+            catch (e) {
+                alert(e);
+            }
+            this.isLoadingRandomPerson = false;
         },
     },
 };

@@ -5,6 +5,7 @@ import theme from './theme';
 import toolbar from './toolbar';
 import currencies from './currencies';
 import navigation from './navigation';
+import services from "./services";
 
 export default {
     app,
@@ -18,4 +19,5 @@ export default {
     toolbar,
     currencies,
     navigation,
+    services,
 };

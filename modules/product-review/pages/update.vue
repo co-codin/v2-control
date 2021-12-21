@@ -38,6 +38,7 @@ export default {
     async fetch() {
         this.review = await ProductReview.$find(this.$route.params.id);
         this.review.experience = this.review.experience.value;
+        this.review.status = this.review.status.value;
         this.isLoading = false;
     },
     head: {

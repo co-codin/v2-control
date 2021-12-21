@@ -125,9 +125,11 @@
                         <b>Опыт использования:</b> {{ selectedReview.experience.description }}
                     </div>
 
-                    <div>
-                        <b>Общая оценка: </b> {{ selectedReview.ratings.main }} из 5
-                    </div>
+                    <template v-if="selectedReview.ratings">
+                        <div v-for="(rating, key) of selectedReview.ratings" :key="key">
+                            <b>{{ key }}: </b> {{ rating }} из 5
+                        </div>
+                    </template>
 
                     <div>
                         <b>Достоинства: </b> {{ selectedReview.advantages || "(не указано)" }}
