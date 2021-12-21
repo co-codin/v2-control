@@ -16,7 +16,20 @@
             hide-no-data
             cache-items
             clearable
+            @input="updateRatings"
         />
+
+        <template v-if="ratings && ratings.length">
+            <v-select
+                v-for="rating in ratings"
+                v-model="form.ratings[`${rating.name}`]"
+                :label="rating.name"
+                :items="ratingLabels"
+                :error-messages="form.errors.get(`ratings.${rating.name}`)"
+                :error="form.errors.has(`ratings.${rating.name}`)"
+                :key="rating.name"
+            />
+        </template>
 
         <v-text-field
             v-model="form.first_name"
@@ -38,14 +51,6 @@
             :items="experienceLabels"
             :error-messages="form.errors.get('experience')"
             :error="form.errors.has('experience')"
-        />
-
-        <v-select
-            v-model="form.ratings.main"
-            label="Общая оценка"
-            :items="ratingLabels"
-            :error-messages="form.errors.get('ratings.main')"
-            :error="form.errors.has('ratings.main')"
         />
 
         <v-switch
@@ -100,6 +105,7 @@ import FileField from '~/components/forms/FileField';
 import { urlRules } from '~/enums';
 import { productReviewStatusLabels } from "~/enums";
 import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
+import Product from "~/modules/product/models/Product";
 
 export default {
     components: { FileField, WysiwygField, EntityAutocompleteField },
@@ -144,6 +150,7 @@ export default {
             { value: 5, text: '5 из 5' },
         ],
         productReviewStatusLabels,
+        ratings: null,
     }),
     watch: {
         review(value) {
@@ -154,6 +161,24 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.review || {});
+
+        this.updateRatings();
+    },
+    methods: {
+        async updateRatings() {
+            if (!this.form.product_id) {
+                this.ratings = null;
+                return;
+            }
+            const product = await Product.include('category').$find(this.form.product_id);
+
+            if (!product.category) {
+                this.ratings = [];
+                return;
+            }
+
+            this.ratings = product.category.review_ratings;
+        },
     },
 };
 </script>
