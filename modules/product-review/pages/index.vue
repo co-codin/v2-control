@@ -29,12 +29,6 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
-                <template #item.author="{ item }">
-                    <div>
-                        {{ item.clientName }}
-                    </div>
-                </template>
-
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
@@ -66,32 +60,27 @@
                             link
                             :href="`${$config.app.siteUrl}/product/${item.product.slug}/${item.product.id}`"
                         >
-                            <external-link-icon class="h-6 w-6" />
+                            <external-link-icon />
                         </v-btn>
                     </div>
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions text-no-wrap">
+                    <div class="table-actions">
                         <v-btn
                             icon
-                            width="22"
-                            height="22"
                             @click="showReview(item)"
                         >
                             <eye-icon width="24" height="24" class="h-6 w-6" />
                         </v-btn>
                         <v-btn
                             icon
-                            width="22"
-                            height="22"
-                            class="mx-1"
                             :to="{ name: 'product-reviews.update', params: { id: item.id } }"
                         >
-                            <pencil-alt-icon class="h-6 w-6" />
+                            <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon width="22" height="22" @click.prevent="deleteProductReview(item)">
-                            <trash-icon class="h-6 w-6" />
+                        <v-btn icon @click.prevent="deleteProductReview(item)">
+                            <trash-icon />
                         </v-btn>
                     </div>
                 </template>
@@ -211,7 +200,7 @@ export default {
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
-                { text: 'Автор', align: 'left', value: 'author' },
+                { text: 'Автор', align: 'left', value: 'clientName' },
                 { text: 'Товар', align: 'left', value: 'product_id' },
                 { text: 'Статус', value: 'status' },
                 { text: 'Подтвержден', value: 'is_confirmed' },

@@ -23,4 +23,9 @@ export default class ProductQuestion extends Model {
                 return 'orange';
         }
     }
+
+    get clientName () {
+        const client = this.client ?? this;
+        return `${client.first_name} ${client.last_name}`;
+    }
 }

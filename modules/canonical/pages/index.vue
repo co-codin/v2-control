@@ -34,13 +34,13 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions text-no-wrap">
-                        <v-btn icon width="22" height="22" :to="{ name: 'canonicals.update', params: { id: item.id } }">
-                            <pencil-alt-icon class="h-6 w-6" />
+                    <div class="table-actions">
+                        <v-btn icon :to="{ name: 'canonicals.update', params: { id: item.id } }">
+                            <pencil-alt-icon />
                         </v-btn>
 
-                        <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteCanonical(item)">
-                            <trash-icon class="h-6 w-6" />
+                        <v-btn icon @click.prevent="deleteCanonical(item)">
+                            <trash-icon />
                         </v-btn>
                     </div>
                 </template>

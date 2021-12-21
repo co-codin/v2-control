@@ -3,19 +3,7 @@
         <page-header h1="Вопросы к товарам" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
-            <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        v-bind="attrs"
-                        v-on="on"
-                    >
-                        Добавить вопрос
-                    </v-btn>
-                </template>
-                <span>
-                    Добавление вопросов временно недоступно
-                </span>
-            </v-tooltip>
+            <v-btn :to="{ name: 'product-questions.create' }"> Добавить вопрос </v-btn>
         </div>
 
         <advanced-search-form
@@ -44,17 +32,6 @@
             >
                 <template #item.id="{ item }">
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
-                </template>
-
-                <template #item.author="{ item }">
-                    <div>
-                        <template v-if="item.client.first_name">
-                            {{ item.client.first_name }}
-                        </template>
-                        <template v-if="item.client.last_name">
-                            {{ item.client.last_name }}
-                        </template>
-                    </div>
                 </template>
 
                 <template #item.product_id="{ item }">
@@ -92,63 +69,34 @@
                             link
                             :href="`${$config.app.siteUrl}/product/${item.product.slug}/${item.product.id}`"
                         >
-                            <external-link-icon class="h-6 w-6" />
+                            <external-link-icon />
                         </v-btn>
                     </div>
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions text-no-wrap">
+                    <div class="table-actions">
                         <v-btn
                             icon
-                            width="22"
-                            height="22"
-                            class="mr-1"
                             @click="selectedQuestion = item; showQuestionAnswersPopup = true"
-                        >
-                            <chat-alt2-icon class="h-6 w-6" />
-                        </v-btn>
-
-<!--                        <v-btn-->
-<!--                            icon-->
-<!--                            width="22"-->
-<!--                            height="22"-->
-<!--                            class="mr-1"-->
-<!--                            @click="showQuestion(item)"-->
-<!--                        >-->
-<!--                            <eye-icon width="24" height="24" class="h-6 w-6" />-->
-<!--                        </v-btn>-->
-                        <v-btn
-                            v-if="!item.isApproved"
-                            icon
-                            width="22"
-                            height="22"
                             class="mr-1"
-                            @click="approveQuestion(item)"
                         >
-                            <check-circle-icon class="h-6 w-6" />
+                            <chat-alt2-icon /> <span style="margin-left: 3px;">{{ item.product_answers_count }}</span>
                         </v-btn>
                         <v-btn
-                            v-if="!item.isRejected"
                             icon
-                            width="22"
-                            height="22"
-                            class="mr-1"
-                            @click="rejectQuestion(item)"
+                            @click="showQuestion(item)"
                         >
-                            <x-circle-icon class="h-6 w-6" />
+                            <eye-icon width="24" height="24" />
                         </v-btn>
-<!--                        <v-btn-->
-<!--                            icon-->
-<!--                            width="22"-->
-<!--                            height="22"-->
-<!--                            class="mx-1"-->
-<!--                            :to="{ name: 'product-questions.update', params: { id: item.id } }"-->
-<!--                        >-->
-<!--                            <pencil-alt-icon class="h-6 w-6" />-->
-<!--                        </v-btn>-->
-                        <v-btn icon width="22" height="22" @click.prevent="deleteProductQuestion(item)">
-                            <trash-icon class="h-6 w-6" />
+                        <v-btn
+                            icon
+                            :to="{ name: 'product-questions.update', params: { id: item.id } }"
+                        >
+                            <pencil-alt-icon />
+                        </v-btn>
+                        <v-btn icon @click.prevent="deleteProductQuestion(item)">
+                            <trash-icon />
                         </v-btn>
                     </div>
                 </template>
@@ -157,20 +105,40 @@
         <v-dialog
             v-if="showQuestionDetailsPopup"
             v-model="showQuestionDetailsPopup"
-            width="500"
+            max-width="500"
         >
             <v-card>
                 <v-card-title
                     class="headline grey lighten-2"
                     primary-title
                 >
-                    Подробно об оставленном отзывы
+                    Подробно о вопросе
                 </v-card-title>
 
-                <v-card-text>
+                <v-card-text class="pt-2">
+                    <div>
+                        <b>Автор: </b> {{ selectedQuestion.clientName }}
+                    </div>
 
                     <div>
-                        <b>Опыт использования:</b>
+                        <b>Дата написания: </b> {{ selectedQuestion.asDate('date').fromNow() }}
+                    </div>
+
+                    <div>
+                        <b>Статус: </b> <v-chip small :color="selectedQuestion.color" dark>{{ selectedQuestion.status.description }}</v-chip>
+                    </div>
+
+                    <div>
+                        <b>Товар: </b>
+                        <span class="text-no-wrap">
+                            <a target="_blank" :href="`${$config.app.siteUrl}/product/${selectedQuestion.product.slug}/${selectedQuestion.product.id}`">
+                                {{ selectedQuestion.product.brand.name }} {{ selectedQuestion.product.name }}
+                            </a>
+                        </span>
+                    </div>
+
+                    <div>
+                        <b>Вопрос: </b> {{ selectedQuestion.text || "(не указано)" }}
                     </div>
 
                 </v-card-text>
@@ -178,15 +146,29 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
-                        color="primary"
-                        text
-                        @click="dialog = false"
+                        v-if="!selectedQuestion.isApproved"
+                        color="green"
+                        outlined
+                        small
+                        @click="approveQuestion(selectedQuestion)"
                     >
-                        I accept
+                        <check-circle-icon class="h-6 w-6 mr-1" />
+                        Одобрить
+                    </v-btn>
+                    <v-btn
+                        v-if="!selectedQuestion.isRejected"
+                        color="red"
+                        outlined
+                        small
+                        @click="rejectQuestion(selectedQuestion)"
+                    >
+                        <x-circle-icon class="h-6 w-6 mr-1" />
+                        Отклонить
                     </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
         <v-dialog
             v-if="showQuestionAnswersPopup"
             v-model="showQuestionAnswersPopup"
@@ -278,7 +260,7 @@ export default {
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Товар', align: 'left', value: 'product_id' },
-                { text: 'Автор', align: 'left', value: 'author' },
+                { text: 'Автор', align: 'left', value: 'clientName' },
                 { text: 'Статус', value: 'status' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Вопрос', align: 'left', value: 'text' },
@@ -316,7 +298,7 @@ export default {
         this.showLoading();
         const response = await ProductQuestion.query()
             .params(this.queryParams)
-            .with(['client', 'product', 'product.brand', 'productAnswers'])
+            .with(['client', 'product', 'product.brand', 'productAnswers', 'productAnswersCount'])
             .get();
         this.product_questions = ProductQuestion.hydrate(response.data);
         this.setTotal(response.meta.total);
@@ -356,6 +338,7 @@ export default {
                 });
                 this.$snackbar(`Вопрос успешно одобрен`);
                 this.$fetch();
+                this.showQuestionDetailsPopup = false;
             } catch (e) {
                 this.$snackbar(e.message);
             }
@@ -370,6 +353,7 @@ export default {
                 });
                 this.$snackbar(`Вопрос успешно отклонен`);
                 this.$fetch();
+                this.showQuestionDetailsPopup = false;
             } catch (e) {
                 this.$snackbar(e.message);
             }
