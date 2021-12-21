@@ -32,7 +32,7 @@
         </template>
 
         <template v-if="isOwnReviewForm">
-            <v-card outlined>
+            <v-card outlined class="mb-2">
                 <v-card-title>
                     Автор
                 </v-card-title>
