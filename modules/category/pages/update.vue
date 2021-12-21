@@ -25,7 +25,6 @@ import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
 import CategoryReviewCriteriaForm from "~/modules/category/components/CategoryReviewCriteriaForm";
 import Category from "~/modules/category/models/Category";
-import login from "~/_pages/login";
 
 export default {
     components: {

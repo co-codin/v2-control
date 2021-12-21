@@ -1,14 +1,6 @@
 <template>
     <v-form @submit.prevent="save">
         <template v-if="form">
-            <file-field
-                v-model="form.booklet"
-                :is-image="false"
-                label="Брошюра"
-                @input="form.is_booklet_changed = true"
-                @delete="form.booklet = null; form.is_booklet_changed = true"
-            />
-            <h4 class="mb-1">Документы</h4>
             <v-expansion-panels v-if="form">
                 <v-expansion-panel v-for="(document, index) in form.documents" :key="'document-' + index">
                     <v-expansion-panel-header class="title">
@@ -180,7 +172,6 @@ export default {
     data: () => ({
         formDefaults: {
             documents: [],
-            booklet: null,
         },
         form: null,
         sourceLabels: [
