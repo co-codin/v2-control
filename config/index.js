@@ -10,7 +10,7 @@ export default {
     app,
     product: {
         name: 'control.medeq.ru',
-        version: '0.1',
+        version: '0.99',
     },
     time,
     icons,

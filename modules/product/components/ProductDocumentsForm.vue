@@ -16,9 +16,11 @@
                                     <v-tab-item key="information">
                                         <v-card flat>
                                             <v-card-text>
-                                                <v-text-field
+                                                <v-combobox
                                                     v-model="document.name"
                                                     label="Название группы"
+                                                    :items="availableGroupLabels"
+                                                    :return-object="false"
                                                     dense
                                                     :error-messages="form.errors.get(`documents.${index}.name`)"
                                                     :error="form.errors.has(`documents.${index}.name`)"
@@ -185,7 +187,11 @@ export default {
             {value: 7, text: 'Стандарты оснащения'},
             {value: 4, text: 'Технические характеристики'},
             {value: 3, text: 'Сертификат ДС'},
-            {value: 2, text: 'Сертификат РУ'},
+            {value: 2, text: 'Регистрационное удостоверение'},
+        ],
+        availableGroupLabels: [
+            {value: "Техническая документация", text: 'Техническая документация'},
+            {value: "Сертификаты", text: 'Сертификаты'},
         ],
         tab: 'information',
         tabs: [
