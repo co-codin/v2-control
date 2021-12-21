@@ -97,7 +97,6 @@
 import { Form } from 'form-backend-validation';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
-import { urlRules } from '~/enums';
 import { productReviewStatusLabels } from "~/enums";
 import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
 
@@ -130,7 +129,6 @@ export default {
             status: 1,
         },
         form: null,
-        urlRules,
         experienceLabels: [
             { value: 1, text: 'Меньше месяца' },
             { value: 2, text: 'Несколько месяцев' },

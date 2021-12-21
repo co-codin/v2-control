@@ -34,7 +34,7 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions text-no-wrap">
+                    <div class="table-actions">
                         <v-btn
                             icon
                             width="22"
@@ -43,7 +43,7 @@
                             link
                             :href="`${$config.app.siteUrl}/page/${item.slug}`"
                         >
-                            <external-link-icon class="h-6 w-6" />
+                            <external-link-icon />
                         </v-btn>
                         <v-btn
                             icon
@@ -52,10 +52,10 @@
                             class="mx-1"
                             :to="{ name: 'pages.update', params: { id: item.id } }"
                         >
-                            <pencil-alt-icon class="h-6 w-6" />
+                            <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon width="22" height="22" @click.prevent="deletePage(item)">
-                            <trash-icon class="h-6 w-6" />
+                        <v-btn icon @click.prevent="deletePage(item)">
+                            <trash-icon />
                         </v-btn>
                     </div>
                 </template>

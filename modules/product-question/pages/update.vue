@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Редактирование вопроса" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
-            <v-expansion-panels>
+            <v-expansion-panels :value="0">
                 <form-block title="Основная информация">
                     <product-question-form
                         :question="question"
@@ -19,6 +19,7 @@
 import ProductQuestionForm from '../components/ProductQuestionForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
+import ProductQuestion from "~/modules/product-question/models/ProductQuestion";
 
 export default {
     components: {
@@ -35,8 +36,7 @@ export default {
         ],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/product-questions/${this.$route.params.id}`);
-        this.question = data.data;
+        this.question = await ProductQuestion.$find(this.$route.params.id);
         this.isLoading = false;
     },
     head: {
@@ -45,7 +45,7 @@ export default {
     methods: {
         async updateQuestion(form) {
             try {
-                await form.put(`/admin/product-questions/${this.$route.params.id}`);
+                await form.put(`/admin/product-questions/${this.question.id}`);
                 this.$snackbar(`Вопрос к товару успешно обновлен`);
                 await this.$router.push({ name: 'product-questions.index' });
             } catch (e) {

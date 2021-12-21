@@ -42,7 +42,7 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions text-no-wrap">
+                    <div class="table-actions">
                         <v-btn
                             icon
                             width="22"
@@ -50,10 +50,10 @@
                             class="mx-1"
                             :to="{ name: 'redirects.update', params: { id: item.id } }"
                         >
-                            <pencil-alt-icon class="h-6 w-6" />
+                            <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon width="22" height="22" @click.prevent="deleteRedirect(item)">
-                            <trash-icon class="h-6 w-6" />
+                        <v-btn icon @click.prevent="deleteRedirect(item)">
+                            <trash-icon />
                         </v-btn>
                     </div>
                 </template>

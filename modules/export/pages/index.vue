@@ -38,13 +38,13 @@
                 </template>
 
                 <template #item.action="{ item }">
-                    <div class="actions">
-                        <v-btn icon width="22" height="22" :to="{ name: 'exports.update', params: { id: item.id } }">
-                            <pencil-alt-icon class="h-6 w-6" />
+                    <div class="table-actions">
+                        <v-btn icon :to="{ name: 'exports.update', params: { id: item.id } }">
+                            <pencil-alt-icon />
                         </v-btn>
 
-                        <v-btn icon width="22" height="22" class="mx-1" @click.prevent="deleteExport(item)">
-                            <trash-icon class="h-6 w-6" />
+                        <v-btn icon @click.prevent="deleteExport(item)">
+                            <trash-icon />
                         </v-btn>
                     </div>
                 </template>
