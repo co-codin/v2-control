@@ -76,6 +76,15 @@
             "
         />
 
+        <v-text-field
+            type="number"
+            :value="form.view_num"
+            label="Количество просмотров"
+            :error-messages="form.errors.get('view_num')"
+            :error="form.errors.has('view_num')"
+            @input="(value) => updateField({ field: 'view_num', value })"
+        />
+
         <v-select
             v-if="isUpdating"
             :value="form.status"

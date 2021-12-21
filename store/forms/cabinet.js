@@ -15,6 +15,7 @@ export default {
             image: null,
             is_image_changed: false,
             status: 2,
+            view_num: null,
             categories: [],
             requirements: [],
             documents: [],
