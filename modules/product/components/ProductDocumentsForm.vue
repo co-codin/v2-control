@@ -1,14 +1,6 @@
 <template>
     <v-form @submit.prevent="save">
         <template v-if="form">
-            <file-field
-                v-model="form.booklet"
-                :is-image="false"
-                label="Брошюра"
-                @input="form.is_booklet_changed = true"
-                @delete="form.booklet = null; form.is_booklet_changed = true"
-            />
-            <h4 class="mb-1">Документы</h4>
             <v-expansion-panels v-if="form">
                 <v-expansion-panel v-for="(document, index) in form.documents" :key="'document-' + index">
                     <v-expansion-panel-header class="title">
@@ -24,9 +16,11 @@
                                     <v-tab-item key="information">
                                         <v-card flat>
                                             <v-card-text>
-                                                <v-text-field
+                                                <v-combobox
                                                     v-model="document.name"
                                                     label="Название группы"
+                                                    :items="availableGroupLabels"
+                                                    :return-object="false"
                                                     dense
                                                     :error-messages="form.errors.get(`documents.${index}.name`)"
                                                     :error="form.errors.has(`documents.${index}.name`)"
@@ -180,7 +174,6 @@ export default {
     data: () => ({
         formDefaults: {
             documents: [],
-            booklet: null,
         },
         form: null,
         sourceLabels: [
@@ -194,7 +187,11 @@ export default {
             {value: 7, text: 'Стандарты оснащения'},
             {value: 4, text: 'Технические характеристики'},
             {value: 3, text: 'Сертификат ДС'},
-            {value: 2, text: 'Сертификат РУ'},
+            {value: 2, text: 'Регистрационное удостоверение'},
+        ],
+        availableGroupLabels: [
+            {value: "Техническая документация", text: 'Техническая документация'},
+            {value: "Сертификаты", text: 'Сертификаты'},
         ],
         tab: 'information',
         tabs: [
