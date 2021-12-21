@@ -78,15 +78,16 @@
                     <div class="table-actions">
                         <v-btn
                             icon
-                            @click="showQuestion(item)"
+                            @click="selectedQuestion = item; showQuestionAnswersPopup = true"
+                            class="mr-1"
                         >
-                            <eye-icon width="24" height="24" />
+                            <chat-alt2-icon /> <span style="margin-left: 3px;">{{ item.product_answers_count }}</span>
                         </v-btn>
                         <v-btn
                             icon
-                            @click="selectedQuestion = item; showQuestionAnswersPopup = true"
+                            @click="showQuestion(item)"
                         >
-                            <chat-alt2-icon /> <span>{{ item.product_answers_count }}</span>
+                            <eye-icon width="24" height="24" />
                         </v-btn>
                         <v-btn
                             icon
