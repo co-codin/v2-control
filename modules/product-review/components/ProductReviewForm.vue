@@ -31,19 +31,21 @@
             />
         </template>
 
-        <v-text-field
-            v-model="form.first_name"
-            label="Имя"
-            :error-messages="form.errors.get('first_name')"
-            :error="form.errors.has('first_name')"
-        />
+        <template v-if="isOwnReviewForm">
+            <v-text-field
+                v-model="form.first_name"
+                label="Имя"
+                :error-messages="form.errors.get('first_name')"
+                :error="form.errors.has('first_name')"
+            />
 
-        <v-text-field
-            v-model="form.last_name"
-            label="Фамилия"
-            :error-messages="form.errors.get('last_name')"
-            :error="form.errors.has('last_name')"
-        />
+            <v-text-field
+                v-model="form.last_name"
+                label="Фамилия"
+                :error-messages="form.errors.get('last_name')"
+                :error="form.errors.has('last_name')"
+            />
+        </template>
 
         <v-select
             v-model="form.experience"
@@ -119,10 +121,8 @@ export default {
         },
     },
     data: () => ({
-        formDefaults: {
+        clientReviewFormDefaults: {
             product_id: null,
-            first_name: null,
-            last_name: null,
             comment: null,
             disadvantages: null,
             advantages: null,
@@ -131,6 +131,18 @@ export default {
             },
             experience: null,
             client_id: null,
+            is_confirmed: false,
+            status: 1,
+        },
+        ownReviewFormDefaults: {
+            product_id: null,
+            first_name: null,
+            last_name: null,
+            comment: null,
+            disadvantages: null,
+            advantages: null,
+            ratings: {},
+            experience: null,
             is_confirmed: false,
             status: 1,
         },
@@ -156,11 +168,20 @@ export default {
         },
     },
     created() {
-        this.form = Form.create(this.formDefaults)
+        let defaults = !this.isOwnReviewForm
+            ? this.clientReviewFormDefaults
+            : this.ownReviewFormDefaults;
+
+        this.form = Form.create(defaults)
             .withOptions({ http: this.$axios })
             .populate(this.review || {});
 
         this.updateRatings();
+    },
+    computed: {
+        isOwnReviewForm() {
+            return !this.isUpdating || !this.review?.client_id;
+        },
     },
     methods: {
         async updateRatings() {
