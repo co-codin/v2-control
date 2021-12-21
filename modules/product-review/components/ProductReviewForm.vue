@@ -225,7 +225,7 @@ export default {
                 this.form.last_name = data.result?.[0]?.name?.second;
             }
             catch (e) {
-                alert(e);
+                this.$snackbar(e.message);
             }
             this.isLoadingRandomPerson = false;
         },
