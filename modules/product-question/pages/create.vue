@@ -32,9 +32,9 @@ export default {
     methods: {
         async createQuestion(form) {
             try {
-                await form.post('/admin/product-questions');
+                const { data } = await form.post('/admin/product-questions');
                 this.$snackbar(`Вопрос к товару успешно добавлен`);
-                await this.$router.push({ name: 'product-questions.index' });
+                await this.$router.push({ name: 'product-questions.update', params: { id: data.id } });
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при создании: ${e.message}`);
             }

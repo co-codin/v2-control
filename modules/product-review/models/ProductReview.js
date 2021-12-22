@@ -28,4 +28,16 @@ export default class ProductReview extends Model {
         const client = this.client ?? this;
         return `${client.first_name} ${client.last_name}`;
     }
+
+    approve() {
+            return this.$http.put(`/admin/product-reviews/${this.id}/approve`, {
+            comment: 'Отзыв прошел проверку',
+        });
+    }
+
+    reject() {
+        return this.$http.put(`/admin/product-reviews/${this.id}/reject`, {
+            comment: 'Отзыв не прошел проверку',
+        });
+    }
 }

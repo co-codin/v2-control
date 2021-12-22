@@ -1,4 +1,4 @@
-import Snackbar from './Snackbar';
+import Snackbar from './Component';
 
 function Install(Vue, options = {}) {
     const property = options.property || '$snackbar';

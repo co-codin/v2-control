@@ -261,9 +261,7 @@ export default {
                 return;
             }
             try {
-                await this.$axios.put(`/admin/product-reviews/${review.id}/approve`, {
-                    comment: 'Отзыв прошел проверку'
-                });
+                await review.approve();
                 this.$snackbar(`Отзыв успешно одобрен`);
                 this.$fetch();
                 this.showReviewDetailsPopup = false;
@@ -276,9 +274,7 @@ export default {
                 return;
             }
             try {
-                await this.$axios.put(`/admin/product-reviews/${review.id}/reject`, {
-                    comment: 'Отзыв не прошел проверку'
-                });
+                await review.reject();
                 this.$snackbar(`Отзыв успешно отклонен`);
                 this.$fetch();
                 this.showReviewDetailsPopup = false;
