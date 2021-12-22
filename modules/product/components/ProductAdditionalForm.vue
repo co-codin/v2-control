@@ -24,6 +24,7 @@
 
             <v-switch
                 v-model="form.is_arbitrary_warranty"
+                @change="resetWarranty"
                 label="Гарантия в произвольном формате"
                 :error-messages="form.errors.get('is_arbitrary_warranty')"
                 :error="form.errors.has('is_arbitrary_warranty')"
@@ -37,8 +38,8 @@
                 :error-messages="form.errors.get('arbitrary_warranty_info')"
                 :error="form.errors.has('arbitrary_warranty_info')"
             />
-
             <v-text-field
+                v-else
                 v-model="form.warranty"
                 type="number"
                 label="Гарантия"
@@ -118,6 +119,14 @@ export default {
                 this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при сохранении: ${e.message}`);
+            }
+        },
+        resetWarranty() {
+            if (this.form.is_arbitrary_warranty) {
+                this.form.warrnty = null;
+            }
+            else {
+                this.form.arbitrary_warranty_info = null;
             }
         },
     },
