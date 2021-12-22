@@ -30,7 +30,7 @@
                 inset
             />
 
-            <wysiwyg-field
+            <v-text-field
                 v-if="form.is_arbitrary_warranty"
                 v-model="form.arbitrary_warranty_info"
                 label="Гарантия в произвольном формате"
