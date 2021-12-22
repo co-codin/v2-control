@@ -137,6 +137,81 @@
                                     </v-card-text>
                                 </v-card>
                             </v-tab-item>
+                            <v-tab-item key="relations">
+                                <v-card flat>
+                                    <v-card-text>
+                                        <v-checkbox
+                                            label="Не обновлять коммерческую информацию"
+                                            dense
+                                        />
+                                        <h3 class="mb-1">Поставщики</h3>
+                                        <v-expansion-panels>
+                                            <v-expansion-panel>
+                                                <v-expansion-panel-header class="title">
+                                                    Медкомплекс
+                                                </v-expansion-panel-header>
+                                                <v-expansion-panel-content>
+                                                    <v-row>
+                                                        <v-tabs v-model="relationTab" grow background-color="transparent">
+                                                            <v-tab key="main">
+                                                                Основная информация
+                                                            </v-tab>
+                                                            <v-tab key="check">
+                                                                Сверка
+                                                            </v-tab>
+                                                        </v-tabs>
+                                                        <v-tabs-items v-model="relationTab" style="width: 100%">
+                                                            <v-tab-item key="main">
+                                                                <v-card flat>
+                                                                    <v-card-text>
+                                                                        <v-select
+                                                                            label="Поставщик"
+                                                                            dense
+                                                                            :items="[{value: '1', text: 'Медкомплекс АВК'}, {value: '2', text: 'Деалмед'}]"
+                                                                        />
+                                                                        <v-text-field
+                                                                            label="Ключ"
+                                                                            dense
+                                                                            hint="Ссылка, артикул и т.д. в зависимости от поставщика"
+                                                                            persistent-hint
+                                                                        />
+                                                                        <v-checkbox
+                                                                            label="Использовать для обновления коммерческой информации"
+                                                                            dense
+                                                                        />
+                                                                        <v-divider class="my-2" />
+                                                                        <div class="text-center">
+                                                                            <v-btn
+                                                                                small
+                                                                                class="white--text"
+                                                                                color="red"
+                                                                            >
+                                                                                Удалить связь
+                                                                            </v-btn>
+                                                                        </div>
+                                                                    </v-card-text>
+                                                                </v-card>
+                                                            </v-tab-item>
+                                                            <v-tab-item key="check">
+                                                                <v-card flat>
+                                                                    <v-card-text>
+                                                                        <v-alert outlined dense>
+                                                                            #потом
+                                                                        </v-alert>
+                                                                    </v-card-text>
+                                                                </v-card>
+                                                            </v-tab-item>
+                                                        </v-tabs-items>
+                                                    </v-row>
+                                                </v-expansion-panel-content>
+                                            </v-expansion-panel>
+                                        </v-expansion-panels>
+                                        <div class="mt-2">
+                                            <v-btn link small color="primary" outlined> Добавить связь </v-btn>
+                                        </div>
+                                    </v-card-text>
+                                </v-card>
+                            </v-tab-item>
                         </v-tabs-items>
                     </v-row>
                 </v-expansion-panel-content>
@@ -171,9 +246,11 @@ export default {
                 { value: 5, text: 'Отсутствует РУ' },
             ],
             tab: null,
+            relationTab: null,
             items: [
                 { tab: 'Параметры', key: 'parameters' },
                 { tab: 'Коммерческая информация', key: 'commerce' },
+                { tab: 'Связи', key: 'relations' },
             ],
         };
     },

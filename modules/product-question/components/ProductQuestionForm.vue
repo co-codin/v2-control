@@ -18,14 +18,6 @@
             clearable
         />
 
-        <v-select
-            v-model="form.status"
-            label="Статус"
-            :error-messages="form.errors.get('status')"
-            :error="form.errors.has('status')"
-            :items="productQuestionStatusLabels"
-        />
-
         <template v-if="isOwnQuestionForm">
             <v-card outlined class="mb-2">
                 <v-card-title>
@@ -77,7 +69,6 @@ import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
 import ProductQuestion from "~/modules/product-question/models/ProductQuestion";
-import { productQuestionStatusLabels } from "~/enums";
 
 export default {
     components: { FileField, WysiwygField, EntityAutocompleteField },
@@ -95,7 +86,6 @@ export default {
         clientQuestionFormDefaults: {
             product_id: null,
             text: null,
-            status: 1,
             client_id: null,
         },
         ownQuestionFormDefaults: {
@@ -103,10 +93,8 @@ export default {
             first_name: null,
             last_name: null,
             text: null,
-            status: 1,
         },
         form: null,
-        productQuestionStatusLabels,
         isLoadingRandomPerson: false,
     }),
     watch: {

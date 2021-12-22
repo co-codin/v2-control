@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Редактирование вопроса" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
-            <v-expansion-panels :value="0">
+             <v-expansion-panels :value="0">
                 <form-block title="Основная информация">
                     <product-question-form
                         :question="question"

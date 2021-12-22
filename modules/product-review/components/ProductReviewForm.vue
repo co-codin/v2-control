@@ -77,14 +77,6 @@
             inset
         />
 
-        <v-select
-            v-model="form.status"
-            label="Статус"
-            :error-messages="form.errors.get('status')"
-            :error="form.errors.has('status')"
-            :items="productReviewStatusLabels"
-        />
-
         <v-textarea
             v-model="form.advantages"
             label="Достоинства"
@@ -118,7 +110,6 @@
 import { Form } from 'form-backend-validation';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
-import { productReviewStatusLabels } from "~/enums";
 import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
 import Product from "~/modules/product/models/Product";
 
@@ -146,7 +137,6 @@ export default {
             experience: null,
             client_id: null,
             is_confirmed: false,
-            status: 1,
         },
         ownReviewFormDefaults: {
             product_id: null,
@@ -158,7 +148,6 @@ export default {
             ratings: {},
             experience: null,
             is_confirmed: false,
-            status: 1,
         },
         form: null,
         experienceLabels: [
@@ -173,7 +162,6 @@ export default {
             { value: 4, text: '4 из 5' },
             { value: 5, text: '5 из 5' },
         ],
-        productReviewStatusLabels,
         ratings: null,
         isLoadingRandomPerson: false,
     }),
