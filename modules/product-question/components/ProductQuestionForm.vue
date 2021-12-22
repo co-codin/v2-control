@@ -116,7 +116,9 @@ export default {
             .withOptions({ http: this.$axios })
             .populate(this.question || {});
 
-        this.generateRandomPerson();
+        if (!this.isUpdating) {
+            this.generateRandomPerson();
+        }
     },
     methods: {
         async generateRandomPerson() {

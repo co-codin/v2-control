@@ -333,9 +333,7 @@ export default {
                 return;
             }
             try {
-                await this.$axios.put(`/admin/product-questions/${question.id}/approve`, {
-                    comment: 'Вопрос к товару прошел проверку'
-                });
+                await question.approve();
                 this.$snackbar(`Вопрос успешно одобрен`);
                 this.$fetch();
                 this.showQuestionDetailsPopup = false;
@@ -348,9 +346,7 @@ export default {
                 return;
             }
             try {
-                await this.$axios.put(`/admin/product-questions/${question.id}/reject`, {
-                    comment: 'Вопрос к товару не прошел проверку'
-                });
+                await question.reject();
                 this.$snackbar(`Вопрос успешно отклонен`);
                 this.$fetch();
                 this.showQuestionDetailsPopup = false;

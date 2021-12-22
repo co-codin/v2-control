@@ -112,12 +112,13 @@ import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
 import Product from "~/modules/product/models/Product";
+import ProductReview from "~/modules/product-review/models/ProductReview";
 
 export default {
     components: { FileField, WysiwygField, EntityAutocompleteField },
     props: {
         review: {
-            type: Object | null,
+            type: ProductReview,
             default: () => ({}),
         },
         isUpdating: {
@@ -180,7 +181,10 @@ export default {
             .populate(this.review || {});
 
         this.updateRatings();
-        this.generateRandomPerson();
+
+        if (!this.isUpdating) {
+            this.generateRandomPerson();
+        }
     },
     computed: {
         isOwnReviewForm() {

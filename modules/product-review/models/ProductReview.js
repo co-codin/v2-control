@@ -6,11 +6,11 @@ export default class ProductReview extends Model {
     }
 
     get isApproved() {
-        return this.status.value === 2;
+        return (this.status?.value ?? this.status) === 2;
     }
 
     get isRejected() {
-        return this.status.value === 3;
+        return (this.status?.value ?? this.status) === 3;
     }
 
     get color () {
@@ -26,7 +26,7 @@ export default class ProductReview extends Model {
 
     get clientName () {
         const client = this.client ?? this;
-        return `${client.first_name} ${client.last_name}`;
+        return `${client.first_name ?? ""} ${client.last_name ?? ""}`;
     }
 
     approve() {

@@ -32,9 +32,9 @@ export default {
     methods: {
         async createReview(form) {
             try {
-                await form.post('/admin/product-reviews');
+                const { data } = await form.post('/admin/product-reviews');
                 this.$snackbar(`Отзыв успешно добавлен`);
-                await this.$router.push({ name: 'product-reviews.index' });
+                await this.$router.push({ name: 'product-reviews.update', params: { id: data.id } });
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при создании отзыва: ${e.message}`);
             }

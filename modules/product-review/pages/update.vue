@@ -75,9 +75,9 @@ export default {
             try {
                 await form.put(`/admin/product-reviews/${this.review.id}`);
                 this.$snackbar(`Отзыв успешно обновлен`);
-                await this.$router.push({ name: 'product-reviews.index' });
+                await this.$nuxt.refresh();
             } catch (e) {
-                this.$snackbar(`Приозошла ошибка при обновлении отзыва: ${e.message}`);
+                this.$snackbar(`Произошла ошибка при обновлении отзыва: ${e.message}`);
             }
         },
         async approveReview(review) {
@@ -87,7 +87,7 @@ export default {
             try {
                 await review.approve();
                 this.$snackbar(`Отзыв успешно одобрен`);
-                await this.$router.push({ name: 'product-reviews.index' });
+                await this.$nuxt.refresh();
             } catch (e) {
                 this.$snackbar(e.message);
             }
@@ -99,7 +99,7 @@ export default {
             try {
                 await review.reject();
                 this.$snackbar(`Отзыв успешно отклонен`);
-                await this.$router.push({ name: 'product-reviews.index' });
+                await this.$nuxt.refresh();
             } catch (e) {
                 this.$snackbar(e.message);
             }
