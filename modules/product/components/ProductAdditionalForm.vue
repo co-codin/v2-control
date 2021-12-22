@@ -123,7 +123,7 @@ export default {
         },
         resetWarranty() {
             if (this.form.is_arbitrary_warranty) {
-                this.form.warrnty = null;
+                this.form.warranty = null;
             }
             else {
                 this.form.arbitrary_warranty_info = null;
