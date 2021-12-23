@@ -48,6 +48,6 @@ export default class Model extends BaseModel {
         this.baseURL = function () {
             return `${this.baseUrl}/admin`;
         };
-        super.delete();
+        return super.delete();
     }
 }

@@ -113,7 +113,7 @@ export default {
                 return;
             }
             try {
-                await this.$axios.delete(`/admin/field-values/${fieldValue.id}`);
+                await fieldValue.delete();
                 this.$snackbar(`Значение ${fieldValue.value} успешно удалено`);
                 this.fieldValues = this.fieldValues.filter((item) => item.id !== fieldValue.id);
             } catch (e) {
