@@ -186,3 +186,7 @@
 .v-data-table table tbody tr:nth-child(odd) {
     background: #f5f5f5;
 }
+
+.v-data-table table tbody tr:nth-child(odd):hover {
+    background: #f5f5f5 !important;
+}
