@@ -50,7 +50,7 @@
                                                                 :key="'doc-' + i"
                                                             >
                                                                 <v-expansion-panel-header class="title">
-                                                                    {{ doc.name || '(без названия)' }}
+                                                                    {{ doc.name || getDocName(doc) || '(без названия)' }}
                                                                 </v-expansion-panel-header>
                                                                 <v-expansion-panel-content>
                                                                     <v-select
@@ -250,6 +250,15 @@ export default {
                 name: null,
                 docs: [],
             });
+        },
+        getDocName(doc) {
+            if (doc.name) {
+                return doc.name;
+            }
+            if (!doc.type) {
+                return null;
+            }
+            return `${this.typeLabels.find(type => type.value === doc.type)?.text ?? ""} ${this.product?.brand?.name} ${this.product.name}`;
         },
     },
 };
