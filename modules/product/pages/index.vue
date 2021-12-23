@@ -92,6 +92,7 @@ export default {
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id', cellClass: 'text-no-wrap' },
+                { text: 'Артикул', align: 'left', value: 'article', cellClass: 'text-no-wrap' },
                 { text: 'Производитель', align: 'left', value: 'brand.name', sortable: false },
                 { text: 'Модель', align: 'left', value: 'name' },
                 { text: 'Категория', align: 'left', value: 'category.name', sortable: false },
@@ -120,6 +121,11 @@ export default {
                 {
                     label: 'ID',
                     name: 'id',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
+                    label: 'Артикул',
+                    name: 'article',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
@@ -173,7 +179,7 @@ export default {
         this.showLoading();
 
         const response = await Product.select({
-            products: ['id', 'name', 'brand_id', 'slug', 'status', 'created_at'],
+            products: ['id', 'article', 'name', 'brand_id', 'slug', 'status', 'created_at'],
             brand: ['id', 'name'],
             category: ['id', 'name', 'parent_id'],
             categories: ['id', 'name'],
