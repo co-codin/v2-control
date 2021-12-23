@@ -1,5 +1,12 @@
 <template>
     <v-form @submit.prevent="$emit('save', form)">
+        <v-select
+            label="Сотрудник"
+            :items="personList"
+            return-object
+            dense
+            @change="fillPersonFields"
+        />
         <v-text-field
             v-model="form.first_name"
             label="Имя"
@@ -41,6 +48,7 @@ import { Form } from 'form-backend-validation';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import ProductQuestion from "~/modules/product-question/models/ProductQuestion";
+import ProductAnswerPerson from "~/modules/product/models/ProductAnswerPerson";
 
 export default {
     components: { FileField, WysiwygField },
@@ -64,6 +72,7 @@ export default {
                 product_question_id: this.question.id,
             },
             form: null,
+            persons: [],
         });
     },
     watch: {
@@ -71,10 +80,28 @@ export default {
             this.form.populate(value);
         },
     },
-    created() {
+    computed: {
+        personList() {
+            return this.persons.map(person => ({
+                ...person,
+                value: `${person.first_name} ${person.last}`,
+                text: `${person.first_name} ${person.last_name} (${person.person ?? "не заполнено"})`,
+            }));
+        },
+    },
+    async created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.answer || {});
+
+        this.persons = await ProductAnswerPerson.get();
+    },
+    methods: {
+        fillPersonFields(person) {
+            this.form.first_name = person.first_name;
+            this.form.last_name = person.last_name;
+            this.form.person = person.person;
+        },
     },
 };
 </script>
