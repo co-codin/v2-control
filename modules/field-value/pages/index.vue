@@ -40,10 +40,9 @@
                         <v-btn icon :to="{ name: 'field-values.update', params: { id: item.id } }">
                             <pencil-alt-icon />
                         </v-btn>
-
-<!--                        <v-btn icon @click.prevent="deleteFieldValue(item)">-->
-<!--                            <trash-icon />-->
-<!--                        </v-btn>-->
+                        <v-btn icon @click.prevent="deleteFieldValue(item)">
+                            <trash-icon />
+                        </v-btn>
                     </div>
                 </template>
             </v-data-table>
@@ -114,11 +113,11 @@ export default {
                 return;
             }
             try {
-                await fieldValue.delete();
+                await this.$axios.delete(`/admin/field-values/${fieldValue.id}`);
                 this.$snackbar(`Значение ${fieldValue.value} успешно удалено`);
                 this.fieldValues = this.fieldValues.filter((item) => item.id !== fieldValue.id);
             } catch (e) {
-                this.$snackbar(e.message);
+                this.$snackbar(e?.response?.data?.message ?? e.message);
             }
         },
     },
