@@ -14,7 +14,6 @@
                 @input="$emit('input', $event)"
                 v-bind="Object.assign({}, attrs, $attrs)"
                 v-on="on"
-                clearable
             />
         </template>
         <v-date-picker
@@ -22,7 +21,7 @@
             no-title
             scrollable
             locale="ru-RU"
-            @input="$emit('input', $event)"
+            @input="$emit('input', $event); $refs.menu.save($event)"
         >
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="menu = false">Отмена</v-btn>

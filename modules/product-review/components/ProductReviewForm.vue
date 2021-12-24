@@ -1,6 +1,31 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
 
+        <v-card outlined flat tile class="mb-1">
+            <v-card-title>
+                Дата и время написания отзыва
+            </v-card-title>
+            <v-card-text>
+                <date-picker-field
+                    :value="dateTime.date"
+                    label="Дата"
+                    :error-messages="form.errors.get('created_at')"
+                    :error="form.errors.has('created_at')"
+                    @input="updateDate"
+                />
+                <v-text-field
+                    :value="dateTime.time"
+                    label="Время"
+                    prepend-icon="mdi-clock"
+                    :error-messages="form.errors.get('created_at')"
+                    :error="form.errors.has('created_at')"
+                    @change="updateTime"
+                    maxlength="5"
+                    ref="time"
+                />
+            </v-card-text>
+        </v-card>
+
         <entity-autocomplete-field
             v-model="form.product_id"
             url="/products"
@@ -113,13 +138,14 @@ import FileField from '~/components/forms/FileField';
 import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
 import Product from "~/modules/product/models/Product";
 import ProductReview from "~/modules/product-review/models/ProductReview";
+import DatePickerField from "~/components/forms/DatePickerField";
 
 export default {
-    components: { FileField, WysiwygField, EntityAutocompleteField },
+    components: { FileField, WysiwygField, EntityAutocompleteField, DatePickerField },
     props: {
         review: {
             type: ProductReview,
-            default: () => ({}),
+            default: () => new ProductReview,
         },
         isUpdating: {
             type: Boolean,
@@ -128,6 +154,7 @@ export default {
     },
     data: () => ({
         clientReviewFormDefaults: {
+            created_at: null,
             product_id: null,
             comment: null,
             disadvantages: null,
@@ -140,6 +167,7 @@ export default {
             is_confirmed: false,
         },
         ownReviewFormDefaults: {
+            created_at: null,
             product_id: null,
             first_name: null,
             last_name: null,
@@ -178,6 +206,7 @@ export default {
 
         this.form = Form.create(defaults)
             .withOptions({ http: this.$axios })
+            .populate({ created_at: this.$dayjs().format('YYYY-MM-DD HH:mm') })
             .populate(this.review || {});
 
         this.updateRatings();
@@ -189,6 +218,14 @@ export default {
     computed: {
         isOwnReviewForm() {
             return !this.isUpdating || !this.review?.client_id;
+        },
+        dateTime() {
+            console.log(12)
+            const now = this.$dayjs(this.form.created_at || undefined);
+            return {
+                date: now.format('YYYY-MM-DD'),
+                time: `${now.format('HH')}:${now.format('mm')}`
+            };
         },
     },
     methods: {
@@ -221,6 +258,17 @@ export default {
             }
             this.isLoadingRandomPerson = false;
         },
+        updateDate(date) {
+            const now = this.$dayjs(this.form.created_at ?? undefined);
+            this.form.created_at = `${date || now.format('YYYY-MM-DD')} ${now.format('HH:mm')}`
+        },
+        updateTime(time) {
+            if (!/[0-9]{2}:[0-9]{2}/.test(time)) {
+                time = null;
+            }
+            const now = this.$dayjs(this.form.created_at);
+            this.form.created_at = `${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`;
+        }
     },
 };
 </script>
