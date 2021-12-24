@@ -1,5 +1,29 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
+        <v-card outlined flat tile class="mb-1">
+            <v-card-title>
+                Дата и время написания вопроса
+            </v-card-title>
+            <v-card-text>
+                <date-picker-field
+                    :value="dateTime.date"
+                    label="Дата"
+                    :error-messages="form.errors.get('created_at')"
+                    :error="form.errors.has('created_at')"
+                    @input="updateDate"
+                />
+                <v-text-field
+                    :value="dateTime.time"
+                    label="Время"
+                    prepend-icon="mdi-clock"
+                    :error-messages="form.errors.get('created_at')"
+                    :error="form.errors.has('created_at')"
+                    @change="updateTime"
+                    maxlength="5"
+                    ref="time"
+                />
+            </v-card-text>
+        </v-card>
 
         <entity-autocomplete-field
             v-model="form.product_id"
@@ -69,9 +93,10 @@ import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
 import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
 import ProductQuestion from "~/modules/product-question/models/ProductQuestion";
+import DatePickerField from "~/components/forms/DatePickerField";
 
 export default {
-    components: { FileField, WysiwygField, EntityAutocompleteField },
+    components: { FileField, WysiwygField, EntityAutocompleteField, DatePickerField },
     props: {
         question: {
             type: ProductQuestion,
@@ -84,11 +109,13 @@ export default {
     },
     data: () => ({
         clientQuestionFormDefaults: {
+            date: null,
             product_id: null,
             text: null,
             client_id: null,
         },
         ownQuestionFormDefaults: {
+            date: null,
             product_id: null,
             first_name: null,
             last_name: null,
@@ -106,6 +133,13 @@ export default {
         isOwnQuestionForm() {
             return !this.isUpdating || !this.question?.client_id;
         },
+        dateTime() {
+            const now = this.$dayjs(this.form.created_at || undefined);
+            return {
+                date: now.format('YYYY-MM-DD'),
+                time: `${now.format('HH')}:${now.format('mm')}`
+            };
+        },
     },
     created() {
         let defaults = !this.isOwnQuestionForm
@@ -114,6 +148,7 @@ export default {
 
         this.form = Form.create(defaults)
             .withOptions({ http: this.$axios })
+            .populate({ date: this.$dayjs().format('YYYY-MM-DD HH:mm') })
             .populate(this.question || {});
 
         if (!this.isUpdating) {
@@ -136,6 +171,17 @@ export default {
             }
             this.isLoadingRandomPerson = false;
         },
+        updateDate(date) {
+            const now = this.$dayjs(this.form.date ?? undefined);
+            this.form.date = `${date || now.format('YYYY-MM-DD')} ${now.format('HH:mm')}`
+        },
+        updateTime(time) {
+            if (!/[0-9]{2}:[0-9]{2}/.test(time)) {
+                time = null;
+            }
+            const now = this.$dayjs(this.form.date);
+            this.form.date = `${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`;
+        }
     },
 };
 </script>

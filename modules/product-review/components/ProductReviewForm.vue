@@ -9,16 +9,16 @@
                 <date-picker-field
                     :value="dateTime.date"
                     label="Дата"
-                    :error-messages="form.errors.get('created_at')"
-                    :error="form.errors.has('created_at')"
+                    :error-messages="form.errors.get('date')"
+                    :error="form.errors.has('date')"
                     @input="updateDate"
                 />
                 <v-text-field
                     :value="dateTime.time"
                     label="Время"
                     prepend-icon="mdi-clock"
-                    :error-messages="form.errors.get('created_at')"
-                    :error="form.errors.has('created_at')"
+                    :error-messages="form.errors.get('date')"
+                    :error="form.errors.has('date')"
                     @change="updateTime"
                     maxlength="5"
                     ref="time"
@@ -220,7 +220,6 @@ export default {
             return !this.isUpdating || !this.review?.client_id;
         },
         dateTime() {
-            console.log(12)
             const now = this.$dayjs(this.form.created_at || undefined);
             return {
                 date: now.format('YYYY-MM-DD'),
