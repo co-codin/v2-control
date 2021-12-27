@@ -1,7 +1,13 @@
 <template>
     <v-form @submit.prevent="save">
         <template v-if="form">
-            <v-expansion-panels>
+            <v-checkbox
+                v-model="form.is_manually_analogs"
+                label="Отключить автоматический подбор аналогов"
+                :error-messages="form.errors.get(`is_manually_analogs`)"
+                :error="form.errors.has(`is_manually_analogs`)"
+            />
+            <v-expansion-panels :disabled="!form.is_manually_analogs">
                 <draggable v-model="form.analogs" class="width-full">
                     <v-expansion-panel v-for="(analog, index) in form.analogs" :key="index">
                         <v-expansion-panel-header class="title text-left">
@@ -35,7 +41,9 @@
                 </draggable>
             </v-expansion-panels>
             <div class="mt-2">
-                <v-btn small
+                <v-btn
+                    :disabled="!form.is_manually_analogs"
+                    small
                     color="primary"
                     outlined
                     @click="addAnalog"
@@ -67,7 +75,7 @@ export default {
     data: () => ({
         form: null,
         formDefaults: {
-            // is_manually_analogs: false,
+            is_manually_analogs: false,
             analogs: [],
         },
         products: [],
