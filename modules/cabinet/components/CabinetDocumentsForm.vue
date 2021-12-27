@@ -41,7 +41,7 @@
                                         <v-card flat>
                                             <v-card-text>
                                                 <v-expansion-panels>
-                                                    <draggable style="width: 100%">
+                                                    <draggable v-model="document.docs" class="width-full">
                                                         <v-expansion-panel
                                                             v-for="(doc, i) in document.docs"
                                                             :key="'doc-' + i"

@@ -1,119 +1,123 @@
 <template>
     <v-form @submit.prevent="save">
         <v-expansion-panels v-if="form">
-            <v-expansion-panel v-for="(requirement, index) in form.requirements" :key="'requirement-' + index">
-                <v-expansion-panel-header class="title">
-                    #{{ index + 1 }}. {{ requirement.group_name || '(без названия)' }}
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                    <v-row>
-                        <v-tabs v-model="tab" grow background-color="transparent">
-                            <v-tab v-for="item in tabs" :key="item.key">
-                                {{ item.tab }}
-                            </v-tab>
-                            <v-tabs-items v-model="tab" style="width: 100%">
-                                <v-tab-item key="information">
-                                    <v-card flat>
-                                        <v-card-text>
-                                            <v-text-field
-                                                v-model="requirement.group_name"
-                                                :error-messages="form.errors.get(`requirements.${index}.group_name`)"
-                                                :error="form.errors.has(`requirements.${index}.group_name`)"
-                                                placeholder="Введите название группу требований"
-                                                label="Группа требования"
-                                            />
-                                            <v-divider class="my-2" />
-                                            <div class="text-center">
-                                                <v-btn
-                                                    small
-                                                    class="white--text"
-                                                    color="red"
-                                                    @click="form.requirements.splice(index, 1)"
-                                                >
-                                                    Удалить группу
-                                                </v-btn>
-                                            </div>
-                                        </v-card-text>
-                                    </v-card>
-                                </v-tab-item>
-                                <v-tab-item key="requirements">
-                                    <v-card flat>
-                                        <v-card-text>
-                                            <v-expansion-panels>
-                                                <draggable style="width: 100%">
-                                                    <v-expansion-panel
-                                                        v-for="(req, i) in requirement.requirements"
-                                                        :key="'req-' + i"
+            <draggable v-model="form.requirements" class="width-full">
+                <v-expansion-panel v-for="(requirement, index) in form.requirements" :key="'requirement-' + index">
+                    <v-expansion-panel-header class="title">
+                        #{{ index + 1 }}. {{ requirement.group_name || '(без названия)' }}
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-row>
+                            <v-tabs v-model="tab" grow background-color="transparent">
+                                <v-tab v-for="item in tabs" :key="item.key">
+                                    {{ item.tab }}
+                                </v-tab>
+                                <v-tabs-items v-model="tab" style="width: 100%">
+                                    <v-tab-item key="information">
+                                        <v-card flat>
+                                            <v-card-text>
+                                                <v-text-field
+                                                    v-model="requirement.group_name"
+                                                    :error-messages="
+                                                        form.errors.get(`requirements.${index}.group_name`)
+                                                    "
+                                                    :error="form.errors.has(`requirements.${index}.group_name`)"
+                                                    placeholder="Введите название группу требований"
+                                                    label="Группа требования"
+                                                />
+                                                <v-divider class="my-2" />
+                                                <div class="text-center">
+                                                    <v-btn
+                                                        small
+                                                        class="white--text"
+                                                        color="red"
+                                                        @click="form.requirements.splice(index, 1)"
                                                     >
-                                                        <v-expansion-panel-header class="title">
-                                                            {{ req.key || '(без названия)' }}
-                                                        </v-expansion-panel-header>
-                                                        <v-expansion-panel-content>
-                                                            <v-text-field
-                                                                v-model="req.key"
-                                                                label="Название"
-                                                                dense
-                                                                :error-messages="
-                                                                    form.errors.get(
-                                                                        `requirements.${index}.requirements.${i}.key`
-                                                                    )
-                                                                "
-                                                                :error="
-                                                                    form.errors.has(
-                                                                        `requirements.${index}.requirements.${i}.key`
-                                                                    )
-                                                                "
-                                                            />
-                                                            <v-text-field
-                                                                v-model="req.value"
-                                                                label="Значение"
-                                                                dense
-                                                                :error-messages="
-                                                                    form.errors.get(
-                                                                        `requirements.${index}.requirements.${i}.value`
-                                                                    )
-                                                                "
-                                                                :error="
-                                                                    form.errors.has(
-                                                                        `requirements.${index}.requirements.${i}.value`
-                                                                    )
-                                                                "
-                                                            />
+                                                        Удалить группу
+                                                    </v-btn>
+                                                </div>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-tab-item>
+                                    <v-tab-item key="requirements">
+                                        <v-card flat>
+                                            <v-card-text>
+                                                <v-expansion-panels>
+                                                    <draggable v-model="requirement.requirements" class="width-full">
+                                                        <v-expansion-panel
+                                                            v-for="(req, i) in requirement.requirements"
+                                                            :key="'req-' + i"
+                                                        >
+                                                            <v-expansion-panel-header class="title">
+                                                                {{ req.key || '(без названия)' }}
+                                                            </v-expansion-panel-header>
+                                                            <v-expansion-panel-content>
+                                                                <v-text-field
+                                                                    v-model="req.key"
+                                                                    label="Название"
+                                                                    dense
+                                                                    :error-messages="
+                                                                        form.errors.get(
+                                                                            `requirements.${index}.requirements.${i}.key`
+                                                                        )
+                                                                    "
+                                                                    :error="
+                                                                        form.errors.has(
+                                                                            `requirements.${index}.requirements.${i}.key`
+                                                                        )
+                                                                    "
+                                                                />
+                                                                <v-text-field
+                                                                    v-model="req.value"
+                                                                    label="Значение"
+                                                                    dense
+                                                                    :error-messages="
+                                                                        form.errors.get(
+                                                                            `requirements.${index}.requirements.${i}.value`
+                                                                        )
+                                                                    "
+                                                                    :error="
+                                                                        form.errors.has(
+                                                                            `requirements.${index}.requirements.${i}.value`
+                                                                        )
+                                                                    "
+                                                                />
 
-                                                            <v-divider class="my-2" />
-                                                            <div class="text-center">
-                                                                <v-btn
-                                                                    small
-                                                                    class="white--text"
-                                                                    color="red"
-                                                                    @click="requirement.requirements.splice(i, 1)"
-                                                                >
-                                                                    Удалить требование
-                                                                </v-btn>
-                                                            </div>
-                                                        </v-expansion-panel-content>
-                                                    </v-expansion-panel>
-                                                </draggable>
-                                            </v-expansion-panels>
-                                            <div class="mt-2">
-                                                <v-btn
-                                                    link
-                                                    small
-                                                    color="primary"
-                                                    outlined
-                                                    @click="addRequirement(index)"
-                                                >
-                                                    Добавить требование
-                                                </v-btn>
-                                            </div>
-                                        </v-card-text>
-                                    </v-card>
-                                </v-tab-item>
-                            </v-tabs-items>
-                        </v-tabs>
-                    </v-row>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
+                                                                <v-divider class="my-2" />
+                                                                <div class="text-center">
+                                                                    <v-btn
+                                                                        small
+                                                                        class="white--text"
+                                                                        color="red"
+                                                                        @click="requirement.requirements.splice(i, 1)"
+                                                                    >
+                                                                        Удалить требование
+                                                                    </v-btn>
+                                                                </div>
+                                                            </v-expansion-panel-content>
+                                                        </v-expansion-panel>
+                                                    </draggable>
+                                                </v-expansion-panels>
+                                                <div class="mt-2">
+                                                    <v-btn
+                                                        link
+                                                        small
+                                                        color="primary"
+                                                        outlined
+                                                        @click="addRequirement(requirement)"
+                                                    >
+                                                        Добавить требование
+                                                    </v-btn>
+                                                </div>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-tab-item>
+                                </v-tabs-items>
+                            </v-tabs>
+                        </v-row>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </draggable>
         </v-expansion-panels>
         <div class="mt-2">
             <v-btn link small color="primary" outlined @click="addGroup"> Добавить группу требований </v-btn>
@@ -154,7 +158,7 @@ export default {
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
-            .populate(this.product || {});
+            .populate(this.cabinet || {});
     },
     methods: {
         ...mapMutations({
