@@ -46,7 +46,7 @@
                                                         :key="'doc-' + i"
                                                     >
                                                         <v-expansion-panel-header class="title">
-                                                            {{ doc.name || '(без названия)' }}
+                                                            {{ doc.name || getDocName(doc) || '(без названия)' }}
                                                         </v-expansion-panel-header>
                                                         <v-expansion-panel-content>
                                                             <v-select
@@ -173,7 +173,7 @@
 
 <script>
 import draggable from 'vuedraggable';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Form from 'form-backend-validation';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import DocumentGroupForm from '~/components/forms/DocumentGroupForm';
@@ -232,14 +232,11 @@ export default {
         ...mapMutations({
             closeAllPanels: 'helper/closeAllPanels',
         }),
-        ...mapActions({
-            updateCabinetDocuments: 'forms/cabinet/updateCabinetDocuments',
-        }),
         async save() {
             try {
-                // await this.updateCabinetDocuments(this.cabinet.id);
-                // this.$snackbar(`Документы успешно обновлены`);
-                // this.closeAllPanels();
+                await this.form.put(`/admin/cabinets/${this.cabinet.id}/documents`);
+                this.$snackbar(`Документы успешно обновлены`);
+                this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обновлении документов: ${e.message}`);
             }
@@ -270,6 +267,15 @@ export default {
         },
         async copyFileLink(file) {
             await navigator.clipboard.writeText(file);
+        },
+        getDocName(doc) {
+            if (doc.name) {
+                return doc.name;
+            }
+            if (!doc.type) {
+                return null;
+            }
+            return `${this.typeLabels.find((type) => type.value === doc.type)?.text ?? ''}`;
         },
     },
 };
