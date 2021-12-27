@@ -37,6 +37,9 @@
                 <form-block title="Особенности">
                     <product-benefits-form />
                 </form-block>
+                <form-block title="Аналоги">
+                    <product-analogs-form />
+                </form-block>
                 <form-block title="SEO">
                     <seo-relation-form :seo="productSeo" @send="updateProductSeo" />
                 </form-block>
@@ -63,6 +66,7 @@ import ProductVariationForm from '~/modules/product/components/ProductVariationF
 import ProductBenefitsForm from '~/modules/product/components/ProductBenefitsForm';
 import ProductFormUniqueContent from '~/modules/product/components/ProductFormUniqueContent';
 import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
+import ProductAnalogsForm from "~/modules/product/components/ProductAnalogsForm";
 
 export default {
     components: {
@@ -79,6 +83,7 @@ export default {
         ProductPropertiesForm,
         SeoRelationForm,
         ProductMediaForm,
+        ProductAnalogsForm,
     },
     data: () => ({
         breadcrumbs: [
