@@ -32,7 +32,7 @@ export default {
     actions: {
         async getProduct({ commit }, id) {
             const product = await Product.query()
-                .with('seo', 'categories', 'properties', 'brand', 'images', 'productVariations.currency', 'analogs')
+                .with('seo', 'categories', 'properties', 'brand', 'images', 'productVariations.currency')
                 .$find(id);
             commit('SET_PRODUCT', product);
             commit('SET_PRODUCT_SEO', product.seo || {});
