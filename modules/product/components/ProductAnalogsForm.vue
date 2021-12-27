@@ -6,6 +6,7 @@
                 label="Отключить автоматический подбор аналогов"
                 :error-messages="form.errors.get(`is_manually_analogs`)"
                 :error="form.errors.has(`is_manually_analogs`)"
+                @end="updatePositions"
             />
             <v-expansion-panels :disabled="!form.is_manually_analogs">
                 <draggable v-model="form.analogs" class="width-full">
