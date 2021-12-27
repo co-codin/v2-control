@@ -46,12 +46,13 @@
 
         <template v-if="ratings && ratings.length">
             <v-select
-                v-for="rating in ratings"
-                v-model="form.ratings[`${rating.name}`]"
+                v-for="(rating, index) in ratings"
+                :value="getRatingValue(rating.name)"
+                @input="updateRatingValue(rating.name, $event)"
                 :label="rating.name"
                 :items="ratingLabels"
-                :error-messages="form.errors.get(`ratings.${rating.name}`)"
-                :error="form.errors.has(`ratings.${rating.name}`)"
+                :error-messages="form.errors.get(`ratings.${index}.rate`)"
+                :error="form.errors.has(`ratings.${index}.rate`)"
                 :key="rating.name"
             />
         </template>
@@ -273,7 +274,29 @@ export default {
             }
             const now = this.$dayjs(this.form.created_at);
             this.form.created_at = `${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`;
-        }
+        },
+        getRatingValue(name) {
+            return this.form.ratings.find(rating => rating.name === name)?.rate;
+        },
+        updateRatingValue(name, rate) {
+            if (!this.hasRatingValue(name)) {
+                this.form.ratings.push({
+                    name: name,
+                    rate: null,
+                });
+            }
+            this.updateRate(rate);
+        },
+        hasRatingValue(name) {
+            return !! this.getRatingValueByName(name);
+        },
+        updateRate(name, rate) {
+            const ratingValue = this.getRatingValueByName(name);
+            ratingValue.rate = rate;
+        },
+        getRatingValueByName(name) {
+            return this.form.ratings.find(rating => rating.name === name);
+        },
     },
 };
 </script>
