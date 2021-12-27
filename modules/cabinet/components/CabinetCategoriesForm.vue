@@ -111,10 +111,9 @@ export default {
         async save() {
             if (this.form.categories.length) {
                 try {
-                    console.log(this.form.categories);
-                    // await this.createCategories(this.cabinet.id);
-                    // this.$snackbar(`Категории успешно обновлены`);
-                    // this.closeAllPanels();
+                    await this.createCategories(this.cabinet.id);
+                    this.$snackbar(`Категории успешно обновлены`);
+                    this.closeAllPanels();
                 } catch (e) {
                     const errors = e?.response?.data?.errors;
                     if (errors) {
