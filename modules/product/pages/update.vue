@@ -37,9 +37,9 @@
                 <form-block title="Особенности">
                     <product-benefits-form />
                 </form-block>
-                <form-block title="Аналоги">
-                    <product-analogs-form />
-                </form-block>
+<!--                <form-block title="Аналоги">-->
+<!--                    <product-analogs-form />-->
+<!--                </form-block>-->
                 <form-block title="SEO">
                     <seo-relation-form :seo="productSeo" @send="updateProductSeo" />
                 </form-block>
