@@ -36,6 +36,14 @@
                 <template #item.action="{ item }">
                     <div class="table-actions">
                         <v-btn
+                            :title="`Товары производителя ${item.name}`"
+                            icon
+                            class="mr-1"
+                            :to="{ name: 'products.index', query: { filter: `brand_id[]=${item.id}` } }"
+                        >
+                            <collection-icon /> <span style="margin-left: 3px;">{{ item.products_count }}</span>
+                        </v-btn>
+                        <v-btn
                             icon
                             target="_blank"
                             link
@@ -62,11 +70,14 @@ import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import { statusLabels } from '@/enums';
 import Brand from '../models/Brand';
 import PageHeader from '~/components/common/PageHeader';
+import CollectionIcon from '~/components/heroicons/CollectionIcon'
+import qs from 'qs';
 
 export default {
     components: {
         AdvancedSearchForm,
         PageHeader,
+        CollectionIcon,
     },
     mixins: [DatatableMixin],
     data() {
@@ -138,7 +149,7 @@ export default {
         const response = await Brand.select({
             brands: ['id', 'name', 'slug', 'status', 'country_id', 'created_at'],
         })
-            .with('country')
+            .with('country', 'productsCount')
             .params(this.queryParams)
             .get();
 
