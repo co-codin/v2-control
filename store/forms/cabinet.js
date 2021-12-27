@@ -69,27 +69,6 @@ export default {
         REMOVE_REQUIREMENT_GROUP(state, index) {
             state.form.requirements.splice(index, 1);
         },
-        ADD_DOCUMENT_GROUP(state) {
-            state.form.documents.push({
-                name: null,
-                docs: [],
-            });
-        },
-        ADD_DOCUMENT(state, index) {
-            state.form.documents[index].docs.push({
-                name: null,
-                type: null,
-                source: null,
-                file: null,
-                link: null,
-            });
-        },
-        REMOVE_DOCUMENT_GROUP(state, index) {
-            state.form.documents.splice(index, 1);
-        },
-        REMOVE_DOCUMENT(state, data) {
-            state.form.documents[data.index].docs.splice(data.i, 1);
-        },
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },
@@ -114,10 +93,8 @@ export default {
             await this.$axios.post(`/admin/cabinets`, data);
         },
         async updateCabinet({ state }, cabinetId) {
-            await this.$axios.put(`/admin/cabinets/${cabinetId}`, state.form.data());
-        },
-        async updateCabinetDocuments({ state }, cabinetId) {
-            await this.$axios.put(`/admin/cabinets/${cabinetId}/documents`, state.form.data());
+            const data = objectToFormData(state.form.data());
+            await this.$axios.put(`/admin/cabinets/${cabinetId}`, data);
         },
     },
 };

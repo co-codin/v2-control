@@ -16,26 +16,19 @@
                                     <v-card flat>
                                         <v-card-text>
                                             <v-text-field
+                                                v-model="document.name"
                                                 label="Название группы"
-                                                :value="document.name"
                                                 dense
                                                 :error-messages="form.errors.get(`documents.${index}.name`)"
                                                 :error="form.errors.has(`documents.${index}.name`)"
-                                                @input="
-                                                    (value) =>
-                                                        updateField({
-                                                            field: `documents.${index}.name`,
-                                                            value,
-                                                        })
-                                                "
                                             />
-                                            <v-divider class="my-2"/>
+                                            <v-divider class="my-2" />
                                             <div class="text-center">
                                                 <v-btn
                                                     small
                                                     class="white--text"
                                                     color="red"
-                                                    @click="removeDocumentGroup"
+                                                    @click="form.documents.splice(index, 1)"
                                                 >
                                                     Удалить группу
                                                 </v-btn>
@@ -57,9 +50,9 @@
                                                         </v-expansion-panel-header>
                                                         <v-expansion-panel-content>
                                                             <v-select
+                                                                v-model="doc.type"
                                                                 label="Тип"
                                                                 :items="typeLabels"
-                                                                :value="doc.type"
                                                                 dense
                                                                 :error-messages="
                                                                     form.errors.get(`documents.${index}.docs.${i}.type`)
@@ -67,17 +60,10 @@
                                                                 :error="
                                                                     form.errors.has(`documents.${index}.docs.${i}.type`)
                                                                 "
-                                                                @change="
-                                                                    (value) =>
-                                                                        updateField({
-                                                                            field: `documents.${index}.docs.${i}.type`,
-                                                                            value,
-                                                                        })
-                                                                "
                                                             />
                                                             <v-text-field
+                                                                v-model="doc.name"
                                                                 label="Название"
-                                                                :value="doc.name"
                                                                 dense
                                                                 :error-messages="
                                                                     form.errors.get(`documents.${index}.docs.${i}.name`)
@@ -85,18 +71,11 @@
                                                                 :error="
                                                                     form.errors.has(`documents.${index}.docs.${i}.name`)
                                                                 "
-                                                                @input="
-                                                                    (value) =>
-                                                                        updateField({
-                                                                            field: `documents.${index}.docs.${i}.name`,
-                                                                            value,
-                                                                        })
-                                                                "
                                                             />
                                                             <v-select
+                                                                v-model="doc.source"
                                                                 label="Источник"
                                                                 :items="sourceLabels"
-                                                                :value="doc.source"
                                                                 dense
                                                                 :error-messages="
                                                                     form.errors.get(
@@ -108,31 +87,17 @@
                                                                         `documents.${index}.docs.${i}.source`
                                                                     )
                                                                 "
-                                                                @change="
-                                                                    (value) =>
-                                                                        updateField({
-                                                                            field: `documents.${index}.docs.${i}.source`,
-                                                                            value,
-                                                                        })
-                                                                "
                                                             />
                                                             <v-text-field
                                                                 v-if="doc.source === 1"
+                                                                v-model="doc.link"
                                                                 label="Ссылка"
-                                                                :value="doc.link"
                                                                 dense
                                                                 :error-messages="
                                                                     form.errors.get(`documents.${index}.docs.${i}.link`)
                                                                 "
                                                                 :error="
                                                                     form.errors.has(`documents.${index}.docs.${i}.link`)
-                                                                "
-                                                                @input="
-                                                                    (value) =>
-                                                                        updateField({
-                                                                            field: `documents.${index}.docs.${i}.link`,
-                                                                            value,
-                                                                        })
                                                                 "
                                                             />
 
@@ -146,58 +111,33 @@
                                                                                     <external-link-icon />
                                                                                 </v-btn>
                                                                                 <v-spacer />
-                                                                                <v-btn icon @click="copyFileLink(doc.file)">
+                                                                                <v-btn
+                                                                                    icon
+                                                                                    @click="copyFileLink(doc.file)"
+                                                                                >
                                                                                     <copy-icon />
                                                                                 </v-btn>
                                                                                 <v-spacer />
-                                                                                <v-btn
-                                                                                    icon
-                                                                                    @click="updateField({ field: `documents.${index}.docs.${i}.file`, value: null})"
-                                                                                >
+                                                                                <v-btn icon @click="doc.file = null">
                                                                                     <trash-icon width="26" />
                                                                                 </v-btn>
                                                                             </v-card-actions>
                                                                         </v-card>
                                                                     </v-col>
                                                                 </v-row>
-                                                                <file-uploader v-else :only-images="false" @upload="updateField({ field: `documents.${index}.docs.${i}.file`, value: $event.file})" />
+                                                                <file-uploader
+                                                                    v-else
+                                                                    :only-images="false"
+                                                                    @upload="doc.file = $event.file"
+                                                                />
                                                             </template>
-
-<!--                                                            <file-field-->
-<!--                                                                v-if="doc.source === 2"-->
-<!--                                                                :is-image="false"-->
-<!--                                                                :value="doc.file"-->
-<!--                                                                label="Файл"-->
-<!--                                                                :error-messages="-->
-<!--                                                                    form.errors.get(`documents.${index}.docs.${i}.file`)-->
-<!--                                                                "-->
-<!--                                                                :error="-->
-<!--                                                                    form.errors.has(`documents.${index}.docs.${i}.file`)-->
-<!--                                                                "-->
-<!--                                                                @delete="-->
-<!--                                                                    (value) => {-->
-<!--                                                                        updateField({-->
-<!--                                                                            field: `documents.${index}.docs.${i}.file`,-->
-<!--                                                                            value: null,-->
-<!--                                                                        });-->
-<!--                                                                    }-->
-<!--                                                                "-->
-<!--                                                                @input="-->
-<!--                                                                    (value) => {-->
-<!--                                                                        updateField({-->
-<!--                                                                            field: `documents.${index}.docs.${i}.file`,-->
-<!--                                                                            value,-->
-<!--                                                                        });-->
-<!--                                                                    }-->
-<!--                                                                "-->
-<!--                                                            />-->
-                                                            <v-divider class="my-2"/>
+                                                            <v-divider class="my-2" />
                                                             <div class="text-center">
                                                                 <v-btn
                                                                     small
                                                                     class="white--text"
                                                                     color="red"
-                                                                    @click="removeDocument({ index, i })"
+                                                                    @click="document.docs.splice(i, 1)"
                                                                 >
                                                                     Удалить документ
                                                                 </v-btn>
@@ -207,7 +147,7 @@
                                                 </draggable>
                                             </v-expansion-panels>
                                             <div class="mt-2">
-                                                <v-btn link small color="primary" outlined @click="addDocument(index)">
+                                                <v-btn link small color="primary" outlined @click="addDoc(document)">
                                                     Добавить документ
                                                 </v-btn>
                                             </div>
@@ -221,7 +161,7 @@
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined @click="addDocumentGroup"> Добавить группу</v-btn>
+            <v-btn link small color="primary" outlined @click="addGroup"> Добавить группу</v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
@@ -233,10 +173,11 @@
 
 <script>
 import draggable from 'vuedraggable';
-import {mapActions, mapGetters, mapMutations} from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import Form from 'form-backend-validation';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import DocumentGroupForm from '~/components/forms/DocumentGroupForm';
-import FileUploader from "~/components/FileUploader";
+import FileUploader from '~/components/FileUploader';
 import TrashIcon from '~/components/heroicons/TrashIcon';
 import EyeIcon from '~/components/heroicons/EyeIcon';
 import CopyIcon from '~/components/heroicons/CopyIcon';
@@ -254,56 +195,75 @@ export default {
         TrashIcon,
     },
     data: () => ({
+        formDefaults: {
+            documents: [],
+        },
+        form: null,
         sourceLabels: [
-            {value: 1, text: 'Ссылка'},
-            {value: 2, text: 'Файл'},
+            { value: 1, text: 'Ссылка' },
+            { value: 2, text: 'Файл' },
         ],
         typeLabels: [
-            {value: 1, text: 'Брошюра'},
-            {value: 5, text: 'Инструкция'},
-            {value: 6, text: 'Каталог'},
-            {value: 7, text: 'Стандарты оснащения'},
-            {value: 4, text: 'Технические характеристики'},
-            {value: 3, text: 'Сертификат ДС'},
-            {value: 2, text: 'Сертификат РУ'},
+            { value: 1, text: 'Брошюра' },
+            { value: 5, text: 'Инструкция' },
+            { value: 6, text: 'Каталог' },
+            { value: 7, text: 'Стандарты оснащения' },
+            { value: 4, text: 'Технические характеристики' },
+            { value: 3, text: 'Сертификат ДС' },
+            { value: 2, text: 'Сертификат РУ' },
         ],
         tab: 'information',
         tabs: [
-            {tab: 'О группе', key: 'information'},
-            {tab: 'Документы', key: 'documents'},
+            { tab: 'О группе', key: 'information' },
+            { tab: 'Документы', key: 'documents' },
         ],
     }),
     computed: {
         ...mapGetters({
             cabinet: 'cabinet/cabinet',
-            form: 'forms/cabinet/form',
         }),
+    },
+    created() {
+        this.form = Form.create(this.formDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate(this.cabinet || {});
     },
     methods: {
         ...mapMutations({
-            updateField: 'forms/cabinet/UPDATE_FIELD',
-            fillErrors: 'forms/cabinet/FILL_ERRORS',
             closeAllPanels: 'helper/closeAllPanels',
-            removeDocumentGroup: 'forms/cabinet/REMOVE_DOCUMENT_GROUP',
-            addDocumentGroup: 'forms/cabinet/ADD_DOCUMENT_GROUP',
-            removeDocument: 'forms/cabinet/REMOVE_DOCUMENT',
-            addDocument: 'forms/cabinet/ADD_DOCUMENT',
         }),
         ...mapActions({
             updateCabinetDocuments: 'forms/cabinet/updateCabinetDocuments',
         }),
         async save() {
             try {
-                await this.updateCabinetDocuments(this.cabinet.id);
-                this.$snackbar(`Документы успешно обновлены`);
-                this.closeAllPanels();
+                // await this.updateCabinetDocuments(this.cabinet.id);
+                // this.$snackbar(`Документы успешно обновлены`);
+                // this.closeAllPanels();
             } catch (e) {
-                const errors = e?.response?.data?.errors;
-                if (errors) {
-                    this.fillErrors(errors);
-                }
                 this.$snackbar(`Произошла ошибка при обновлении документов: ${e.message}`);
             }
+        },
+        addGroup() {
+            if (!this.form.documents || !Array.isArray(this.form.documents)) {
+                this.form.documents = [];
+            }
+            this.form.documents.push({
+                name: null,
+                docs: [],
+            });
+        },
+        addDoc(document) {
+            if (!document.docs || !Array.isArray(document.docs)) {
+                document.docs = [];
+            }
+            document.docs.push({
+                link: null,
+                file: null,
+                source: null,
+                type: null,
+                name: null,
+            });
         },
         openFile(file) {
             window.open(`${this.$config.app.storageUrl}/${file}`);
