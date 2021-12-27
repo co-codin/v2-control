@@ -159,9 +159,7 @@ export default {
             comment: null,
             disadvantages: null,
             advantages: null,
-            ratings: {
-                main: 0,
-            },
+            ratings: {},
             experience: null,
             client_id: null,
             is_confirmed: false,
@@ -231,16 +229,24 @@ export default {
         async updateRatings() {
             if (!this.form.product_id) {
                 this.ratings = null;
+                this.form.ratings = {};
                 return;
             }
+
             const product = await Product.include('category').$find(this.form.product_id);
 
             if (!product.category) {
                 this.ratings = [];
+                this.form.ratings = {};
                 return;
             }
 
             this.ratings = product.category.review_ratings;
+
+            // reset old rating keys
+            let reviewRating = {}
+            this.ratings.forEach(rating => reviewRating[rating.name] = this.form.ratings?.[rating.name] ?? null);
+            this.form.ratings = reviewRating;
         },
         async generateRandomPerson() {
             this.isLoadingRandomPerson = true;

@@ -70,8 +70,9 @@
                                 :error="form.errors.has(`benefits.chips.${index}.value`)"
                                 dense
                             />
-                            <v-text-field
+                            <v-textarea
                                 v-model="chip.description"
+                                rows="3"
                                 label="Описание"
                                 :error-messages="form.errors.get(`benefits.chips.${index}.description`)"
                                 :error="form.errors.has(`benefits.chips.${index}.description`)"
