@@ -1,133 +1,136 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-
-        <v-card outlined flat tile class="mb-1">
-            <v-card-title>
-                Дата и время написания отзыва
-            </v-card-title>
-            <v-card-text>
-                <date-picker-field
-                    :value="dateTime.date"
-                    label="Дата"
-                    :error-messages="form.errors.get('date')"
-                    :error="form.errors.has('date')"
-                    @input="updateDate"
-                />
-                <v-text-field
-                    :value="dateTime.time"
-                    label="Время"
-                    prepend-icon="mdi-clock"
-                    :error-messages="form.errors.get('date')"
-                    :error="form.errors.has('date')"
-                    @change="updateTime"
-                    maxlength="5"
-                    ref="time"
-                />
-            </v-card-text>
-        </v-card>
-
-        <entity-autocomplete-field
-            v-model="form.product_id"
-            url="/products"
-            item-value="id"
-            item-text="name"
-            :query-params="{ sort: 'name' }"
-            :error-messages="form.errors.get('product_id')"
-            :error="form.errors.has('product_id')"
-            placeholder="Введите название товара"
-            label="Товар"
-            filter-column="id"
-            search-column="live"
-            hide-no-data
-            cache-items
-            clearable
-            @input="updateRatings"
-        />
-
-        <template v-if="ratings && ratings.length">
-            <v-select
-                v-for="rating in ratings"
-                v-model="form.ratings[`${rating.name}`]"
-                :label="rating.name"
-                :items="ratingLabels"
-                :error-messages="form.errors.get(`ratings.${rating.name}`)"
-                :error="form.errors.has(`ratings.${rating.name}`)"
-                :key="rating.name"
-            />
-        </template>
-
-        <template v-if="isOwnReviewForm">
-            <v-card outlined class="mb-2">
+        <template v-if="!form"></template>
+        <template>
+            <v-card outlined flat tile class="mb-1">
                 <v-card-title>
-                    Автор
+                    Дата и время написания отзыва
                 </v-card-title>
                 <v-card-text>
-                    <v-text-field
-                        v-model="form.first_name"
-                        label="Имя"
-                        :error-messages="form.errors.get('first_name')"
-                        :error="form.errors.has('first_name')"
+                    <date-picker-field
+                        :value="dateTime.date"
+                        label="Дата"
+                        :error-messages="form.errors.get('date')"
+                        :error="form.errors.has('date')"
+                        @input="updateDate"
                     />
-
                     <v-text-field
-                        v-model="form.last_name"
-                        label="Фамилия"
-                        :error-messages="form.errors.get('last_name')"
-                        :error="form.errors.has('last_name')"
+                        :value="dateTime.time"
+                        label="Время"
+                        prepend-icon="mdi-clock"
+                        :error-messages="form.errors.get('date')"
+                        :error="form.errors.has('date')"
+                        @change="updateTime"
+                        maxlength="5"
+                        ref="time"
                     />
-                    <v-btn
-                        @click="generateRandomPerson()"
-                        :loading="isLoadingRandomPerson"
-                        :disabled="isLoadingRandomPerson"
-                    >
-                        Сгенерировать новые данные
-                    </v-btn>
                 </v-card-text>
             </v-card>
+
+            <entity-autocomplete-field
+                v-model="form.product_id"
+                url="/products"
+                item-value="id"
+                item-text="name"
+                :query-params="{ sort: 'name' }"
+                :error-messages="form.errors.get('product_id')"
+                :error="form.errors.has('product_id')"
+                placeholder="Введите название товара"
+                label="Товар"
+                filter-column="id"
+                search-column="live"
+                hide-no-data
+                cache-items
+                clearable
+                @input="updateRatings"
+            />
+
+            <template v-if="ratings && ratings.length">
+                <v-select
+                    v-for="(rating, index) in ratings"
+                    :value="getRatingValue(rating.name)"
+                    @input="updateRatingValue(rating.name, $event)"
+                    :label="rating.name"
+                    :items="ratingLabels"
+                    :error-messages="form.errors.get(`ratings.${index}.rate`)"
+                    :error="form.errors.has(`ratings.${index}.rate`)"
+                    :key="rating.name"
+                />
+            </template>
+
+            <template v-if="isOwnReviewForm">
+                <v-card outlined class="mb-2">
+                    <v-card-title>
+                        Автор
+                    </v-card-title>
+                    <v-card-text>
+                        <v-text-field
+                            v-model="form.first_name"
+                            label="Имя"
+                            :error-messages="form.errors.get('first_name')"
+                            :error="form.errors.has('first_name')"
+                        />
+
+                        <v-text-field
+                            v-model="form.last_name"
+                            label="Фамилия"
+                            :error-messages="form.errors.get('last_name')"
+                            :error="form.errors.has('last_name')"
+                        />
+                        <v-btn
+                            @click="generateRandomPerson()"
+                            :loading="isLoadingRandomPerson"
+                            :disabled="isLoadingRandomPerson"
+                        >
+                            Сгенерировать новые данные
+                        </v-btn>
+                    </v-card-text>
+                </v-card>
+            </template>
+
+            <v-select
+                v-model="form.experience"
+                label="Опыт использования"
+                :items="experienceLabels"
+                :error-messages="form.errors.get('experience')"
+                :error="form.errors.has('experience')"
+            />
+
+            <v-switch
+                v-model="form.is_confirmed"
+                label="Отзыв подтвержден"
+                :error-messages="form.errors.get('is_confirmed')"
+                :error="form.errors.has('is_confirmed')"
+                inset
+            />
+
+            <v-textarea
+                v-model="form.advantages"
+                label="Достоинства"
+                :error-messages="form.errors.get('advantages')"
+                :error="form.errors.has('advantages')"
+            />
+
+            <v-textarea
+                v-model="form.disadvantages"
+                label="Недостатки"
+                :error-messages="form.errors.get('disadvantages')"
+                :error="form.errors.has('disadvantages')"
+            />
+
+            <v-textarea
+                v-model="form.comment"
+                label="Комментарий"
+                :error-messages="form.errors.get('comment')"
+                :error="form.errors.has('comment')"
+            />
+
+            <v-row class="expansion-panel-actions mt-5">
+                <v-col>
+                    <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
+                </v-col>
+            </v-row>
         </template>
-
-        <v-select
-            v-model="form.experience"
-            label="Опыт использования"
-            :items="experienceLabels"
-            :error-messages="form.errors.get('experience')"
-            :error="form.errors.has('experience')"
-        />
-
-        <v-switch
-            v-model="form.is_confirmed"
-            label="Отзыв подтвержден"
-            :error-messages="form.errors.get('is_confirmed')"
-            :error="form.errors.has('is_confirmed')"
-            inset
-        />
-
-        <v-textarea
-            v-model="form.advantages"
-            label="Достоинства"
-            :error-messages="form.errors.get('advantages')"
-            :error="form.errors.has('advantages')"
-        />
-
-        <v-textarea
-            v-model="form.disadvantages"
-            label="Недостатки"
-            :error-messages="form.errors.get('disadvantages')"
-            :error="form.errors.has('disadvantages')"
-        />
-
-        <v-textarea
-            v-model="form.comment"
-            label="Комментарий"
-            :error-messages="form.errors.get('comment')"
-            :error="form.errors.has('comment')"
-        />
-
-        <v-row class="expansion-panel-actions mt-5">
-            <v-col>
-                <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
-            </v-col>
-        </v-row>
     </v-form>
 </template>
 
@@ -172,7 +175,7 @@ export default {
             comment: null,
             disadvantages: null,
             advantages: null,
-            ratings: {},
+            ratings: [],
             experience: null,
             is_confirmed: false,
         },
@@ -203,7 +206,7 @@ export default {
             : this.ownReviewFormDefaults;
 
         this.form = Form.create(defaults)
-            .withOptions({ http: this.$axios })
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate({ created_at: this.$dayjs().format('YYYY-MM-DD HH:mm') })
             .populate(this.review || {});
 
@@ -229,7 +232,7 @@ export default {
         async updateRatings() {
             if (!this.form.product_id) {
                 this.ratings = null;
-                this.form.ratings = {};
+                this.form.ratings = [];
                 return;
             }
 
@@ -237,15 +240,17 @@ export default {
 
             if (!product.category) {
                 this.ratings = [];
-                this.form.ratings = {};
+                this.form.ratings = [];
                 return;
             }
 
             this.ratings = product.category.review_ratings;
 
             // reset old rating keys
-            let reviewRating = {}
-            this.ratings.forEach(rating => reviewRating[rating.name] = this.form.ratings?.[rating.name] ?? null);
+            let reviewRating = [];
+            this.ratings.forEach(rating => {
+                reviewRating.push({name: rating.name, rate: this.getRatingValueByName(rating.name)?.rate || null});
+            });
             this.form.ratings = reviewRating;
         },
         async generateRandomPerson() {
@@ -273,7 +278,29 @@ export default {
             }
             const now = this.$dayjs(this.form.created_at);
             this.form.created_at = `${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`;
-        }
+        },
+        getRatingValue(name) {
+            return this.form.ratings.find(rating => rating.name === name)?.rate;
+        },
+        updateRatingValue(name, rate) {
+            if (!this.hasRatingValue(name)) {
+                this.form.ratings.push({
+                    name: name,
+                    rate: null,
+                });
+            }
+            this.updateRate(name, rate);
+        },
+        hasRatingValue(name) {
+            return !! this.getRatingValueByName(name);
+        },
+        updateRate(name, rate) {
+            const ratingValue = this.getRatingValueByName(name);
+            ratingValue.rate = rate;
+        },
+        getRatingValueByName(name) {
+            return this.form.ratings.find(rating => rating.name === name);
+        },
     },
 };
 </script>

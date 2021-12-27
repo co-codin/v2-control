@@ -127,7 +127,7 @@
 
                     <template v-if="selectedReview.ratings">
                         <div v-for="(rating, key) of selectedReview.ratings" :key="key">
-                            <b>{{ key }}: </b> {{ rating }} из 5
+                            <b>{{ rating.name }}: </b> {{ rating.rate }} из 5
                         </div>
                     </template>
 
