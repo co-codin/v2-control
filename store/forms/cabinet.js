@@ -44,31 +44,6 @@ export default {
                 price: null,
             });
         },
-        ADD_REQUIREMENT(state, index) {
-            state.form.requirements[index].requirements.push({
-                key: null,
-                value: null,
-                position: null,
-            });
-        },
-        ADD_REQUIREMENT_GROUP(state) {
-            state.form.requirements.push({
-                group_name: null,
-                requirements: [
-                    {
-                        key: null,
-                        value: null,
-                        position: null,
-                    },
-                ],
-            });
-        },
-        REMOVE_REQUIREMENT(state, data) {
-            state.form.requirements[data.index].requirements.splice(data.i, 1);
-        },
-        REMOVE_REQUIREMENT_GROUP(state, index) {
-            state.form.requirements.splice(index, 1);
-        },
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },

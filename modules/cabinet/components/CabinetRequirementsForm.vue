@@ -1,6 +1,6 @@
 <template>
     <v-form @submit.prevent="save">
-        <v-expansion-panels>
+        <v-expansion-panels v-if="form">
             <v-expansion-panel v-for="(requirement, index) in form.requirements" :key="'requirement-' + index">
                 <v-expansion-panel-header class="title">
                     #{{ index + 1 }}. {{ requirement.group_name || '(без названия)' }}
@@ -16,18 +16,11 @@
                                     <v-card flat>
                                         <v-card-text>
                                             <v-text-field
-                                                :value="requirement.group_name"
+                                                v-model="requirement.group_name"
                                                 :error-messages="form.errors.get(`requirements.${index}.group_name`)"
                                                 :error="form.errors.has(`requirements.${index}.group_name`)"
                                                 placeholder="Введите название группу требований"
                                                 label="Группа требования"
-                                                @input="
-                                                    (value) =>
-                                                        updateField({
-                                                            field: `requirements.${index}.group_name`,
-                                                            value,
-                                                        })
-                                                "
                                             />
                                             <v-divider class="my-2" />
                                             <div class="text-center">
@@ -35,7 +28,7 @@
                                                     small
                                                     class="white--text"
                                                     color="red"
-                                                    @click="removeRequirementGroup(index)"
+                                                    @click="form.requirements.splice(index, 1)"
                                                 >
                                                     Удалить группу
                                                 </v-btn>
@@ -47,7 +40,7 @@
                                     <v-card flat>
                                         <v-card-text>
                                             <v-expansion-panels>
-                                                <draggable style="width: 100%" @end="updateRequirementPositions(index)">
+                                                <draggable style="width: 100%">
                                                     <v-expansion-panel
                                                         v-for="(req, i) in requirement.requirements"
                                                         :key="'req-' + i"
@@ -57,9 +50,9 @@
                                                         </v-expansion-panel-header>
                                                         <v-expansion-panel-content>
                                                             <v-text-field
+                                                                v-model="req.key"
                                                                 label="Название"
                                                                 dense
-                                                                :value="req.key"
                                                                 :error-messages="
                                                                     form.errors.get(
                                                                         `requirements.${index}.requirements.${i}.key`
@@ -69,19 +62,12 @@
                                                                     form.errors.has(
                                                                         `requirements.${index}.requirements.${i}.key`
                                                                     )
-                                                                "
-                                                                @input="
-                                                                    (value) =>
-                                                                        updateField({
-                                                                            field: `requirements.${index}.requirements.${i}.key`,
-                                                                            value,
-                                                                        })
                                                                 "
                                                             />
                                                             <v-text-field
+                                                                v-model="req.value"
                                                                 label="Значение"
                                                                 dense
-                                                                :value="req.value"
                                                                 :error-messages="
                                                                     form.errors.get(
                                                                         `requirements.${index}.requirements.${i}.value`
@@ -91,13 +77,6 @@
                                                                     form.errors.has(
                                                                         `requirements.${index}.requirements.${i}.value`
                                                                     )
-                                                                "
-                                                                @input="
-                                                                    (value) =>
-                                                                        updateField({
-                                                                            field: `requirements.${index}.requirements.${i}.value`,
-                                                                            value,
-                                                                        })
                                                                 "
                                                             />
 
@@ -107,7 +86,7 @@
                                                                     small
                                                                     class="white--text"
                                                                     color="red"
-                                                                    @click="removeRequirement({ index, i })"
+                                                                    @click="requirement.requirements.splice(i, 1)"
                                                                 >
                                                                     Удалить требование
                                                                 </v-btn>
@@ -137,7 +116,7 @@
             </v-expansion-panel>
         </v-expansion-panels>
         <div class="mt-2">
-            <v-btn link small color="primary" outlined @click="addRequirementGroup"> Добавить группу требований </v-btn>
+            <v-btn link small color="primary" outlined @click="addGroup"> Добавить группу требований </v-btn>
         </div>
         <v-row class="expansion-panel-actions mt-3">
             <v-col>
@@ -148,14 +127,19 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
+import Form from 'form-backend-validation';
 
 export default {
     components: {
         draggable,
     },
     data: () => ({
+        formDefaults: {
+            requirements: [],
+        },
+        form: null,
         tab: null,
         tabs: [
             { tab: 'О группе', key: 'information' },
@@ -165,40 +149,43 @@ export default {
     computed: {
         ...mapGetters({
             cabinet: 'cabinet/cabinet',
-            form: 'forms/cabinet/form',
         }),
+    },
+    created() {
+        this.form = Form.create(this.formDefaults)
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .populate(this.product || {});
     },
     methods: {
         ...mapMutations({
-            updateField: 'forms/cabinet/UPDATE_FIELD',
             closeAllPanels: 'helper/closeAllPanels',
-            addRequirement: 'forms/cabinet/ADD_REQUIREMENT',
-            removeRequirement: 'forms/cabinet/REMOVE_REQUIREMENT',
-            addRequirementGroup: 'forms/cabinet/ADD_REQUIREMENT_GROUP',
-            removeRequirementGroup: 'forms/cabinet/REMOVE_REQUIREMENT_GROUP',
-            fillErrors: 'forms/cabinet/FILL_ERRORS',
         }),
-        ...mapActions({
-            createRequirements: 'forms/cabinet/updateCabinet',
-        }),
+        addRequirement(requirement) {
+            if (!requirement.requirements || !Array.isArray(requirement.requirements)) {
+                requirement.requirements = [];
+            }
+            requirement.requirements.push({
+                text: null,
+                value: null,
+            });
+        },
+        addGroup() {
+            if (!this.form.requirements || !Array.isArray(this.form.requirements)) {
+                this.form.requirements = [];
+            }
+            this.form.requirements.push({
+                group_name: null,
+                requirements: [],
+            });
+        },
         async save() {
             try {
-                await this.createRequirements(this.cabinet.id);
+                await this.form.patch(`/admin/cabinets/${this.cabinet.id}`);
                 this.$snackbar(`Требования успешно обновлены`);
                 this.closeAllPanels();
             } catch (e) {
-                const errors = e?.response?.data?.errors;
-                if (errors) {
-                    this.fillErrors(errors);
-                }
                 this.$snackbar(`Произошла ошибка при обновлении требований: ${e.message}`);
             }
-        },
-        updateRequirementPositions(index) {
-            const i = 0;
-            this.form.requirements[index].requirements.forEach((doc, i) => {
-                this.updateField({ field: `requirements.${index}.requirements.${i}.position`, value: ++i });
-            });
         },
     },
 };
