@@ -13,27 +13,21 @@
             :error="form.errors.has('slug')"
         />
 
-        <v-text-field
+        <wysiwyg-field
             v-model="form.answer"
             label="Ответ"
             :error-messages="form.errors.get('answer')"
             :error="form.errors.has('answer')"
         />
 
-        <entity-autocomplete-field
+        <v-select
             v-model="form.question_category_id"
-            url="/question-categories"
-            item-value="id"
-            item-text="name"
-            :query-params="{ sort: 'name' }"
+            label="Введите название категории"
+            :items="questionCategories"
             :error-messages="form.errors.get('question_category_id')"
             :error="form.errors.has('question_category_id')"
-            placeholder="Введите название категории"
-            label="Категория"
-            filter-column="id"
-            search-column="name"
-            hide-no-data
-            cache-items
+            item-text="name"
+            item-value="id"
         />
 
         <v-select
@@ -54,11 +48,11 @@
 <script>
 import { Form } from 'form-backend-validation';
 import { statusLabels } from '~/enums';
-import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import WysiwygField from '~/components/forms/WysiwygField';
 
 export default {
     components: {
-        EntityAutocompleteField,
+        WysiwygField,
     },
     props: {
         question: {
@@ -78,6 +72,7 @@ export default {
             status: 1,
             question_category_id: null,
         },
+        questionCategories: [],
         form: null,
         statusLabels,
     }),
@@ -86,10 +81,13 @@ export default {
             this.form.populate(value);
         },
     },
-    created() {
+    async created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.question || {});
+
+        const { data } = await this.$axios.get('/question-categories/all');
+        this.questionCategories = data.data;
     },
 };
 </script>
