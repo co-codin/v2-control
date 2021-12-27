@@ -3,37 +3,50 @@
         <v-expansion-panels v-if="form">
             <form-block title="Сводная информация">
                 <v-expansion-panels v-if="form.benefits.information && form.benefits.information.length">
-                    <v-expansion-panel v-for="(information, index) in form.benefits.information" :key="index">
-                        <v-expansion-panel-header class="title">
-                            {{ information.description || '(не заполнено)' }}
-                        </v-expansion-panel-header>
-                        <v-expansion-panel-content>
-                            <v-select
-                                v-model="information.icon"
-                                label="Иконка"
-                                :error-messages="form.errors.get(`benefits.information.${index}.icon`)"
-                                :error="form.errors.has(`benefits.information.${index}.icon`)"
-                                dense
-                                :items="icons"
-                            >
-                                <template #prepend-inner>
-                                    <svg-icon v-if="information.icon" :name="`site-icons/${information.icon}`" />
-                                </template>
-                            </v-select>
-                            <v-text-field
-                                v-model="information.description"
-                                label="Значение"
-                                :error-messages="form.errors.get(`benefits.information.${index}.description`)"
-                                :error="form.errors.has(`benefits.information.${index}.description`)"
-                                dense
-                            />
-                            <div class="text-center mt-1">
-                                <v-btn small class="white--text" color="red" @click="removeInformation(index)">
-                                    Удалить
-                                </v-btn>
-                            </div>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
+                    <draggable v-model="form.benefits.information" class="width-full">
+                        <v-expansion-panel v-for="(information, index) in form.benefits.information" :key="index">
+                            <v-expansion-panel-header class="title text-left">
+                                <div class="d-flex align-center">
+                                    <svg-icon class="mr-1" v-if="information.icon" :name="`site-icons/${information.icon}`" />
+                                    <span>{{ information.description || '(не заполнено)' }}</span>
+                                </div>
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                                <v-select
+                                    v-model="information.icon"
+                                    label="Иконка"
+                                    :error-messages="form.errors.get(`benefits.information.${index}.icon`)"
+                                    :error="form.errors.has(`benefits.information.${index}.icon`)"
+                                    dense
+                                    :items="icons"
+                                >
+                                    <template v-slot:item="data">
+                                        <v-list-item-icon>
+                                            <svg-icon :name="`site-icons/${data.item}`" />
+                                        </v-list-item-icon>
+                                        <v-list-item-content>
+                                            <v-list-item-title>{{ data.item }}</v-list-item-title>
+                                        </v-list-item-content>
+                                    </template>
+                                    <template #prepend-inner>
+                                        <svg-icon v-if="information.icon" :name="`site-icons/${information.icon}`" />
+                                    </template>
+                                </v-select>
+                                <v-text-field
+                                    v-model="information.description"
+                                    label="Значение"
+                                    :error-messages="form.errors.get(`benefits.information.${index}.description`)"
+                                    :error="form.errors.has(`benefits.information.${index}.description`)"
+                                    dense
+                                />
+                                <div class="text-center mt-1">
+                                    <v-btn small class="white--text" color="red" @click="removeInformation(index)">
+                                        Удалить
+                                    </v-btn>
+                                </div>
+                            </v-expansion-panel-content>
+                        </v-expansion-panel>
+                    </draggable>
                 </v-expansion-panels>
                 <v-alert v-else type="info" dense outlined>
                     К товару не добавлено ни одного пункта со сводной информацией
@@ -56,34 +69,39 @@
             </form-block>
             <form-block title="Фишки">
                 <v-expansion-panels v-if="form.benefits.chips">
-                    <v-expansion-panel v-for="(chip, index) in form.benefits.chips" :key="index">
-                        <v-expansion-panel-header class="title">
-                            {{
-                                chip.value && chip.description ? `${chip.value} ${chip.description}` : '(не заполнено)'
-                            }}
-                        </v-expansion-panel-header>
-                        <v-expansion-panel-content>
-                            <v-text-field
-                                v-model="chip.value"
-                                label="Значение"
-                                :error-messages="form.errors.get(`benefits.chips.${index}.value`)"
-                                :error="form.errors.has(`benefits.chips.${index}.value`)"
-                                dense
-                            />
-                            <v-text-field
-                                v-model="chip.description"
-                                label="Описание"
-                                :error-messages="form.errors.get(`benefits.chips.${index}.description`)"
-                                :error="form.errors.has(`benefits.chips.${index}.description`)"
-                                dense
-                            />
-                            <div class="text-center mt-1">
-                                <v-btn small class="white--text" color="red" @click="removeChip(index)">
-                                    Удалить фишку
-                                </v-btn>
-                            </div>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
+                    <draggable v-model="form.benefits.chips" class="width-full">
+                        <v-expansion-panel v-for="(chip, index) in form.benefits.chips" :key="index">
+                            <v-expansion-panel-header class="title">
+                                {{
+                                    chip.value && chip.description ? `${chip.value} ${chip.description}` : '(не заполнено)'
+                                }}
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                                <v-combobox
+                                    v-model="chip.value"
+                                    label="Значение"
+                                    :items="availableChipValues"
+                                    :return-object="false"
+                                    :error-messages="form.errors.get(`benefits.chips.${index}.value`)"
+                                    :error="form.errors.has(`benefits.chips.${index}.value`)"
+                                    dense
+                                />
+                                <v-textarea
+                                    v-model="chip.description"
+                                    rows="3"
+                                    label="Описание"
+                                    :error-messages="form.errors.get(`benefits.chips.${index}.description`)"
+                                    :error="form.errors.has(`benefits.chips.${index}.description`)"
+                                    dense
+                                />
+                                <div class="text-center mt-1">
+                                    <v-btn small class="white--text" color="red" @click="removeChip(index)">
+                                        Удалить фишку
+                                    </v-btn>
+                                </div>
+                            </v-expansion-panel-content>
+                        </v-expansion-panel>
+                    </draggable>
                 </v-expansion-panels>
                 <v-alert v-else type="info" dense outlined> К товару не добавлено ни одной фишки </v-alert>
                 <div class="mt-2">
@@ -118,12 +136,14 @@ import { mapGetters, mapMutations } from 'vuex';
 import FormBlock from '~/components/forms/FormBlock';
 import WysiwygField from '~/components/forms/WysiwygField';
 import SvgIcon from '~/components/SvgIcon';
+import draggable from "vuedraggable";
 
 export default {
     components: {
         FormBlock,
         WysiwygField,
         SvgIcon,
+        draggable,
     },
     data() {
         return {
@@ -136,28 +156,39 @@ export default {
                 },
             },
             icons: [
-                'arrow',
-                'arrow-up',
-                'burger-menu',
-                'cart',
-                'chip-close',
-                'close-popup',
-                'compare',
-                'download',
-                'flag',
-                'heart',
-                'heart-empty',
-                'infinite',
-                'note',
-                'note-black',
-                'plus',
-                'plus-filters',
-                'question-info',
-                'remove',
-                'reset',
-                'search',
-                'user',
-                'warranty',
+                "blank-document",
+                "check",
+                "credit-card",
+                "erase",
+                "flag",
+                "info-filled",
+                "info-outlined",
+                "mail",
+                "plus",
+                "rub",
+                "thumbs-up",
+                "tracking",
+                "warranty",
+            ],
+            availableChipValues: [
+                {value: "→", text: "→"},
+                {value: "₽", text: "₽"},
+                {value: "↗", text: "↗"},
+                {value: "↑", text: "↑"},
+                {value: "©", text: "©"},
+                {value: "", text: ""},
+                {value: "", text: ""},
+                {value: "➀", text: "➀"},
+                {value: "➁", text: "➁"},
+                {value: "➅", text: "➅"},
+                {value: "✓", text: "✓"},
+                {value: "", text: ""},
+                {value: "○", text: "○"},
+                {value: "≤", text: "≤"},
+                {value: "≥", text: "≥"},
+                {value: "✕", text: "✕"},
+                {value: "•", text: "•"},
+                {value: "", text: ""},
             ],
         };
     },
