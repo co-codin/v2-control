@@ -31,8 +31,13 @@
                 v-model="form.product_id"
                 url="/products"
                 item-value="id"
-                item-text="name"
-                :query-params="{ sort: 'name' }"
+                :item-text="getProductItemText"
+                :query-params="{
+                    sort: 'name',
+                    include: 'brand',
+                    'fields[products]': 'id,brand_id,name',
+                    'fields[brand]': 'id,name',
+                }"
                 :error-messages="form.errors.get('product_id')"
                 :error="form.errors.has('product_id')"
                 placeholder="Введите название товара"
@@ -300,6 +305,9 @@ export default {
         },
         getRatingValueByName(name) {
             return this.form.ratings.find(rating => rating.name === name);
+        },
+        getProductItemText(item) {
+            return `${item?.brand?.name} ${item.name}`;
         },
     },
 };

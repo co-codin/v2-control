@@ -29,8 +29,13 @@
             v-model="form.product_id"
             url="/products"
             item-value="id"
-            item-text="name"
-            :query-params="{ sort: 'name' }"
+            :item-text="getProductItemText"
+            :query-params="{
+                sort: 'name',
+                include: 'brand',
+                'fields[products]': 'id,brand_id,name',
+                'fields[brand]': 'id,name',
+            }"
             :error-messages="form.errors.get('product_id')"
             :error="form.errors.has('product_id')"
             placeholder="Введите название товара"
@@ -100,7 +105,7 @@ export default {
     props: {
         question: {
             type: ProductQuestion,
-            default: () => ({}),
+            default: () => new ProductQuestion,
         },
         isUpdating: {
             type: Boolean,
@@ -181,7 +186,10 @@ export default {
             }
             const now = this.$dayjs(this.form.date);
             this.form.date = `${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`;
-        }
+        },
+        getProductItemText(item) {
+            return `${item?.brand?.name} ${item.name}`;
+        },
     },
 };
 </script>
