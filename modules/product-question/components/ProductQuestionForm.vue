@@ -8,16 +8,16 @@
                 <date-picker-field
                     :value="dateTime.date"
                     label="Дата"
-                    :error-messages="form.errors.get('created_at')"
-                    :error="form.errors.has('created_at')"
+                    :error-messages="form.errors.get('date')"
+                    :error="form.errors.has('date')"
                     @input="updateDate"
                 />
                 <v-text-field
                     :value="dateTime.time"
                     label="Время"
                     prepend-icon="mdi-clock"
-                    :error-messages="form.errors.get('created_at')"
-                    :error="form.errors.has('created_at')"
+                    :error-messages="form.errors.get('date')"
+                    :error="form.errors.has('date')"
                     @change="updateTime"
                     maxlength="5"
                     ref="time"
@@ -139,7 +139,7 @@ export default {
             return !this.isUpdating || !this.question?.client_id;
         },
         dateTime() {
-            const now = this.$dayjs(this.form.created_at || undefined);
+            const now = this.$dayjs(this.form.date || undefined);
             return {
                 date: now.format('YYYY-MM-DD'),
                 time: `${now.format('HH')}:${now.format('mm')}`
@@ -185,6 +185,7 @@ export default {
                 time = null;
             }
             const now = this.$dayjs(this.form.date);
+            console.log(`${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`);
             this.form.date = `${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`;
         },
         getProductItemText(item) {
