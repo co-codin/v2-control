@@ -82,9 +82,10 @@ export default {
     },
     computed: {
         personList() {
+            let i = 0;
             return this.persons.map(person => ({
                 ...person,
-                value: `${person.first_name} ${person.last}`,
+                value: ++i,
                 text: `${person.first_name} ${person.last_name} (${person.person ?? "не заполнено"})`,
             }));
         },
