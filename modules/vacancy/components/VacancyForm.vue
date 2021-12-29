@@ -43,7 +43,7 @@
             :error="form.errors.has('occupation')"
         />
 
-        <v-textarea
+        <wysiwyg-field
             v-model="form.short_description"
             label="Краткое описание"
             :error-messages="form.errors.get('short_description')"
