@@ -22,21 +22,21 @@
             :error="form.errors.has('status')"
         />
 
-        <wysiwyg-field
+        <v-text-field
             v-model="form.experience"
             label="Опыт работы"
             :error-messages="form.errors.get('experience')"
             :error="form.errors.has('experience')"
         />
 
-        <wysiwyg-field
+        <v-text-field
             v-model="form.timetable"
             label="График работы"
             :error-messages="form.errors.get('timetable')"
             :error="form.errors.has('timetable')"
         />
 
-        <wysiwyg-field
+        <v-text-field
             v-model="form.occupation"
             label="Занятость"
             :error-messages="form.errors.get('occupation')"
