@@ -38,6 +38,13 @@
             :error="form.errors.has('status')"
         />
 
+        <date-picker-field
+            v-model="form.published_at"
+            label="Дата ответа"
+            :error-messages="form.errors.get('published_at')"
+            :error="form.errors.has('published_at')"
+        />
+
         <v-text-field
             v-if="isUpdating"
             v-model="form.position"
@@ -59,9 +66,11 @@
 import { Form } from 'form-backend-validation';
 import { statusLabels } from '~/enums';
 import WysiwygField from '~/components/forms/WysiwygField';
+import DatePickerField from '~/components/forms/DatePickerField';
 
 export default {
     components: {
+        DatePickerField,
         WysiwygField,
     },
     props: {
@@ -82,6 +91,7 @@ export default {
             status: 1,
             question_category_id: null,
             position: null,
+            published_at: null,
         },
         questionCategories: [],
         form: null,
