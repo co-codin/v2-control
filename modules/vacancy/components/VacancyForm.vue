@@ -22,6 +22,27 @@
             :error="form.errors.has('status')"
         />
 
+        <wysiwyg-field
+            v-model="form.experience"
+            label="Опыт работы"
+            :error-messages="form.errors.get('experience')"
+            :error="form.errors.has('experience')"
+        />
+
+        <wysiwyg-field
+            v-model="form.timetable"
+            label="График работы"
+            :error-messages="form.errors.get('timetable')"
+            :error="form.errors.has('timetable')"
+        />
+
+        <wysiwyg-field
+            v-model="form.occupation"
+            label="Занятость"
+            :error-messages="form.errors.get('occupation')"
+            :error="form.errors.has('occupation')"
+        />
+
         <v-textarea
             v-model="form.short_description"
             label="Краткое описание"
@@ -70,6 +91,9 @@ export default {
             short_description: null,
             full_description: null,
             status: 1,
+            experience: null,
+            timetable: null,
+            occupation: null,
         },
         form: null,
         statusLabels,
