@@ -5,6 +5,7 @@
             label="Название"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
+            @input="updateSlug"
         />
 
         <v-text-field
@@ -12,6 +13,12 @@
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+            append-icon="mdi-refresh"
+            :loading="isUpdatingSlug"
+            @click:append="
+                form.slug = null;
+                updateSlug();
+            "
         />
 
         <v-select
@@ -41,6 +48,8 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import { debounce } from 'lodash';
+import slugify from 'slugify';
 import { statusLabels } from '~/enums';
 
 export default {
@@ -63,6 +72,7 @@ export default {
         },
         form: null,
         statusLabels,
+        isUpdatingSlug: false,
     }),
     watch: {
         questionCategory(value) {
@@ -73,6 +83,20 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.questionCategory || {});
+    },
+    methods: {
+        updateSlug: debounce(function () {
+            if (this.isUpdating && this.form.slug) {
+                return;
+            }
+            this.isUpdatingSlug = true;
+            let slug = slugify(this.form.name, { lower: true }).replace(/[^a-z0-9-]/gi, '');
+            slug = slug.replace(/[^a-z0-9-]/gi, '');
+
+            this.form.slug = slug;
+
+            this.isUpdatingSlug = false;
+        }, 200),
     },
 };
 </script>

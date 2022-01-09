@@ -5,12 +5,19 @@
             label="Название"
             :error-messages="form.errors.get('question')"
             :error="form.errors.has('question')"
+            @input="updateSlug"
         />
         <v-text-field
             v-model="form.slug"
+            append-icon="mdi-refresh"
+            :loading="isUpdatingSlug"
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+            @click:append="
+                form.slug = null;
+                updateSlug();
+            "
         />
 
         <wysiwyg-field
@@ -57,6 +64,8 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import slugify from 'slugify';
+import { debounce } from 'lodash';
 import { statusLabels } from '~/enums';
 import WysiwygField from '~/components/forms/WysiwygField';
 import DatePickerField from '~/components/forms/DatePickerField';
@@ -88,6 +97,7 @@ export default {
         questionCategories: [],
         form: null,
         statusLabels,
+        isUpdatingSlug: false,
     }),
     watch: {
         question(value) {
@@ -101,6 +111,20 @@ export default {
 
         const { data } = await this.$axios.get('/question-categories/all');
         this.questionCategories = data.data;
+    },
+    methods: {
+        updateSlug: debounce(function () {
+            if (this.isUpdating && this.form.slug) {
+                return;
+            }
+            this.isUpdatingSlug = true;
+            let slug = slugify(this.form.question, { lower: true }).replace(/[^a-z0-9-]/gi, '');
+            slug = slug.replace(/[^a-z0-9-]/gi, '');
+
+            this.form.slug = slug;
+
+            this.isUpdatingSlug = false;
+        }, 200),
     },
 };
 </script>
