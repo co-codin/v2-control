@@ -1,11 +1,9 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
         <template v-if="!form"></template>
-        <template>
+        <template v-else>
             <v-card outlined flat tile class="mb-1">
-                <v-card-title>
-                    Дата и время написания отзыва
-                </v-card-title>
+                <v-card-title> Дата и время написания отзыва </v-card-title>
                 <v-card-text>
                     <date-picker-field
                         :value="dateTime.date"
@@ -15,14 +13,14 @@
                         @input="updateDate"
                     />
                     <v-text-field
+                        ref="time"
                         :value="dateTime.time"
                         label="Время"
                         prepend-icon="mdi-clock"
                         :error-messages="form.errors.get('date')"
                         :error="form.errors.has('date')"
-                        @change="updateTime"
                         maxlength="5"
-                        ref="time"
+                        @change="updateTime"
                     />
                 </v-card-text>
             </v-card>
@@ -48,21 +46,19 @@
             <template v-if="ratings && ratings.length">
                 <v-select
                     v-for="(rating, index) in ratings"
+                    :key="rating.name"
                     :value="getRatingValue(rating.name)"
-                    @input="updateRatingValue(rating.name, $event)"
                     :label="rating.name"
                     :items="ratingLabels"
                     :error-messages="form.errors.get(`ratings.${index}.rate`)"
                     :error="form.errors.has(`ratings.${index}.rate`)"
-                    :key="rating.name"
+                    @input="updateRatingValue(rating.name, $event)"
                 />
             </template>
 
             <template v-if="isOwnReviewForm">
                 <v-card outlined class="mb-2">
-                    <v-card-title>
-                        Автор
-                    </v-card-title>
+                    <v-card-title> Автор </v-card-title>
                     <v-card-text>
                         <v-text-field
                             v-model="form.first_name"
@@ -78,9 +74,9 @@
                             :error="form.errors.has('last_name')"
                         />
                         <v-btn
-                            @click="generateRandomPerson()"
                             :loading="isLoadingRandomPerson"
                             :disabled="isLoadingRandomPerson"
+                            @click="generateRandomPerson()"
                         >
                             Сгенерировать новые данные
                         </v-btn>
@@ -125,6 +121,13 @@
                 :error="form.errors.has('comment')"
             />
 
+            <date-picker-field
+                v-model="form.answered_at"
+                label="Дата написания отзыва"
+                :error-messages="form.errors.get('answered_at')"
+                :error="form.errors.has('answered_at')"
+            />
+
             <v-row class="expansion-panel-actions mt-5">
                 <v-col>
                     <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -138,17 +141,17 @@
 import { Form } from 'form-backend-validation';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
-import EntityAutocompleteField from "~/components/forms/EntityAutocompleteField";
-import Product from "~/modules/product/models/Product";
-import ProductReview from "~/modules/product-review/models/ProductReview";
-import DatePickerField from "~/components/forms/DatePickerField";
+import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import Product from '~/modules/product/models/Product';
+import ProductReview from '~/modules/product-review/models/ProductReview';
+import DatePickerField from '~/components/forms/DatePickerField';
 
 export default {
     components: { FileField, WysiwygField, EntityAutocompleteField, DatePickerField },
     props: {
         review: {
             type: ProductReview,
-            default: () => new ProductReview,
+            default: () => new ProductReview(),
         },
         isUpdating: {
             type: Boolean,
@@ -166,6 +169,7 @@ export default {
             experience: null,
             client_id: null,
             is_confirmed: false,
+            answered_at: null,
         },
         ownReviewFormDefaults: {
             created_at: null,
@@ -178,6 +182,7 @@ export default {
             ratings: [],
             experience: null,
             is_confirmed: false,
+            answered_at: null,
         },
         form: null,
         experienceLabels: [
@@ -195,15 +200,25 @@ export default {
         ratings: null,
         isLoadingRandomPerson: false,
     }),
+    computed: {
+        isOwnReviewForm() {
+            return !this.isUpdating || !this.review?.client_id;
+        },
+        dateTime() {
+            const now = this.$dayjs(this.form.created_at || undefined);
+            return {
+                date: now.format('YYYY-MM-DD'),
+                time: `${now.format('HH')}:${now.format('mm')}`,
+            };
+        },
+    },
     watch: {
         review(value) {
             this.form.populate(value);
         },
     },
     created() {
-        let defaults = !this.isOwnReviewForm
-            ? this.clientReviewFormDefaults
-            : this.ownReviewFormDefaults;
+        const defaults = !this.isOwnReviewForm ? this.clientReviewFormDefaults : this.ownReviewFormDefaults;
 
         this.form = Form.create(defaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
@@ -215,18 +230,6 @@ export default {
         if (!this.isUpdating) {
             this.generateRandomPerson();
         }
-    },
-    computed: {
-        isOwnReviewForm() {
-            return !this.isUpdating || !this.review?.client_id;
-        },
-        dateTime() {
-            const now = this.$dayjs(this.form.created_at || undefined);
-            return {
-                date: now.format('YYYY-MM-DD'),
-                time: `${now.format('HH')}:${now.format('mm')}`
-            };
-        },
     },
     methods: {
         async updateRatings() {
@@ -247,9 +250,9 @@ export default {
             this.ratings = product.category.review_ratings;
 
             // reset old rating keys
-            let reviewRating = [];
-            this.ratings.forEach(rating => {
-                reviewRating.push({name: rating.name, rate: this.getRatingValueByName(rating.name)?.rate || null});
+            const reviewRating = [];
+            this.ratings.forEach((rating) => {
+                reviewRating.push({ name: rating.name, rate: this.getRatingValueByName(rating.name)?.rate || null });
             });
             this.form.ratings = reviewRating;
         },
@@ -262,15 +265,14 @@ export default {
                 }
                 this.form.first_name = data.result?.[0]?.name?.first;
                 this.form.last_name = data.result?.[0]?.name?.second;
-            }
-            catch (e) {
+            } catch (e) {
                 this.$snackbar(e.message);
             }
             this.isLoadingRandomPerson = false;
         },
         updateDate(date) {
             const now = this.$dayjs(this.form.created_at ?? undefined);
-            this.form.created_at = `${date || now.format('YYYY-MM-DD')} ${now.format('HH:mm')}`
+            this.form.created_at = `${date || now.format('YYYY-MM-DD')} ${now.format('HH:mm')}`;
         },
         updateTime(time) {
             if (!/[0-9]{2}:[0-9]{2}/.test(time)) {
@@ -280,26 +282,26 @@ export default {
             this.form.created_at = `${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`;
         },
         getRatingValue(name) {
-            return this.form.ratings.find(rating => rating.name === name)?.rate;
+            return this.form.ratings.find((rating) => rating.name === name)?.rate;
         },
         updateRatingValue(name, rate) {
             if (!this.hasRatingValue(name)) {
                 this.form.ratings.push({
-                    name: name,
+                    name,
                     rate: null,
                 });
             }
             this.updateRate(name, rate);
         },
         hasRatingValue(name) {
-            return !! this.getRatingValueByName(name);
+            return !!this.getRatingValueByName(name);
         },
         updateRate(name, rate) {
             const ratingValue = this.getRatingValueByName(name);
             ratingValue.rate = rate;
         },
         getRatingValueByName(name) {
-            return this.form.ratings.find(rating => rating.name === name);
+            return this.form.ratings.find((rating) => rating.name === name);
         },
     },
 };
