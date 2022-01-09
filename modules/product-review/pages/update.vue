@@ -58,8 +58,8 @@ export default {
         async updateProductReview(form) {
             try {
                 await form.put(`/admin/product-reviews/${this.review.id}`);
-                // this.$snackbar(`Отзыв успешно обновлен`);
-                // await this.$nuxt.refresh();
+                this.$snackbar(`Отзыв успешно обновлен`);
+                await this.$nuxt.refresh();
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при обновлении отзыва: ${e.message}`);
             }
