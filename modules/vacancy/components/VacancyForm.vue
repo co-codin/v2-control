@@ -51,10 +51,24 @@
         />
 
         <wysiwyg-field
-            v-model="form.full_description"
-            label="Подробное описание"
-            :error-messages="form.errors.get('full_description')"
-            :error="form.errors.has('full_description')"
+            v-model="form.duty"
+            label="Обязанности"
+            :error-messages="form.errors.get('duty')"
+            :error="form.errors.has('duty')"
+        />
+
+        <wysiwyg-field
+            v-model="form.requirement"
+            label="Требования"
+            :error-messages="form.errors.get('requirement')"
+            :error="form.errors.has('requirement')"
+        />
+
+        <wysiwyg-field
+            v-model="form.condition"
+            label="Условия"
+            :error-messages="form.errors.get('condition')"
+            :error="form.errors.has('condition')"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -89,11 +103,13 @@ export default {
             name: null,
             slug: null,
             short_description: null,
-            full_description: null,
             status: 1,
             experience: null,
             timetable: null,
             occupation: null,
+            duty: null,
+            requirement: null,
+            condition: null,
         },
         form: null,
         statusLabels,
