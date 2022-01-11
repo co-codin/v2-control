@@ -15,6 +15,7 @@
                             class="mb-3"
                             :error-messages="form.errors.get(`categories.${index}.id`)"
                             :error="form.errors.has(`categories.${index}.id`)"
+                            @input="updateName(category.id, index)"
                         />
 
                         <v-text-field
@@ -101,7 +102,7 @@ export default {
         }),
         updateName: debounce(function (id, index) {
             const category = this.categories.find((category) => category.id === id);
-            this.form.categories[index].name = category?.product_name ? category.product_name : null;
+            this.form.categories[index].name = category?.name ? category.name : null;
         }, 200),
         addCategory() {
             if (!this.form.categories || !Array.isArray(this.form.categories)) {

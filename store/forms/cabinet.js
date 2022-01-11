@@ -33,17 +33,6 @@ export default {
                 documents: data.documents || [],
             });
         },
-        REMOVE_CATEGORY(state, index) {
-            state.form.categories.splice(index, 1);
-        },
-        ADD_CATEGORY(state) {
-            state.form.categories.push({
-                id: null,
-                name: null,
-                count: null,
-                price: null,
-            });
-        },
         INIT_FORM(state) {
             state.form = Form.create(state.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
         },
