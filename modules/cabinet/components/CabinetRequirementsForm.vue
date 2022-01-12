@@ -25,6 +25,24 @@
                                                     placeholder="Введите название группу требований"
                                                     label="Группа требования"
                                                 />
+                                                <v-text-field
+                                                    v-model="requirement.column_key"
+                                                    :error-messages="
+                                                        form.errors.get(`requirements.${index}.column_key`)
+                                                    "
+                                                    :error="form.errors.has(`requirements.${index}.column_key`)"
+                                                    placeholder="Введите название колонки"
+                                                    label="Название колонки"
+                                                />
+                                                <v-text-field
+                                                    v-model="requirement.column_value"
+                                                    :error-messages="
+                                                        form.errors.get(`requirements.${index}.column_value`)
+                                                    "
+                                                    :error="form.errors.has(`requirements.${index}.column_value`)"
+                                                    placeholder="Введите значение колонки"
+                                                    label="Значение колонки"
+                                                />
                                                 <v-divider class="my-2" />
                                                 <div class="text-center">
                                                     <v-btn
@@ -179,6 +197,8 @@ export default {
             }
             this.form.requirements.push({
                 group_name: null,
+                column_key: null,
+                column_value: null,
                 requirements: [],
             });
         },
