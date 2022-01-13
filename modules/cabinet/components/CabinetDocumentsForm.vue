@@ -1,6 +1,6 @@
 <template>
     <v-form @submit.prevent="save">
-        <v-expansion-panels v-if="form">
+        <v-expansion-panels v-if="form" v-model="documentPanels">
             <draggable v-model="form.documents" class="width-full">
                 <v-expansion-panel v-for="(document, index) in form.documents" :key="'document-' + index">
                     <v-expansion-panel-header class="title">
@@ -29,7 +29,10 @@
                                                         small
                                                         class="white--text"
                                                         color="red"
-                                                        @click="form.documents.splice(index, 1)"
+                                                        @click="
+                                                            form.documents.splice(index, 1);
+                                                            documentPanels = null;
+                                                        "
                                                     >
                                                         Удалить группу
                                                     </v-btn>
@@ -223,6 +226,7 @@ export default {
         TrashIcon,
     },
     data: () => ({
+        documentPanels: null,
         formDefaults: {
             documents: [],
         },
