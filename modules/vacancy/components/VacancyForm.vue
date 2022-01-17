@@ -5,13 +5,19 @@
             label="Название"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
+            @input="updateSlug"
         />
 
         <v-text-field
             v-model="form.slug"
+            append-icon="mdi-refresh"
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+            @click:append="
+                form.slug = null;
+                updateSlug();
+            "
         />
 
         <v-select
@@ -81,6 +87,8 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import { debounce } from 'lodash';
+import slugify from 'slugify';
 import WysiwygField from '~/components/forms/WysiwygField';
 import { statusLabels } from '~/enums';
 
@@ -123,6 +131,20 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.vacancy || {});
+    },
+    methods: {
+        updateSlug: debounce(function () {
+            if (this.isUpdating && this.form.slug) {
+                return;
+            }
+            this.isUpdatingSlug = true;
+            let slug = slugify(this.form.name, { lower: true }).replace(/[^a-z0-9-]/gi, '');
+            slug = slug.replace(/[^a-z0-9-]/gi, '');
+
+            this.form.slug = slug;
+
+            this.isUpdatingSlug = false;
+        }, 200),
     },
 };
 </script>
