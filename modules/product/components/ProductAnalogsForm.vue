@@ -8,7 +8,7 @@
                 :error="form.errors.has(`is_manually_analogs`)"
             />
             <v-expansion-panels :disabled="!form.is_manually_analogs">
-                <draggable v-model="form.analogs" class="width-full">
+                <draggable v-model="form.analogs" class="width-full" @end="updatePositions">
                     <v-expansion-panel v-for="(analog, index) in form.analogs" :key="index">
                         <v-expansion-panel-header class="title text-left">
                             {{ getProductName(analog.analog_id) }}
@@ -123,6 +123,7 @@ export default {
             this.updatePositions();
         },
         updatePositions() {
+            console.log(this.form.analogs);
             let i = 0;
             this.form.analogs.forEach(item => item.position = ++i);
         },
