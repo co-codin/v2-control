@@ -38,14 +38,6 @@
                 }
             "
         />
-        <wysiwyg-field
-            :value="form.full_description"
-            class="mt-2"
-            label="Подробное описание"
-            :error-messages="form.errors.get('full_description')"
-            :error="form.errors.has('full_description')"
-            @input="(value) => updateField({ field: 'full_description', value })"
-        />
 
         <wysiwyg-field
             :value="form.welcome_text"
@@ -54,6 +46,15 @@
             :error-messages="form.errors.get('welcome_text')"
             :error="form.errors.has('welcome_text')"
             @input="(value) => updateField({ field: 'welcome_text', value })"
+        />
+
+        <wysiwyg-field
+            :value="form.full_description"
+            class="mt-2"
+            label="Подробное описание"
+            :error-messages="form.errors.get('full_description')"
+            :error="form.errors.has('full_description')"
+            @input="(value) => updateField({ field: 'full_description', value })"
         />
 
         <file-field

@@ -13,7 +13,7 @@ export default class ProductReview extends Model {
         return (this.status?.value ?? this.status) === 3;
     }
 
-    get color () {
+    get color() {
         switch (this.status.value) {
             case 2:
                 return 'green';
@@ -24,13 +24,13 @@ export default class ProductReview extends Model {
         }
     }
 
-    get clientName () {
+    get clientName() {
         const client = this.client ?? this;
-        return `${client.first_name ?? ""} ${client.last_name ?? ""}`;
+        return `${client.first_name ?? ''} ${client.last_name ?? ''}`;
     }
 
     approve() {
-            return this.$http.put(`/admin/product-reviews/${this.id}/approve`, {
+        return this.$http.put(`/admin/product-reviews/${this.id}/approve`, {
             comment: 'Отзыв прошел проверку',
         });
     }

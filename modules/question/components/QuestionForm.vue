@@ -5,35 +5,36 @@
             label="Название"
             :error-messages="form.errors.get('question')"
             :error="form.errors.has('question')"
+            @input="updateSlug"
         />
         <v-text-field
             v-model="form.slug"
+            append-icon="mdi-refresh"
+            :loading="isUpdatingSlug"
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+            @click:append="
+                form.slug = null;
+                updateSlug();
+            "
         />
 
-        <v-text-field
+        <wysiwyg-field
             v-model="form.answer"
             label="Ответ"
             :error-messages="form.errors.get('answer')"
             :error="form.errors.has('answer')"
         />
 
-        <entity-autocomplete-field
+        <v-select
             v-model="form.question_category_id"
-            url="/question-categories"
-            item-value="id"
-            item-text="name"
-            :query-params="{ sort: 'name' }"
+            label="Введите название категории"
+            :items="questionCategories"
             :error-messages="form.errors.get('question_category_id')"
             :error="form.errors.has('question_category_id')"
-            placeholder="Введите название категории"
-            label="Категория"
-            filter-column="id"
-            search-column="name"
-            hide-no-data
-            cache-items
+            item-text="name"
+            item-value="id"
         />
 
         <v-select
@@ -43,6 +44,16 @@
             :error-messages="form.errors.get('status')"
             :error="form.errors.has('status')"
         />
+
+        <v-text-field
+            v-if="isUpdating"
+            v-model="form.position"
+            type="number"
+            label="Позиция"
+            :error-messages="form.errors.get('position')"
+            :error="form.errors.has('position')"
+        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -53,12 +64,16 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import slugify from 'slugify';
+import { debounce } from 'lodash';
 import { statusLabels } from '~/enums';
-import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import WysiwygField from '~/components/forms/WysiwygField';
+import DatePickerField from '~/components/forms/DatePickerField';
 
 export default {
     components: {
-        EntityAutocompleteField,
+        DatePickerField,
+        WysiwygField,
     },
     props: {
         question: {
@@ -77,19 +92,39 @@ export default {
             answer: null,
             status: 1,
             question_category_id: null,
+            position: null,
         },
+        questionCategories: [],
         form: null,
         statusLabels,
+        isUpdatingSlug: false,
     }),
     watch: {
         question(value) {
             this.form.populate(value);
         },
     },
-    created() {
+    async created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.question || {});
+
+        const { data } = await this.$axios.get('/question-categories/all');
+        this.questionCategories = data.data;
+    },
+    methods: {
+        updateSlug: debounce(function () {
+            if (this.isUpdating && this.form.slug) {
+                return;
+            }
+            this.isUpdatingSlug = true;
+            let slug = slugify(this.form.question, { lower: true }).replace(/[^a-z0-9-]/gi, '');
+            slug = slug.replace(/[^a-z0-9-]/gi, '');
+
+            this.form.slug = slug;
+
+            this.isUpdatingSlug = false;
+        }, 200),
     },
 };
 </script>

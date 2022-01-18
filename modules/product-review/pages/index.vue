@@ -42,7 +42,7 @@
                 </template>
 
                 <template #item.rating="{ item }">
-                    <div> {{ item.ratings.main }} </div>
+                    <div>{{ item.ratings.main }}</div>
                 </template>
 
                 <template #item.status="{ item }">
@@ -67,16 +67,10 @@
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-                        <v-btn
-                            icon
-                            @click="showReview(item)"
-                        >
+                        <v-btn icon @click="showReview(item)">
                             <eye-icon width="24" height="24" class="h-6 w-6" />
                         </v-btn>
-                        <v-btn
-                            icon
-                            :to="{ name: 'product-reviews.update', params: { id: item.id } }"
-                        >
+                        <v-btn icon :to="{ name: 'product-reviews.update', params: { id: item.id } }">
                             <pencil-alt-icon />
                         </v-btn>
                         <v-btn icon @click.prevent="deleteProductReview(item)">
@@ -86,44 +80,37 @@
                 </template>
             </v-data-table>
         </v-card>
-        <v-dialog
-            v-if="showReviewDetailsPopup"
-            v-model="showReviewDetailsPopup"
-            width="500"
-        >
+        <v-dialog v-if="showReviewDetailsPopup" v-model="showReviewDetailsPopup" width="500">
             <v-card>
-                <v-card-title
-                    class="headline grey lighten-2"
-                    primary-title
-                >
+                <v-card-title class="headline grey lighten-2" primary-title>
                     Подробно об оставленном отзывы
                 </v-card-title>
 
                 <v-card-text class="pt-2">
-                    <div>
-                        <b>Автор: </b> {{ selectedReview.clientName }}
-                    </div>
+                    <div><b>Автор: </b> {{ selectedReview.clientName }}</div>
+
+                    <div><b>Дата написания: </b> {{ selectedReview.asDate('created_at').fromNow() }}</div>
 
                     <div>
-                        <b>Дата написания: </b> {{ selectedReview.asDate('created_at').fromNow() }}
-                    </div>
-
-                    <div>
-                        <b>Статус: </b> <v-chip small :color="selectedReview.color" dark>{{ selectedReview.status.description }}</v-chip>
+                        <b>Статус: </b>
+                        <v-chip small :color="selectedReview.color" dark>{{
+                            selectedReview.status.description
+                        }}</v-chip>
                     </div>
 
                     <div>
                         <b>Товар: </b>
                         <span class="text-no-wrap">
-                            <a target="_blank" :href="`${$config.app.siteUrl}/product/${selectedReview.product.slug}/${selectedReview.product.id}`">
+                            <a
+                                target="_blank"
+                                :href="`${$config.app.siteUrl}/product/${selectedReview.product.slug}/${selectedReview.product.id}`"
+                            >
                                 {{ selectedReview.product.brand.name }} {{ selectedReview.product.name }}
                             </a>
                         </span>
                     </div>
 
-                    <div>
-                        <b>Опыт использования:</b> {{ selectedReview.experience.description }}
-                    </div>
+                    <div><b>Опыт использования:</b> {{ selectedReview.experience.description }}</div>
 
                     <template v-if="selectedReview.ratings">
                         <div v-for="(rating, key) of selectedReview.ratings" :key="key">
@@ -131,18 +118,11 @@
                         </div>
                     </template>
 
-                    <div>
-                        <b>Достоинства: </b> {{ selectedReview.advantages || "(не указано)" }}
-                    </div>
+                    <div><b>Достоинства: </b> {{ selectedReview.advantages || '(не указано)' }}</div>
 
-                    <div>
-                        <b>Недостатки: </b> {{ selectedReview.disadvantages || "(не указано)" }}
-                    </div>
+                    <div><b>Недостатки: </b> {{ selectedReview.disadvantages || '(не указано)' }}</div>
 
-                    <div>
-                        <b>Комментарий: </b> {{ selectedReview.comment || "(не указано)" }}
-                    </div>
-
+                    <div><b>Комментарий: </b> {{ selectedReview.comment || '(не указано)' }}</div>
                 </v-card-text>
 
                 <v-card-actions>
@@ -178,7 +158,7 @@ import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import ProductReview from '../models/ProductReview';
 import PageHeader from '~/components/common/PageHeader';
-import {productReviewStatusLabels} from "~/enums";
+import { productReviewStatusLabels } from '~/enums';
 import CheckCircleIcon from '~/components/heroicons/CheckCircleIcon';
 import XCircleIcon from '~/components/heroicons/XCircleIcon';
 import EyeIcon from '~/components/heroicons/XCircleIcon';
@@ -234,7 +214,9 @@ export default {
     },
     async fetch() {
         this.showLoading();
-        const response = await ProductReview.params(this.queryParams).with(['client', 'product', 'product.brand']).get();
+        const response = await ProductReview.params(this.queryParams)
+            .with(['client', 'product', 'product.brand'])
+            .get();
         this.product_reviews = ProductReview.hydrate(response.data);
         this.setTotal(response.meta.total);
         this.hideLoading();
