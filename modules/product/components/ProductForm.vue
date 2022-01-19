@@ -156,11 +156,10 @@ export default {
         },
     },
     created() {
-        this.form = Form.create(this.formDefaults)
-            .withOptions({ http: this.$axios, resetOnSuccess: false })
-            .populate(this.product || {});
+        this.form = Form.create(this.formDefaults).withOptions({ http: this.$axios, resetOnSuccess: false });
 
         if (this.isUpdating) {
+            this.form.populate(this.product || {});
             this.updateSelectedCategories(this.categoryIds);
         }
     },
