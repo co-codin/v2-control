@@ -50,9 +50,13 @@
                                                                 :key="'doc-' + i"
                                                             >
                                                                 <v-expansion-panel-header class="title">
-                                                                    {{
-                                                                        doc.name || getDocName(doc) || '(без названия)'
-                                                                    }}
+                                                                    <CopyLabel
+                                                                        :text="
+                                                                            doc.name ||
+                                                                            getDocName(doc) ||
+                                                                            '(без названия)'
+                                                                        "
+                                                                    />
                                                                 </v-expansion-panel-header>
                                                                 <v-expansion-panel-content>
                                                                     <v-select
@@ -218,6 +222,7 @@ import EyeIcon from '~/components/heroicons/EyeIcon';
 import CopyIcon from '~/components/heroicons/CopyIcon';
 import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 import FileField from '~/components/forms/FileField';
+import CopyLabel from '~/components/common/CopyLabel';
 
 export default {
     components: {
@@ -229,6 +234,7 @@ export default {
         CopyIcon,
         TrashIcon,
         FileField,
+        CopyLabel,
     },
     data: () => ({
         formDefaults: {
