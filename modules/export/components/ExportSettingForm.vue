@@ -19,6 +19,30 @@
             </form-block>
         </v-expansion-panels>
 
+        <v-expansion-panels v-if="form" class="mt-2">
+            <form-block title="Выбор бренда">
+                <AutocompleteSearchField
+                    v-model="form.filter.brand.ids"
+                    :error-messages="form.errors.get('filter.brand.ids')"
+                    :error="form.errors.has('filter.brand.ids')"
+                    url="/brands"
+                    name="filter.brand.ids"
+                    label="Бренд"
+                />
+                <v-switch
+                    v-model="form.filter.brand.selected"
+                    label="Исключение"
+                    :error-messages="form.errors.get('filter.brand.selected')"
+                    :error="form.errors.has('filter.brand.selected')"
+                    inset
+                />
+            </form-block>
+        </v-expansion-panels>
+
+        <v-expansion-panels v-if="form" class="mt-2">
+            <form-block title="Выбор товаров"> </form-block>
+        </v-expansion-panels>
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -31,9 +55,11 @@
 import { Form } from 'form-backend-validation';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 import FormBlock from '~/components/forms/FormBlock';
+import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import AutocompleteSearchField from '~/components/search/fields/AutocompleteSearchField';
 
 export default {
-    components: { FormBlock, CategoryTreeSearchField },
+    components: { AutocompleteSearchField, EntityAutocompleteField, FormBlock, CategoryTreeSearchField },
     props: {
         export: {
             type: Object | null,
@@ -45,8 +71,12 @@ export default {
             filter: {
                 category: {
                     ids: [],
+                    selected: false,
                 },
-                selected: false,
+                brand: {
+                    ids: [],
+                    selected: false,
+                },
             },
         },
         form: null,
