@@ -6,6 +6,10 @@
                 <form-block title="Основная информация">
                     <export-form :export="exportItem" is-updating @send="updateExport" />
                 </form-block>
+
+                <form-block title="Настройка выборки">
+                    <export-setting-form />
+                </form-block>
             </v-expansion-panels>
         </template>
     </div>
@@ -15,9 +19,11 @@
 import PageHeader from '~/components/common/PageHeader';
 import ExportForm from '~/modules/export/components/ExportForm';
 import FormBlock from '~/components/forms/FormBlock';
+import ExportSettingForm from '~/modules/export/components/ExportSettingForm';
 
 export default {
     components: {
+        ExportSettingForm,
         FormBlock,
         ExportForm,
         PageHeader,
@@ -25,10 +31,7 @@ export default {
     data: () => ({
         exportItem: null,
         isLoading: true,
-        breadcrumbs: [
-            { text: 'Список экспортов', to: { name: 'exports.index' } },
-            { text: 'Редактирование экспорта' },
-        ],
+        breadcrumbs: [{ text: 'Список экспортов', to: { name: 'exports.index' } }, { text: 'Редактирование экспорта' }],
     }),
     async fetch() {
         const { data } = await this.$axios.get(`/exports/${this.$route.params.id}`);
