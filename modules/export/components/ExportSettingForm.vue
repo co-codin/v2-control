@@ -1,12 +1,23 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <category-tree-search-field
-            v-model="form.filter.category.ids"
-            label="Категории"
-            :error-messages="form.errors.get('filter.category.ids')"
-            :error="form.errors.has('filter.category.ids')"
-            name="categoryIds"
-        />
+        <v-expansion-panels v-if="form">
+            <form-block title="Выбор категории">
+                <category-tree-search-field
+                    v-model="form.filter.category.ids"
+                    label="Категории"
+                    :error-messages="form.errors.get('filter.category.ids')"
+                    :error="form.errors.has('filter.category.ids')"
+                    name="categoryIds"
+                />
+                <v-switch
+                    v-model="form.filter.category.selected"
+                    label="Исключение"
+                    :error-messages="form.errors.get('filter.category.selected')"
+                    :error="form.errors.has('filter.category.selected')"
+                    inset
+                />
+            </form-block>
+        </v-expansion-panels>
 
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
@@ -19,9 +30,10 @@
 <script>
 import { Form } from 'form-backend-validation';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
+import FormBlock from '~/components/forms/FormBlock';
 
 export default {
-    components: { CategoryTreeSearchField },
+    components: { FormBlock, CategoryTreeSearchField },
     props: {
         export: {
             type: Object | null,
