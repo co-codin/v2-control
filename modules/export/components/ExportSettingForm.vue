@@ -19,7 +19,7 @@
             </form-block>
         </v-expansion-panels>
 
-        <v-expansion-panels v-if="form" class="mt-2">
+        <v-expansion-panels v-if="form">
             <form-block title="Выбор бренда">
                 <AutocompleteSearchField
                     v-model="form.filter.brand.ids"
@@ -39,8 +39,62 @@
             </form-block>
         </v-expansion-panels>
 
-        <v-expansion-panels v-if="form" class="mt-2">
-            <form-block title="Выбор товаров"> </form-block>
+        <v-expansion-panels v-if="form">
+            <form-block title="Выбор товаров">
+                <AutocompleteSearchField
+                    v-model="form.filter.product.ids"
+                    :error-messages="form.errors.get('filter.product.ids')"
+                    :error="form.errors.has('filter.product.ids')"
+                    url="/products"
+                    name="filter.product.ids"
+                    label="Товар"
+                />
+                <v-switch
+                    v-model="form.filter.product.selected"
+                    label="Исключение"
+                    :error-messages="form.errors.get('filter.product.selected')"
+                    :error="form.errors.has('filter.product.selected')"
+                    inset
+                />
+            </form-block>
+        </v-expansion-panels>
+        <v-expansion-panels v-if="form">
+            <form-block title="Настройки цены">
+                <v-text-field
+                    :value="form.min_price"
+                    label="Минимальная цена"
+                    type="number"
+                    :error-messages="form.errors.get('min_price')"
+                    :error="form.errors.has('min_price')"
+                    dense
+                />
+                <v-text-field
+                    :value="form.max_price"
+                    label="Максимальная цена"
+                    type="number"
+                    :error-messages="form.errors.get('min_price')"
+                    :error="form.errors.has('min_price')"
+                    dense
+                />
+                <v-switch
+                    v-model="form.has_price"
+                    label="Наличие цены"
+                    :error-messages="form.errors.get('has_price')"
+                    :error="form.errors.has('has_price')"
+                    inset
+                />
+                <v-switch
+                    v-model="form.is_price_visible"
+                    label="Видимость цены на сайте"
+                    :error-messages="form.errors.get('is_price_visible')"
+                    :error="form.errors.has('is_price_visible')"
+                    inset
+                />
+            </form-block>
+        </v-expansion-panels>
+
+        <v-expansion-panels v-if="form">
+            <form-block title="Другие настройки"> </form-block>
         </v-expansion-panels>
 
         <v-row class="expansion-panel-actions mt-5">
@@ -77,6 +131,14 @@ export default {
                     ids: [],
                     selected: false,
                 },
+                product: {
+                    ids: [],
+                    selected: false,
+                },
+                has_price: false,
+                is_price_visible: false,
+                max_price: 0,
+                min_price: 0,
             },
         },
         form: null,
