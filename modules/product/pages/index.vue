@@ -54,6 +54,9 @@
                             <external-link-icon />
                         </v-btn>
                         <v-btn
+                            width="22"
+                            height="22"
+                            class="mx-1"
                             icon
                             :to="{ name: 'products.update', params: { id: item.id } }"
                         >
