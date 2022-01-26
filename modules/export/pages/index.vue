@@ -45,7 +45,14 @@
                         <v-btn icon target="_blank" link @click.prevent="refreshExport(item)">
                             <SvgIcon name="refresh" />
                         </v-btn>
-                        <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/feeds/${item.filename}`">
+                        <v-btn
+                            icon
+                            target="_blank"
+                            link
+                            :href="
+                                `${$config.app.siteUrl}/feeds/${item.filename}.` + fileExtensions.get(item.type.value)
+                            "
+                        >
                             <eye-icon />
                         </v-btn>
                         <v-btn
@@ -71,7 +78,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { exportTypeLabels, frequencyLabels } from '@/enums';
+import { exportTypeLabels, fileExtensions, frequencyLabels } from '@/enums';
 import Export from '~/modules/export/models/Export';
 import PageHeader from '~/components/common/PageHeader';
 import EyeIcon from '~/components/heroicons/EyeIcon';
@@ -87,6 +94,7 @@ export default {
     mixins: [DatatableMixin],
     data() {
         return {
+            fileExtensions,
             exports: [],
             searchForm: {
                 name: null,
