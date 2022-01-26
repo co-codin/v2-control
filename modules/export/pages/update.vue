@@ -60,11 +60,10 @@ export default {
         }),
         async updateExport(form) {
             try {
-                console.log(form.data());
-                // await form.put(`/admin/exports/${this.$route.params.id}`);
-                // this.$snackbar(`Экспорт успешно обновлен`);
-                // await this.$router.push({ name: 'exports.index' });
-                // this.closeAllPanels();
+                await form.put(`/admin/exports/${this.$route.params.id}`);
+                this.$snackbar(`Экспорт успешно обновлен`);
+                await this.$router.push({ name: 'exports.index' });
+                this.closeAllPanels();
             } catch (e) {
                 this.$snackbar(`Приозошла ошибка при обновлении экспорта: ${e.message}`);
             }
