@@ -33,13 +33,35 @@
                     <div class="font-weight-bold">{{ item.is_enabled ? 'Да' : 'Нет' }}</div>
                 </template>
 
-                <template #item.created_at="{ item }">
-                    <div>{{ item.asDate('created_at').fromNow() }}</div>
+                <template #item.exported_at="{ item }">
+                    <div v-if="item.exported_at">
+                        {{ item.asDate('exported_at').format('DD-MM-YYYY') }} в
+                        {{ item.asDate('exported_at').format('HH:mm') }}
+                    </div>
                 </template>
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-                        <v-btn icon :to="{ name: 'exports.update', params: { id: item.id } }">
+                        <v-btn icon target="_blank" link @click.prevent="refreshExport(item)">
+                            <SvgIcon name="refresh" />
+                        </v-btn>
+                        <v-btn
+                            icon
+                            target="_blank"
+                            link
+                            :href="
+                                `${$config.app.siteUrl}/feeds/${item.filename}.` + fileExtensions.get(item.type.value)
+                            "
+                        >
+                            <eye-icon />
+                        </v-btn>
+                        <v-btn
+                            width="22"
+                            height="22"
+                            class="mx-1"
+                            icon
+                            :to="{ name: 'exports.update', params: { id: item.id } }"
+                        >
                             <pencil-alt-icon />
                         </v-btn>
 
@@ -56,18 +78,23 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { exportTypeLabels, frequencyLabels } from '@/enums';
+import { exportTypeLabels, fileExtensions, frequencyLabels } from '@/enums';
 import Export from '~/modules/export/models/Export';
 import PageHeader from '~/components/common/PageHeader';
+import EyeIcon from '~/components/heroicons/EyeIcon';
+import SvgIcon from '~/components/SvgIcon';
 
 export default {
     components: {
+        SvgIcon,
+        EyeIcon,
         PageHeader,
         AdvancedSearchForm,
     },
     mixins: [DatatableMixin],
     data() {
         return {
+            fileExtensions,
             exports: [],
             searchForm: {
                 name: null,
@@ -77,12 +104,13 @@ export default {
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Комментарий', align: 'left', value: 'name' },
                 { text: 'Тип', align: 'left', value: 'type.description' },
-                { text: 'Частота', align: 'left', value: 'type.description' },
+                { text: 'Частота', align: 'left', value: 'frequency.description' },
                 { text: 'Название файла', align: 'left', value: 'filename', sortable: false },
+                { text: 'Дата последней генерации', align: 'left', value: 'exported_at' },
 
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Список экспортов' }],
+            breadcrumbs: [{ text: 'Экспорты' }],
             filters: [
                 {
                     label: 'Комментарий',
@@ -113,7 +141,7 @@ export default {
         this.showLoading();
 
         const response = await Export.select({
-            exports: ['id', 'name', 'type', 'filename', 'frequency'],
+            exports: ['id', 'name', 'type', 'filename', 'frequency', 'exported_at'],
         })
             .params(this.queryParams)
             .get();
@@ -137,6 +165,14 @@ export default {
 
                 this.$snackbar(`Достижение ${item.name} успешно удален`);
                 this.exports = this.exports.filter((el) => el.id !== item.id);
+            } catch (e) {
+                this.$snackbar(e.message);
+            }
+        },
+        async refreshExport(item) {
+            try {
+                await this.$axios.post(`admin/exports/manually/${item.id}`);
+                this.$snackbar(`Достижение ${item.name} успешно обновлен`);
             } catch (e) {
                 this.$snackbar(e.message);
             }

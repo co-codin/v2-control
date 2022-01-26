@@ -5,13 +5,19 @@
             label="Комментарий"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
+            @input="updateFilename"
         />
 
         <v-text-field
             v-model="form.filename"
             label="Название файла"
+            append-icon="mdi-refresh"
             :error-messages="form.errors.get('filename')"
             :error="form.errors.has('filename')"
+            @click:append="
+                form.filename = null;
+                updateFilename();
+            "
         />
         <v-select
             v-model="form.type"
@@ -38,6 +44,8 @@
 
 <script>
 import { Form } from 'form-backend-validation';
+import { debounce } from 'lodash';
+import slugify from 'slugify';
 import { exportTypeLabels, frequencyLabels } from '~/enums';
 
 export default {
@@ -71,6 +79,21 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.export || {});
+    },
+    methods: {
+        updateFilename: debounce(function () {
+            if (this.isUpdating && this.form.filename) {
+                return;
+            }
+
+            this.isUpdatingSlug = true;
+            let filename = slugify(this.form.name, { lower: true }).replace(/[^a-z0-9-]/gi, '');
+            filename = filename.replace(/[^a-z0-9-]/gi, '');
+
+            this.form.filename = `${filename}-${Math.random().toString(36).slice(2)}`;
+
+            this.isUpdatingSlug = false;
+        }, 200),
     },
 };
 </script>
