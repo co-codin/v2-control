@@ -8,7 +8,7 @@
                 </form-block>
 
                 <form-block title="Настройка выборки">
-                    <export-setting-form @send="updateExport" />
+                    <export-setting-form :export="exportItem" @send="updateExport" />
                 </form-block>
             </v-expansion-panels>
         </template>
