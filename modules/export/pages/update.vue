@@ -32,10 +32,12 @@ export default {
     data: () => ({
         exportItem: null,
         isLoading: true,
-        breadcrumbs: [{ text: 'Список экспортов', to: { name: 'exports.index' } }, { text: 'Редактирование экспорта' }],
+        breadcrumbs: [{ text: 'Экспорты', to: { name: 'exports.index' } }, { text: 'Редактирование экспорта' }],
     }),
     async fetch() {
         const { data } = await this.$axios.get(`/exports/${this.$route.params.id}`);
+        data.data.frequency = data.data.frequency.value;
+        data.data.type = data.data.type.value;
         this.exportItem = data.data;
         this.isLoading = false;
     },

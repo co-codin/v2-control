@@ -163,7 +163,7 @@ export default {
             try {
                 await item.delete();
 
-                this.$snackbar(`Достижение ${item.name} успешно удален`);
+                this.$snackbar(`Экспорт ${item.name} успешно удален`);
                 this.exports = this.exports.filter((el) => el.id !== item.id);
             } catch (e) {
                 this.$snackbar(e.message);
@@ -172,7 +172,8 @@ export default {
         async refreshExport(item) {
             try {
                 await this.$axios.post(`admin/exports/manually/${item.id}`);
-                this.$snackbar(`Достижение ${item.name} успешно обновлен`);
+                this.$fetch();
+                this.$snackbar(`Экспорт ${item.name} успешно обновлен`);
             } catch (e) {
                 this.$snackbar(e.message);
             }

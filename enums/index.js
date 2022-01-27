@@ -30,7 +30,7 @@ const exportTypeLabels = [
 ];
 
 const frequencyLabels = [
-    { value: 1, text: 'Ручную' },
+    { value: 1, text: 'Вручную' },
     { value: 2, text: 'Раз в 30 минут' },
     { value: 3, text: 'Раз в час' },
     { value: 4, text: 'Раз в 3 часа' },
