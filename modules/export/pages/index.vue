@@ -172,6 +172,7 @@ export default {
         async refreshExport(item) {
             try {
                 await this.$axios.post(`admin/exports/manually/${item.id}`);
+                this.$fetch();
                 this.$snackbar(`Экспорт ${item.name} успешно обновлен`);
             } catch (e) {
                 this.$snackbar(e.message);

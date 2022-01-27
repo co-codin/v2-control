@@ -36,6 +36,8 @@ export default {
     }),
     async fetch() {
         const { data } = await this.$axios.get(`/exports/${this.$route.params.id}`);
+        data.data.frequency = data.data.frequency.value;
+        data.data.type = data.data.type.value;
         this.exportItem = data.data;
         this.isLoading = false;
     },
