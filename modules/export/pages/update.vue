@@ -32,7 +32,7 @@ export default {
     data: () => ({
         exportItem: null,
         isLoading: true,
-        breadcrumbs: [{ text: 'Список экспортов', to: { name: 'exports.index' } }, { text: 'Редактирование экспорта' }],
+        breadcrumbs: [{ text: 'Экспорты', to: { name: 'exports.index' } }, { text: 'Редактирование экспорта' }],
     }),
     async fetch() {
         const { data } = await this.$axios.get(`/exports/${this.$route.params.id}`);
