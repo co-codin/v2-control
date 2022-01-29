@@ -50,7 +50,8 @@
                             target="_blank"
                             link
                             :href="
-                                `${$config.app.siteUrl}/feeds/${item.filename}.` + fileExtensions.get(item.type.value)
+                                `${$config.app.apiUrl}/storage/feeds/${item.filename}.` +
+                                fileExtensions.get(item.type.value)
                             "
                         >
                             <eye-icon />
