@@ -294,7 +294,7 @@ export default {
             window.open(`${this.$config.app.storageUrl}/${file}`);
         },
         async copyFileLink(file) {
-            await navigator.clipboard.writeText(file);
+            await navigator.clipboard.writeText(`${this.$config.app.storageUrl}/${file}`);
         },
         addDoc(document) {
             if (!document.docs || !Array.isArray(document.docs)) {
