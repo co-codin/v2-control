@@ -128,16 +128,17 @@
                                                                             <v-col class="pt-2">
                                                                                 <v-card>
                                                                                     <v-card-title>{{
-                                                                                        doc.file
+                                                                                        getFilename(doc.file)
                                                                                     }}</v-card-title>
-                                                                                    <v-card-actions>
+                                                                                    <v-card-actions
+                                                                                        style="justify-content: left"
+                                                                                    >
                                                                                         <v-btn
                                                                                             icon
                                                                                             @click="openFile(doc.file)"
                                                                                         >
                                                                                             <external-link-icon />
                                                                                         </v-btn>
-                                                                                        <v-spacer />
                                                                                         <v-btn
                                                                                             icon
                                                                                             @click="
@@ -146,7 +147,6 @@
                                                                                         >
                                                                                             <copy-icon />
                                                                                         </v-btn>
-                                                                                        <v-spacer />
                                                                                         <v-btn
                                                                                             icon
                                                                                             @click="doc.file = null"
@@ -278,6 +278,9 @@ export default {
         ...mapMutations({
             closeAllPanels: 'helper/closeAllPanels',
         }),
+        getFilename(filename) {
+            return filename.split(/[\\\/]/).pop();
+        },
         async save() {
             try {
                 await this.form.patch(`/admin/products/${this.product.id}`);
