@@ -194,9 +194,11 @@ export default {
                 },
                 stock_type: {
                     ids: [],
+                    selected: false,
                 },
                 availability: {
                     ids: [],
+                    selected: false,
                 },
                 has_price: false,
                 is_price_visible: false,
