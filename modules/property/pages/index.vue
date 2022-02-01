@@ -131,6 +131,8 @@ export default {
     },
     methods: {
         async deleteProperty(property) {
+            this.$snackbar('удаление характеристик запрещено');
+            return;
             if (!(await this.$confirm(`Вы действительно хотите удалить характиристику ${property.name}?`))) {
                 return;
             }
