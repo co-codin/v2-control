@@ -59,6 +59,7 @@ export default {
             const items = await FieldValue.select('id', 'value').where('value', query).orderBy('valueLength').$get();
             this.loadedItems = this.loadedItems.concat(items);
             this.isLoading = false;
+            this.searchInput = '';
         }, 200),
         async loadItems() {
             this.isLoading = true;
