@@ -3,6 +3,11 @@
         <v-form @submit.prevent="$emit('send', form)">
             <v-expansion-panels v-if="form">
                 <form-block title="Выбор категории">
+                    <v-radio-group v-model="form.filter.category.selected">
+                        <v-radio :value="true" label="Только выбранные" />
+                        <v-radio :value="false" label="Исключить выбранные" />
+                    </v-radio-group>
+
                     <category-tree-search-field
                         v-model="form.filter.category.ids"
                         label="Категории"
@@ -10,13 +15,7 @@
                         :error="form.errors.has('filter.category.ids')"
                         name="categoryIds"
                     />
-                    <v-switch
-                        v-model="form.filter.category.selected"
-                        label="Исключение"
-                        :error-messages="form.errors.get('filter.category.selected')"
-                        :error="form.errors.has('filter.category.selected')"
-                        inset
-                    />
+
                     <v-row class="expansion-panel-actions mt-5">
                         <v-col>
                             <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -28,6 +27,11 @@
         <v-form @submit.prevent="$emit('send', form)">
             <v-expansion-panels v-if="form">
                 <form-block title="Выбор бренда">
+                    <v-radio-group v-model="form.filter.brand.selected">
+                        <v-radio :value="true" label="Только выбранные" />
+                        <v-radio :value="false" label="Исключить выбранные" />
+                    </v-radio-group>
+
                     <AutocompleteSearchField
                         v-model="form.filter.brand.ids"
                         :error-messages="form.errors.get('filter.brand.ids')"
@@ -36,13 +40,7 @@
                         name="filter.brand.ids"
                         label="Бренд"
                     />
-                    <v-switch
-                        v-model="form.filter.brand.selected"
-                        label="Исключение"
-                        :error-messages="form.errors.get('filter.brand.selected')"
-                        :error="form.errors.has('filter.brand.selected')"
-                        inset
-                    />
+
                     <v-row class="expansion-panel-actions mt-5">
                         <v-col>
                             <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -54,6 +52,11 @@
         <v-form @submit.prevent="$emit('send', form)">
             <v-expansion-panels v-if="form">
                 <form-block title="Выбор товаров">
+                    <v-radio-group v-model="form.filter.product.selected">
+                        <v-radio :value="true" label="Только выбранные" />
+                        <v-radio :value="false" label="Исключить выбранные" />
+                    </v-radio-group>
+
                     <AutocompleteSearchField
                         v-model="form.filter.product.ids"
                         :error-messages="form.errors.get('filter.product.ids')"
@@ -62,13 +65,7 @@
                         name="filter.product.ids"
                         label="Товар"
                     />
-                    <v-switch
-                        v-model="form.filter.product.selected"
-                        label="Исключение"
-                        :error-messages="form.errors.get('filter.product.selected')"
-                        :error="form.errors.has('filter.product.selected')"
-                        inset
-                    />
+
                     <v-row class="expansion-panel-actions mt-5">
                         <v-col>
                             <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -96,20 +93,17 @@
                         :error="form.errors.has('filter.min_price')"
                         dense
                     />
-                    <v-switch
-                        v-model="form.filter.has_price"
-                        label="Наличие цены"
-                        :error-messages="form.errors.get('filter.has_price')"
-                        :error="form.errors.has('filter.has_price')"
-                        inset
-                    />
-                    <v-switch
-                        v-model="form.filter.is_price_visible"
-                        label="Видимость цены на сайте"
-                        :error-messages="form.errors.get('filter.is_price_visible')"
-                        :error="form.errors.has('filter.is_price_visible')"
-                        inset
-                    />
+
+                    <v-radio-group v-model="form.filter.has_price">
+                        <v-radio :value="true" label="Только с ценой" />
+                        <v-radio :value="false" label="С ценой и без нее" />
+                    </v-radio-group>
+
+                    <v-radio-group v-model="form.filter.is_price_visible">
+                        <v-radio :value="true" label="Цена отображается" />
+                        <v-radio :value="false" label="Цена не отображается" />
+                    </v-radio-group>
+
                     <v-row class="expansion-panel-actions mt-5">
                         <v-col>
                             <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -128,13 +122,11 @@
                         :error-messages="form.errors.get('filter.stock_type.ids')"
                         :error="form.errors.has('filter.stock_type.ids')"
                     />
-                    <v-switch
-                        v-model="form.filter.has_short_description"
-                        label="Наличие краткого описания"
-                        :error-messages="form.errors.get('filter.has_short_description')"
-                        :error="form.errors.has('filter.has_short_description')"
-                        inset
-                    />
+                    <v-radio-group v-model="form.filter.has_short_description">
+                        <v-radio :value="true" label="Есть описание" />
+                        <v-radio :value="false" label="Нет описания" />
+                    </v-radio-group>
+
                     <v-select
                         v-model="form.filter.availability.ids"
                         multiple
