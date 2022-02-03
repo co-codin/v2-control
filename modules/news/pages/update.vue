@@ -2,9 +2,12 @@
     <div>
         <page-header h1="Редактирование новости" :breadcrumbs="breadcrumbs" />
         <template v-if="news && !$fetchState.pending">
-            <v-expansion-panels :value="0">
+            <v-expansion-panels>
                 <form-block title="Основная информация">
                     <news-form :news="news" is-updating @send="updateNews" />
+                </form-block>
+                <form-block title="Источники">
+                    <news-source-form :news="news" @send="updateNews" />
                 </form-block>
                 <form-block title="SEO">
                     <seo-relation-form :seo="seo" @send="updateNewsSeo" />
@@ -19,9 +22,11 @@ import NewsForm from '../components/NewsForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
+import NewsSourceForm from '~/modules/news/components/NewsSourceForm';
 
 export default {
     components: {
+        NewsSourceForm,
         FormBlock,
         PageHeader,
         SeoRelationForm,
@@ -31,10 +36,7 @@ export default {
         news: null,
         seo: null,
         isLoading: true,
-        breadcrumbs: [
-            { text: 'Список новостей', to: { name: 'news.index' } },
-            { text: 'Редактирование новости' },
-        ],
+        breadcrumbs: [{ text: 'Список новостей', to: { name: 'news.index' } }, { text: 'Редактирование новости' }],
     }),
     async fetch() {
         const { data } = await this.$axios.get(`/news/${this.$route.params.id}`, {
