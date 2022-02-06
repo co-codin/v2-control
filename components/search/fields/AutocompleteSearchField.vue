@@ -20,7 +20,7 @@
                     :input-value="data.selected"
                     close
                     @click="data.select"
-                    @click:close="removeValue(data.item)"
+                    @click:close="removeChip(data.item)"
                 >
                     {{ data.item.name }}
                 </v-chip>
@@ -125,17 +125,8 @@ export default {
         },
         removeChip(e) {
             const value = [...this.value];
-            value.splice(this.value.indexOf(e), 1);
+            value.splice(this.value.indexOf(e.id), 1);
             this.$emit('input', value);
-        },
-        removeValue(item) {
-            this.removeChip(item);
-            // const value = [...this.value];
-            // value.splice(this.value.indexOf(e), 1);
-            // this.$emit('input', value);
-            //
-            // const index = this.friends.indexOf(item.name)
-            // if (index >= 0) this.friends.splice(index, 1)
         },
     },
 };

@@ -94,12 +94,12 @@
                         dense
                     />
 
-                    <v-radio-group v-model="form.filter.has_price">
+                    <v-radio-group v-model="form.filter.has_price" label="Наличие цены">
                         <v-radio :value="true" label="Только с ценой" />
                         <v-radio :value="false" label="С ценой и без нее" />
                     </v-radio-group>
 
-                    <v-radio-group v-model="form.filter.is_price_visible">
+                    <v-radio-group v-model="form.filter.is_price_visible" label="Видимость цены на сайте">
                         <v-radio :value="true" label="Цена отображается" />
                         <v-radio :value="false" label="Цена не отображается" />
                     </v-radio-group>
@@ -122,7 +122,7 @@
                         :error-messages="form.errors.get('filter.stock_type.ids')"
                         :error="form.errors.has('filter.stock_type.ids')"
                     />
-                    <v-radio-group v-model="form.filter.has_short_description">
+                    <v-radio-group v-model="form.filter.has_short_description" label="Наличие краткого описания">
                         <v-radio :value="true" label="Есть описание" />
                         <v-radio :value="false" label="Нет описания" />
                     </v-radio-group>
@@ -151,7 +151,6 @@
 import { Form } from 'form-backend-validation';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
 import FormBlock from '~/components/forms/FormBlock';
-import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import AutocompleteSearchField from '~/components/search/fields/AutocompleteSearchField';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 
@@ -159,7 +158,6 @@ export default {
     components: {
         FieldValueAutocomplete,
         AutocompleteSearchField,
-        EntityAutocompleteField,
         FormBlock,
         CategoryTreeSearchField,
     },
@@ -174,29 +172,29 @@ export default {
             filter: {
                 category: {
                     ids: [],
-                    selected: false,
+                    selected: true,
                 },
                 brand: {
                     ids: [],
-                    selected: false,
+                    selected: true,
                 },
                 product: {
                     ids: [],
-                    selected: false,
+                    selected: true,
                 },
                 stock_type: {
                     ids: [],
-                    selected: false,
+                    selected: true,
                 },
                 availability: {
                     ids: [],
-                    selected: false,
+                    selected: true,
                 },
-                has_price: false,
+                has_price: true,
                 is_price_visible: false,
                 max_price: 0,
                 min_price: 0,
-                has_short_description: false,
+                has_short_description: true,
             },
         },
         form: null,
