@@ -32,9 +32,19 @@
             inset
         />
 
+        <span>Логотип</span>
+
+        <file-uploader
+            v-if="!form.image"
+            @upload="
+                form.image = $event.file;
+                form.is_image_changed = true;
+            "
+        />
+
         <file-field
+            v-else
             v-model="form.image"
-            label="Логотип"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             prepend-icon="mdi-image"
@@ -71,9 +81,11 @@ import FileField from '../../../components/forms/FileField';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import { statusLabels } from '~/enums';
 import WysiwygField from '~/components/forms/WysiwygField';
+import FileUploader from '~/components/FileUploader';
 
 export default {
     components: {
+        FileUploader,
         FileField,
         FieldValueAutocomplete,
         WysiwygField,
