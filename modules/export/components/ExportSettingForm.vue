@@ -95,8 +95,8 @@
                     />
 
                     <v-radio-group v-model="form.filter.has_price" label="Наличие цены">
-                        <v-radio :value="true" label="Только с ценой" />
-                        <v-radio :value="false" label="С ценой и без нее" />
+                        <v-radio :value="true" label="Да" />
+                        <v-radio :value="false" label="Нет" />
                     </v-radio-group>
 
                     <v-radio-group v-model="form.filter.is_price_visible" label="Видимость цены на сайте">
@@ -190,7 +190,7 @@ export default {
                     ids: [],
                     selected: true,
                 },
-                has_price: true,
+                has_price: false,
                 is_price_visible: false,
                 max_price: 0,
                 min_price: 0,
