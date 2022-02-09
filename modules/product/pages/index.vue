@@ -206,7 +206,7 @@ export default {
             }
             try {
                 await product.delete();
-                this.$snackbar(`Производитель ${product.name} успешно удален`);
+                this.$snackbar(`Товар ${product.name} успешно удален`);
                 this.$fetch();
             } catch (e) {
                 this.$snackbar(e.message);
