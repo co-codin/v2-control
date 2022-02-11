@@ -6,8 +6,8 @@
                 <date-picker-field
                     :value="dateTime.date"
                     label="Дата"
-                    :error-messages="form.errors.get('created_at')"
-                    :error="form.errors.has('created_at')"
+                    :error-messages="form.errors.get('date')"
+                    :error="form.errors.has('date')"
                     @input="updateDate"
                 />
                 <v-text-field
@@ -15,8 +15,8 @@
                     :value="dateTime.time"
                     label="Время"
                     prepend-icon="mdi-clock"
-                    :error-messages="form.errors.get('created_at')"
-                    :error="form.errors.has('created_at')"
+                    :error-messages="form.errors.get('date')"
+                    :error="form.errors.has('date')"
                     maxlength="5"
                     @change="updateTime"
                 />
@@ -75,13 +75,6 @@
             :error="form.errors.has('text')"
         />
 
-        <date-picker-field
-            v-model="form.questioned_at"
-            label="Дата написания вопроса"
-            :error-messages="form.errors.get('questioned_at')"
-            :error="form.errors.has('questioned_at')"
-        />
-
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -116,7 +109,6 @@ export default {
             product_id: null,
             text: null,
             client_id: null,
-            questioned_at: null,
         },
         ownQuestionFormDefaults: {
             date: null,
@@ -124,7 +116,6 @@ export default {
             first_name: null,
             last_name: null,
             text: null,
-            questioned_at: null,
         },
         form: null,
         isLoadingRandomPerson: false,
@@ -134,7 +125,7 @@ export default {
             return !this.isUpdating || !this.question?.client_id;
         },
         dateTime() {
-            const now = this.$dayjs(this.form.created_at || undefined);
+            const now = this.$dayjs(this.form.date || undefined);
             return {
                 date: now.format('YYYY-MM-DD'),
                 time: `${now.format('HH')}:${now.format('mm')}`,
