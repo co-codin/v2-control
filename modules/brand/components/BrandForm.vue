@@ -19,10 +19,10 @@
             :error="form.errors.has('website')"
         />
         <wysiwyg-field
+            v-model="form.full_description"
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-            v-model="form.full_description"
         />
         <v-switch
             v-model="form.is_in_home"
@@ -32,14 +32,27 @@
             inset
         />
 
+        <span>Логотип</span>
+
+        <file-uploader
+            v-if="!form.image"
+            @upload="
+                form.image = $event.file;
+                form.is_image_changed = true;
+            "
+        />
+
         <file-field
+            v-else
             v-model="form.image"
-            label="Логотип"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             prepend-icon="mdi-image"
             @input="form.is_image_changed = true"
-            @delete="form.image = null; form.is_image_changed = true"
+            @delete="
+                form.image = null;
+                form.is_image_changed = true;
+            "
         />
         <field-value-autocomplete
             v-model="form.country_id"
@@ -67,10 +80,12 @@ import { Form } from 'form-backend-validation';
 import FileField from '../../../components/forms/FileField';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import { statusLabels } from '~/enums';
-import WysiwygField from "~/components/forms/WysiwygField";
+import WysiwygField from '~/components/forms/WysiwygField';
+import FileUploader from '~/components/FileUploader';
 
 export default {
     components: {
+        FileUploader,
         FileField,
         FieldValueAutocomplete,
         WysiwygField,

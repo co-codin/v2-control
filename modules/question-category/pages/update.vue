@@ -36,6 +36,7 @@ export default {
     }),
     async fetch() {
         const { data } = await this.$axios.get(`/question-categories/${this.$route.params.id}`);
+        data.data.status = data.data.status.value;
         this.question_category = data.data;
         this.isLoading = false;
     },

@@ -1,6 +1,5 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-
         <category-tree-search-field
             v-model="form.parent_id"
             label="Родительская категория"
@@ -13,10 +12,10 @@
 
         <v-text-field
             v-model="form.name"
-            @input="updateSlug"
             label="Название"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
+            @input="updateSlug"
         />
 
         <v-text-field
@@ -45,7 +44,10 @@
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
             @input="form.is_image_changed = true"
-            @delete="form.image = null; form.is_image_changed = true"
+            @delete="
+                form.image = null;
+                form.is_image_changed = true;
+            "
         />
 
         <wysiwyg-field
@@ -91,14 +93,13 @@
 <script>
 import { Form } from 'form-backend-validation';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
+import { debounce } from 'lodash';
+import slugify from 'slugify';
 import FileField from '../../../components/forms/FileField';
 import { statusLabels } from '~/enums';
 import WysiwygField from '~/components/forms/WysiwygField';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
-import {debounce, first} from "lodash";
-import Brand from "~/modules/brand/models/Brand";
-import slugify from "slugify";
 
 export default {
     components: {
@@ -159,11 +160,10 @@ export default {
             if (this.form.parent_id) {
                 let categoryId = this.form.parent_id;
                 do {
-                    let category = this.categories.find((item) => item.id === categoryId);
+                    const category = this.categories.find((item) => item.id === categoryId);
                     slugItems.unshift(category?.name);
                     categoryId = category?.parent_id;
-                }
-                while(categoryId);
+                } while (categoryId);
             }
             slugItems.push(this.form.name);
             slugItems = slugItems.filter(Boolean);

@@ -1,12 +1,6 @@
 <template>
     <v-form @submit.prevent="$emit('save', form)">
-        <v-select
-            label="Сотрудник"
-            :items="personList"
-            return-object
-            dense
-            @change="fillPersonFields"
-        />
+        <v-select label="Сотрудник" :items="personList" return-object dense @change="fillPersonFields" />
         <v-text-field
             v-model="form.first_name"
             label="Имя"
@@ -35,6 +29,14 @@
             :error="form.errors.has('text')"
             dense
         />
+
+        <date-picker-field
+            v-model="form.answered_at"
+            label="Дата написания ответа"
+            :error-messages="form.errors.get('answered_at')"
+            :error="form.errors.has('answered_at')"
+        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -47,11 +49,12 @@
 import { Form } from 'form-backend-validation';
 import WysiwygField from '~/components/forms/WysiwygField';
 import FileField from '~/components/forms/FileField';
-import ProductQuestion from "~/modules/product-question/models/ProductQuestion";
-import ProductAnswerPerson from "~/modules/product/models/ProductAnswerPerson";
+import ProductQuestion from '~/modules/product-question/models/ProductQuestion';
+import ProductAnswerPerson from '~/modules/product/models/ProductAnswerPerson';
+import DatePickerField from '~/components/forms/DatePickerField';
 
 export default {
-    components: { FileField, WysiwygField },
+    components: { DatePickerField, FileField, WysiwygField },
     props: {
         answer: {
             type: Object | null,
@@ -63,30 +66,31 @@ export default {
         },
     },
     data() {
-        return ({
+        return {
             formDefaults: {
                 first_name: null,
                 last_name: null,
                 person: null,
                 text: null,
                 product_question_id: this.question.id,
+                answered_at: null,
             },
             form: null,
             persons: [],
-        });
+        };
+    },
+    computed: {
+        personList() {
+            return this.persons.map((person) => ({
+                ...person,
+                value: `${person.first_name} ${person.last}`,
+                text: `${person.first_name} ${person.last_name} (${person.person ?? 'не заполнено'})`,
+            }));
+        },
     },
     watch: {
         answer(value) {
             this.form.populate(value);
-        },
-    },
-    computed: {
-        personList() {
-            return this.persons.map(person => ({
-                ...person,
-                value: `${person.first_name} ${person.last}`,
-                text: `${person.first_name} ${person.last_name} (${person.person ?? "не заполнено"})`,
-            }));
         },
     },
     async created() {

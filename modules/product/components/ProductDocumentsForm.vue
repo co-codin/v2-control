@@ -26,7 +26,7 @@
                                                         :error-messages="form.errors.get(`documents.${index}.name`)"
                                                         :error="form.errors.has(`documents.${index}.name`)"
                                                     />
-                                                    <v-divider class="my-2"/>
+                                                    <v-divider class="my-2" />
                                                     <div class="text-center">
                                                         <v-btn
                                                             small
@@ -50,7 +50,13 @@
                                                                 :key="'doc-' + i"
                                                             >
                                                                 <v-expansion-panel-header class="title">
-                                                                    {{ doc.name || getDocName(doc) || '(без названия)' }}
+                                                                    <CopyLabel
+                                                                        :text="
+                                                                            doc.name ||
+                                                                            getDocName(doc) ||
+                                                                            '(без названия)'
+                                                                        "
+                                                                    />
                                                                 </v-expansion-panel-header>
                                                                 <v-expansion-panel-content>
                                                                     <v-select
@@ -58,57 +64,106 @@
                                                                         label="Тип"
                                                                         :items="typeLabels"
                                                                         dense
-                                                                        :error-messages="form.errors.get(`documents.${index}.docs.${i}.type`)"
-                                                                        :error="form.errors.has(`documents.${index}.docs.${i}.type`)"
+                                                                        :error-messages="
+                                                                            form.errors.get(
+                                                                                `documents.${index}.docs.${i}.type`
+                                                                            )
+                                                                        "
+                                                                        :error="
+                                                                            form.errors.has(
+                                                                                `documents.${index}.docs.${i}.type`
+                                                                            )
+                                                                        "
                                                                     />
                                                                     <v-text-field
-                                                                        label="Название"
                                                                         v-model="doc.name"
+                                                                        label="Название"
                                                                         dense
-                                                                        :error-messages="form.errors.get(`documents.${index}.docs.${i}.name`)"
-                                                                        :error="form.errors.has(`documents.${index}.docs.${i}.name`)"
+                                                                        :error-messages="
+                                                                            form.errors.get(
+                                                                                `documents.${index}.docs.${i}.name`
+                                                                            )
+                                                                        "
+                                                                        :error="
+                                                                            form.errors.has(
+                                                                                `documents.${index}.docs.${i}.name`
+                                                                            )
+                                                                        "
                                                                     />
                                                                     <v-select
                                                                         v-model="doc.source"
                                                                         label="Источник"
                                                                         :items="sourceLabels"
                                                                         dense
-                                                                        :error-messages="form.errors.get(`documents.${index}.docs.${i}.source`)"
-                                                                        :error="form.errors.has(`documents.${index}.docs.${i}.source`)"
+                                                                        :error-messages="
+                                                                            form.errors.get(
+                                                                                `documents.${index}.docs.${i}.source`
+                                                                            )
+                                                                        "
+                                                                        :error="
+                                                                            form.errors.has(
+                                                                                `documents.${index}.docs.${i}.source`
+                                                                            )
+                                                                        "
                                                                     />
                                                                     <v-text-field
-                                                                        v-model="doc.link"
                                                                         v-if="doc.source === 1"
+                                                                        v-model="doc.link"
                                                                         label="Ссылка"
                                                                         dense
-                                                                        :error-messages="form.errors.get(`documents.${index}.docs.${i}.link`)"
-                                                                        :error="form.errors.has(`documents.${index}.docs.${i}.link`)"
+                                                                        :error-messages="
+                                                                            form.errors.get(
+                                                                                `documents.${index}.docs.${i}.link`
+                                                                            )
+                                                                        "
+                                                                        :error="
+                                                                            form.errors.has(
+                                                                                `documents.${index}.docs.${i}.link`
+                                                                            )
+                                                                        "
                                                                     />
 
                                                                     <template v-if="doc.source === 2">
                                                                         <v-row v-if="doc.file">
                                                                             <v-col class="pt-2">
                                                                                 <v-card>
-                                                                                    <v-card-title>{{ doc.file }}</v-card-title>
-                                                                                    <v-card-actions>
-                                                                                        <v-btn icon @click="openFile(doc.file)">
+                                                                                    <v-card-title>{{
+                                                                                        getFilename(doc.file)
+                                                                                    }}</v-card-title>
+                                                                                    <v-card-actions
+                                                                                        style="justify-content: left"
+                                                                                    >
+                                                                                        <v-btn
+                                                                                            icon
+                                                                                            @click="openFile(doc.file)"
+                                                                                        >
                                                                                             <external-link-icon />
                                                                                         </v-btn>
-                                                                                        <v-spacer />
-                                                                                        <v-btn icon @click="copyFileLink(doc.file)">
+                                                                                        <v-btn
+                                                                                            icon
+                                                                                            @click="
+                                                                                                copyFileLink(doc.file)
+                                                                                            "
+                                                                                        >
                                                                                             <copy-icon />
                                                                                         </v-btn>
-                                                                                        <v-spacer />
-                                                                                        <v-btn icon @click="doc.file = null">
+                                                                                        <v-btn
+                                                                                            icon
+                                                                                            @click="doc.file = null"
+                                                                                        >
                                                                                             <trash-icon width="26" />
                                                                                         </v-btn>
                                                                                     </v-card-actions>
                                                                                 </v-card>
                                                                             </v-col>
                                                                         </v-row>
-                                                                        <file-uploader v-else :only-images="false" @upload="doc.file = $event.file" />
+                                                                        <file-uploader
+                                                                            v-else
+                                                                            :only-images="false"
+                                                                            @upload="doc.file = $event.file"
+                                                                        />
                                                                     </template>
-                                                                    <v-divider class="my-2"/>
+                                                                    <v-divider class="my-2" />
                                                                     <div class="text-center">
                                                                         <v-btn
                                                                             small
@@ -124,7 +179,13 @@
                                                         </draggable>
                                                     </v-expansion-panels>
                                                     <div class="mt-2">
-                                                        <v-btn link small color="primary" outlined @click="addDoc(document)">
+                                                        <v-btn
+                                                            link
+                                                            small
+                                                            color="primary"
+                                                            outlined
+                                                            @click="addDoc(document)"
+                                                        >
                                                             Добавить документ
                                                         </v-btn>
                                                     </div>
@@ -152,15 +213,16 @@
 
 <script>
 import draggable from 'vuedraggable';
-import {mapGetters, mapMutations} from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
+import Form from 'form-backend-validation';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
-import FileUploader from "~/components/FileUploader";
+import FileUploader from '~/components/FileUploader';
 import TrashIcon from '~/components/heroicons/TrashIcon';
 import EyeIcon from '~/components/heroicons/EyeIcon';
 import CopyIcon from '~/components/heroicons/CopyIcon';
 import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
-import Form from "form-backend-validation";
-import FileField from "~/components/forms/FileField";
+import FileField from '~/components/forms/FileField';
+import CopyLabel from '~/components/common/CopyLabel';
 
 export default {
     components: {
@@ -172,6 +234,7 @@ export default {
         CopyIcon,
         TrashIcon,
         FileField,
+        CopyLabel,
     },
     data: () => ({
         formDefaults: {
@@ -179,26 +242,26 @@ export default {
         },
         form: null,
         sourceLabels: [
-            {value: 1, text: 'Ссылка'},
-            {value: 2, text: 'Файл'},
+            { value: 1, text: 'Ссылка' },
+            { value: 2, text: 'Файл' },
         ],
         typeLabels: [
-            {value: 1, text: 'Брошюра'},
-            {value: 5, text: 'Инструкция'},
-            {value: 6, text: 'Каталог'},
-            {value: 7, text: 'Стандарты оснащения'},
-            {value: 4, text: 'Технические характеристики'},
-            {value: 3, text: 'Сертификат ДС'},
-            {value: 2, text: 'Регистрационное удостоверение'},
+            { value: 1, text: 'Брошюра' },
+            { value: 5, text: 'Инструкция' },
+            { value: 6, text: 'Каталог' },
+            { value: 7, text: 'Стандарты оснащения' },
+            { value: 4, text: 'Технические характеристики' },
+            { value: 3, text: 'Сертификат ДС' },
+            { value: 2, text: 'Регистрационное удостоверение' },
         ],
         availableGroupLabels: [
-            {value: "Техническая документация", text: 'Техническая документация'},
-            {value: "Сертификаты", text: 'Сертификаты'},
+            { value: 'Техническая документация', text: 'Техническая документация' },
+            { value: 'Сертификаты', text: 'Сертификаты' },
         ],
         tab: 'information',
         tabs: [
-            {tab: 'О группе', key: 'information'},
-            {tab: 'Документы', key: 'documents'},
+            { tab: 'О группе', key: 'information' },
+            { tab: 'Документы', key: 'documents' },
         ],
     }),
     computed: {
@@ -215,6 +278,9 @@ export default {
         ...mapMutations({
             closeAllPanels: 'helper/closeAllPanels',
         }),
+        getFilename(filename) {
+            return filename.split(/[\\\/]/).pop();
+        },
         async save() {
             try {
                 await this.form.patch(`/admin/products/${this.product.id}`);
@@ -228,10 +294,10 @@ export default {
             window.open(`${this.$config.app.storageUrl}/${file}`);
         },
         async copyFileLink(file) {
-            await navigator.clipboard.writeText(file);
+            await navigator.clipboard.writeText(`${this.$config.app.storageUrl}/${file}`);
         },
         addDoc(document) {
-            if(!document.docs || !Array.isArray(document.docs)) {
+            if (!document.docs || !Array.isArray(document.docs)) {
                 document.docs = [];
             }
             document.docs.push({
@@ -243,7 +309,7 @@ export default {
             });
         },
         addGroup() {
-            if(!this.form.documents || !Array.isArray(this.form.documents)) {
+            if (!this.form.documents || !Array.isArray(this.form.documents)) {
                 this.form.documents = [];
             }
             this.form.documents.push({
@@ -258,7 +324,9 @@ export default {
             if (!doc.type) {
                 return null;
             }
-            return `${this.typeLabels.find(type => type.value === doc.type)?.text ?? ""} ${this.product?.brand?.name} ${this.product.name}`;
+            return `${this.typeLabels.find((type) => type.value === doc.type)?.text ?? ''} ${
+                this.product?.brand?.name
+            } ${this.product.name}`;
         },
     },
 };

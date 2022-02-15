@@ -37,9 +37,9 @@
                 <form-block title="Особенности">
                     <product-benefits-form />
                 </form-block>
-<!--                <form-block title="Аналоги">-->
-<!--                    <product-analogs-form />-->
-<!--                </form-block>-->
+                <form-block title="Аналоги">
+                    <product-analogs-form />
+                </form-block>
                 <form-block title="SEO">
                     <seo-relation-form :seo="productSeo" @send="updateProductSeo" />
                 </form-block>
@@ -59,14 +59,13 @@ import ProductAdditionalForm from '~/modules/product/components/ProductAdditiona
 import SeoRelationForm from '~/components/forms/SeoRelationForm';
 import PageHeader from '../../../components/common/PageHeader';
 import ProductPropertiesForm from '~/modules/product/components/ProductPropertiesForm';
-import ProductMediaForm from "~/modules/product/components/ProductMediaForm";
+import ProductMediaForm from '~/modules/product/components/ProductMediaForm';
 import FormBlock from '~/components/forms/FormBlock';
 import ProductConfiguratorForm from '~/modules/product/components/ProductConfiguratorForm';
-import ProductVariationForm from '~/modules/product/components/ProductVariationForm';
 import ProductBenefitsForm from '~/modules/product/components/ProductBenefitsForm';
 import ProductFormUniqueContent from '~/modules/product/components/ProductFormUniqueContent';
 import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
-import ProductAnalogsForm from "~/modules/product/components/ProductAnalogsForm";
+import ProductAnalogsForm from '~/modules/product/components/ProductAnalogsForm';
 
 export default {
     components: {
@@ -77,7 +76,6 @@ export default {
         ProductForm,
         ProductBenefitsForm,
         ProductDocumentsForm,
-        ProductVariationForm,
         ProductAdditionalForm,
         ProductConfiguratorForm,
         ProductPropertiesForm,
@@ -86,10 +84,7 @@ export default {
         ProductAnalogsForm,
     },
     data: () => ({
-        breadcrumbs: [
-            { text: 'Список товаров', to: { name: 'products.index' } },
-            { text: 'Редактирование товара' },
-        ],
+        breadcrumbs: [{ text: 'Список товаров', to: { name: 'products.index' } }, { text: 'Редактирование товара' }],
     }),
     async fetch() {
         await this.getProduct(this.$route.params.id);

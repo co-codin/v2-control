@@ -3,34 +3,18 @@
         <page-header h1="Редактирование отзыва" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
             <div class="mb-2">
-                <v-btn
-                    v-if="!review.isApproved"
-                    color="green"
-                    outlined
-                    small
-                    @click="approveReview(review)"
-                >
+                <v-btn v-if="!review.isApproved" color="green" outlined small @click="approveReview(review)">
                     <check-circle-icon class="h-6 w-6 mr-1" />
                     Одобрить
                 </v-btn>
-                <v-btn
-                    v-if="!review.isRejected"
-                    color="red"
-                    outlined
-                    small
-                    @click="rejectReview(review)"
-                >
+                <v-btn v-if="!review.isRejected" color="red" outlined small @click="rejectReview(review)">
                     <x-circle-icon class="h-6 w-6 mr-1" />
                     Отклонить
                 </v-btn>
             </div>
             <v-expansion-panels :value="0">
                 <form-block title="Основная информация">
-                    <product-review-form
-                        :review="review"
-                        is-updating
-                        @send="updateProductReview"
-                    />
+                    <product-review-form :review="review" is-updating @send="updateProductReview" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -41,7 +25,7 @@
 import ProductReviewForm from '../components/ProductReviewForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
-import ProductReview from "~/modules/product-review/models/ProductReview";
+import ProductReview from '~/modules/product-review/models/ProductReview';
 import CheckCircleIcon from '~/components/heroicons/CheckCircleIcon';
 import XCircleIcon from '~/components/heroicons/XCircleIcon';
 

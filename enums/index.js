@@ -1,9 +1,15 @@
 import { enumToSelectArray } from './helpers';
-
-import { Status, statusDescriptions, statusLabels, productReviewStatusLabels, productQuestionStatusLabels } from '~/enums/modules/Status';
+import {
+    Status,
+    statusDescriptions,
+    statusLabels,
+    productReviewStatusLabels,
+    productQuestionStatusLabels,
+} from '~/enums/modules/Status';
 import { type, typeLabels, typeDescriptions } from '~/enums/modules/Type';
 import { Group, groupLabels, groupDescriptions } from '~/enums/modules/ProductGroup';
 import { urlRules } from '~/enums/rules';
+import { fileType, fileExtensions } from '~/enums/modules/ExportFileExtension';
 
 import { systemFilters } from '~/enums/modules/SystemFilter';
 
@@ -24,12 +30,12 @@ const exportTypeLabels = [
 ];
 
 const frequencyLabels = [
-    { value: 1, text: 'Ручную' },
-    { value: 2, text: 'Каждый 30 минут' },
-    { value: 3, text: 'Каждый час' },
-    { value: 4, text: 'Каждый 3 часа' },
-    { value: 5, text: 'Каждый день' },
-    { value: 6, text: 'Каждую неделю' },
+    { value: 1, text: 'Вручную' },
+    { value: 2, text: 'Раз в 30 минут' },
+    { value: 3, text: 'Раз в час' },
+    { value: 4, text: 'Раз в 3 часа' },
+    { value: 5, text: 'Раз в день' },
+    { value: 6, text: 'Раз в неделю' },
 ];
 
 export {
@@ -50,4 +56,6 @@ export {
     productReviewStatusLabels,
     productQuestionStatusLabels,
     systemFilters,
+    fileType,
+    fileExtensions,
 };

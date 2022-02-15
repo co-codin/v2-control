@@ -28,12 +28,7 @@
                                 <v-tab-item key="image">
                                     <v-card flat>
                                         <v-card-text>
-                                            <v-img
-                                                max-height="200"
-                                                max-width="200"
-                                                :src="`${$config.app.storageUrl}/${item.image}`"
-                                                class="mb-3"
-                                            />
+                                            <file-field v-model="item.image" />
                                             <v-divider class="my-2" />
                                             <div class="text-center">
                                                 <v-btn

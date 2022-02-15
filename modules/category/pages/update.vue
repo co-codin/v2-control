@@ -23,8 +23,8 @@ import CategoryForm from '../components/CategoryForm';
 import SeoRelationForm from '@/components/forms/SeoRelationForm';
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
-import CategoryReviewCriteriaForm from "~/modules/category/components/CategoryReviewCriteriaForm";
-import Category from "~/modules/category/models/Category";
+import CategoryReviewCriteriaForm from '~/modules/category/components/CategoryReviewCriteriaForm';
+import Category from '~/modules/category/models/Category';
 
 export default {
     components: {
@@ -49,7 +49,6 @@ export default {
         this.category.status = this.category.status.value;
         this.seo = this.category.seo || {};
         this.seoCategoryProducts = this.category.seo_category_products || {};
-        console.log(this.category);
         this.isLoading = false;
     },
     head: {

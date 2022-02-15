@@ -72,9 +72,11 @@
 
         <v-text-field
             v-model="form.view_num"
+            type="number"
             label="Количество просмотров"
             :error-messages="form.errors.get('view_num')"
             :error="form.errors.has('view_num')"
+            required
         />
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
@@ -119,7 +121,7 @@ export default {
             short_description: null,
             full_description: null,
             published_at: null,
-            view_num: null,
+            view_num: 1,
         },
         form: null,
         statusLabels,
