@@ -21,11 +21,17 @@
             :error="form.errors.has('slug')"
         />
 
-        <v-text-field
+        <v-combobox
             v-model="form.category"
             label="Рубрика"
             :error-messages="form.errors.get('category')"
             :error="form.errors.has('category')"
+            :items="categories"
+            :return-object="false"
+            dense
+        />
+
+        <v-text-field
         />
 
         <file-field
@@ -125,6 +131,15 @@ export default {
         },
         form: null,
         statusLabels,
+        categories: [
+            { value: 'Новость', text: 'Новость' },
+            { value: 'Статья', text: 'Статья' },
+            { value: 'Об оборудовании', text: 'Об оборудовании' },
+            { value: 'Новости компании', text: 'Новости компании' },
+            { value: 'Перевод', text: 'Перевод' },
+            { value: 'Пересказ', text: 'Пересказ' },
+            { value: 'Акции', text: 'Акции' },
+        ],
     }),
     watch: {
         news(value) {
