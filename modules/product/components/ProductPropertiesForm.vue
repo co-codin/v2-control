@@ -15,6 +15,12 @@
                                         property.name
                                     }}</v-expansion-panel-header>
                                     <v-expansion-panel-content>
+                                        <v-switch
+                                            v-model="property.is_in_variations"
+                                            label="Использовать в модификации"
+                                            dense
+                                            inset
+                                        />
                                         <v-select
                                             v-if="property.is_boolean"
                                             v-model="property.field_value_ids"
@@ -203,9 +209,12 @@ export default {
             .map((property) => property.pivot.field_value_ids)
             .flat()
             .filter((value, index, self) => self.indexOf(value) === index);
-        const values = await FieldValue.select('id', 'value').whereIn('id', valueIds).params({
-            "page[size]": 1000,
-        }).$get();
+        const values = await FieldValue.select('id', 'value')
+            .whereIn('id', valueIds)
+            .params({
+                'page[size]': 1000,
+            })
+            .$get();
         this.values = Object.fromEntries(values.map((item) => [item.id, item.value]));
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
@@ -225,9 +234,7 @@ export default {
             return this.form?.properties?.filter((property) => property.is_important) || [];
         },
     },
-    mounted() {
-        // Sortable.create(this.$refs["draggable-items"]);
-    },
+
     beforeDestroy() {},
     methods: {
         ...mapMutations({
@@ -304,6 +311,7 @@ export default {
                     important_value: null,
                     field_value_ids: null,
                     is_important: false,
+                    is_in_variations: false,
                 });
                 this.newPropertyPopup = false;
             } catch (e) {
@@ -319,9 +327,7 @@ export default {
                 this.$snackbar(e.message);
             }
         },
-        updatePropertyPositions(e, l) {
-
-        },
+        updatePropertyPositions(e, l) {},
     },
 };
 </script>
