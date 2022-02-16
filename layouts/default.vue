@@ -68,7 +68,8 @@
                                 filled
                                 rounded
                                 dense
-                            ></v-text-field>
+                                @input="searchResult"
+                            />
 
                             <v-spacer class="d-block d-sm-none"></v-spacer>
 
@@ -96,7 +97,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 import config from '../config';
 
@@ -117,6 +118,11 @@ export default {
     },
     computed: {
         ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached']),
+    },
+    methods: {
+        ...mapActions({}),
+        ...mapMutations({}),
+        searchResult() {},
     },
 };
 </script>

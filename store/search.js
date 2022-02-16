@@ -3,9 +3,13 @@ import Search from '~/modules/search/models/Search';
 const search = {
     namespaced: true,
     state: () => ({
+        search: null,
         searchResults: [],
     }),
     mutations: {
+        setSearch(state, data) {
+            state.search = data;
+        },
         setSearchResults(state, data) {
             state.searchResults = data;
         },
@@ -13,6 +17,9 @@ const search = {
     getters: {
         searchResults(state) {
             return state.searchResults;
+        },
+        search(state) {
+            return state.search;
         },
     },
     actions: {
