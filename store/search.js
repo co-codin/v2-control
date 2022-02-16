@@ -23,8 +23,8 @@ const search = {
         },
     },
     actions: {
-        async getSearchResults({ commit }) {
-            const data = await Search.query().custom('/admin/global-search').$get();
+        async getSearchResults({ commit }, query) {
+            const data = await Search.query().custom(`/admin/global-search?term=${query}`).$get();
             commit('setSearchResults', data);
         },
     },

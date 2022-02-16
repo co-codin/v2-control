@@ -99,6 +99,7 @@
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
 
+import { debounce } from 'lodash';
 import config from '../config';
 
 import MainMenu from '../components/navigation/MainMenu';
@@ -120,9 +121,16 @@ export default {
         ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached']),
     },
     methods: {
-        ...mapActions({}),
-        ...mapMutations({}),
-        searchResult() {},
+        ...mapActions({
+            getSearchResults: 'search/getSearchResults',
+        }),
+        ...mapMutations({
+            setSearch: 'search/setSearch',
+        }),
+        searchResult: debounce(async function () {
+            this.setSearch(this.search);
+            await this.getSearchResults(this.search);
+        }, 500),
     },
 };
 </script>
