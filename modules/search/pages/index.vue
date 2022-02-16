@@ -30,5 +30,10 @@ export default {
             return [{ text: `Результаты поиска по запросу ${this.search ?? ''}` }];
         },
     },
+    watch: {
+        searchResults(value) {
+            console.log(value);
+        },
+    },
 };
 </script>
