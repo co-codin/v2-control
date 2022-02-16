@@ -24,7 +24,7 @@ const search = {
     },
     actions: {
         async getSearchResults({ commit }, query) {
-            const data = await Search.query().custom(`/admin/global-search?term=${query}`).$get();
+            const data = await Search.query().custom(`/admin/global-search?term=${query}`).$first();
             commit('setSearchResults', data);
         },
     },

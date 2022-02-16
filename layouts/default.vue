@@ -53,22 +53,7 @@
                     :flat="!isToolbarDetached"
                 >
                     <div class="d-flex flex-grow-1 align-center">
-
-                        <!-- search input mobile -->
-                        <v-text-field
-                            v-if="showSearch"
-                            append-icon="mdi-close"
-                            placeholder="Найти"
-                            prepend-inner-icon="mdi-magnify"
-                            hide-details
-                            solo
-                            flat
-                            autofocus
-                            @click:append="showSearch = false"
-                        ></v-text-field>
-
-
-                        <div v-else class="d-flex flex-grow-1 align-center">
+                        <div class="d-flex flex-grow-1 align-center">
                             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
                             <v-spacer class="d-none d-lg-block"></v-spacer>
@@ -83,6 +68,7 @@
                                 filled
                                 rounded
                                 dense
+                                min="2"
                                 @input="searchResult"
                             />
 

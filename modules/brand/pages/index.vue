@@ -41,14 +41,9 @@
                             class="mr-1"
                             :to="{ name: 'products.index', query: { filter: `brand_id[]=${item.id}` } }"
                         >
-                            <collection-icon /> <span style="margin-left: 3px;">{{ item.products_count }}</span>
+                            <collection-icon /> <span style="margin-left: 3px">{{ item.products_count }}</span>
                         </v-btn>
-                        <v-btn
-                            icon
-                            target="_blank"
-                            link
-                            :href="`${$config.app.siteUrl}/brands/${item.slug}`"
-                        >
+                        <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/brands/${item.slug}`">
                             <external-link-icon />
                         </v-btn>
                         <v-btn icon :to="{ name: 'brands.update', params: { id: item.id } }">
@@ -70,8 +65,7 @@ import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import { statusLabels } from '@/enums';
 import Brand from '../models/Brand';
 import PageHeader from '~/components/common/PageHeader';
-import CollectionIcon from '~/components/heroicons/CollectionIcon'
-import qs from 'qs';
+import CollectionIcon from '~/components/heroicons/CollectionIcon';
 
 export default {
     components: {
