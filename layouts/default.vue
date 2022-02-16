@@ -53,37 +53,24 @@
                     :flat="!isToolbarDetached"
                 >
                     <div class="d-flex flex-grow-1 align-center">
-
-                        <!-- search input mobile -->
-                        <v-text-field
-                            v-if="showSearch"
-                            append-icon="mdi-close"
-                            placeholder="Найти"
-                            prepend-inner-icon="mdi-magnify"
-                            hide-details
-                            solo
-                            flat
-                            autofocus
-                            @click:append="showSearch = false"
-                        ></v-text-field>
-
-
-                        <div v-else class="d-flex flex-grow-1 align-center">
+                        <div class="d-flex flex-grow-1 align-center">
                             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
                             <v-spacer class="d-none d-lg-block"></v-spacer>
 
                             <!-- search input desktop -->
                             <v-text-field
-                                ref="search"
-                                class="mx-4 hidden-xs-only"
-                                placeholder="Найти"
+                                v-model="search"
+                                class="mx-1 hidden-xs-only"
+                                placeholder="Search"
                                 prepend-inner-icon="mdi-magnify"
                                 hide-details
                                 filled
                                 rounded
                                 dense
-                            ></v-text-field>
+                                min="2"
+                                @input="searchResult"
+                            />
 
                             <v-spacer class="d-block d-sm-none"></v-spacer>
 
@@ -113,8 +100,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
+import { debounce } from 'lodash';
 import config from '../config';
 
 import MainMenu from '../components/navigation/MainMenu';
@@ -128,7 +116,7 @@ export default {
     data() {
         return {
             drawer: null,
-            showSearch: false,
+            search: null,
             navigation: config.navigation,
         };
     },
@@ -136,9 +124,17 @@ export default {
         ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached']),
     },
     methods: {
-        onKeyup(e) {
-            this.$refs.search.focus();
-        },
+        ...mapActions({
+            getSearchResults: 'search/getSearchResults',
+        }),
+        ...mapMutations({
+            setSearch: 'search/setSearch',
+        }),
+        searchResult: debounce(async function () {
+            await this.$router.push('/search/result');
+            this.setSearch(this.search);
+            await this.getSearchResults(this.search);
+        }, 500),
     },
 };
 </script>
