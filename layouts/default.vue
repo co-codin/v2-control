@@ -53,7 +53,22 @@
                     :flat="!isToolbarDetached"
                 >
                     <div class="d-flex flex-grow-1 align-center">
-                        <div class="d-flex flex-grow-1 align-center">
+
+                        <!-- search input mobile -->
+                        <v-text-field
+                            v-if="showSearch"
+                            append-icon="mdi-close"
+                            placeholder="Найти"
+                            prepend-inner-icon="mdi-magnify"
+                            hide-details
+                            solo
+                            flat
+                            autofocus
+                            @click:append="showSearch = false"
+                        ></v-text-field>
+
+
+                        <div v-else class="d-flex flex-grow-1 align-center">
                             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
                             <v-spacer class="d-none d-lg-block"></v-spacer>
@@ -76,6 +91,8 @@
                             <v-btn class="d-block d-sm-none" icon @click="showSearch = true">
                                 <v-icon>mdi-magnify</v-icon>
                             </v-btn>
+
+                            <v-spacer class="d-block d-sm-none"></v-spacer>
 
                             <h4 class="mr-2">{{ $auth.user.name }}</h4>
 

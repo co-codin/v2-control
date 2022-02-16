@@ -125,6 +125,11 @@ export default {
                         name: 'login',
                         component: resolve(__dirname, '_pages/login.vue'),
                     },
+                    {
+                        path: '/search',
+                        name: 'search',
+                        component: resolve(__dirname, '_pages/search.vue'),
+                    },
                     ...brandRoutes(resolve),
                     ...categoryRoutes(resolve),
                     ...productRoutes(resolve),
