@@ -58,7 +58,24 @@
 
                             <v-spacer class="d-none d-lg-block"></v-spacer>
 
+                            <!-- search input desktop -->
+                            <v-text-field
+                                v-model="search"
+                                class="mx-1 hidden-xs-only"
+                                placeholder="Search"
+                                prepend-inner-icon="mdi-magnify"
+                                hide-details
+                                filled
+                                rounded
+                                dense
+                            ></v-text-field>
+
                             <v-spacer class="d-block d-sm-none"></v-spacer>
+
+                            <v-btn class="d-block d-sm-none" icon @click="showSearch = true">
+                                <v-icon>mdi-magnify</v-icon>
+                            </v-btn>
+
                             <h4 class="mr-2">{{ $auth.user.name }}</h4>
 
                             <toolbar-user />
@@ -94,7 +111,7 @@ export default {
     data() {
         return {
             drawer: null,
-
+            search: null,
             navigation: config.navigation,
         };
     },
