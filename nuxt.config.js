@@ -23,6 +23,7 @@ import { cabinetRoutes } from './modules/cabinet/router';
 import { productReviewRoutes } from './modules/product-review/router';
 import { fieldValueRoutes } from './modules/field-value/router';
 import { productQuestionRoutes } from './modules/product-question/router';
+import { searchRoutes } from './modules/search/router';
 
 export default {
     ssr: false,
@@ -124,6 +125,11 @@ export default {
                         name: 'login',
                         component: resolve(__dirname, '_pages/login.vue'),
                     },
+                    {
+                        path: '/search',
+                        name: 'search',
+                        component: resolve(__dirname, '_pages/search.vue'),
+                    },
                     ...brandRoutes(resolve),
                     ...categoryRoutes(resolve),
                     ...productRoutes(resolve),
@@ -148,6 +154,7 @@ export default {
                     ...productReviewRoutes(resolve),
                     ...fieldValueRoutes(resolve),
                     ...productQuestionRoutes(resolve),
+                    ...searchRoutes(resolve),
                 ]
             );
         },

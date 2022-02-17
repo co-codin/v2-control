@@ -54,6 +54,9 @@
                             <external-link-icon />
                         </v-btn>
                         <v-btn
+                            width="22"
+                            height="22"
+                            class="mx-1"
                             icon
                             :to="{ name: 'products.update', params: { id: item.id } }"
                         >
@@ -203,7 +206,7 @@ export default {
             }
             try {
                 await product.delete();
-                this.$snackbar(`Производитель ${product.name} успешно удален`);
+                this.$snackbar(`Товар ${product.name} успешно удален`);
                 this.$fetch();
             } catch (e) {
                 this.$snackbar(e.message);

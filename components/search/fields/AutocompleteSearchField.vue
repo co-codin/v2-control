@@ -9,12 +9,19 @@
             placeholder="Начните вводить для поиска"
             :multiple="true"
             v-bind="$props"
+            dense
             @change="search = ''"
             @input="$emit('input', $event)"
-            dense
         >
             <template #selection="data">
-                <v-chip small v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="removeValue(data.item)">
+                <v-chip
+                    small
+                    v-bind="data.attrs"
+                    :input-value="data.selected"
+                    close
+                    @click="data.select"
+                    @click:close="removeChip(data.item)"
+                >
                     {{ data.item.name }}
                 </v-chip>
             </template>
@@ -72,14 +79,6 @@ export default {
         items: [],
         search: null,
     }),
-    watch: {
-        search(value) {
-            this.searchItems(value);
-        },
-    },
-    created() {
-        this.loadItems();
-    },
     computed: {
         chips() {
             if (!this.value) {
@@ -91,15 +90,23 @@ export default {
             }));
         },
         formattedValue() {
-            if(!this.value) {
+            if (!this.value) {
                 return [];
             }
 
-            return this.value.map(item => +item);
+            return this.value.map((item) => +item);
         },
     },
+    watch: {
+        search(value) {
+            this.searchItems(value);
+        },
+    },
+    created() {
+        this.loadItems();
+    },
     methods: {
-        searchItems: debounce(async function(query) {
+        searchItems: debounce(async function (query) {
             this.isLoading = true;
             const params = {};
             params[`filter[${this.searchColumn ?? this.itemText}]`] = query;
@@ -118,17 +125,8 @@ export default {
         },
         removeChip(e) {
             const value = [...this.value];
-            value.splice(this.value.indexOf(e), 1);
+            value.splice(this.value.indexOf(e.id), 1);
             this.$emit('input', value);
-        },
-        removeValue (item) {
-            this.removeChip(item);
-            // const value = [...this.value];
-            // value.splice(this.value.indexOf(e), 1);
-            // this.$emit('input', value);
-            //
-            // const index = this.friends.indexOf(item.name)
-            // if (index >= 0) this.friends.splice(index, 1)
         },
     },
 };

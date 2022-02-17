@@ -8,9 +8,9 @@
         item-value="id"
         item-text="value"
         :multiple="multiple"
+        clearable
         @change="$emit('input', $event)"
         @keyup="searchItems($event.target.value)"
-        clearable
     >
         <template v-if="searchInput" slot="no-data">
             <div class="pl-2 pr-2">Ничего не найдено. <v-btn text @click="addValue">Добавить?</v-btn></div>
@@ -19,8 +19,8 @@
 </template>
 
 <script>
+import { debounce } from 'lodash';
 import FieldValue from '~/models/FieldValue';
-import {debounce} from "lodash";
 
 export default {
     props: {
@@ -38,9 +38,9 @@ export default {
     data() {
         return {
             isLoading: false,
-            loadedItems: [ ...this.items ],
+            loadedItems: [...this.items],
             searchInput: null,
-        }
+        };
     },
     watch: {
         '$attrs.value': async function () {
@@ -56,12 +56,10 @@ export default {
         searchItems: debounce(async function (query) {
             if (!query) return;
             this.isLoading = true;
-            const items = await FieldValue.select('id', 'value')
-                .where('value', query)
-                .orderBy('valueLength')
-                .$get();
+            const items = await FieldValue.select('id', 'value').where('value', query).orderBy('valueLength').$get();
             this.loadedItems = this.loadedItems.concat(items);
             this.isLoading = false;
+            this.searchInput = '';
         }, 200),
         async loadItems() {
             this.isLoading = true;

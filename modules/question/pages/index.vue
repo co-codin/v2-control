@@ -36,6 +36,9 @@
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
+                        <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/page/questions#${item.slug}`">
+                            <external-link-icon />
+                        </v-btn>
                         <v-btn
                             icon
                             width="22"
@@ -79,8 +82,6 @@ export default {
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Вопрос', align: 'left', value: 'question' },
-                { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Ответ', align: 'left', value: 'answer' },
                 { text: 'Категория', value: 'question_category.name', sortable: false },
                 { text: 'Статус', value: 'status.description', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
@@ -120,7 +121,7 @@ export default {
         this.showLoading();
 
         const response = await Question.select({
-            questions: ['id', 'question', 'slug', 'answer', 'status', 'question_category_id'],
+            questions: ['id', 'question', 'slug', 'status', 'question_category_id'],
         })
             .with('question_category')
             .params(this.queryParams)

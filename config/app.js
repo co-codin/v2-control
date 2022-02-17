@@ -4,4 +4,5 @@ export default {
     siteUrl: process.env.SITE_URL || 'https://medeq.ru',
     storageUrl: process.env.STORAGE_URL,
     contentUrl: process.env.CONTENT_API_URL,
+    apiUrl: process.env.API_URL,
 };

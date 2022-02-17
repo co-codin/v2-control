@@ -1,5 +1,5 @@
 <template>
-    <div @click="$emit('click', $event)" v-html="require(`assets/icons/${name}.svg?raw`)"></div>
+    <div @click="$emit('click', $event)" v-html="require(`assets/icons/site-icons/${name}.svg?raw`)"></div>
 </template>
 <script>
 export default {

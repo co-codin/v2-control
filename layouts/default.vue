@@ -58,7 +58,28 @@
 
                             <v-spacer class="d-none d-lg-block"></v-spacer>
 
+                            <!-- search input desktop -->
+                            <v-text-field
+                                v-model="search"
+                                class="mx-1 hidden-xs-only"
+                                placeholder="Search"
+                                prepend-inner-icon="mdi-magnify"
+                                hide-details
+                                filled
+                                rounded
+                                dense
+                                min="2"
+                                @input="searchResult"
+                            />
+
                             <v-spacer class="d-block d-sm-none"></v-spacer>
+
+                            <v-btn class="d-block d-sm-none" icon @click="showSearch = true">
+                                <v-icon>mdi-magnify</v-icon>
+                            </v-btn>
+
+                            <v-spacer class="d-block d-sm-none"></v-spacer>
+
                             <h4 class="mr-2">{{ $auth.user.name }}</h4>
 
                             <toolbar-user />
@@ -79,8 +100,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
+import { debounce } from 'lodash';
 import config from '../config';
 
 import MainMenu from '../components/navigation/MainMenu';
@@ -94,12 +116,25 @@ export default {
     data() {
         return {
             drawer: null,
-
+            search: null,
             navigation: config.navigation,
         };
     },
     computed: {
         ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached']),
+    },
+    methods: {
+        ...mapActions({
+            getSearchResults: 'search/getSearchResults',
+        }),
+        ...mapMutations({
+            setSearch: 'search/setSearch',
+        }),
+        searchResult: debounce(async function () {
+            await this.$router.push('/search/result');
+            this.setSearch(this.search);
+            await this.getSearchResults(this.search);
+        }, 500),
     },
 };
 </script>
