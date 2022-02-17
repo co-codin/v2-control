@@ -65,7 +65,6 @@ export default {
     components: { CollectionIcon, PencilAltIcon, ExternalLinkIcon, FormBlock, PageHeader },
     computed: {
         ...mapGetters({
-            search: 'search/search',
             searchResults: 'search/searchResults',
         }),
         breadcrumbs() {
