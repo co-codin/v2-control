@@ -23,7 +23,6 @@ import { cabinetRoutes } from './modules/cabinet/router';
 import { productReviewRoutes } from './modules/product-review/router';
 import { fieldValueRoutes } from './modules/field-value/router';
 import { productQuestionRoutes } from './modules/product-question/router';
-import { searchRoutes } from './modules/search/router';
 
 export default {
     ssr: false,
@@ -154,7 +153,6 @@ export default {
                     ...productReviewRoutes(resolve),
                     ...fieldValueRoutes(resolve),
                     ...productQuestionRoutes(resolve),
-                    ...searchRoutes(resolve),
                 ]
             );
         },
