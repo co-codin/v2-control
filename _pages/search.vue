@@ -29,9 +29,7 @@
                                     </v-btn>
                                     <v-btn
                                         target="_blank"
-                                        width="22"
-                                        height="22"
-                                        class="mx-1"
+                                        link
                                         icon
                                         :href="`${$config.app.url}/${item.type}?filter=id=${item.id}`"
                                     >

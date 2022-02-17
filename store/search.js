@@ -16,7 +16,6 @@ const search = {
     actions: {
         async getSearchResults({ commit }, query) {
             const data = await this.$axios.$get(`/admin/global-search?term=${query}`);
-            console.log(data);
             commit('setSearchResults', data);
         },
     },
