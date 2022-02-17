@@ -118,7 +118,6 @@ export default {
     }),
     computed: {
         ...mapGetters({
-            search: 'search/search',
             searchResults: 'search/searchResults',
         }),
         breadcrumbs() {

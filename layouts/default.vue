@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 import { debounce } from 'lodash';
 import config from '../config';
@@ -123,17 +123,22 @@ export default {
     computed: {
         ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached']),
     },
+    async mounted() {
+        if (this.$route.query.term) {
+            this.search = this.$route.query.term;
+            await this.$router.push(`/search?term=${this.search}`);
+            await this.getSearchResults(this.search);
+        }
+    },
     methods: {
         ...mapActions({
             getSearchResults: 'search/getSearchResults',
         }),
-        ...mapMutations({
-            setSearch: 'search/setSearch',
-        }),
         searchResult: debounce(async function () {
-            await this.$router.push('/search');
-            this.setSearch(this.search);
-            await this.getSearchResults(this.search);
+            await this.$router.push(`/search?term=${this.search}`);
+            if (this.search) {
+                await this.getSearchResults(this.search);
+            }
         }, 500),
     },
 };
