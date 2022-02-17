@@ -1,13 +1,12 @@
 <template>
     <div>
-        <page-header h1="Результаты поиска" :breadcrumbs="breadcrumbs"/>
+        <page-header h1="Результаты поиска" :breadcrumbs="breadcrumbs" />
+
         <v-expansion-panels :multiple="true" :value="[]">
             <v-expansion-panel>
-                <v-expansion-panel-header class="title">
-                    Новости ({{ results.news.length }})
-                </v-expansion-panel-header>
+                <v-expansion-panel-header class="title"> Новости ({{ results.news.length }}) </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <v-alert dense v-if="!results.news.length" type="info">Ничего не найдено</v-alert>
+                    <v-alert v-if="!results.news.length" dense type="info">Ничего не найдено</v-alert>
                     <v-card v-else>
                         <v-data-table
                             :headers="headers"
@@ -32,10 +31,10 @@
                                         link
                                         :href="`${$config.app.siteUrl}/brands/${item.slug}`"
                                     >
-                                        <external-link-icon/>
+                                        <external-link-icon />
                                     </v-btn>
                                     <v-btn icon :to="{ name: 'brands.update', params: { id: item.id } }">
-                                        <pencil-alt-icon/>
+                                        <pencil-alt-icon />
                                     </v-btn>
                                 </div>
                             </template>
@@ -48,7 +47,7 @@
                     Товары ({{ results.products.length }})
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <v-alert dense v-if="!results.products.length" type="info">Ничего не найдено</v-alert>
+                    <v-alert v-if="!results.products.length" dense type="info">Ничего не найдено</v-alert>
                     <v-card v-else>
                         <v-data-table
                             :headers="headers"
@@ -73,10 +72,10 @@
                                         link
                                         :href="`${$config.app.siteUrl}/brands/${item.slug}`"
                                     >
-                                        <external-link-icon/>
+                                        <external-link-icon />
                                     </v-btn>
                                     <v-btn icon :to="{ name: 'brands.update', params: { id: item.id } }">
-                                        <pencil-alt-icon/>
+                                        <pencil-alt-icon />
                                     </v-btn>
                                 </div>
                             </template>
@@ -89,7 +88,8 @@
 </template>
 
 <script>
-import PageHeader from "~/components/common/PageHeader";
+import { mapGetters } from 'vuex';
+import PageHeader from '~/components/common/PageHeader';
 import DotsHorizontalIcon from '@/components/heroicons/DotsHorizontalIcon';
 import PencilAltIcon from '@/components/heroicons/PencilAltIcon';
 import TrashIcon from '@/components/heroicons/TrashIcon';
@@ -107,22 +107,22 @@ export default {
         isLoading: false,
         results: {
             news: [],
-            products: [
-                { name: 'Mindray DC-10', id: 1}
-            ],
+            products: [{ name: 'Mindray DC-10', id: 1 }],
             brands: [],
         },
         headers: [
-            {text: 'ID', sortable: false, align: 'left', value: 'id'},
-            {text: 'Название', sortable: false, align: 'left', value: 'name'},
-            {text: '', sortable: false, align: 'right', value: 'action'},
+            { text: 'ID', sortable: false, align: 'left', value: 'id' },
+            { text: 'Название', sortable: false, align: 'left', value: 'name' },
+            { text: '', sortable: false, align: 'right', value: 'action' },
         ],
     }),
     computed: {
+        ...mapGetters({
+            search: 'search/search',
+            searchResults: 'search/searchResults',
+        }),
         breadcrumbs() {
-            return [
-                {text: `Результаты поиска по запросу "1"`}
-            ];
+            return [{ text: `Результаты поиска по запросу ${this.search ?? ''}` }];
         },
     },
 };

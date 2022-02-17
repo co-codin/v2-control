@@ -131,7 +131,7 @@ export default {
             setSearch: 'search/setSearch',
         }),
         searchResult: debounce(async function () {
-            await this.$router.push('/search/result');
+            await this.$router.push('/search');
             this.setSearch(this.search);
             await this.getSearchResults(this.search);
         }, 500),
