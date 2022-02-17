@@ -21,16 +21,21 @@
 
                             <template #item.action="{ item }">
                                 <div class="table-actions">
-                                    <v-btn
-                                        icon
-                                        target="_blank"
-                                        link
-                                        :href="`${$config.app.siteUrl}/brands/${item.slug}`"
-                                    >
+                                    <v-btn icon target="_blank" link :href="item.public_url">
                                         <external-link-icon />
                                     </v-btn>
-                                    <v-btn icon :to="{ name: 'brands.update', params: { id: item.id } }">
+                                    <v-btn icon target="_blank" :href="item.admin_url">
                                         <pencil-alt-icon />
+                                    </v-btn>
+                                    <v-btn
+                                        target="_blank"
+                                        width="22"
+                                        height="22"
+                                        class="mx-1"
+                                        icon
+                                        :href="`${$config.app.url}/${item.type}?filter=id=${item.id}`"
+                                    >
+                                        <collection-icon />
                                     </v-btn>
                                 </div>
                             </template>
@@ -45,17 +50,15 @@
 <script>
 import { mapGetters } from 'vuex';
 import PageHeader from '~/components/common/PageHeader';
-import DotsHorizontalIcon from '@/components/heroicons/DotsHorizontalIcon';
 import PencilAltIcon from '@/components/heroicons/PencilAltIcon';
-import TrashIcon from '@/components/heroicons/TrashIcon';
 import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
+import CollectionIcon from '~/components/heroicons/CollectionIcon';
 
 export default {
     components: {
+        CollectionIcon,
         PageHeader,
         PencilAltIcon,
-        TrashIcon,
-        DotsHorizontalIcon,
         ExternalLinkIcon,
     },
     data: () => ({
