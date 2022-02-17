@@ -3,10 +3,10 @@
         <page-header h1="Результаты поиска" :breadcrumbs="breadcrumbs" />
 
         <v-expansion-panels :multiple="true" :value="[]">
-            <v-expansion-panel>
-                <v-expansion-panel-header class="title"> Новости ({{ results.news.length }}) </v-expansion-panel-header>
+            <v-expansion-panel v-for="(items, label) in searchResults">
+                <v-expansion-panel-header class="title"> {{ label }} ({{ items.length }}) </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <v-alert v-if="!results.news.length" dense type="info">Ничего не найдено</v-alert>
+                    <v-alert v-if="!items.length" dense type="info">Ничего не найдено</v-alert>
                     <v-card v-else>
                         <v-data-table
                             :headers="headers"
@@ -42,47 +42,47 @@
                     </v-card>
                 </v-expansion-panel-content>
             </v-expansion-panel>
-            <v-expansion-panel>
-                <v-expansion-panel-header class="title">
-                    Товары ({{ results.products.length }})
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                    <v-alert v-if="!results.products.length" dense type="info">Ничего не найдено</v-alert>
-                    <v-card v-else>
-                        <v-data-table
-                            :headers="headers"
-                            :items="results.products"
-                            :loading="isLoading"
-                            loading-text="Идет загрузка..."
-                            hide-default-footer
-                        >
-                            <template #item.id="{ item }">
-                                <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
-                            </template>
+            <!--            <v-expansion-panel>-->
+            <!--                <v-expansion-panel-header class="title">-->
+            <!--                    Товары ({{ results.products.length }})-->
+            <!--                </v-expansion-panel-header>-->
+            <!--                <v-expansion-panel-content>-->
+            <!--                    <v-alert v-if="!results.products.length" dense type="info">Ничего не найдено</v-alert>-->
+            <!--                    <v-card v-else>-->
+            <!--                        <v-data-table-->
+            <!--                            :headers="headers"-->
+            <!--                            :items="results.products"-->
+            <!--                            :loading="isLoading"-->
+            <!--                            loading-text="Идет загрузка..."-->
+            <!--                            hide-default-footer-->
+            <!--                        >-->
+            <!--                            <template #item.id="{ item }">-->
+            <!--                                <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>-->
+            <!--                            </template>-->
 
-                            <template #item.created_at="{ item }">
-                                <div>{{ item.asDate('created_at').fromNow() }}</div>
-                            </template>
+            <!--                            <template #item.created_at="{ item }">-->
+            <!--                                <div>{{ item.asDate('created_at').fromNow() }}</div>-->
+            <!--                            </template>-->
 
-                            <template #item.action="{ item }">
-                                <div class="table-actions">
-                                    <v-btn
-                                        icon
-                                        target="_blank"
-                                        link
-                                        :href="`${$config.app.siteUrl}/brands/${item.slug}`"
-                                    >
-                                        <external-link-icon />
-                                    </v-btn>
-                                    <v-btn icon :to="{ name: 'brands.update', params: { id: item.id } }">
-                                        <pencil-alt-icon />
-                                    </v-btn>
-                                </div>
-                            </template>
-                        </v-data-table>
-                    </v-card>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
+            <!--                            <template #item.action="{ item }">-->
+            <!--                                <div class="table-actions">-->
+            <!--                                    <v-btn-->
+            <!--                                        icon-->
+            <!--                                        target="_blank"-->
+            <!--                                        link-->
+            <!--                                        :href="`${$config.app.siteUrl}/brands/${item.slug}`"-->
+            <!--                                    >-->
+            <!--                                        <external-link-icon />-->
+            <!--                                    </v-btn>-->
+            <!--                                    <v-btn icon :to="{ name: 'brands.update', params: { id: item.id } }">-->
+            <!--                                        <pencil-alt-icon />-->
+            <!--                                    </v-btn>-->
+            <!--                                </div>-->
+            <!--                            </template>-->
+            <!--                        </v-data-table>-->
+            <!--                    </v-card>-->
+            <!--                </v-expansion-panel-content>-->
+            <!--            </v-expansion-panel>-->
         </v-expansion-panels>
     </div>
 </template>
