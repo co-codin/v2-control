@@ -30,12 +30,28 @@
             dense
         />
 
-        <date-picker-field
-            v-model="form.answered_at"
-            label="Дата написания ответа"
-            :error-messages="form.errors.get('answered_at')"
-            :error="form.errors.has('answered_at')"
-        />
+        <v-card outlined flat tile class="mb-1">
+            <v-card-title> Дата написания ответа </v-card-title>
+            <v-card-text>
+                <date-picker-field
+                    :value="dateTime.date"
+                    label="Дата"
+                    :error-messages="form.errors.get('date')"
+                    :error="form.errors.has('date')"
+                    @input="updateDate"
+                />
+                <v-text-field
+                    ref="time"
+                    :value="dateTime.time"
+                    label="Время"
+                    prepend-icon="mdi-clock"
+                    :error-messages="form.errors.get('date')"
+                    :error="form.errors.has('date')"
+                    maxlength="5"
+                    @change="updateTime"
+                />
+            </v-card-text>
+        </v-card>
 
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
@@ -73,7 +89,7 @@ export default {
                 person: null,
                 text: null,
                 product_question_id: this.question.id,
-                answered_at: null,
+                date: null,
             },
             form: null,
             persons: [],
@@ -86,6 +102,13 @@ export default {
                 value: `${person.first_name} ${person.last}`,
                 text: `${person.first_name} ${person.last_name} (${person.person ?? 'не заполнено'})`,
             }));
+        },
+        dateTime() {
+            const now = this.$dayjs(this.form.date || undefined);
+            return {
+                date: now.format('YYYY-MM-DD'),
+                time: `${now.format('HH')}:${now.format('mm')}`,
+            };
         },
     },
     watch: {
@@ -105,6 +128,17 @@ export default {
             this.form.first_name = person.first_name;
             this.form.last_name = person.last_name;
             this.form.person = person.person;
+        },
+        updateDate(date) {
+            const now = this.$dayjs(this.form.date ?? undefined);
+            this.form.date = `${date || now.format('YYYY-MM-DD')} ${now.format('HH:mm')}`;
+        },
+        updateTime(time) {
+            if (!/[0-9]{2}:[0-9]{2}/.test(time)) {
+                time = null;
+            }
+            const now = this.$dayjs(this.form.date);
+            this.form.date = `${now.format('YYYY-MM-DD')} ${time || now.format('HH:mm')}`;
         },
     },
 };

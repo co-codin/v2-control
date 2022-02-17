@@ -126,13 +126,6 @@
                 :error="form.errors.has('comment')"
             />
 
-            <date-picker-field
-                v-model="form.answered_at"
-                label="Дата написания отзыва"
-                :error-messages="form.errors.get('answered_at')"
-                :error="form.errors.has('answered_at')"
-            />
-
             <v-row class="expansion-panel-actions mt-5">
                 <v-col>
                     <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -174,7 +167,6 @@ export default {
             experience: null,
             client_id: null,
             is_confirmed: false,
-            answered_at: null,
         },
         ownReviewFormDefaults: {
             created_at: null,
@@ -187,7 +179,6 @@ export default {
             ratings: [],
             experience: null,
             is_confirmed: false,
-            answered_at: null,
         },
         form: null,
         experienceLabels: [
