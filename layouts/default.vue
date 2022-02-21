@@ -68,7 +68,7 @@
                                 filled
                                 rounded
                                 dense
-                                min="2"
+                                :error="searchError"
                                 @input="searchResult"
                             />
 
@@ -115,6 +115,7 @@ export default {
     },
     data() {
         return {
+            searchError: false,
             drawer: null,
             search: null,
             navigation: config.navigation,
@@ -135,9 +136,15 @@ export default {
             getSearchResults: 'search/getSearchResults',
         }),
         searchResult: debounce(async function () {
-            await this.$router.push(`/search?term=${this.search}`);
-            if (this.search) {
-                await this.getSearchResults(this.search);
+            if (this.search.length < 2) {
+                this.searchError = true;
+                this.$snackbar('Минимальная длина запроса - 2 символа');
+            } else {
+                this.searchError = false;
+                await this.$router.push(`/search?term=${this.search}`);
+                if (this.search) {
+                    await this.getSearchResults(this.search);
+                }
             }
         }, 500),
     },
