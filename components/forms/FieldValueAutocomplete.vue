@@ -9,7 +9,7 @@
         item-text="value"
         :multiple="multiple"
         clearable
-        @change="$emit('input', $event)"
+        @change="changeValue($event)"
         @keyup="searchItems($event.target.value)"
     >
         <template v-if="searchInput" slot="no-data">
@@ -59,7 +59,6 @@ export default {
             const items = await FieldValue.select('id', 'value').where('value', query).orderBy('valueLength').$get();
             this.loadedItems = this.loadedItems.concat(items);
             this.isLoading = false;
-            this.searchInput = '';
         }, 200),
         async loadItems() {
             this.isLoading = true;
@@ -80,6 +79,10 @@ export default {
                 this.$snackbar('Произошла ошибка при создании');
             }
         },
+        changeValue(e) {
+            this.$emit('input', e);
+            this.searchInput = null;
+        }
     },
 };
 </script>
