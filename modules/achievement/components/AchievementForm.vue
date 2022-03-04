@@ -15,35 +15,17 @@
             inset
         />
 
-        <file-uploader
-            v-if="!form.image"
+        <file-field
+            v-model="form.image"
             label="Фотография"
-            @upload="
-                form.image = $event.file;
+            :error-messages="form.errors.get('image')"
+            :error="form.errors.has('image')"
+            @input="form.is_image_changed = true"
+            @delete="
+                form.image = null;
                 form.is_image_changed = true;
             "
         />
-
-        <file-field
-            v-else
-            v-model="form.image"
-            :error-messages="form.errors.get('image')"
-            :error="form.errors.has('image')"
-            prepend-icon="mdi-image"
-            @delete="form.image = null"
-        />
-
-        <!--        <file-field-->
-        <!--            v-model="form.image"-->
-        <!--            label="Фотография"-->
-        <!--            :error-messages="form.errors.get('image')"-->
-        <!--            :error="form.errors.has('image')"-->
-        <!--            @input="form.is_image_changed = true"-->
-        <!--            @delete="-->
-        <!--                form.image = null;-->
-        <!--                form.is_image_changed = true;-->
-        <!--            "-->
-        <!--        />-->
 
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
