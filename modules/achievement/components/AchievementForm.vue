@@ -38,9 +38,11 @@
 <script>
 import { Form } from 'form-backend-validation';
 import FileField from '../../../components/forms/FileField';
+import FileUploader from '~/components/FileUploader';
 
 export default {
     components: {
+        FileUploader,
         FileField,
     },
     props: {
