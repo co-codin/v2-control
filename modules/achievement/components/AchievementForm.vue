@@ -15,17 +15,35 @@
             inset
         />
 
-        <file-field
-            v-model="form.image"
+        <file-uploader
+            v-if="!form.image"
             label="Фотография"
-            :error-messages="form.errors.get('image')"
-            :error="form.errors.has('image')"
-            @input="form.is_image_changed = true"
-            @delete="
-                form.image = null;
+            @upload="
+                form.image = $event.file;
                 form.is_image_changed = true;
             "
         />
+
+        <file-field
+            v-else
+            v-model="form.image"
+            :error-messages="form.errors.get('image')"
+            :error="form.errors.has('image')"
+            prepend-icon="mdi-image"
+            @delete="form.image = null"
+        />
+
+        <!--        <file-field-->
+        <!--            v-model="form.image"-->
+        <!--            label="Фотография"-->
+        <!--            :error-messages="form.errors.get('image')"-->
+        <!--            :error="form.errors.has('image')"-->
+        <!--            @input="form.is_image_changed = true"-->
+        <!--            @delete="-->
+        <!--                form.image = null;-->
+        <!--                form.is_image_changed = true;-->
+        <!--            "-->
+        <!--        />-->
 
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
@@ -38,9 +56,11 @@
 <script>
 import { Form } from 'form-backend-validation';
 import FileField from '../../../components/forms/FileField';
+import FileUploader from '~/components/FileUploader';
 
 export default {
     components: {
+        FileUploader,
         FileField,
     },
     props: {
