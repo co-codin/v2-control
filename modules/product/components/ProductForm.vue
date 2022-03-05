@@ -1,12 +1,13 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <category-tree-search-field
+
+        <categories-tree-field
             label="Категории"
             :value="categoryIds"
             :error-messages="form.errors.get('categories')"
             :error="form.errors.has('categories')"
-            name="categoryIds"
             @input="updateCategories"
+            hide-details="auto"
         />
 
         <v-select
@@ -17,6 +18,7 @@
             item-value="id"
             :item-text="getCategoryText"
             @change="updateMainCategory"
+            hide-details="auto"
         />
 
         <entity-autocomplete-field
@@ -34,6 +36,7 @@
             hide-no-data
             cache-items
             @input="updateSlug"
+            hide-details="auto"
         />
 
         <v-text-field
@@ -42,6 +45,7 @@
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
             @input="updateSlug"
+            hide-details="auto"
         />
 
         <v-text-field
@@ -56,6 +60,7 @@
                 form.slug = null;
                 updateSlug();
             "
+            hide-details="auto"
         />
 
         <v-select
@@ -67,6 +72,7 @@
             :error="form.errors.has('status')"
             item-text="text"
             item-value="value"
+            hide-details="auto"
         />
 
         <v-select
@@ -78,6 +84,7 @@
             :error="form.errors.has('group_id')"
             item-text="text"
             item-value="value"
+            hide-details="auto"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -98,9 +105,11 @@ import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField'
 import Brand from '~/modules/brand/models/Brand';
 import { Status, statusLabels, groupLabels } from '~/enums';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
+import CategoriesTreeField from '~/components/forms/CategoriesTreeField';
 
 export default {
     components: {
+        CategoriesTreeField,
         CategoryTreeSearchField,
         EntityAutocompleteField,
     },
