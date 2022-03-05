@@ -1,15 +1,9 @@
-import Search from '~/modules/search/models/Search';
-
 const search = {
     namespaced: true,
     state: () => ({
-        search: null,
         searchResults: [],
     }),
     mutations: {
-        setSearch(state, data) {
-            state.search = data;
-        },
         setSearchResults(state, data) {
             state.searchResults = data;
         },
@@ -18,14 +12,10 @@ const search = {
         searchResults(state) {
             return state.searchResults;
         },
-        search(state) {
-            return state.search;
-        },
     },
     actions: {
         async getSearchResults({ commit }, query) {
-            const data = await Search.query().custom(`/admin/global-search?term=${query}`).$first();
-            delete data.baseUrl;
+            const data = await this.$axios.$get(`/admin/global-search?term=${query}`);
             commit('setSearchResults', data);
         },
     },
