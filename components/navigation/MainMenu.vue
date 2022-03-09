@@ -58,15 +58,15 @@ export default {
             this.badges['/product-reviews'] = response.data.meta.total;
         },
         async checkNewProductQuestions() {
-            const response = await this.$axios.get('/product-reviews', {
+            const response = await this.$axios.get('/product-questions', {
                 params: {
                     "filter[status]": 1,
-                    "fields[product_reviews]": "id",
+                    "fields[product_questions]": "id",
                     "page[size]": 1
                 }
             });
 
-            this.badges['/product-reviews'] = response.data.meta.total;
+            this.badges['/product-questions'] = response.data.meta.total;
         }
     }
 };
