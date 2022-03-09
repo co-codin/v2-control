@@ -14,10 +14,18 @@
                     {{ menuItem.icon || 'mdi-circle-medium' }}
                 </v-icon>
             </v-list-item-icon>
-            <v-list-item-content>
+            <v-list-item-content class="position-relative">
                 <v-list-item-title>
                     {{ menuItem.text }}
                 </v-list-item-title>
+                <v-badge
+                    v-if="menuItem.badge"
+                    class="position-absolute"
+                    color="success"
+                    dot
+                    style="right: 12px; top: 18px;"
+                >
+                </v-badge>
             </v-list-item-content>
         </v-list-item>
 
