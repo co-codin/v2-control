@@ -31,7 +31,7 @@
                 </template>
 
                 <template #item.type="{ item }">
-                    <div class="font-weight-bold text-no-wrap">
+                    <div class="text-no-wrap">
                         {{ typeLabels.find((el) => el.value === item.type).text }}
                     </div>
                 </template>

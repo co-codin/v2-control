@@ -39,6 +39,14 @@
             inset
         />
 
+        <v-switch
+            v-model="form.is_hide_links_from_code"
+            label="Скрыть ссылки на фильтр из кода страницы?"
+            :error-messages="form.errors.get('is_hide_links_from_code')"
+            :error="form.errors.has('is_hide_links_from_code')"
+            inset
+        />
+
         <template v-if="!isUpdating">
             <v-divider class="mt-3 mb-2" />
             <h3>Настройки фильтрации</h3>
@@ -145,6 +153,7 @@ export default {
             category_id: null,
             description: null,
             is_default: false,
+            is_hide_links_from_code: false,
             is_enabled: false,
             unit: null,
             facet: {
