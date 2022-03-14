@@ -40,6 +40,7 @@
         />
 
         <v-switch
+            v-if="isCurrentFilterCanHaveLinksInCode"
             v-model="form.is_hide_links_from_code"
             label="Скрыть ссылки на фильтр из кода страницы?"
             :error-messages="form.errors.get('is_hide_links_from_code')"
@@ -198,6 +199,10 @@ export default {
             return systemFilters.sort((a, b) => a.name_ru.localeCompare(b.name_ru))
                 .filter(a => this.form.type !== 2 || !! a?.is_numeric);
         },
+        isCurrentFilterCanHaveLinksInCode() {
+            return this.form.type === 1 // check box list filter
+                || this.form.type === 3 // check mark filter
+        }
     },
     watch: {
         filter(value) {
