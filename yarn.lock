@@ -1628,16 +1628,16 @@
     url-loader "^4.1.0"
     vue-svg-loader "^0.16.0"
 
-"@nuxtjs/vuetify@^1.11.3":
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/vuetify/-/vuetify-1.12.1.tgz#87dd1e1517b0120c660f4a43a22627c9fe124189"
-  integrity sha512-oNwNhR6LY7l9ETsNyPkmCxgzbOYuAf27m+6E9mjQzHSu8PPI0vJ3xnGLgo87XnTcnWr9nYxqjwRN8xqMuuyoxQ==
+"@nuxtjs/vuetify@^1.12.3":
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/vuetify/-/vuetify-1.12.3.tgz#d4adf84e18fd474044bf971e7cc978e25eb16ba1"
+  integrity sha512-6uVL3cfESMB00eVjJTNkyU4jvuPTGPn1yteo7lQTH6v+fxHcPaOgvzVYHIKSHIz1DecuOiB5c9b+YjsRP5+C8A==
   dependencies:
     deepmerge "^4.2.2"
     sass "~1.32.13"
     sass-loader "^10.2.0"
-    vuetify "^2.5.3"
-    vuetify-loader "^1.7.2"
+    vuetify "^2.6"
+    vuetify-loader "^1.7.3"
 
 "@nuxtjs/youch@^4.2.3":
   version "4.2.3"
@@ -1783,10 +1783,15 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/json-schema@*", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.7", "@types/json-schema@^7.0.8":
+"@types/json-schema@*", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.7":
   version "7.0.9"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
   integrity sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==
+
+"@types/json-schema@^7.0.8":
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.10.tgz#9b05b7896166cd00e9cbd59864853abf65d9ac23"
+  integrity sha512-BLO9bBq59vW3fxCpD4o0N4U+DXsvwvIcl+jofw0frQo/GrBFC+/jRZj1E7kgp6dvTyNmA4y6JCV5Id/r3mNP5A==
 
 "@types/json5@^0.0.29":
   version "0.0.29"
@@ -3583,10 +3588,10 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-"chokidar@>=3.0.0 <4.0.0", chokidar@^3.4.1, chokidar@^3.5.1, chokidar@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
-  integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
+"chokidar@>=3.0.0 <4.0.0":
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
+  integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
   dependencies:
     anymatch "~3.1.2"
     braces "~3.0.2"
@@ -3616,6 +3621,21 @@ chokidar@^2.1.8:
     upath "^1.1.1"
   optionalDependencies:
     fsevents "^1.2.7"
+
+chokidar@^3.4.1, chokidar@^3.5.1, chokidar@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
+  integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
+  dependencies:
+    anymatch "~3.1.2"
+    braces "~3.0.2"
+    glob-parent "~5.1.2"
+    is-binary-path "~2.1.0"
+    is-glob "~4.0.1"
+    normalize-path "~3.0.0"
+    readdirp "~3.6.0"
+  optionalDependencies:
+    fsevents "~2.3.2"
 
 chownr@^1.1.1:
   version "1.1.4"
@@ -4356,9 +4376,9 @@ debug@^3.2.7:
     ms "^2.1.1"
 
 decache@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/decache/-/decache-4.6.0.tgz#87026bc6e696759e82d57a3841c4e251a30356e8"
-  integrity sha512-PppOuLiz+DFeaUvFXEYZjLxAkKiMYH/do/b/MxpDe/8AgKBi5GhZxridoVIbBq72GDbL36e4p0Ce2jTGUwwU+w==
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/decache/-/decache-4.6.1.tgz#5928bfab97a6fcf22a65047a3d07999af36efaf0"
+  integrity sha512-ohApBM8u9ygepJCjgBrEZSSxPjc0T/PJkD+uNyxXPkqudyUpdXpwJYp0VISm2WrPVzASU6DZyIi6BWdyw7uJ2Q==
   dependencies:
     callsite "^1.0.0"
 
@@ -7380,9 +7400,9 @@ kleur@^3.0.3:
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
 klona@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
-  integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
+  integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
 last-call-webpack-plugin@^3.0.0:
   version "3.0.0"
@@ -7453,9 +7473,9 @@ loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.3, loader-utils@^1.4
     json5 "^1.0.1"
 
 loader-utils@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-2.0.0.tgz#e4cace5b816d425a166b5f097e10cd12b36064b0"
-  integrity sha512-rP4F0h2RaWSvPEkD7BLDFQnvSf+nK+wr3ESUjNTyAGobqrijmW92zc+SO6d4p4B1wh7+B/Jg1mkQe5NYUEHtHQ==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-2.0.2.tgz#d6e3b4fb81870721ae4e0868ab11dd638368c129"
+  integrity sha512-TM57VeHptv569d/GKh6TAYdzKblwDNiumOdkFnejjD0XwTH87K90w3O7AiJRqdQoXygvi1VQTJTLGhJl7WqA7A==
   dependencies:
     big.js "^5.2.2"
     emojis-list "^3.0.0"
@@ -8684,7 +8704,12 @@ picocolors@^1.0.0:
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
   integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
 
-picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.2.3:
+picomatch@^2.0.4, picomatch@^2.2.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
+  integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
+
+picomatch@^2.2.2, picomatch@^2.2.3:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.0.tgz#f1f061de8f6a4bf022892e2d128234fb98302972"
   integrity sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw==
@@ -10170,10 +10195,10 @@ sane@^4.0.3:
     minimist "^1.1.1"
     walker "~1.0.5"
 
-sass-loader@10, sass-loader@^10.2.0:
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-10.2.0.tgz#3d64c1590f911013b3fa48a0b22a83d5e1494716"
-  integrity sha512-kUceLzC1gIHz0zNJPpqRsJyisWatGYNFRmv2CKZK2/ngMJgLqxTbXwe/hJ85luyvZkgqU3VlJ33UVF2T/0g6mw==
+sass-loader@^10.2.0:
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-10.2.1.tgz#17e51df313f1a7a203889ce8ff91be362651276e"
+  integrity sha512-RRvWl+3K2LSMezIsd008ErK4rk6CulIMSwrcc2aZvjymUgKo/vjXGp1rSWmfTUX7bblEOz8tst4wBwWtCGBqKA==
   dependencies:
     klona "^2.0.4"
     loader-utils "^2.0.0"
@@ -11820,7 +11845,7 @@ vuedraggable@^2.24.3:
   dependencies:
     sortablejs "1.10.2"
 
-vuetify-loader@^1.7.2:
+vuetify-loader@^1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/vuetify-loader/-/vuetify-loader-1.7.3.tgz#404657f4925c828f400fe3269003421d586835c6"
   integrity sha512-1Kt6Rfvuw3i9BBlxC9WTMnU3WEU7IBWQmDX+fYGAVGpzWCX7oHythUIwPCZGShHSYcPMKSDbXTPP8UvT5RNw8Q==
@@ -11829,10 +11854,10 @@ vuetify-loader@^1.7.2:
     file-loader "^6.2.0"
     loader-utils "^2.0.0"
 
-vuetify@^2.5.3:
-  version "2.5.10"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.5.10.tgz#165cb3de9dbffbc94bc775aa2f698eb9fa89eabe"
-  integrity sha512-UODZQrib36l7i1WGg0MUvurczLspYTe0nKAmfbwyMs6dC2lG1Q1VV9caqPbCAB9zgG6QIJaOmRQKSKduw9eZTw==
+vuetify@^2.6:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.6.4.tgz#18052f77492d32856fea35c910755075ff32acc9"
+  integrity sha512-2wEzU/Gz39gQCxK93xoiWPKCHQUnyUKWd81wB7Q7hfYJWu5QOWQXYlF0X/BgUZzf8IOyHWKiSNEAfEe9OE3b4w==
 
 vuex@^3.6.2:
   version "3.6.2"
