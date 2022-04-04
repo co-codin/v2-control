@@ -14,6 +14,7 @@ let handler = (e, modifier) => {
     element.value = newValue;
     element.dispatchEvent(event)
 }
+
 Vue.directive('digits-only',{
     bind: function(el, binding){
         let currentEl = null;
