@@ -33,8 +33,11 @@
         />
 
         <file-uploader
-            v-model="form.image"
             label="Логотип"
+            @upload="
+                    form.image = $event.file;
+                    form.is_image_changed = true;
+                "
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
         />
