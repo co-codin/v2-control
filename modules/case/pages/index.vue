@@ -77,7 +77,7 @@ export default {
             searchForm: {
                 name: null,
                 is_enabled: null,
-                status: null,
+                slug: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },

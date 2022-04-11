@@ -1,23 +1,49 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
+        <entity-autocomplete-field
+            v-model="form.city_id"
+            url="/cities"
+            item-value="id"
+            item-text="name"
+            :query-params="{ sort: 'name' }"
+            :error-messages="form.errors.get('city_id')"
+            :error="form.errors.has('city_id')"
+            placeholder="Введите название города"
+            label="Город"
+            filter-column="id"
+            search-column="name"
+            hide-no-data
+            cache-items
+            hide-details="auto"
+        />
+
         <v-text-field
             v-model="form.name"
             label="Название"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
+            @input="updateSlug"
         />
+
         <v-text-field
             v-model="form.slug"
             label="Ссылка"
             :error-messages="form.errors.get('slug')"
             :error="form.errors.has('slug')"
+            append-icon="mdi-refresh"
+            @click:append="
+                form.slug = null;
+                updateSlug();
+            "
         />
-        <v-text-field
-            v-model="form.website"
-            label="Сайт"
-            :error-messages="form.errors.get('website')"
-            :error="form.errors.has('website')"
+
+        <wysiwyg-field
+            v-model="form.short_description"
+            label="Короткое описание"
+            :error-messages="form.errors.get('short_description')"
+            :error="form.errors.has('short_description')"
         />
+
         <wysiwyg-field
             v-model="form.full_description"
             label="Подробное описание"
@@ -25,33 +51,27 @@
             :error="form.errors.has('full_description')"
         />
         <v-switch
-            v-model="form.is_in_home"
-            label="Отображать на главной"
-            :error-messages="form.errors.get('is_in_home')"
-            :error="form.errors.has('is_in_home')"
+            v-model="form.is_enabled"
+            label="Доступно"
+            :error-messages="form.errors.get('is_enabled')"
+            :error="form.errors.has('is_enabled')"
             inset
         />
 
-        <file-uploader
+        <file-field
             v-model="form.image"
-            label="Логотип"
+            label="Картинка"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
         />
 
-        <field-value-autocomplete
-            v-model="form.country_id"
-            label="Страна"
-            :error-messages="form.errors.get('country_id')"
-            :error="form.errors.has('country_id')"
+        <date-picker-field
+            v-model="form.published_at"
+            label="Дата публикации"
+            :error-messages="form.errors.get('published_at')"
+            :error="form.errors.has('published_at')"
         />
-        <v-select
-            v-model="form.status"
-            label="Статус"
-            :items="statusLabels"
-            :error-messages="form.errors.get('status')"
-            :error="form.errors.has('status')"
-        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -62,17 +82,18 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import FileField from '../../../components/forms/FileField';
-import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
-import { statusLabels } from '~/enums';
+import { debounce } from 'lodash';
+import slugify from 'slugify';
 import WysiwygField from '~/components/forms/WysiwygField';
-import FileUploader from '~/components/FileUploader';
+import DatePickerField from '~/components/forms/DatePickerField';
+import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
+import FileField from '~/components/forms/FileField';
 
 export default {
     components: {
-        FileUploader,
         FileField,
-        FieldValueAutocomplete,
+        EntityAutocompleteField,
+        DatePickerField,
         WysiwygField,
     },
     props: {
@@ -89,25 +110,38 @@ export default {
         formDefaults: {
             name: null,
             slug: null,
-            status: 1,
             image: null,
-            is_in_home: false,
-            website: null,
+            is_enabled: false,
+            published_at: null,
+            short_description: null,
             full_description: null,
-            country_id: null,
+            city_id: null,
         },
         form: null,
-        statusLabels,
     }),
     watch: {
-        brand(value) {
+        caseItem(value) {
             this.form.populate(value);
         },
     },
-    created() {
+    async created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
-            .populate(this.brand || {});
+            .populate(this.caseItem || {});
+    },
+    methods: {
+        updateSlug: debounce(async function () {
+            if (this.isUpdating && this.form.slug) {
+                return;
+            }
+            this.isUpdatingSlug = true;
+            let slug = slugify(this.form.name, { lower: true }).replace(/[^a-z0-9-]/gi, '');
+            slug = slug.replace(/[^a-z0-9-]/gi, '');
+
+            this.form.slug = slug;
+
+            this.isUpdatingSlug = false;
+        }, 200),
     },
 };
 </script>
