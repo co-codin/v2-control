@@ -31,9 +31,6 @@
             dense
         />
 
-        <v-text-field
-        />
-
         <file-field
             v-model="form.image"
             label="Фотография"
