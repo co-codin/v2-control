@@ -86,7 +86,7 @@ export default {
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Доступно', value: 'is_enabled', sortable: false },
-                { text: 'Город', value: 'city.value', sortable: false },
+                { text: 'Город', value: 'city.name', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Список реализованных проектов' }],
