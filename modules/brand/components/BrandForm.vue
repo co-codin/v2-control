@@ -31,14 +31,25 @@
             :error="form.errors.has('is_in_home')"
             inset
         />
-
         <file-uploader
+            v-if="!form.image"
+            @upload="
+                    form.image = $event.file;
+                    form.is_image_changed = true;
+                "
+        />
+        <file-field
+            v-else
             v-model="form.image"
-            label="Логотип"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
+            prepend-icon="mdi-image"
+            @input="form.is_image_changed = true"
+            @delete="
+                    form.image = null;
+                    form.is_image_changed = true;
+                "
         />
-
         <field-value-autocomplete
             v-model="form.country_id"
             label="Страна"

@@ -24,6 +24,7 @@ import { productReviewRoutes } from './modules/product-review/router';
 import { fieldValueRoutes } from './modules/field-value/router';
 import { productQuestionRoutes } from './modules/product-question/router';
 import { caseRoutes } from './modules/case/router';
+import { toolRoutes } from './modules/tool/router';
 
 export default {
     ssr: false,
@@ -71,9 +72,9 @@ export default {
         strategies: {
             local: {
                 endpoints: {
-                    login: { url: `${process.env.AUTH_URL}/api/auth/login/`, method: 'post', propertyName: 'token' },
-                    logout: { url: `${process.env.AUTH_URL}/api/auth/logout/`, method: 'post' },
-                    user: { url: `${process.env.AUTH_URL}/api/auth/user/`, method: 'get', propertyName: false },
+                    login: { url: `/auth/login/`, method: 'post', propertyName: 'token' },
+                    logout: { url: `/auth/logout/`, method: 'post' },
+                    user: { url: `/auth/user/`, method: 'get', propertyName: false },
                 },
             },
         },
@@ -155,6 +156,7 @@ export default {
                     ...fieldValueRoutes(resolve),
                     ...productQuestionRoutes(resolve),
                     ...caseRoutes(resolve),
+                    ...toolRoutes(resolve),
                 ]
             );
         },
