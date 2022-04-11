@@ -19,8 +19,18 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Валюты', link: '/currencies' },
                 { icon: 'mdi-cash-usd-outline', text: 'Экспорты', link: '/exports' },
                 { icon: 'mdi-cash-usd-outline', text: 'Атрибуты', link: '/attributes' },
-                { icon: 'mdi-cash-usd-outline', text: 'Отзывы к товарам', link: '/product-reviews', badge: 'product-reviews' },
-                { icon: 'mdi-cash-usd-outline', text: 'Вопросы к товарам', link: '/product-questions', badge: 'product-questions' },
+                {
+                    icon: 'mdi-cash-usd-outline',
+                    text: 'Отзывы к товарам',
+                    link: '/product-reviews',
+                    badge: 'product-reviews',
+                },
+                {
+                    icon: 'mdi-cash-usd-outline',
+                    text: 'Вопросы к товарам',
+                    link: '/product-questions',
+                    badge: 'product-questions',
+                },
             ],
         },
         {
@@ -34,6 +44,7 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Вопросы и ответы', link: '/questions' },
                 { icon: 'mdi-cash-usd-outline', text: 'Вакансии', link: '/vacancies' },
                 { icon: 'mdi-cash-usd-outline', text: 'Кабинеты', link: '/cabinets' },
+                { icon: 'mdi-cash-usd-outline', text: 'Проекты', link: '/cases' },
             ],
         },
         {
