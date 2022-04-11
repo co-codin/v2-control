@@ -1,5 +1,12 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
+        <date-picker-field
+            v-model="form.published_at"
+            label="Дата публикации"
+            :error-messages="form.errors.get('published_at')"
+            :error="form.errors.has('published_at')"
+        />
+
         <entity-autocomplete-field
             v-model="form.city_id"
             url="/cities"
@@ -58,18 +65,22 @@
             inset
         />
 
-        <file-field
-            v-model="form.image"
-            label="Картинка"
-            :error-messages="form.errors.get('image')"
-            :error="form.errors.has('image')"
+        <file-uploader
+            v-if="!form.image"
+            @upload="
+                    form.image = $event.file;
+                "
         />
 
-        <date-picker-field
-            v-model="form.published_at"
-            label="Дата публикации"
-            :error-messages="form.errors.get('published_at')"
-            :error="form.errors.has('published_at')"
+        <file-field
+            v-else
+            v-model="form.image"
+            :error-messages="form.errors.get('image')"
+            :error="form.errors.has('image')"
+            prepend-icon="mdi-image"
+            @delete="
+                    form.image = null;
+                "
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -88,9 +99,11 @@ import WysiwygField from '~/components/forms/WysiwygField';
 import DatePickerField from '~/components/forms/DatePickerField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import FileField from '~/components/forms/FileField';
+import FileUploader from '~/components/FileUploader'
 
 export default {
     components: {
+        FileUploader,
         FileField,
         EntityAutocompleteField,
         DatePickerField,
