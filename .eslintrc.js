@@ -12,10 +12,6 @@ module.exports = {
   globals: {
     $nuxt: true,
   },
-  extends: [
-    // '@nuxtjs/eslint-config-typescript',
-    '@indielayer/eslint-config-vue',
-  ],
   plugins: ['vue'],
   // add your custom rules here
   rules: {

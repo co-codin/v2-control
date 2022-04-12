@@ -31,7 +31,11 @@
             dense
         />
 
-        <v-text-field
+        <file-uploader
+            @upload="
+                form.image = $event.file;
+                form.is_image_changed = true;
+            "
         />
 
         <file-field
@@ -98,12 +102,14 @@ import FileField from '~/components/forms/FileField';
 import { statusLabels } from '~/enums';
 import WysiwygField from '~/components/forms/WysiwygField';
 import DatePickerField from '~/components/forms/DatePickerField';
+import FileUploader from "~/components/FileUploader";
 
 export default {
     components: {
         FileField,
         WysiwygField,
         DatePickerField,
+        FileUploader
     },
     props: {
         news: {
