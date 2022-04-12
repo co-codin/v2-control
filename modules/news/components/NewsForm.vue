@@ -32,12 +32,26 @@
         />
 
         <file-uploader
+            v-if="!form.image"
             @upload="
-                form.image = $event.file;
-                form.is_image_changed = true;
-            "
+                    form.image = $event.file;
+                    form.is_image_changed = true;
+                "
         />
 
+        <file-field
+            v-else
+            v-model="form.image"
+            :error-messages="form.errors.get('image')"
+            :error="form.errors.has('image')"
+            prepend-icon="mdi-image"
+            @input="form.is_image_changed = true"
+            @delete="
+                    form.image = null;
+                    form.is_image_changed = true;
+                "
+        />
+        
         <wysiwyg-field
             v-model="form.short_description"
             label="Короткое описание"
