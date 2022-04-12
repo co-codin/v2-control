@@ -21,7 +21,12 @@
                 :error="form.errors.has('is_in_home')"
                 inset
             />
-
+            <field-value-autocomplete
+                v-model="form.country_id"
+                label="Страна производства"
+                :error-messages="form.errors.get('country_id')"
+                :error="form.errors.has('country_id')"
+            />
             <v-switch
                 v-model="form.is_arbitrary_warranty"
                 @change="resetWarranty"
@@ -92,6 +97,7 @@ export default {
             is_in_home: false,
             warranty: null,
             warranty_info: null,
+            country_id: null,
             is_arbitrary_warranty: false,
             arbitrary_warranty_info: null,
             short_description: null,

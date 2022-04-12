@@ -51,7 +51,7 @@
                     form.is_image_changed = true;
                 "
         />
-        
+
         <wysiwyg-field
             v-model="form.short_description"
             label="Короткое описание"
