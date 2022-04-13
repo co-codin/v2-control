@@ -57,12 +57,12 @@
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
         />
-        <v-switch
-            v-model="form.is_enabled"
-            label="Доступно"
-            :error-messages="form.errors.get('is_enabled')"
-            :error="form.errors.has('is_enabled')"
-            inset
+        <v-select
+            v-model="form.status"
+            label="Статус"
+            :items="statusLabels"
+            :error-messages="form.errors.get('status')"
+            :error="form.errors.has('status')"
         />
 
         <file-uploader
@@ -100,6 +100,7 @@ import DatePickerField from '~/components/forms/DatePickerField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
+import { statusLabels } from '~/enums';
 
 export default {
     components: {
@@ -124,13 +125,14 @@ export default {
             name: null,
             slug: null,
             image: null,
-            is_enabled: false,
+            status: 1,
             published_at: null,
             short_description: null,
             full_description: null,
             city_id: null,
         },
         form: null,
+        statusLabels,
     }),
     watch: {
         caseItem(value) {
