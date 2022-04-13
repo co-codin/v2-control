@@ -62,7 +62,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import Case from '../models/case';
+import Case from '../models/Case';
 import PageHeader from '~/components/common/PageHeader';
 
 export default {
