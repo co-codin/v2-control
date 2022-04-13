@@ -20,6 +20,11 @@ export const systemFilters = [
         type: 'terms',
     },
     {
+        name_ru: 'Страна производства',
+        name: 'product.country',
+        type: 'terms',
+    },
+    {
         name_ru: 'Цена в рублях',
         name: 'price_in_rub',
         path: 'variations',

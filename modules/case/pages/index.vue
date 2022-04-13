@@ -29,10 +29,6 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
-                <template #item.is_enabled="{ item }">
-                    <div class="font-weight-bold">{{ item.is_enabled ? 'Да' : 'Нет' }}</div>
-                </template>
-
                 <template #item.published_at="{ item }">
                     <div>{{ item.asDate('published_at').fromNow() }}</div>
                 </template>
@@ -62,8 +58,9 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import Case from '../models/case';
+import Case from '../models/Case';
 import PageHeader from '~/components/common/PageHeader';
+import { statusLabels } from '~/enums'
 
 export default {
     components: {
@@ -76,7 +73,7 @@ export default {
             cases: [],
             searchForm: {
                 name: null,
-                is_enabled: null,
+                status: null,
                 slug: null,
             },
             headers: [
@@ -85,7 +82,7 @@ export default {
                 { text: 'Ссылка', align: 'left', value: 'slug' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Доступно', value: 'is_enabled', sortable: false },
+                { text: 'Статус', value: 'status.description', sortable: false },
                 { text: 'Город', value: 'city.name', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
@@ -112,9 +109,10 @@ export default {
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'Доступно',
-                    name: 'is_enabled',
-                    component: () => import('@/components/search/fields/BooleanSelectSearchField'),
+                    label: 'Статус',
+                    name: 'status',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: statusLabels,
                 },
                 {
                     label: 'Город',
@@ -128,7 +126,7 @@ export default {
         this.showLoading();
 
         const response = await Case.select({
-            cases: ['id', 'name', 'slug', 'is_enabled', 'city_id', 'created_at', 'published_at'],
+            cases: ['id', 'name', 'slug', 'status', 'city_id', 'created_at', 'published_at'],
         })
             .with('city')
             .params(this.queryParams)
