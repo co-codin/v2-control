@@ -25,6 +25,7 @@ import { fieldValueRoutes } from './modules/field-value/router';
 import { productQuestionRoutes } from './modules/product-question/router';
 import { caseRoutes } from './modules/case/router';
 import { toolRoutes } from './modules/tool/router';
+import { bannerRoutes } from './modules/banner/router';
 
 export default {
     ssr: false,
@@ -157,6 +158,7 @@ export default {
                     ...productQuestionRoutes(resolve),
                     ...caseRoutes(resolve),
                     ...toolRoutes(resolve),
+                    ...bannerRoutes(resolve)
                 ]
             );
         },
