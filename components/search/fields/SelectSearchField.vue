@@ -51,7 +51,7 @@ export default {
         toInputValue() {
             if (this.multiple) {
                 const arrayValue = !Array.isArray(this.value) ? Array(this.value) : this.value;
-                return arrayValue.filter((value) => value).map((value) => (typeof value === Number ? +value : value));
+                return arrayValue.filter(Boolean).map((value) => (this.isNumeric(value) ? +value : value));
             }
             return +this.value;
         },
@@ -73,9 +73,11 @@ export default {
             this.$emit('input', currentValue);
         },
         getItemTextByValue(value) {
-            const data = this.items.find((item) => item.value === (typeof value === Number ? +value : value))?.text;
-            return data;
+            return this.items.find((item) => item.value === (this.isNumeric(value) ? +value : value))?.text;
         },
+        isNumeric(value) {
+            return  (+value.length === value.length) && !isNaN(value) && !isNaN(parseFloat(value))
+        }
     },
 };
 </script>

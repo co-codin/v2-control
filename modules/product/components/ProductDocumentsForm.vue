@@ -50,13 +50,15 @@
                                                                 :key="'doc-' + i"
                                                             >
                                                                 <v-expansion-panel-header class="title">
-                                                                    <CopyLabel
-                                                                        :text="
+                                                                    <div>
+                                                                        <CopyLabel
+                                                                            :text="
                                                                             doc.name ||
                                                                             getDocName(doc) ||
                                                                             '(без названия)'
                                                                         "
-                                                                    />
+                                                                        />
+                                                                    </div>
                                                                 </v-expansion-panel-header>
                                                                 <v-expansion-panel-content>
                                                                     <v-select

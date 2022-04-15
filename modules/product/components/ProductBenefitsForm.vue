@@ -7,7 +7,7 @@
                         <v-expansion-panel v-for="(information, index) in form.benefits.information" :key="index">
                             <v-expansion-panel-header class="title text-left">
                                 <div class="d-flex align-center">
-                                    <svg-icon class="mr-1" v-if="information.icon" :name="`site-icons/${information.icon}`" />
+                                    <svg-icon class="mr-1" v-if="information.icon" :name="`${information.icon}`" />
                                     <span>{{ information.description || '(не заполнено)' }}</span>
                                 </div>
                             </v-expansion-panel-header>
@@ -22,14 +22,11 @@
                                 >
                                     <template v-slot:item="data">
                                         <v-list-item-icon>
-                                            <svg-icon :name="`site-icons/${data.item}`" />
+                                            <svg-icon :name="`${data.item}`" />
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ data.item }}</v-list-item-title>
                                         </v-list-item-content>
-                                    </template>
-                                    <template #prepend-inner>
-                                        <svg-icon v-if="information.icon" :name="`site-icons/${information.icon}`" />
                                     </template>
                                 </v-select>
                                 <v-text-field
