@@ -40,19 +40,19 @@
 
         <h4>Tablet:</h4>
         <file-uploader
-            v-if="!form.images.table"
+            v-if="!form.images.tablet"
             @upload="
-                form.images.table = $event.file;
+                form.images.tablet = $event.file;
             "
         />
         <file-field
             v-else
-            v-model="form.images.table"
-            :error-messages="form.errors.get('images.table')"
-            :error="form.errors.has('images.table')"
+            v-model="form.images.tablet"
+            :error-messages="form.errors.get('images.tablet')"
+            :error="form.errors.has('images.tablet')"
             prepend-icon="mdi-image"
             @delete="
-                form.images.table = null;
+                form.images.tablet = null;
             "
         />
 
@@ -72,6 +72,13 @@
             @delete="
                 form.images.mobile = null;
             "
+        />
+        <v-switch
+            v-model="form.is_enabled"
+            label="Отображать на сайте"
+            :error-messages="form.errors.get('is_enabled')"
+            :error="form.errors.has('is_enabled')"
+            inset
         />
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
