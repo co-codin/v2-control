@@ -5,7 +5,7 @@
             label="Страница"
             :error-messages="form.errors.get('page')"
             :error="form.errors.has('page')"
-            :items="bannerPages"
+            :items="$enum('BannerPage', true)"
         />
         <v-text-field
             v-model="form.name"
@@ -90,7 +90,6 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import { bannerPages } from "~/enums/modules/BannerPages";
 import FileUploader from "~/components/FileUploader";
 import FileField from "~/components/forms/FileField";
 
@@ -121,8 +120,7 @@ export default {
                 mobile: null
             },
         },
-        form: null,
-        bannerPages,
+        form: null
     }),
     watch: {
         banner(value) {

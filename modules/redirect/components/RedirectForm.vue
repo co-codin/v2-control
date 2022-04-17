@@ -12,7 +12,13 @@
             :error-messages="form.errors.get('destination')"
             :error="form.errors.has('destination')"
         />
-
+        <v-select
+            v-model="form.code"
+            label="Код редиректа"
+            :items="$enum('RedirectCode', true)"
+            :error-messages="form.errors.get('code')"
+            :error="form.errors.has('code')"
+        />
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -39,6 +45,7 @@ export default {
         formDefaults: {
             source: null,
             destination: null,
+            code: 301
         },
         form: null,
     }),

@@ -62,6 +62,7 @@ export default {
         { src: '~plugins/directives/digits-only' },
         { src: '~plugins/dayjs' },
         { src: '~plugins/random-person' },
+        { src: '~plugins/enum/plugin' },
     ],
 
     buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],
@@ -111,7 +112,7 @@ export default {
 
     router: {
         prefetchLinks: false,
-        middleware: ['auth', 'load-all-categories'],
+        middleware: ['auth', 'load-all-categories', 'load-all-enums'],
         trailingSlash: false,
         extendRoutes(routes, resolve) {
             routes.splice(0, routes.length);

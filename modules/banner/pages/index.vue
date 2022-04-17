@@ -3,7 +3,8 @@
         <page-header h1="Баннеры" :breadcrumbs="breadcrumbs" />
 
         <div class="mb-2">
-            <v-btn :to="{ name: 'banners.create' }"> Добавить баннер </v-btn>
+            <v-btn :to="{ name: 'banners.create' }" class="mr-1"> Добавить баннер </v-btn>
+            <v-btn :to="{ name: 'banners.sort' }"> Сортировка баннеров </v-btn>
         </div>
 
         <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
@@ -29,13 +30,16 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
+                <template #item.page="{ item }">
+                    {{ $enum('BannerPage')[item.page] }}
+                </template>
+
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-
                         <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/banners/${item.slug}`">
                             <external-link-icon />
                         </v-btn>
@@ -55,9 +59,9 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { bannerPages } from "~/enums/modules/BannerPages";
 import Banner from '../models/Banner';
 import PageHeader from '~/components/common/PageHeader';
+import { mapGetters } from "vuex";
 
 export default {
     components: {
@@ -76,14 +80,12 @@ export default {
                 id: null,
                 url: null,
             },
-            bannerPages,
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Ссылка', align: 'left', value: 'slug' },
+                { text: 'Ссылка', align: 'left', value: 'url' },
+                { text: 'Страница', align: 'left', value: 'page' },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Статус', value: 'status.description', sortable: false },
-                { text: 'Страна', value: 'country.value', sortable: false },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Список баннеров' }],
@@ -112,7 +114,7 @@ export default {
                     label: 'Страница',
                     name: 'page',
                     component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: bannerPages,
+                    items: this.$enum('BannerPage', true),
                 },
                 {
                     label: 'Отображается на сате',

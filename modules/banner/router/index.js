@@ -14,4 +14,9 @@ export const bannerRoutes = (resolve) => [
         name: 'banners.update',
         component: resolve(__dirname, '../pages/update.vue'),
     },
+    {
+        path: '/banners/sort',
+        name: 'banners.sort',
+        component: resolve(__dirname, '../pages/sort.vue'),
+    },
 ];

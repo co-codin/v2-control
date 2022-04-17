@@ -3,7 +3,7 @@
         <page-header h1="Результаты поиска" :breadcrumbs="breadcrumbs" />
 
         <v-expansion-panels :multiple="true" :value="[]">
-            <v-expansion-panel v-for="(items, label) in searchResults">
+            <v-expansion-panel v-for="(items, label) in searchResults" :key="label">
                 <v-expansion-panel-header class="title"> {{ label }} ({{ items.length }}) </v-expansion-panel-header>
                 <v-expansion-panel-content>
                     <v-alert v-if="!items.length" dense type="info">Ничего не найдено</v-alert>
