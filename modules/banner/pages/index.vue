@@ -40,7 +40,7 @@
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-                        <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/banners/${item.slug}`">
+                        <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/`">
                             <external-link-icon />
                         </v-btn>
                         <v-btn icon :to="{ name: 'banners.update', params: { id: item.id } }">
@@ -61,7 +61,6 @@ import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import Banner from '../models/Banner';
 import PageHeader from '~/components/common/PageHeader';
-import { mapGetters } from "vuex";
 
 export default {
     components: {
