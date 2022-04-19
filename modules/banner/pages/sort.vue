@@ -1,31 +1,33 @@
 <template>
     <div>
         <page-header h1="Баннеры" :breadcrumbs="breadcrumbs"></page-header>
-        <v-select
-            label="Страница"
-            :items="$enum('BannerPage', true)"
-            :value="page"
-            @input="changePage"
-        />
-        <v-alert v-if="!page" type="info" dense class="mt-2">
-            Выберите страницу для сортировки баннеров
-        </v-alert>
-        <v-alert v-else-if="!loading && !banners.length" type="info" dense class="mt-2">
-            На выбранной странице нет баннеров
-        </v-alert>
-        <div v-else class="mt-2">
-            <v-simple-table class="elevation-3">
-                <template v-slot:default>
-                    <draggable tag="tbody" @update="update" v-model="banners">
-                        <tr v-for="banner in banners" :key="banner.id">
-                            <td>
-                                <v-img :src="`${this.$config.app.storageUrl}/${banner.images.desktop}`" />
-                            </td>
-                            <td>{{ banner.name }}</td>
-                        </tr>
-                    </draggable>
-                </template>
-            </v-simple-table>
+        <div>
+            <v-select
+                label="Страница"
+                :items="$enum('BannerPage', true)"
+                :value="page"
+                @input="changePage"
+            />
+            <v-alert v-if="!page" type="info" dense class="mt-2">
+                Выберите страницу для сортировки баннеров
+            </v-alert>
+            <v-alert v-else-if="!loading && !banners.length" type="info" dense class="mt-2">
+                На выбранной странице нет баннеров
+            </v-alert>
+            <div v-else class="mt-2">
+                <v-simple-table class="elevation-3">
+                    <template v-slot:default>
+                        <draggable tag="tbody" @update="update" v-model="banners">
+                            <tr v-for="banner in banners" :key="banner.id">
+                                <td>
+                                    <v-img :src="`${$config.app.storageUrl}/${banner.images.desktop}`" />
+                                </td>
+                                <td>{{ banner.name }}</td>
+                            </tr>
+                        </draggable>
+                    </template>
+                </v-simple-table>
+            </div>
         </div>
     </div>
 </template>
