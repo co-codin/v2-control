@@ -3,24 +3,27 @@
         <page-header h1="Баннеры" :breadcrumbs="breadcrumbs"></page-header>
         <div>
             <v-select
-                label="Страница"
+                placeholder="Выберите страницу"
                 :items="$enum('BannerPage', true)"
                 :value="page"
+                clearable
+                solo
                 @input="changePage"
             />
-            <v-alert v-if="!page" type="info" dense class="mt-2">
+            <v-alert v-if="!page" type="info" outlined dense class="mt-2">
                 Выберите страницу для сортировки баннеров
             </v-alert>
-            <v-alert v-else-if="!loading && !banners.length" type="info" dense class="mt-2">
+            <v-alert v-else-if="!loading && !banners.length"  outlined type="info" dense class="mt-2">
                 На выбранной странице нет баннеров
             </v-alert>
             <div v-else class="mt-2">
-                <v-simple-table class="elevation-3">
+                <v-switch v-model="isDark" inset label="Темная тема" />
+                <v-simple-table class="elevation-3" :dark="isDark">
                     <template v-slot:default>
                         <draggable tag="tbody" @update="update" v-model="banners">
-                            <tr v-for="banner in banners" :key="banner.id">
-                                <td>
-                                    <v-img :src="`${$config.app.storageUrl}/${banner.images.desktop}`" />
+                            <tr v-for="banner in banners" :key="banner.id" class="cursor-move">
+                                <td style="width: 1px">
+                                    <v-img :src="`${$config.app.storageUrl}/${banner.images.desktop}`" width="100px" />
                                 </td>
                                 <td>{{ banner.name }}</td>
                             </tr>
@@ -47,6 +50,7 @@ export default {
             page: null,
             banners: [],
             loading: false,
+            isDark: false,
             breadcrumbs: [
                 { text: 'Список баннеров', to: { name: 'banners.index' } },
                 { text: 'Сортировка' },
