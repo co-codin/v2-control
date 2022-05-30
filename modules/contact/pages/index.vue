@@ -78,8 +78,8 @@ export default {
         return {
             contacts: [],
             searchForm: {
-                name: null,
-                status: null,
+                last_name: null,
+                first_name: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
@@ -122,7 +122,8 @@ export default {
             .params(this.queryParams)
             .get();
 
-        this.cities = Contact.hydrate(response.data);
+        this.contacts = Contact.hydrate(response.data);
+
 
         this.setTotal(response.meta.total);
         this.hideLoading();

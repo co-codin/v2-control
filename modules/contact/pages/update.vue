@@ -4,7 +4,7 @@
         <template v-if="!$fetchState.pending">
             <v-expansion-panels>
                 <form-block title="Основная информация">
-                    <contact-form :case="contact" is-updating @send="updateContact" />
+                    <contact-form :contact="contact" is-updating @send="updateContact" />
                 </form-block>
             </v-expansion-panels>
         </template>

@@ -36,6 +36,13 @@
             :error="form.errors.has('email')"
         />
 
+        <v-text-field
+            v-model="form.phone"
+            label="Телефон"
+            :error-messages="form.errors.get('phone')"
+            :error="form.errors.has('phone')"
+        />
+
         <file-uploader
             v-if="!form.image"
             @upload="
@@ -100,6 +107,8 @@ export default {
             job_position: null,
             is_enabled: false,
             position: null,
+            email: null,
+            phone: null,
         },
         form: null,
     }),
