@@ -1,10 +1,39 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
         <v-text-field
-            v-model="form.name"
-            label="Название"
-            :error-messages="form.errors.get('name')"
-            :error="form.errors.has('name')"
+            v-model="form.first_name"
+            label="Имя"
+            :error-messages="form.errors.get('first_name')"
+            :error="form.errors.has('first_name')"
+        />
+
+        <v-text-field
+            v-model="form.last_name"
+            label="Фамилия"
+            :error-messages="form.errors.get('last_name')"
+            :error="form.errors.has('last_name')"
+        />
+
+        <v-text-field
+            v-model="form.job_position"
+            label="Должность"
+            :error-messages="form.errors.get('job_position')"
+            :error="form.errors.has('job_position')"
+        />
+
+        <v-switch
+            v-model="form.is_enabled"
+            label="Отображать на сайте?"
+            :error-messages="form.errors.get('is_enabled')"
+            :error="form.errors.has('is_enabled')"
+            inset
+        />
+
+        <v-text-field
+            v-model="form.email"
+            label="Почта"
+            :error-messages="form.errors.get('email')"
+            :error="form.errors.has('email')"
         />
 
         <file-uploader
@@ -25,6 +54,15 @@
                 "
         />
 
+        <v-text-field
+            v-if="isUpdating"
+            v-model="form.position"
+            type="number"
+            label="Позиция"
+            :error-messages="form.errors.get('position')"
+            :error="form.errors.has('position')"
+        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -35,7 +73,6 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import { debounce } from 'lodash';
 import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
 
@@ -58,6 +95,11 @@ export default {
         formDefaults: {
             name: null,
             image: null,
+            first_name: null,
+            last_name: null,
+            job_position: null,
+            is_enabled: false,
+            position: null,
         },
         form: null,
     }),
