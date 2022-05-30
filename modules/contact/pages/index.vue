@@ -83,22 +83,18 @@ export default {
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
-                // { text: 'Название', align: 'left', value: 'name' },
-                // { text: 'Ссылка', align: 'left', value: 'slug' },
-                // { text: 'Координаты центра', align: 'left', value: 'coordinate', sortable: false },
-                // { text: 'Статус', value: 'status.description', sortable: false },
-                // { text: 'Федеральный округ', align: 'left', value: 'federal_district' },
-                // { text: 'Региональный телефон', value: 'region_phone', sortable: false },
-                // { text: 'email', value: 'email', sortable: false },
-                // { text: 'По умолчанию', value: 'is_default', sortable: false },
-                // { text: 'Дата создания', align: 'left', value: 'created_at' },
-                // { text: '', sortable: false, align: 'right', value: 'action' },
+                { text: 'Имя', align: 'left', value: 'first_name' },
+                { text: 'Фамилия', align: 'left', value: 'last_name' },
+                { text: 'Доступно', value: 'is_enabled' },
+                { text: 'email', value: 'email', sortable: false },
+                { text: 'Дата создания', align: 'left', value: 'created_at' },
+                { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Список категорий' }],
+            breadcrumbs: [{ text: 'Список контактов' }],
             filters: [
                 {
-                    label: 'Название',
-                    name: 'name',
+                    label: 'Фамилия',
+                    name: 'last_name',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
@@ -106,17 +102,7 @@ export default {
                     name: 'id',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
-                {
-                    label: 'Ссылка',
-                    name: 'slug',
-                    component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
-                    label: 'Статус',
-                    name: 'status',
-                    component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: statusLabels,
-                },
+
                 {
                     label: 'По умолчанию',
                     name: 'is_default',
