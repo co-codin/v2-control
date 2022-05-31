@@ -126,10 +126,9 @@ export default {
         this.showLoading();
 
         const response = await Case.select({
-            cases: ['id', 'name', 'slug', 'status', 'city_id', 'created_at', 'published_at'],
+            case_models: ['id', 'name', 'slug', 'status', 'city_id', 'created_at', 'published_at'],
         })
             .with('city')
-            .params(this.queryParams)
             .get();
 
         this.cases = Case.hydrate(response.data);

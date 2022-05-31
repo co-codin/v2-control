@@ -83,6 +83,16 @@
                 "
         />
 
+        <AutocompleteSearchField
+            v-if="isUpdating"
+            v-model="form.products"
+            :error-messages="form.errors.get('form.products')"
+            :error="form.errors.has('form.products')"
+            url="/products"
+            name="products"
+            label="Товар"
+        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -101,9 +111,11 @@ import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField'
 import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
 import { statusLabels } from '~/enums';
+import AutocompleteSearchField from '~/components/search/fields/AutocompleteSearchField'
 
 export default {
     components: {
+        AutocompleteSearchField,
         FileUploader,
         FileField,
         EntityAutocompleteField,
@@ -130,6 +142,7 @@ export default {
             short_description: null,
             full_description: null,
             city_id: null,
+            products: null,
         },
         form: null,
         statusLabels,
