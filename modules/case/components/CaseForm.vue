@@ -1,8 +1,8 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <date-picker-field
+        <v-text-field
             v-model="form.published_at"
-            label="Дата публикации"
+            label="Дата поставки"
             :error-messages="form.errors.get('published_at')"
             :error="form.errors.has('published_at')"
         />
@@ -57,6 +57,7 @@
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
         />
+
         <v-select
             v-model="form.status"
             label="Статус"
