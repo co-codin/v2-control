@@ -58,6 +58,21 @@
             :error="form.errors.has('full_description')"
         />
 
+        <v-textarea
+            v-model="form.summary"
+            label="Что оснащено?"
+            :error-messages="form.errors.get('summary')"
+            :error="form.errors.has('summary')"
+        />
+
+        <v-textarea
+            v-model="form.note"
+            label="Заметка"
+            :error-messages="form.errors.get('note')"
+            :error="form.errors.has('note')"
+            hint="Например: Поставка через дилера"
+        />
+
         <v-select
             v-model="form.status"
             label="Статус"
@@ -142,6 +157,8 @@ export default {
             published_at: null,
             short_description: null,
             full_description: null,
+            summary: null,
+            note: null,
             city_id: null,
             products: null,
         },
