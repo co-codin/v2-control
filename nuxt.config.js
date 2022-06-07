@@ -26,6 +26,7 @@ import { productQuestionRoutes } from './modules/product-question/router';
 import { caseRoutes } from './modules/case/router';
 import { toolRoutes } from './modules/tool/router';
 import { bannerRoutes } from './modules/banner/router';
+import { contactRoutes } from './modules/contact/router';
 
 export default {
     ssr: false,
@@ -159,7 +160,8 @@ export default {
                     ...productQuestionRoutes(resolve),
                     ...caseRoutes(resolve),
                     ...toolRoutes(resolve),
-                    ...bannerRoutes(resolve)
+                    ...bannerRoutes(resolve),
+                    ...contactRoutes(resolve)
                 ]
             );
         },

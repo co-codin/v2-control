@@ -29,10 +29,6 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
-                <template #item.published_at="{ item }">
-                    <div>{{ item.asDate('published_at').fromNow() }}</div>
-                </template>
-
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
@@ -79,11 +75,12 @@ export default {
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Статус', value: 'status.description', sortable: false },
+                { text: 'Что сделано?', align: 'left', value: 'summary' },
                 { text: 'Город', value: 'city.name', sortable: false },
+                { text: 'Ссылка', align: 'left', value: 'slug' },
+                { text: 'Дата поставки', align: 'left', value: 'published_at' },
+                { text: 'Статус', value: 'status.description', sortable: false },
+                { text: 'Дата создания', align: 'left', value: 'created_at' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Список реализованных проектов' }],
@@ -126,10 +123,9 @@ export default {
         this.showLoading();
 
         const response = await Case.select({
-            cases: ['id', 'name', 'slug', 'status', 'city_id', 'created_at', 'published_at'],
+            case_models: ['id', 'name', 'slug', 'status', 'city_id', 'created_at', 'published_at'],
         })
             .with('city')
-            .params(this.queryParams)
             .get();
 
         this.cases = Case.hydrate(response.data);
