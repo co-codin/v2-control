@@ -14,4 +14,9 @@ export const contactRoutes = (resolve) => [
         name: 'contacts.update',
         component: resolve(__dirname, '../pages/update.vue'),
     },
+    {
+        path: '/contacts/sort',
+        name: 'contacts.sort',
+        component: resolve(__dirname, '../pages/sort.vue'),
+    },
 ];

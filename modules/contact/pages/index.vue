@@ -4,6 +4,7 @@
 
         <div class="mb-2">
             <v-btn :to="{ name: 'contacts.create' }"> Добавить контакт </v-btn>
+            <v-btn :to="{ name: 'contacts.sort' }"> Сортировка контактов </v-btn>
         </div>
 
         <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
