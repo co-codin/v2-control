@@ -56,14 +56,17 @@ export default {
         searchItems: debounce(async function (query) {
             if (!query) return;
             this.isLoading = true;
-            const items = await FieldValue.select('id', 'value').where('value', query).orderBy('valueLength').$get();
+            const items = await FieldValue.select({
+                field_values: ['id', 'value']
+            }).where('value', query).orderBy('valueLength').$get();
             this.loadedItems = this.loadedItems.concat(items);
             this.isLoading = false;
         }, 200),
         async loadItems() {
             this.isLoading = true;
-            this.loadedItems = await FieldValue.select('id', 'value')
-                .whereIn('id', Array.isArray(this.value) ? this.value : [this.value])
+            this.loadedItems = await FieldValue.select({
+                field_values: ['id', 'value']
+            }).whereIn('id', Array.isArray(this.value) ? this.value : [this.value])
                 .$get();
             this.isLoading = false;
         },
