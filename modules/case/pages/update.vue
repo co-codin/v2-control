@@ -28,11 +28,14 @@ export default {
         breadcrumbs: [{ text: 'Список проектов', to: { name: 'cases.index' } }, { text: 'Редактирование проекта' }],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/cases/${this.$route.params.id}`, {
+        const { data } = await this.$axios.get(`/case_models/${this.$route.params.id}`, {
             params: {
-                include: ['city'],
+                include: ['city', 'products'],
             },
         });
+
+        data.data.products = data.data.products.map(product => product.id)
+        data.data.status = data.data.status.value;
         this.caseItem = data.data;
         this.isLoading = false;
     },
@@ -42,7 +45,13 @@ export default {
     methods: {
         async updateCase(form) {
             try {
-                await form.put(`/admin/cases/${this.$route.params.id}`);
+                form.products = form.products.map(productId => {
+                    return {
+                        'id': productId
+                    }
+                })
+                console.log(form.products)
+                await form.put(`/admin/case_models/${this.$route.params.id}`);
                 this.$snackbar(`Проект успешно обновлен`);
                 await this.$router.push({ name: 'cases.index' });
             } catch (e) {

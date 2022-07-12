@@ -46,6 +46,7 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Кабинеты', link: '/cabinets' },
                 { icon: 'mdi-cash-usd-outline', text: 'Проекты', link: '/cases' },
                 { icon: 'mdi-cash-usd-outline', text: 'Баннеры', link: '/banners' },
+                { icon: 'mdi-cash-usd-outline', text: 'Контакты', link: '/contacts' },
             ],
         },
         {

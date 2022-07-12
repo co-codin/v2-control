@@ -1,8 +1,8 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <date-picker-field
+        <v-text-field
             v-model="form.published_at"
-            label="Дата публикации"
+            label="Дата поставки"
             :error-messages="form.errors.get('published_at')"
             :error="form.errors.has('published_at')"
         />
@@ -57,6 +57,22 @@
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
         />
+
+        <v-textarea
+            v-model="form.summary"
+            label="Что оснащено?"
+            :error-messages="form.errors.get('summary')"
+            :error="form.errors.has('summary')"
+        />
+
+        <v-textarea
+            v-model="form.note"
+            label="Заметка"
+            :error-messages="form.errors.get('note')"
+            :error="form.errors.has('note')"
+            hint="Например: Поставка через дилера"
+        />
+
         <v-select
             v-model="form.status"
             label="Статус"
@@ -83,6 +99,16 @@
                 "
         />
 
+        <AutocompleteSearchField
+            v-if="isUpdating"
+            v-model="form.products"
+            :error-messages="form.errors.get('form.products')"
+            :error="form.errors.has('form.products')"
+            url="/products"
+            name="products"
+            label="Товар"
+        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -101,9 +127,11 @@ import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField'
 import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
 import { statusLabels } from '~/enums';
+import AutocompleteSearchField from '~/components/search/fields/AutocompleteSearchField'
 
 export default {
     components: {
+        AutocompleteSearchField,
         FileUploader,
         FileField,
         EntityAutocompleteField,
@@ -129,7 +157,10 @@ export default {
             published_at: null,
             short_description: null,
             full_description: null,
+            summary: null,
+            note: null,
             city_id: null,
+            products: null,
         },
         form: null,
         statusLabels,
