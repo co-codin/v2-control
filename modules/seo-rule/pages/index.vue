@@ -103,7 +103,7 @@ export default {
         this.showLoading();
 
         const response = await SeoRule.select({
-            seoRules: ['id', 'name', 'url', 'text'],
+            seo_rules: ['id', 'name', 'url', 'text'],
         })
             .params(this.queryParams)
             .get();
