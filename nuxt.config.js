@@ -27,6 +27,7 @@ import { caseRoutes } from './modules/case/router';
 import { toolRoutes } from './modules/tool/router';
 import { bannerRoutes } from './modules/banner/router';
 import { contactRoutes } from './modules/contact/router';
+import { roleRoutes } from './modules/role/router'
 
 export default {
     ssr: false,
@@ -161,7 +162,8 @@ export default {
                     ...caseRoutes(resolve),
                     ...toolRoutes(resolve),
                     ...bannerRoutes(resolve),
-                    ...contactRoutes(resolve)
+                    ...contactRoutes(resolve),
+                    ...roleRoutes(resolve),
                 ]
             );
         },

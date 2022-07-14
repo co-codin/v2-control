@@ -57,6 +57,12 @@ export default {
                 { icon: 'mdi-cash-usd-outline', text: 'Канонические ссылки', link: '/canonicals' },
             ],
         },
+        {
+            text: 'Права доступа',
+            items: [
+                { icon: 'mdi-cash-usd-outline', text: 'роли', link: '/roles' },
+            ],
+        },
     ],
 
     footer: [
