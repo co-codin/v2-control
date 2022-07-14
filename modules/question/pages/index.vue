@@ -123,7 +123,7 @@ export default {
         const response = await Question.select({
             questions: ['id', 'question', 'slug', 'status', 'question_category_id'],
         })
-            .with('question_category')
+            .with('questionCategory')
             .params(this.queryParams)
             .get();
 
