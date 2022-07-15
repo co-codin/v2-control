@@ -1,16 +1,16 @@
 <template>
     <div>
-        <page-header h1="Добавление достижения" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Добавление роля" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
             <form-block title="Основная информация">
-                <achievement-form @send="createAchievement" />
+                <role-form @send="createRole" />
             </form-block>
         </v-expansion-panels>
     </div>
 </template>
 
 <script>
-import AchievementForm from '../components/AchievementForm';
+import RoleForm from '~/modules/role/components/RoleForm'
 import FormBlock from '~/components/forms/FormBlock';
 import PageHeader from '~/components/common/PageHeader';
 
@@ -18,25 +18,25 @@ export default {
     components: {
         PageHeader,
         FormBlock,
-        AchievementForm,
+        RoleForm,
     },
     data: () => ({
         breadcrumbs: [
-            { text: 'Список достижений', to: { name: 'achievements.index' } },
-            { text: 'Добавление достижения' },
+            { text: 'Список ролей', to: { name: 'roles.index' } },
+            { text: 'Добавление роля' },
         ],
     }),
     head: {
-        title: 'Добавление достижения',
+        title: 'Добавление роля',
     },
     methods: {
-        async createAchievement(form) {
+        async createRole(form) {
             try {
-                await form.post('/admin/achievements');
-                this.$snackbar(`Достижение ${form.name} успешно добавлено`);
-                await this.$router.push({ name: 'achievements.index' });
+                await form.post('/admin/roles');
+                this.$snackbar(`Роль ${form.name} успешно добавлен`);
+                await this.$router.push({ name: 'roles.index' });
             } catch (e) {
-                this.$snackbar(`Произошла ошибка при создании достижения: ${e.message}`);
+                this.$snackbar(`Произошла ошибка при создании роля: ${e.message}`);
             }
         },
     },
