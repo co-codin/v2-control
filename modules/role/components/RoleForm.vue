@@ -7,24 +7,11 @@
             :error="form.errors.has('name')"
         />
 
-        <v-switch
-            v-model="form.is_enabled"
-            label="Отображать на сайте?"
-            :error-messages="form.errors.get('is_enabled')"
-            :error="form.errors.has('is_enabled')"
-            inset
-        />
-
-        <file-field
-            v-model="form.image"
-            label="Фотография"
-            :error-messages="form.errors.get('image')"
-            :error="form.errors.has('image')"
-            @input="form.is_image_changed = true"
-            @delete="
-                form.image = null;
-                form.is_image_changed = true;
-            "
+        <v-text-field
+            v-model="form.key"
+            label="Ключ"
+            :error-messages="form.errors.get('key')"
+            :error="form.errors.has('key')"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -37,16 +24,10 @@
 
 <script>
 import { Form } from 'form-backend-validation';
-import FileField from '../../../components/forms/FileField';
-import FileUploader from '~/components/FileUploader';
 
 export default {
-    components: {
-        FileUploader,
-        FileField,
-    },
     props: {
-        achievement: {
+        role: {
             type: Object | null,
             default: () => ({}),
         },
@@ -58,21 +39,19 @@ export default {
     data: () => ({
         formDefaults: {
             name: null,
-            image: null,
-            is_image_changed: false,
-            is_enabled: false,
+            key: null,
         },
         form: null,
     }),
     watch: {
-        achievement(value) {
+        role(value) {
             this.form.populate(value);
         },
     },
     created() {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios, resetOnSuccess: false })
-            .populate(this.achievement || {});
+            .populate(this.role || {});
     },
 };
 </script>

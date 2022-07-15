@@ -1,10 +1,10 @@
 <template>
     <div>
-        <page-header h1="Редактирование достижения" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Редактирование роля" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
             <v-expansion-panels v-model="openedPanel" multiple>
                 <form-block title="Основная информация">
-                    <achievement-form :achievement="achievement" is-updating @send="updateAchievement" />
+                    <role-form :role="role" is-updating @send="updateRole" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import AchievementForm from '../components/AchievementForm';
+import RoleForm from '~/modules/role/components/RoleForm'
 import PageHeader from '~/components/common/PageHeader';
 import FormBlock from '~/components/forms/FormBlock';
 
@@ -20,33 +20,33 @@ export default {
     components: {
         FormBlock,
         PageHeader,
-        AchievementForm,
+        RoleForm,
     },
     data: () => ({
-        achievement: null,
+        role: null,
         isLoading: true,
         openedPanel: [],
         breadcrumbs: [
-            { text: 'Список достижений', to: { name: 'achievements.index' } },
-            { text: 'Редактирование достижения' },
+            { text: 'Список ролей', to: { name: 'roles.index' } },
+            { text: 'Редактирование роля' },
         ],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/achievements/${this.$route.params.id}`);
-        this.achievement = data.data;
+        const { data } = await this.$axios.get(`/roles/${this.$route.params.id}`);
+        this.role = data.data;
         this.isLoading = false;
     },
     head: {
-        title: 'Редактирование достижения',
+        title: 'Редактирование роля',
     },
     methods: {
-        async updateAchievement(form) {
+        async updateRole(form) {
             try {
-                await form.put(`/admin/achievements/${this.$route.params.id}`);
+                await form.put(`/admin/roles/${this.$route.params.id}`);
                 this.openedPanel = [];
-                this.$snackbar(`Достижение успешно обновлено`);
+                this.$snackbar(`Роля успешно обновлен`);
             } catch (e) {
-                this.$snackbar(`Приозошла ошибка при обновлении достижения: ${e.message}`);
+                this.$snackbar(`Приозошла ошибка при обновлении роля: ${e.message}`);
             }
         },
     },
