@@ -112,7 +112,7 @@ export default {
                 await role.delete();
 
                 this.$snackbar(`Роль ${role.name} успешно удален`);
-                this.roles = this.roles.filter((item) => item.id !== roles.id);
+                this.roles = this.roles.filter((item) => item.id !== this.roles.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }
