@@ -29,19 +29,11 @@
                     <div class="font-weight-bold"># {{ item.id }}</div>
                 </template>
 
-                <template #item.is_enabled="{ item }">
-                    <div class="font-weight-bold">{{ item.is_enabled ? 'Да' : 'Нет' }}</div>
-                </template>
-
-                <template #item.created_at="{ item }">
-                    <div>{{ item.asDate('created_at').fromNow() }}</div>
-                </template>
-
                 <template #item.action="{ item }">
                     <div class="table-actions">
                         <v-btn
                             icon
-                            :to="{ name: 'role.update', params: { id: item.id } }"
+                            :to="{ name: 'roles.update', params: { id: item.id } }"
                         >
                             <pencil-alt-icon />
                         </v-btn>
@@ -73,7 +65,6 @@ export default {
             roles: [],
             searchForm: {
                 name: null,
-                is_enabled: null,
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },

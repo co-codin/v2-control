@@ -28,8 +28,8 @@ export default {
         },
     },
     async mounted() {
-        await this.checkNewProductReviews()
-        await this.checkNewProductQuestions()
+        // await this.checkNewProductReviews()
+        // await this.checkNewProductQuestions()
 
         this.isBadgesLoaded = true
     },
