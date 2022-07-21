@@ -33,36 +33,36 @@ export default {
                 },
             ],
         },
-        // {
-        //     text: 'Контент',
-        //     items: [
-        //         { icon: 'mdi-cash-usd-outline', text: 'Новости', link: '/news' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Страницы', link: '/pages' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Публикации', link: '/publications' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Достижения', link: '/achievements' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Отзывы', link: '/customer-reviews' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Вопросы и ответы', link: '/questions' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Вакансии', link: '/vacancies' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Кабинеты', link: '/cabinets' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Проекты', link: '/cases' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Баннеры', link: '/banners' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Контакты', link: '/contacts' },
-        //     ],
-        // },
-        // {
-        //     text: 'SEO',
-        //     items: [
-        //         { icon: 'mdi-cash-usd-outline', text: 'SEO правила', link: '/seo-rules' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Редиректы', link: '/redirects' },
-        //         { icon: 'mdi-cash-usd-outline', text: 'Канонические ссылки', link: '/canonicals' },
-        //     ],
-        // },
-        // {
-        //     text: 'Права доступа',
-        //     items: [
-        //         { icon: 'mdi-cash-usd-outline', text: 'роли', link: '/roles' },
-        //     ],
-        // },
+        {
+            text: 'Контент',
+            items: [
+                { icon: 'document-text', text: 'Новости', link: '/news' },
+                { icon: 'document-text', text: 'Страницы', link: '/pages' },
+                { icon: 'document-text', text: 'Публикации', link: '/publications' },
+                { icon: 'document-text', text: 'Достижения', link: '/achievements' },
+                { icon: 'document-text', text: 'Отзывы', link: '/customer-reviews' },
+                { icon: 'document-text', text: 'Вопросы и ответы', link: '/questions' },
+                { icon: 'document-text', text: 'Вакансии', link: '/vacancies' },
+                { icon: 'document-text', text: 'Кабинеты', link: '/cabinets' },
+                { icon: 'document-text', text: 'Проекты', link: '/cases' },
+                { icon: 'document-text', text: 'Баннеры', link: '/banners' },
+                { icon: 'document-text', text: 'Контакты', link: '/contacts' },
+            ],
+        },
+        {
+            text: 'SEO',
+            items: [
+                { icon: 'document-search', text: 'SEO правила', link: '/seo-rules' },
+                { icon: 'document-search', text: 'Редиректы', link: '/redirects' },
+                { icon: 'mdi-cash-usd-outline', text: 'Канонические ссылки', link: '/canonicals' },
+            ],
+        },
+        {
+            text: 'Права доступа',
+            items: [
+                { icon: 'database', text: 'роли', link: '/roles' },
+            ],
+        },
     ],
 
     footer: [

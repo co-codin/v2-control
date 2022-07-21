@@ -40,7 +40,8 @@
         >
             <template #activator>
                 <v-list-item-icon v-if="!subgroup">
-                    <v-icon :small="small">{{ menuItem.icon || 'mdi-circle-medium' }}</v-icon>
+                    <svg-icon :name="menuItem.icon" :class="{ 'grey--text': menuItem.disabled }" />
+<!--                    <v-icon :small="small">{{ menuItem.icon || 'mdi-circle-medium' }}</v-icon>-->
                 </v-list-item-icon>
                 <v-list-item-content>
                     <v-list-item-title>
