@@ -10,9 +10,10 @@
             link
         >
             <v-list-item-icon>
-                <v-icon :small="small" :class="{ 'grey--text': menuItem.disabled }">
-                    {{ menuItem.icon || 'mdi-circle-medium' }}
-                </v-icon>
+                <svg-icon :name="menuItem.icon" :class="{ 'grey--text': menuItem.disabled }" />
+<!--                <v-icon :small="small" :class="{ 'grey&#45;&#45;text': menuItem.disabled }">-->
+<!--                    {{ menuItem.icon || 'mdi-circle-medium' }}-->
+<!--                </v-icon>-->
             </v-list-item-icon>
             <v-list-item-content class="position-relative">
                 <v-list-item-title>
@@ -54,15 +55,11 @@
 </template>
 
 <script>
-/*
-|---------------------------------------------------------------------
-| Navigation Menu Item Component
-|---------------------------------------------------------------------
-|
-| Navigation items for the NavMenu component
-|
-*/
+import SvgIcon from '~/components/SvgIcon'
 export default {
+    components: {
+        SvgIcon
+    },
     props: {
         menuItem: {
             type: Object,
