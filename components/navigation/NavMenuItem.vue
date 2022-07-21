@@ -9,14 +9,10 @@
             active-class="primary--text"
             link
         >
-            <v-list-item-icon>
-                <svg-icon :name="menuItem.icon" :class="{ 'grey--text': menuItem.disabled }" />
-<!--                <v-icon :small="small" :class="{ 'grey&#45;&#45;text': menuItem.disabled }">-->
-<!--                    {{ menuItem.icon || 'mdi-circle-medium' }}-->
-<!--                </v-icon>-->
-            </v-list-item-icon>
             <v-list-item-content class="position-relative">
-                <v-list-item-title>
+                <v-list-item-title class="d-flex">
+                    <svg-icon style="width: 10%; height: 10%; margin-right: 20px;" :name="menuItem.icon" :class="{ 'grey--text': menuItem.disabled }" />
+
                     {{ menuItem.text }}
                 </v-list-item-title>
                 <v-badge
@@ -39,12 +35,11 @@
             link
         >
             <template #activator>
-                <v-list-item-icon v-if="!subgroup">
-                    <svg-icon :name="menuItem.icon" :class="{ 'grey--text': menuItem.disabled }" />
-<!--                    <v-icon :small="small">{{ menuItem.icon || 'mdi-circle-medium' }}</v-icon>-->
-                </v-list-item-icon>
+
                 <v-list-item-content>
-                    <v-list-item-title>
+                    <v-list-item-title class="d-flex">
+                        <svg-icon style="width: 10%; height: 10%; margin-right: 20px;" :name="menuItem.icon" :class="{ 'grey--text': menuItem.disabled }" />
+
                         {{ menuItem.text }}
                     </v-list-item-title>
                 </v-list-item-content>

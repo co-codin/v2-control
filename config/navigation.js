@@ -54,7 +54,7 @@ export default {
             items: [
                 { icon: 'document-search', text: 'SEO правила', link: '/seo-rules' },
                 { icon: 'document-search', text: 'Редиректы', link: '/redirects' },
-                { icon: 'mdi-cash-usd-outline', text: 'Канонические ссылки', link: '/canonicals' },
+                { icon: 'document-search', text: 'Канонические ссылки', link: '/canonicals' },
             ],
         },
         {
