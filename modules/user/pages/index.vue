@@ -30,9 +30,9 @@
                 </template>
 
                 <template #item.roles="{ item }">
-                    <ul class="pa-0">
-                        <li v-for="role in item.roles" :key="role.id">{{ role.name }}</li>
-                    </ul>
+                    <div v-for="role in item.roles" :key="role.id">
+                        <v-chip small>{{ role.name }}</v-chip>
+                    </div>
                 </template>
 
                 <template #item.action="{ item }">
