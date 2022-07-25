@@ -29,6 +29,12 @@
                     <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
+                <template #item.roles="{ item }">
+                    <ul class="pa-0">
+                        <li v-for="role in item.roles" :key="role.id">{{ role.name }}</li>
+                    </ul>
+                </template>
+
                 <template #item.action="{ item }">
                     <div class="table-actions">
                         <v-btn
@@ -77,6 +83,7 @@ export default {
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Имя', align: 'left', value: 'name' },
                 { text: 'E-mail', align: 'left', value: 'email' },
+                { text: 'Роли', align: 'left', value: 'roles' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Список пользователей' }],
@@ -101,7 +108,7 @@ export default {
     },
     async fetch() {
         this.showLoading();
-        const response = await User.params(this.queryParams).get();
+        const response = await User.params(this.queryParams).include('roles').get();
         this.users = User.hydrate(response.data);
         this.setTotal(response.meta.total);
         this.hideLoading();

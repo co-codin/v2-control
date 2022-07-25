@@ -38,7 +38,8 @@ export default {
         ],
     }),
     async fetch() {
-        this.role = await Role.$find(this.$route.params.id)
+        this.role = await Role.include('permissions').$find(this.$route.params.id)
+
         this.isLoading = false;
     },
     head: {

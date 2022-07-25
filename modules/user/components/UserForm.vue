@@ -1,42 +1,46 @@
 <template>
-    <v-form v-if="form" @submit.prevent="$emit('send', form)">
+    <v-form autocomplete="off" v-if="form" @submit.prevent="$emit('send', form)">
         <v-autocomplete
+            v-model="form.role_id"
             :items="roles"
             item-text="name"
             item-value="id"
             label="Роль"
+            multiple
+            chips
+            small-chips
+            deletable-chips
+            :error-messages="form.errors.get('role_id')"
+            :error="form.errors.has('role_id')"
         />
+
         <v-text-field
             v-model="form.name"
             label="Имя"
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
         />
+
         <v-text-field
             v-model="form.email"
             label="E-mail"
             :error-messages="form.errors.get('email')"
             :error="form.errors.has('email')"
         />
-        <template v-if="isUpdating">
-            <v-text-field
-                v-model="form.email"
-                label="E-mail"
-                :error-messages="form.errors.get('email')"
-                :error="form.errors.has('email')"
-            />
-        </template>
+
         <v-switch
             v-if="isUpdating"
             v-model="form.change_password"
             label="Сменить пароль"
             inset
         />
+
         <template v-if="!isUpdating || form.change_password">
             <v-text-field
                 type="password"
                 v-model="form.password"
                 label="Пароль"
+                autocomplete="new-password"
                 :error-messages="form.errors.get('password')"
                 :error="form.errors.has('password')"
             />
@@ -44,6 +48,7 @@
                 type="password"
                 v-model="form.password_confirmation"
                 label="Потверждение пароля"
+                autocomplete="new-password"
                 :error-messages="form.errors.get('password_confirmation')"
                 :error="form.errors.has('password_confirmation')"
             />
@@ -73,6 +78,7 @@ export default {
     },
     data: () => ({
         formDefaults: {
+            role_id: [],
             name: null,
             email: null,
             change_password: false,

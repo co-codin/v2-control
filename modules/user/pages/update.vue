@@ -32,7 +32,9 @@ export default {
         ],
     }),
     async fetch() {
-        this.user = await User.$find(this.$route.params.id);
+        this.user = await User.include('roles').$find(this.$route.params.id)
+        this.user.role_id = this.user.roles.map((role) => role.id)
+
         this.isLoading = false;
     },
     head: {
@@ -41,7 +43,7 @@ export default {
     methods: {
         async updateUser(form) {
             try {
-                await form.put(`/admin/users/${this.$route.params.id}`);
+                await form.put(`/admin/users/${this.user.id}`);
                 this.$snackbar(`Пользователь успешно обновлен`);
                 await this.$router.push({ name: 'users.index' });
             } catch (e) {
