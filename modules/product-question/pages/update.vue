@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Редактирование вопроса" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
-            <div class="mb-2">
+            <div v-if="$can('edit product questions')" class="mb-2">
                 <v-btn
                     v-if="!question.isApproved"
                     color="green"

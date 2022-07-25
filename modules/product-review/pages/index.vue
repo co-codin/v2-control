@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Отзывы к товарам" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create product reviews')" class="mb-2">
             <v-btn :to="{ name: 'product-reviews.create' }"> Добавить отзыв </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -70,10 +69,10 @@
                         <v-btn icon @click="showReview(item)">
                             <eye-icon width="24" height="24" class="h-6 w-6" />
                         </v-btn>
-                        <v-btn icon :to="{ name: 'product-reviews.update', params: { id: item.id } }">
+                        <v-btn v-if="$can('edit product reviews')" icon :to="{ name: 'product-reviews.update', params: { id: item.id } }">
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteProductReview(item)">
+                        <v-btn v-if="$can('delete product reivews')" icon @click.prevent="deleteProductReview(item)">
                             <trash-icon />
                         </v-btn>
                     </div>
@@ -127,26 +126,28 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn
-                        v-if="!selectedReview.isApproved"
-                        color="green"
-                        outlined
-                        small
-                        @click="approveReview(selectedReview)"
-                    >
-                        <check-circle-icon class="h-6 w-6 mr-1" />
-                        Одобрить
-                    </v-btn>
-                    <v-btn
-                        v-if="!selectedReview.isRejected"
-                        color="red"
-                        outlined
-                        small
-                        @click="rejectReview(selectedReview)"
-                    >
-                        <x-circle-icon class="h-6 w-6 mr-1" />
-                        Отклонить
-                    </v-btn>
+                    <template v-if="$can('edit product reivews')">
+                        <v-btn
+                            v-if="!selectedReview.isApproved"
+                            color="green"
+                            outlined
+                            small
+                            @click="approveReview(selectedReview)"
+                        >
+                            <check-circle-icon class="h-6 w-6 mr-1" />
+                            Одобрить
+                        </v-btn>
+                        <v-btn
+                            v-if="!selectedReview.isRejected"
+                            color="red"
+                            outlined
+                            small
+                            @click="rejectReview(selectedReview)"
+                        >
+                            <x-circle-icon class="h-6 w-6 mr-1" />
+                            Отклонить
+                        </v-btn>
+                    </template>
                 </v-card-actions>
             </v-card>
         </v-dialog>

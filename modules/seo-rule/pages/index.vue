@@ -2,7 +2,7 @@
     <div>
         <page-header h1="SEO правила" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create seo rules')" class="mb-2">
             <v-btn :to="{ name: 'seo-rules.create' }"> Добавить SEO правило </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -35,6 +34,7 @@
                             <external-link-icon />
                         </v-btn>
                         <v-btn
+                            v-if="$can('edit seo rules')"
                             icon
                             width="22"
                             height="22"
@@ -43,7 +43,7 @@
                         >
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteSeoRule(item)">
+                        <v-btn v-if="$can('delete seo rules')" icon @click.prevent="deleteSeoRule(item)">
                             <trash-icon />
                         </v-btn>
                     </div>

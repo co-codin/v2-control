@@ -2,9 +2,9 @@
     <div>
         <page-header h1="Вопросы" :breadcrumbs="breadcrumbs"></page-header>
 
-        <div class="mb-2">
-            <v-btn :to="{ name: 'questions.create' }"> Добавить вопрос </v-btn>
-            <v-btn class="ml-2" :to="{ name: 'question-categories.index' }"> Категории вопросов </v-btn>
+        <div v-if="$can('create questions') || $can('view question categories')" class="mb-2">
+            <v-btn v-if="$can('create questions')" :to="{ name: 'questions.create' }"> Добавить вопрос </v-btn>
+            <v-btn v-if="$can('view question categories')" class="ml-2" :to="{ name: 'question-categories.index' }"> Категории вопросов </v-btn>
         </div>
 
         <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
@@ -20,7 +20,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -40,6 +39,7 @@
                             <external-link-icon />
                         </v-btn>
                         <v-btn
+                            v-if="$can('edit questions')"
                             icon
                             width="22"
                             height="22"
@@ -48,7 +48,7 @@
                         >
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteQuestion(item)">
+                        <v-btn v-if="$can('delete questions')" icon @click.prevent="deleteQuestion(item)">
                             <trash-icon />
                         </v-btn>
                     </div>

@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"

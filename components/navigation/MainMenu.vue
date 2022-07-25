@@ -1,6 +1,6 @@
 <template>
     <v-list nav dense v-if="isBadgesLoaded">
-        <div v-for="(item, index) in menuWithBadges" :key="index">
+        <div v-for="(item, index) in availableMenu" :key="index">
             <div v-if="item.key || item.text" class="pa-1 mt-2 overline">{{ item.text }}</div>
             <nav-menu :menu="item.items"/>
         </div>
@@ -28,12 +28,24 @@ export default {
         },
     },
     async mounted() {
-        // await this.checkNewProductReviews()
-        // await this.checkNewProductQuestions()
+        await this.checkNewProductReviews()
+        await this.checkNewProductQuestions()
 
         this.isBadgesLoaded = true
     },
     computed: {
+        availableMenu() {
+            return this.menuWithBadges.map((menu) => {
+                const items = menu.items.filter((item) => !item.permission || this.$can(item.permission))
+                if (!items.length) {
+                    return false
+                }
+                return {
+                    ...menu,
+                    items
+                }
+            }).filter(Boolean)
+        },
         menuWithBadges() {
             return this.menu.map((section) => ({
                     ...section,

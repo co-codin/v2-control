@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Производители" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create brands')" class="mb-2">
             <v-btn :to="{ name: 'brands.create' }"> Добавить производителя </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -36,6 +35,7 @@
                 <template #item.action="{ item }">
                     <div class="table-actions">
                         <v-btn
+                            v-if="$can('view products')"
                             :title="`Товары производителя ${item.name}`"
                             icon
                             class="mr-1"
@@ -46,10 +46,18 @@
                         <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/brands/${item.slug}`">
                             <external-link-icon />
                         </v-btn>
-                        <v-btn icon :to="{ name: 'brands.update', params: { id: item.id } }">
+                        <v-btn
+                            v-if="$can('edit brands')"
+                            icon
+                            :to="{ name: 'brands.update', params: { id: item.id } }"
+                        >
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteBrand(item)">
+                        <v-btn
+                            v-if="$can('delete brands')"
+                            icon
+                            @click.prevent="deleteBrand(item)"
+                        >
                             <trash-icon />
                         </v-btn>
                     </div>

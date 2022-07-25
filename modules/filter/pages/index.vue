@@ -2,9 +2,9 @@
     <div>
         <page-header h1="Фильтры" :breadcrumbs="breadcrumbs"></page-header>
 
-        <div class="mb-2">
-            <v-btn :to="{ name: 'filters.create' }" class="mr-1"> Добавить фильтр </v-btn>
-            <v-btn :to="{ name: 'filters.sort' }"> Сортировка фильтров </v-btn>
+        <div v-if="$can('create filters') || $can('sort filters')" class="mb-2">
+            <v-btn v-if="$can('create filters')" :to="{ name: 'filters.create' }" class="mr-1"> Добавить фильтр </v-btn>
+            <v-btn v-if="$can('sort filters')" :to="{ name: 'filters.sort' }"> Сортировка фильтров </v-btn>
         </div>
 
         <advanced-search-form fast-filter-name="live" :filters="formFilters" :value="searchForm" @search="search" />
@@ -20,7 +20,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -46,10 +45,10 @@
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-                        <v-btn icon :to="{ name: 'filters.update', params: { id: item.id } }">
+                        <v-btn v-if="$can('edit filters')" icon :to="{ name: 'filters.update', params: { id: item.id } }">
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteFilter(item)">
+                        <v-btn v-if="$can('delete filters')" icon @click.prevent="deleteFilter(item)">
                             <trash-icon />
                         </v-btn>
                     </div>

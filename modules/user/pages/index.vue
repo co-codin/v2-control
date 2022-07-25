@@ -1,19 +1,20 @@
 <template>
     <div>
-        <page-header h1="Кабинеты" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Пользователи" :breadcrumbs="breadcrumbs" />
 
-        <div v-if="$can('create cabinets')" class="mb-2">
-            <v-btn :to="{ name: 'cabinets.create' }"> Добавить кабинет </v-btn>
+        <div v-if="$can('create users')" class="mb-2">
+            <v-btn :to="{ name: 'users.create' }"> Добавить пользователя </v-btn>
         </div>
 
-        <advanced-search-form :filters="filters" :value="searchForm" @search="search" />
+        <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
             <v-data-table
+                disable-sort
                 v-model="selectedItems"
                 item-key="id"
                 :headers="headers"
-                :items="cabinets"
+                :items="users"
                 :loading="isLoading"
                 :server-items-length="total"
                 loading-text="Идет загрузка..."
@@ -25,16 +26,22 @@
                 @update:sort-desc="updateOptions('sortDesc', $event)"
             >
                 <template #item.id="{ item }">
-                    <div class="font-weight-bold"># {{ item.id }}</div>
+                    <div class="font-weight-bold text-no-wrap"># {{ item.id }}</div>
                 </template>
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-                        <v-btn v-if="$can('edit cabinets')" icon :to="{ name: 'cabinets.update', params: { id: item.id } }">
+                        <v-btn
+                            v-if="$can('edit users')"
+                            icon
+                            width="22"
+                            height="22"
+                            class="mx-1"
+                            :to="{ name: 'users.update', params: { id: item.id } }"
+                        >
                             <pencil-alt-icon />
                         </v-btn>
-
-                        <v-btn v-if="$can('delete cabinets')" icon @click.prevent="deleteCabinet(item)">
+                        <v-btn v-if="$can('delete users')" icon @click.prevent="deleteUser(item)">
                             <trash-icon />
                         </v-btn>
                     </div>
@@ -47,82 +54,70 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
+import User from "~/modules/user/models/User";
 import PageHeader from '~/components/common/PageHeader';
-import Cabinet from '~/modules/cabinet/models/Cabinet';
-import { statusLabels } from '~/enums';
+import CopyLabel from '~/components/common/CopyLabel';
 
 export default {
     components: {
-        PageHeader,
         AdvancedSearchForm,
+        PageHeader,
+        CopyLabel,
     },
     mixins: [DatatableMixin],
     data() {
         return {
-            cabinets: [],
+            users: [],
             searchForm: {
+                live: null,
                 name: null,
+                email: null
             },
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
-                { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Ссылка', align: 'left', value: 'slug' },
-                { text: 'Статус', value: 'status.description', sortable: false },
+                { text: 'Имя', align: 'left', value: 'name' },
+                { text: 'E-mail', align: 'left', value: 'email' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Список кабинетов' }],
+            breadcrumbs: [{ text: 'Список пользователей' }],
             filters: [
                 {
-                    label: 'Название',
+                    label: 'Быстрый поиск',
+                    name: 'live',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
+                    label: 'Имя',
                     name: 'name',
                     component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
-                    label: 'ID',
-                    name: 'id',
+                    label: 'E-mail',
+                    name: 'email',
                     component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
-                    label: 'Ссылка',
-                    name: 'slug',
-                    component: () => import('@/components/search/fields/TextSearchField'),
-                },
-                {
-                    label: 'Статус',
-                    name: 'status',
-                    component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: statusLabels,
                 },
             ],
         };
     },
     async fetch() {
         this.showLoading();
-
-        const response = await Cabinet.select({
-            cabinets: ['id', 'name', 'slug', 'status'],
-        })
-            .params(this.queryParams)
-            .get();
-
-        this.cabinets = Cabinet.hydrate(response.data);
-
+        const response = await User.params(this.queryParams).get();
+        this.users = User.hydrate(response.data);
         this.setTotal(response.meta.total);
         this.hideLoading();
     },
     head: {
-        title: 'Кабинеты',
+        title: 'Пользователи',
     },
     methods: {
-        async deleteCabinet(cabinet) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить кабинет ${cabinet.name}?`))) {
+        async deleteUser(user) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить ${user.name}?`))) {
                 return;
             }
             try {
-                await cabinet.delete();
-
-                this.$snackbar(`Кабинет ${cabinet.name} успешно удален`);
-                this.cabinets = this.cabinets.filter((item) => item.id !== cabinet.id);
+                await user.delete();
+                this.$snackbar(`Пользователь ${user.name} успешно удален`);
+                this.users = this.users.filter((item) => item.id !== user.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }
