@@ -38,16 +38,17 @@
             :error="form.errors.has('product_name')"
         />
 
+        <file-uploader
+            v-if="!form.image"
+            @upload="form.image = $event.file;"
+        />
         <file-field
+            v-else
             v-model="form.image"
-            label="Главная фотография"
             :error-messages="form.errors.get('image')"
             :error="form.errors.has('image')"
-            @input="form.is_image_changed = true"
-            @delete="
-                form.image = null;
-                form.is_image_changed = true;
-            "
+            prepend-icon="mdi-image"
+            @delete="form.image = null;"
         />
 
         <wysiwyg-field
@@ -97,6 +98,7 @@ import { mapGetters } from 'vuex';
 import { debounce } from 'lodash';
 import slugify from 'slugify';
 import FileField from '../../../components/forms/FileField';
+import FileUploader from "~/components/FileUploader";
 import { statusLabels } from '~/enums';
 import WysiwygField from '~/components/forms/WysiwygField';
 import CategoryTreeSearchField from '~/components/search/fields/CategoryTreeSearchField';
@@ -106,6 +108,7 @@ export default {
         CategoryTreeSearchField,
         FileField,
         WysiwygField,
+        FileUploader
     },
     props: {
         category: {

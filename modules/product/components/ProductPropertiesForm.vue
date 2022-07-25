@@ -209,7 +209,9 @@ export default {
             .map((property) => property.pivot.field_value_ids)
             .flat()
             .filter((value, index, self) => self.indexOf(value) === index);
-        const values = await FieldValue.select('id', 'value')
+        const values = await FieldValue.select({
+            field_values: ['id', 'value']
+        })
             .whereIn('id', valueIds)
             .params({
                 'page[size]': 1000,

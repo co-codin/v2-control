@@ -43,9 +43,9 @@
                 <form-block title="SEO">
                     <seo-relation-form :seo="productSeo" @send="updateProductSeo" />
                 </form-block>
-                <form-block title="Уникальный контент">
-                    <product-form-unique-content v-if="$auth.loggedIn" :product-id="product.id" />
-                </form-block>
+<!--                <form-block title="Уникальный контент">-->
+<!--                    <product-form-unique-content v-if="$auth.loggedIn" :product-id="product.id" />-->
+<!--                </form-block>-->
             </v-expansion-panels>
         </template>
     </div>
@@ -63,14 +63,14 @@ import ProductMediaForm from '~/modules/product/components/ProductMediaForm';
 import FormBlock from '~/components/forms/FormBlock';
 import ProductConfiguratorForm from '~/modules/product/components/ProductConfiguratorForm';
 import ProductBenefitsForm from '~/modules/product/components/ProductBenefitsForm';
-import ProductFormUniqueContent from '~/modules/product/components/ProductFormUniqueContent';
+// import ProductFormUniqueContent from '~/modules/product/components/ProductFormUniqueContent';
 import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 import ProductAnalogsForm from '~/modules/product/components/ProductAnalogsForm';
 
 export default {
     components: {
         ExternalLinkIcon,
-        ProductFormUniqueContent,
+        // ProductFormUniqueContent,
         PageHeader,
         FormBlock,
         ProductForm,
