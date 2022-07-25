@@ -44,7 +44,7 @@ export default {
     }),
     methods: {
         updatePermission(permission, value) {
-            
+
         },
         async loadPermissions() {
             try {
