@@ -10,7 +10,7 @@
             link
         >
             <v-list-item-content class="position-relative">
-                <v-list-item-title class="d-flex">
+                <v-list-item-title class="d-flex" style="align-items: center;">
                     <svg-icon style="width: 10%; height: 10%; margin-right: 20px;" :name="menuItem.icon" :class="{ 'grey--text': menuItem.disabled }" />
 
                     {{ menuItem.text }}
