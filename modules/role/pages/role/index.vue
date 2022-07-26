@@ -111,7 +111,7 @@ export default {
             try {
                 await this.$axios.delete(`/admin/roles/${role.id}`)
                 this.$snackbar(`Роль ${role.name} успешно удалена`);
-                this.roles = this.roles.filter((item) => item.id !== this.roles.id);
+                this.roles = this.roles.filter((item) => item.id !== role.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }
