@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Значения характеристик" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create field values')" class="mb-2">
             <v-btn :to="{ name: 'field-values.create' }"> Добавить значение </v-btn>
         </div>
 
@@ -36,10 +36,10 @@
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-                        <v-btn icon :to="{ name: 'field-values.update', params: { id: item.id } }">
+                        <v-btn v-if="$can('edit field values')" icon :to="{ name: 'field-values.update', params: { id: item.id } }">
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteFieldValue(item)">
+                        <v-btn v-if="$can('delete field values')" icon @click.prevent="deleteFieldValue(item)">
                             <trash-icon />
                         </v-btn>
                     </div>
