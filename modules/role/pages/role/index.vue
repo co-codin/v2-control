@@ -105,13 +105,12 @@ export default {
     },
     methods: {
         async deleteRole(role) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить роля ${role.name}?`))) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить роль ${role.name}?`))) {
                 return;
             }
             try {
-                await role.delete();
-
-                this.$snackbar(`Роль ${role.name} успешно удален`);
+                await this.$axios.delete(`/admin/roles/${role.id}`)
+                this.$snackbar(`Роль ${role.name} успешно удалена`);
                 this.roles = this.roles.filter((item) => item.id !== this.roles.id);
             } catch (e) {
                 this.$snackbar(e.message);

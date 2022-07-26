@@ -122,7 +122,7 @@ export default {
                 return;
             }
             try {
-                await user.delete();
+                await this.$axios.delete(`/admin/users/${user.id}`)
                 this.$snackbar(`Пользователь ${user.name} успешно удален`);
                 this.users = this.users.filter((item) => item.id !== user.id);
             } catch (e) {
