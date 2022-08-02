@@ -34,7 +34,7 @@ export default {
                 { icon: 'chat', text: 'Вопросы и ответы', link: '/questions', permission: 'view questions' },
                 { icon: 'vacancy', text: 'Вакансии', link: '/vacancies', permission: 'view vacancies' },
                 { icon: 'cabinet', text: 'Кабинеты', link: '/cabinets', permission: 'view cabinets' },
-                { icon: 'case', text: 'Проекты', link: '/cases', permission: 'view cases' },
+                { icon: 'case', text: 'Кейсы', link: '/cases', permission: 'view cases' },
                 { icon: 'banner', text: 'Баннеры', link: '/banners', permission: 'view banners' },
                 { icon: 'contact', text: 'Контакты', link: '/contacts', permission: 'view contacts' },
             ],

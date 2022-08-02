@@ -6,6 +6,7 @@
             :error-messages="form.errors.get('is_enabled')"
             :error="form.errors.has('is_enabled')"
             inset
+            filled
         />
         <template v-if="Boolean(form.is_enabled)">
             <v-textarea
@@ -14,6 +15,7 @@
                 label="Заголовок страницы (title)"
                 :error-messages="form.errors.get('title')"
                 :error="form.errors.has('title')"
+                filled
             />
             <v-textarea
                 v-model="form.h1"
@@ -21,6 +23,7 @@
                 label="H1"
                 :error-messages="form.errors.get('h1')"
                 :error="form.errors.has('h1')"
+                filled
             />
             <v-textarea
                 v-model="form.description"
@@ -28,6 +31,7 @@
                 label="Описание (description)"
                 :error-messages="form.errors.get('description')"
                 :error="form.errors.has('description')"
+                filled
             />
             <v-card outlined>
                 <v-card-title class="d-flex justify-space-between align-center">

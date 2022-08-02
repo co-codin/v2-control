@@ -1,10 +1,36 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
+
+        <v-text-field
+            v-model="form.name"
+            label="Название"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+            @input="updateSlug"
+            filled
+        />
+
+        <v-text-field
+            v-model="form.slug"
+            label="Ссылка"
+            :error-messages="form.errors.get('slug')"
+            :error="form.errors.has('slug')"
+            append-icon="mdi-refresh"
+            @click:append="
+                form.slug = null;
+                updateSlug();
+            "
+            filled
+        />
+
         <v-text-field
             v-model="form.published_at"
             label="Дата поставки"
             :error-messages="form.errors.get('published_at')"
             :error="form.errors.has('published_at')"
+            hint="Например: 2 квартал 2005"
+            persistent-hint
+            filled
         />
 
         <entity-autocomplete-field
@@ -21,27 +47,7 @@
             search-column="name"
             hide-no-data
             cache-items
-            hide-details="auto"
-        />
-
-        <v-text-field
-            v-model="form.name"
-            label="Название"
-            :error-messages="form.errors.get('name')"
-            :error="form.errors.has('name')"
-            @input="updateSlug"
-        />
-
-        <v-text-field
-            v-model="form.slug"
-            label="Ссылка"
-            :error-messages="form.errors.get('slug')"
-            :error="form.errors.has('slug')"
-            append-icon="mdi-refresh"
-            @click:append="
-                form.slug = null;
-                updateSlug();
-            "
+            filled
         />
 
         <wysiwyg-field
@@ -49,6 +55,7 @@
             label="Короткое описание"
             :error-messages="form.errors.get('short_description')"
             :error="form.errors.has('short_description')"
+            filled
         />
 
         <wysiwyg-field
@@ -56,57 +63,38 @@
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
+            filled
         />
 
-        <v-textarea
+        <v-text-field
             v-model="form.summary"
-            label="Что оснащено?"
+            auto-grow
+            label="Второй заголовок"
             :error-messages="form.errors.get('summary')"
             :error="form.errors.has('summary')"
+            filled
+            persistent-hint
+            hint="Например: Комплексное оснащение отделения лучевой диагностики"
         />
 
-        <v-textarea
+        <v-text-field
             v-model="form.note"
             label="Заметка"
             :error-messages="form.errors.get('note')"
             :error="form.errors.has('note')"
             hint="Например: Поставка через дилера"
+            persistent-hint
+            filled
         />
 
         <v-select
+            v-if="isUpdating"
             v-model="form.status"
             label="Статус"
             :items="statusLabels"
             :error-messages="form.errors.get('status')"
             :error="form.errors.has('status')"
-        />
-
-        <file-uploader
-            v-if="!form.image"
-            @upload="
-                    form.image = $event.file;
-                "
-        />
-
-        <file-field
-            v-else
-            v-model="form.image"
-            :error-messages="form.errors.get('image')"
-            :error="form.errors.has('image')"
-            prepend-icon="mdi-image"
-            @delete="
-                    form.image = null;
-                "
-        />
-
-        <AutocompleteSearchField
-            v-if="isUpdating"
-            v-model="form.products"
-            :error-messages="form.errors.get('form.products')"
-            :error="form.errors.has('form.products')"
-            url="/products"
-            name="products"
-            label="Товар"
+            filled
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -127,11 +115,9 @@ import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField'
 import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
 import { statusLabels } from '~/enums';
-import AutocompleteSearchField from '~/components/search/fields/AutocompleteSearchField'
 
 export default {
     components: {
-        AutocompleteSearchField,
         FileUploader,
         FileField,
         EntityAutocompleteField,
@@ -152,7 +138,6 @@ export default {
         formDefaults: {
             name: null,
             slug: null,
-            image: null,
             status: 1,
             published_at: null,
             short_description: null,
@@ -160,7 +145,6 @@ export default {
             summary: null,
             note: null,
             city_id: null,
-            products: null,
         },
         form: null,
         statusLabels,
@@ -172,7 +156,7 @@ export default {
     },
     async created() {
         this.form = Form.create(this.formDefaults)
-            .withOptions({ http: this.$axios })
+            .withOptions({ http: this.$axios, resetOnSuccess: false })
             .populate(this.caseItem || {});
     },
     methods: {

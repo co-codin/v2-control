@@ -1,10 +1,29 @@
 <template>
     <div>
-        <page-header h1="Редактирование проекта" :breadcrumbs="breadcrumbs" />
-        <template v-if="!$fetchState.pending">
-            <v-expansion-panels>
+        <template v-if="!$fetchState.pending && caseModel">
+            <page-header h1="Редактирование кейса" :breadcrumbs="breadcrumbs"/>
+            <div class="mb-2">
+                <v-btn
+                    target="_blank"
+                    link
+                    :href="`${$config.app.siteUrl}/keysy/${caseModel.slug}`"
+                    color="info"
+                >
+                    <external-link-icon class="h-6 w-6 mr-1" /> Посмотреть на сайте
+                </v-btn>
+            </div>
+            <v-expansion-panels v-model="openedPanel">
                 <form-block title="Основная информация">
-                    <case-form :case-item="caseItem" is-updating @send="updateCase" />
+                    <case-form is-updating :case-item="caseModel" @send="updateCase" />
+                </form-block>
+                <form-block title="Товары">
+                    <case-products-form />
+                </form-block>
+                <form-block title="Системные галереи">
+                    <case-media-form />
+                </form-block>
+                <form-block title="SEO">
+                    <seo-relation-form :seo="caseSeo" @send="updateCaseSeo" />
                 </form-block>
             </v-expansion-panels>
         </template>
@@ -12,50 +31,73 @@
 </template>
 
 <script>
-import CaseForm from '../components/CaseForm';
-import PageHeader from '~/components/common/PageHeader';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import CaseForm from "~/modules/case/components/CaseForm";
+import SeoRelationForm from '~/components/forms/SeoRelationForm';
+import PageHeader from '../../../components/common/PageHeader';
+import CaseMediaForm from "~/modules/case/components/CaseMediaForm";
 import FormBlock from '~/components/forms/FormBlock';
+import CaseProductsForm from "~/modules/case/components/CaseProductsForm";
+import ExternalLinkIcon from '~/components/heroicons/ExternalLinkIcon';
 
 export default {
     components: {
-        FormBlock,
+        CaseMediaForm,
         PageHeader,
+        FormBlock,
         CaseForm,
+        CaseProductsForm,
+        SeoRelationForm,
+        ExternalLinkIcon
     },
     data: () => ({
-        caseItem: null,
-        isLoading: true,
-        breadcrumbs: [{ text: 'Список проектов', to: { name: 'cases.index' } }, { text: 'Редактирование проекта' }],
+        breadcrumbs: [{ text: 'Список кейсов', to: { name: 'cases.index' } }, { text: 'Редактирование кейса' }],
     }),
     async fetch() {
-        const { data } = await this.$axios.get(`/case_models/${this.$route.params.id}`, {
-            params: {
-                include: ['city', 'products'],
-            },
-        });
-
-        data.data.products = data.data.products.map(product => product.id)
-        data.data.status = data.data.status.value;
-        this.caseItem = data.data;
-        this.isLoading = false;
+        await this.getCase(this.$route.params.id);
     },
     head: {
-        title: 'Редактирование проекта',
+        title: 'Редактирование товара',
+    },
+    computed: {
+        ...mapGetters({
+            caseModel: 'case/case',
+            caseSeo: 'case/caseSeo',
+        }),
+        openedPanel: {
+            get() {
+                return this.$store.state.helper.openedPanel;
+            },
+            set(index) {
+                this.closeAllPanels();
+                this.updatePanel(index);
+            },
+        },
     },
     methods: {
+        ...mapActions({
+            getCase: 'case/getCase',
+        }),
+        ...mapMutations({
+            closeAllPanels: 'helper/closeAllPanels',
+            updatePanel: 'helper/updatePanel',
+        }),
         async updateCase(form) {
             try {
-                form.products = form.products.map(productId => {
-                    return {
-                        'id': productId
-                    }
-                })
-                console.log(form.products)
-                await form.put(`/admin/case_models/${this.$route.params.id}`);
-                this.$snackbar(`Проект успешно обновлен`);
-                await this.$router.push({ name: 'cases.index' });
+                await form.put(`/admin/case_models/${this.caseModel.id}`);
+                this.$snackbar(`Кейс успешно обновлен`);
+                this.closeAllPanels();
             } catch (e) {
-                this.$snackbar(`Приозошла ошибка при обновлении проекта: ${e.message}`);
+                this.$snackbar(`Произошла ошибка при обновлении: ${e.message}`);
+            }
+        },
+        async updateCaseSeo(form) {
+            try {
+                await form.patch(`/admin/case_models/${this.caseModel.id}/seo`);
+                this.$snackbar(`SEO успешно обновлено`);
+                this.closeAllPanels();
+            } catch (e) {
+                this.$snackbar(`Произошла ошибка при обоновлении: ${e.message}`);
             }
         },
     },
