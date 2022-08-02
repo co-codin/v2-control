@@ -114,7 +114,7 @@ import DatePickerField from '~/components/forms/DatePickerField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
-import { statusLabels } from '~/enums';
+import {Status, statusLabels} from '~/enums';
 
 export default {
     components: {
@@ -138,7 +138,7 @@ export default {
         formDefaults: {
             name: null,
             slug: null,
-            status: 1,
+            status: Status.Inactive,
             published_at: null,
             short_description: null,
             full_description: null,
