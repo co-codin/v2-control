@@ -57,7 +57,7 @@ export default {
         await this.getCase(this.$route.params.id);
     },
     head: {
-        title: 'Редактирование товара',
+        title: 'Редактирование кейса',
     },
     computed: {
         ...mapGetters({
