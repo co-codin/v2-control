@@ -6,8 +6,8 @@
                 @input="updateProducts"
                 url="/products"
                 item-value="id"
-                item-text="name"
-                :query-params="{ sort: 'name' }"
+                :item-text="itemText"
+                :query-params="{ sort: 'name', include: 'brand' }"
                 :error-messages="form.errors.get('products')"
                 :error="form.errors.has('products')"
                 placeholder="Введите название товара"
@@ -76,6 +76,9 @@ export default {
             } catch (e) {
                 this.$snackbar(`Произошла ошибка при сохранении: ${e.message}`);
             }
+        },
+        itemText(item) {
+            return `${item.brand.name} ${item.name}`
         }
     },
 };
