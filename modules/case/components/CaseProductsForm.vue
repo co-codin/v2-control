@@ -7,7 +7,7 @@
                 url="/products"
                 item-value="id"
                 :item-text="itemText"
-                :query-params="{ sort: 'name', include: 'brand,category' }"
+                :query-params="{ sort: 'name', include: 'brand,category', 'fields[products]': 'id,brand_id,name' }"
                 :error-messages="form.errors.get('products')"
                 :error="form.errors.has('products')"
                 placeholder="Введите название товара"
