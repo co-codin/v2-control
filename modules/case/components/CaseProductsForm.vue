@@ -7,7 +7,7 @@
                 url="/products"
                 item-value="id"
                 :item-text="itemText"
-                :query-params="{ sort: 'name', include: 'brand' }"
+                :query-params="{ sort: 'name', include: 'brand,category' }"
                 :error-messages="form.errors.get('products')"
                 :error="form.errors.has('products')"
                 placeholder="Введите название товара"
@@ -78,7 +78,7 @@ export default {
             }
         },
         itemText(item) {
-            return `${item.brand.name} ${item.name}`
+            return `${item.category.product_name} ${item.brand.name} ${item.name}`
         }
     },
 };
