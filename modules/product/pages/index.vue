@@ -78,7 +78,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { statusLabels, uniqueContentList } from '@/enums';
+import { statusLabels, uniqueContentList, groupLabels } from '@/enums';
 import Product from '../models/Product';
 import PageHeader from '~/components/common/PageHeader';
 
@@ -123,6 +123,12 @@ export default {
                     label: 'Категории',
                     name: 'categories.id',
                     component: () => import('@/components/search/fields/CategoryTreeSearchField'),
+                },
+                {
+                    label: 'Группа',
+                    name: 'group_id',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: groupLabels
                 },
                 {
                     label: 'ID',
