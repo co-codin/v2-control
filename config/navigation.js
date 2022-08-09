@@ -37,6 +37,7 @@ export default {
                 { icon: 'case', text: 'Кейсы', link: '/cases', permission: 'view cases' },
                 { icon: 'banner', text: 'Баннеры', link: '/banners', permission: 'view banners' },
                 { icon: 'contact', text: 'Контакты', link: '/contacts', permission: 'view contacts' },
+                { icon: 'journal', text: 'Журнала событий', link: '/activities', permission: 'view activities' },
             ],
         },
         {
