@@ -2,10 +2,6 @@
     <div>
         <page-header h1="Достижения" :breadcrumbs="breadcrumbs" />
 
-        <div v-if="$can('create achievements')" class="mb-2">
-            <v-btn :to="{ name: 'achievements.create' }"> Добавить достижения </v-btn>
-        </div>
-
         <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
         <v-card>
@@ -13,7 +9,7 @@
                 v-model="selectedItems"
                 item-key="id"
                 :headers="headers"
-                :items="achievements"
+                :items="activities"
                 :loading="isLoading"
                 :server-items-length="total"
                 loading-text="Идет загрузка..."
@@ -33,7 +29,11 @@
                 </template>
 
                 <template #item.created_at="{ item }">
-                    <div>{{ item.asDate('created_at').fromNow() }}</div>
+                    <div>{{ item.asDate('created_at').format('DD.MM.YYYY HH:mm') }}</div>
+                </template>
+
+                <template #item.properties="{ item }">
+                    <div>{{ item.properties }}</div>
                 </template>
             </v-data-table>
         </v-card>
@@ -56,8 +56,7 @@ export default {
         return {
             activities: [],
             searchForm: {
-                name: null,
-                is_enabled: null,
+                id: null,
             },
             headers: [
                 { text: 'Дата и время', align: 'left', value: 'created_at' },
@@ -86,8 +85,9 @@ export default {
         this.showLoading();
 
         const response = await Activity.select({
-            activities: ['id', 'created_at', 'subject_type', 'subject_id', 'causer'],
+            activities: ['id', 'created_at', 'subject_type', 'subject_id', 'causer_id', 'causer_type'],
         })
+            .with('causer')
             .params(this.queryParams)
             .get();
 
