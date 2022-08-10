@@ -35,22 +35,6 @@
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').fromNow() }}</div>
                 </template>
-
-                <template #item.action="{ item }">
-                    <div class="table-actions">
-                        <v-btn
-                            v-if="$can('edit achievements')"
-                            icon
-                            :to="{ name: 'achievements.update', params: { id: item.id } }"
-                        >
-                            <pencil-alt-icon />
-                        </v-btn>
-
-                        <v-btn v-if="$can('delete achievements')" icon @click.prevent="deleteAchievement(item)">
-                            <trash-icon />
-                        </v-btn>
-                    </div>
-                </template>
             </v-data-table>
         </v-card>
     </div>
@@ -122,19 +106,7 @@ export default {
         title: 'Достижения',
     },
     methods: {
-        async deleteAchievement(achievement) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить достижения ${achievement.name}?`))) {
-                return;
-            }
-            try {
-                await achievement.delete();
 
-                this.$snackbar(`Достижение ${achievement.name} успешно удален`);
-                this.achievements = this.achievements.filter((item) => item.id !== achievement.id);
-            } catch (e) {
-                this.$snackbar(e.message);
-            }
-        },
     },
 };
 </script>
