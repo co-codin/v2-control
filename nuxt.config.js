@@ -29,6 +29,7 @@ import { bannerRoutes } from './modules/banner/router';
 import { contactRoutes } from './modules/contact/router';
 import { roleRoutes } from './modules/role/router'
 import { userRoutes } from './modules/user/router'
+import {activityRoutes} from './modules/activity/router'
 
 export default {
     ssr: false,
@@ -167,6 +168,7 @@ export default {
                     ...contactRoutes(resolve),
                     ...roleRoutes(resolve),
                     ...userRoutes(resolve),
+                    ...activityRoutes(resolve),
                 ]
             );
         },
