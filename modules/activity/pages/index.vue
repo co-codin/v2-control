@@ -43,8 +43,8 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import Achievement from '~/modules/achievement/models/Achievement';
 import PageHeader from '~/components/common/PageHeader';
+import Activity from '~/modules/activity/models/Activity'
 
 export default {
     components: {
@@ -54,27 +54,21 @@ export default {
     mixins: [DatatableMixin],
     data() {
         return {
-            achievements: [],
+            activities: [],
             searchForm: {
                 name: null,
                 is_enabled: null,
             },
             headers: [
-                { text: 'ID', align: 'left', value: 'id' },
-                { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Картинка', align: 'left', value: 'image', sortable: false },
-                { text: 'Доступно', value: 'is_enabled' },
-                { text: 'Дата создания', align: 'left', value: 'created_at' },
-                { text: 'Позиция', align: 'left', value: 'position' },
-                { text: '', sortable: false, align: 'right', value: 'action' },
+                { text: 'Дата и время', align: 'left', value: 'created_at' },
+                { text: 'Автор изменений', align: 'left', value: 'causer.name' },
+                { text: 'Тип сущности', align: 'left', value: 'subject_type' },
+                { text: 'ID сущности', align: 'left', value: 'id' },
+                { text: 'Действие', align: 'left', value: 'event' },
+                { text: 'Доп. параметры', align: 'left', value: 'properties' },
             ],
-            breadcrumbs: [{ text: 'Список достижений' }],
+            breadcrumbs: [{ text: 'Список событий' }],
             filters: [
-                {
-                    label: 'Быстрый поиск',
-                    name: 'live',
-                    component: () => import('@/components/search/fields/TextSearchField'),
-                },
                 {
                     label: 'Название',
                     name: 'name',
@@ -91,22 +85,21 @@ export default {
     async fetch() {
         this.showLoading();
 
-        const response = await Achievement.select({
-            achievements: ['id', 'name', 'image', 'is_enabled', 'position', 'created_at'],
+        const response = await Activity.select({
+            activities: ['id', 'created_at', 'subject_type', 'subject_id', 'causer'],
         })
             .params(this.queryParams)
             .get();
 
-        this.achievements = Achievement.hydrate(response.data);
+        console.log(response.data)
+
+        this.activities = Activity.hydrate(response.data);
 
         this.setTotal(response.meta.total);
         this.hideLoading();
     },
     head: {
-        title: 'Достижения',
-    },
-    methods: {
-
+        title: 'События',
     },
 };
 </script>
