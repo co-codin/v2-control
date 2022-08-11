@@ -81,6 +81,8 @@ export default {
                 { text: 'Дата поставки', align: 'left', value: 'published_at' },
                 { text: 'Статус', value: 'status.description', sortable: false },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
+                { text: 'Год реализации', align: 'left', value: 'released_year' },
+                { text: 'Квартал реализации', align: 'left', value: 'released_quarter' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
             breadcrumbs: [{ text: 'Список реализованных проектов' }],
@@ -123,7 +125,7 @@ export default {
         this.showLoading();
 
         const response = await Case.select({
-            case_models: ['id', 'name', 'slug', 'status', 'city_id', 'created_at', 'published_at'],
+            case_models: ['id', 'name', 'slug', 'status', 'city_id', 'created_at', 'published_at', 'released_year', 'released_quarter'],
         })
             .with('city')
             .get();

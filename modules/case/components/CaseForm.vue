@@ -109,6 +109,22 @@
             label="Товар"
         />
 
+        <v-text-field
+            v-model="form.released_year"
+            type="number"
+            label="Год реализации"
+            :error-messages="form.errors.get('released_year')"
+            :error="form.errors.has('released_year')"
+        />
+
+        <v-text-field
+            v-model="form.released_quarter"
+            type="number"
+            label="Квартал реализации"
+            :error-messages="form.errors.get('released_year')"
+            :error="form.errors.has('released_year')"
+        />
+
         <v-row class="expansion-panel-actions mt-5">
             <v-col>
                 <v-btn type="submit" color="green" class="white--text text-uppercase">Сохранить</v-btn>
@@ -161,6 +177,8 @@ export default {
             note: null,
             city_id: null,
             products: null,
+            released_year: null,
+            released_quarter: null,
         },
         form: null,
         statusLabels,

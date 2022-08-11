@@ -29,7 +29,7 @@ export default {
     methods: {
         async createCase(form) {
             try {
-                await form.post('/admin/cases');
+                await form.post('/admin/case_models');
                 this.$snackbar(`Проект ${form.name} успешно добавлен`);
                 await this.$router.push({ name: 'cases.index' });
             } catch (e) {
