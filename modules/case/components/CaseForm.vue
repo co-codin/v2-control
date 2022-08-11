@@ -117,12 +117,13 @@
             :error="form.errors.has('released_year')"
         />
 
-        <v-text-field
+        <v-select
             v-model="form.released_quarter"
-            type="number"
             label="Квартал реализации"
-            :error-messages="form.errors.get('released_year')"
-            :error="form.errors.has('released_year')"
+            :error-messages="form.errors.get(`released_quarter`)"
+            :error="form.errors.has(`released_quarter`)"
+            dense
+            :items="quarters"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -182,6 +183,12 @@ export default {
         },
         form: null,
         statusLabels,
+        quarters: [
+            {text: 'Первый квартал', value: 1},
+            {text: 'Второй квартал', value: 2},
+            {text: 'Третий квартал', value: 3},
+            {text: 'четвертый квартал', value: 4},
+        ]
     }),
     watch: {
         caseItem(value) {
