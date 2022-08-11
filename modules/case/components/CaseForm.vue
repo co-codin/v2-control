@@ -1,36 +1,10 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-
-        <v-text-field
-            v-model="form.name"
-            label="Название"
-            :error-messages="form.errors.get('name')"
-            :error="form.errors.has('name')"
-            @input="updateSlug"
-            filled
-        />
-
-        <v-text-field
-            v-model="form.slug"
-            label="Ссылка"
-            :error-messages="form.errors.get('slug')"
-            :error="form.errors.has('slug')"
-            append-icon="mdi-refresh"
-            @click:append="
-                form.slug = null;
-                updateSlug();
-            "
-            filled
-        />
-
         <v-text-field
             v-model="form.published_at"
             label="Дата поставки"
             :error-messages="form.errors.get('published_at')"
             :error="form.errors.has('published_at')"
-            hint="Например: 2 квартал 2005"
-            persistent-hint
-            filled
         />
 
         <entity-autocomplete-field
@@ -47,7 +21,27 @@
             search-column="name"
             hide-no-data
             cache-items
-            filled
+            hide-details="auto"
+        />
+
+        <v-text-field
+            v-model="form.name"
+            label="Название"
+            :error-messages="form.errors.get('name')"
+            :error="form.errors.has('name')"
+            @input="updateSlug"
+        />
+
+        <v-text-field
+            v-model="form.slug"
+            label="Ссылка"
+            :error-messages="form.errors.get('slug')"
+            :error="form.errors.has('slug')"
+            append-icon="mdi-refresh"
+            @click:append="
+                form.slug = null;
+                updateSlug();
+            "
         />
 
         <wysiwyg-field
@@ -55,7 +49,6 @@
             label="Короткое описание"
             :error-messages="form.errors.get('short_description')"
             :error="form.errors.has('short_description')"
-            filled
         />
 
         <wysiwyg-field
@@ -63,38 +56,74 @@
             label="Подробное описание"
             :error-messages="form.errors.get('full_description')"
             :error="form.errors.has('full_description')"
-            filled
         />
 
-        <v-text-field
+        <v-textarea
             v-model="form.summary"
-            auto-grow
-            label="Второй заголовок"
+            label="Что оснащено?"
             :error-messages="form.errors.get('summary')"
             :error="form.errors.has('summary')"
-            filled
-            persistent-hint
-            hint="Например: Комплексное оснащение отделения лучевой диагностики"
         />
 
-        <v-text-field
+        <v-textarea
             v-model="form.note"
             label="Заметка"
             :error-messages="form.errors.get('note')"
             :error="form.errors.has('note')"
             hint="Например: Поставка через дилера"
-            persistent-hint
-            filled
         />
 
         <v-select
-            v-if="isUpdating"
             v-model="form.status"
             label="Статус"
             :items="statusLabels"
             :error-messages="form.errors.get('status')"
             :error="form.errors.has('status')"
-            filled
+        />
+
+        <file-uploader
+            v-if="!form.image"
+            @upload="
+                    form.image = $event.file;
+                "
+        />
+
+        <file-field
+            v-else
+            v-model="form.image"
+            :error-messages="form.errors.get('image')"
+            :error="form.errors.has('image')"
+            prepend-icon="mdi-image"
+            @delete="
+                    form.image = null;
+                "
+        />
+
+        <AutocompleteSearchField
+            v-if="isUpdating"
+            v-model="form.products"
+            :error-messages="form.errors.get('form.products')"
+            :error="form.errors.has('form.products')"
+            url="/products"
+            name="products"
+            label="Товар"
+        />
+
+        <v-text-field
+            v-model="form.released_year"
+            type="number"
+            label="Год реализации"
+            :error-messages="form.errors.get('released_year')"
+            :error="form.errors.has('released_year')"
+        />
+
+        <v-select
+            v-model="form.released_quarter"
+            label="Квартал реализации"
+            :error-messages="form.errors.get(`released_quarter`)"
+            :error="form.errors.has(`released_quarter`)"
+            dense
+            :items="quarters"
         />
 
         <v-row class="expansion-panel-actions mt-5">
@@ -114,10 +143,12 @@ import DatePickerField from '~/components/forms/DatePickerField';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
-import {Status, statusLabels} from '~/enums';
+import { statusLabels } from '~/enums';
+import AutocompleteSearchField from '~/components/search/fields/AutocompleteSearchField'
 
 export default {
     components: {
+        AutocompleteSearchField,
         FileUploader,
         FileField,
         EntityAutocompleteField,
@@ -138,16 +169,26 @@ export default {
         formDefaults: {
             name: null,
             slug: null,
-            status: Status.Inactive,
+            image: null,
+            status: 1,
             published_at: null,
             short_description: null,
             full_description: null,
             summary: null,
             note: null,
             city_id: null,
+            products: null,
+            released_year: null,
+            released_quarter: null,
         },
         form: null,
         statusLabels,
+        quarters: [
+            {text: 'Первый квартал', value: 1},
+            {text: 'Второй квартал', value: 2},
+            {text: 'Третий квартал', value: 3},
+            {text: 'четвертый квартал', value: 4},
+        ]
     }),
     watch: {
         caseItem(value) {
@@ -156,7 +197,7 @@ export default {
     },
     async created() {
         this.form = Form.create(this.formDefaults)
-            .withOptions({ http: this.$axios, resetOnSuccess: false })
+            .withOptions({ http: this.$axios })
             .populate(this.caseItem || {});
     },
     methods: {

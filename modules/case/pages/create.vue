@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Добавление кейса" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Добавление проекта" :breadcrumbs="breadcrumbs" />
         <v-expansion-panels :value="0">
             <form-block title="Основная информация">
                 <case-form @send="createCase" />
@@ -21,19 +21,19 @@ export default {
         CaseForm,
     },
     data: () => ({
-        breadcrumbs: [{ text: 'Список кейсов', to: { name: 'cases.index' } }, { text: 'Добавление кейса' }],
+        breadcrumbs: [{ text: 'Список проектов', to: { name: 'cases.index' } }, { text: 'Добавление проекта' }],
     }),
     head: {
-        title: 'Добавление кейса',
+        title: 'Добавление проекта',
     },
     methods: {
         async createCase(form) {
             try {
                 await form.post('/admin/case_models');
-                this.$snackbar(`Кейс "${form.name}" успешно добавлен`);
+                this.$snackbar(`Проект ${form.name} успешно добавлен`);
                 await this.$router.push({ name: 'cases.index' });
             } catch (e) {
-                this.$snackbar(`Произошла ошибка при создании: ${e.message}`);
+                this.$snackbar(`Произошла ошибка при создании проекта: ${e.message}`);
             }
         },
     },

@@ -1,9 +1,9 @@
 <template>
     <div>
-        <page-header h1="Кейсы" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Реализованные проекты" :breadcrumbs="breadcrumbs" />
 
-        <div v-if="$can('create cases')" class="mb-2">
-            <v-btn :to="{ name: 'cases.create' }"> Добавить кейс </v-btn>
+        <div class="mb-2">
+            <v-btn :to="{ name: 'cases.create' }"> Добавить проект </v-btn>
         </div>
 
         <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
@@ -19,6 +19,7 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
+                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -34,13 +35,13 @@
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-                        <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/keysy/${item.slug}`">
+                        <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/cases/${item.slug}`">
                             <external-link-icon />
                         </v-btn>
-                        <v-btn v-if="$can('edit cases')" icon :to="{ name: 'cases.update', params: { id: item.id } }">
+                        <v-btn icon :to="{ name: 'cases.update', params: { id: item.id } }">
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn v-if="$can('delete cases')" icon @click.prevent="deleteCase(item)">
+                        <v-btn icon @click.prevent="deleteCase(item)">
                             <trash-icon />
                         </v-btn>
                     </div>
@@ -74,15 +75,17 @@ export default {
             headers: [
                 { text: 'ID', align: 'left', value: 'id' },
                 { text: 'Название', align: 'left', value: 'name' },
-                { text: 'Второй заголовок', align: 'left', value: 'summary' },
+                { text: 'Что сделано?', align: 'left', value: 'summary' },
                 { text: 'Город', value: 'city.name', sortable: false },
                 { text: 'Ссылка', align: 'left', value: 'slug' },
                 { text: 'Дата поставки', align: 'left', value: 'published_at' },
                 { text: 'Статус', value: 'status.description', sortable: false },
                 { text: 'Дата создания', align: 'left', value: 'created_at' },
+                { text: 'Год реализации', align: 'left', value: 'released_year' },
+                { text: 'Квартал реализации', align: 'left', value: 'released_quarter' },
                 { text: '', sortable: false, align: 'right', value: 'action' },
             ],
-            breadcrumbs: [{ text: 'Список кейсов' }],
+            breadcrumbs: [{ text: 'Список реализованных проектов' }],
             filters: [
                 {
                     label: 'Быстрый поиск',
@@ -121,7 +124,9 @@ export default {
     async fetch() {
         this.showLoading();
 
-        const response = await Case.query()
+        const response = await Case.select({
+            case_models: ['id', 'name', 'slug', 'status', 'city_id', 'created_at', 'published_at', 'released_year', 'released_quarter'],
+        })
             .with('city')
             .get();
 
@@ -131,17 +136,17 @@ export default {
         this.hideLoading();
     },
     head: {
-        title: 'Кейсы',
+        title: 'Реализованные проекты',
     },
     methods: {
         async deleteCase(caseItem) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить кейс "${caseItem.name}"?`))) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить проект ${caseItem.name}?`))) {
                 return;
             }
             try {
                 await caseItem.delete();
 
-                this.$snackbar(`Кейс "${caseItem.name}" успешно удален`);
+                this.$snackbar(`Проект ${caseItem.name} успешно удален`);
                 this.cases = this.cases.filter((item) => item.id !== caseItem.id);
             } catch (e) {
                 this.$snackbar(e.message);
