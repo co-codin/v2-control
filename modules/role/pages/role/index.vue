@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Роли" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create roles')" class="mb-2">
             <v-btn :to="{ name: 'roles.create' }"> Добавить роль </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -32,13 +31,14 @@
                 <template #item.action="{ item }">
                     <div class="table-actions">
                         <v-btn
+                            v-if="$can('edit roles')"
                             icon
                             :to="{ name: 'roles.update', params: { id: item.id } }"
                         >
                             <pencil-alt-icon />
                         </v-btn>
 
-                        <v-btn icon @click.prevent="deleteRole(item)">
+                        <v-btn v-if="$can('delete roles')" icon @click.prevent="deleteRole(item)">
                             <trash-icon />
                         </v-btn>
                     </div>
@@ -105,14 +105,13 @@ export default {
     },
     methods: {
         async deleteRole(role) {
-            if (!(await this.$confirm(`Вы действительно хотите удалить роля ${role.name}?`))) {
+            if (!(await this.$confirm(`Вы действительно хотите удалить роль ${role.name}?`))) {
                 return;
             }
             try {
-                await role.delete();
-
-                this.$snackbar(`Роль ${role.name} успешно удален`);
-                this.roles = this.roles.filter((item) => item.id !== this.roles.id);
+                await this.$axios.delete(`/admin/roles/${role.id}`)
+                this.$snackbar(`Роль ${role.name} успешно удалена`);
+                this.roles = this.roles.filter((item) => item.id !== role.id);
             } catch (e) {
                 this.$snackbar(e.message);
             }

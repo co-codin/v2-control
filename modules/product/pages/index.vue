@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Товары" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create products')" class="mb-2">
             <v-btn :to="{ name: 'products.create' }"> Добавить товар </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -54,15 +53,19 @@
                             <external-link-icon />
                         </v-btn>
                         <v-btn
+                            v-if="$can('edit products')"
                             width="22"
                             height="22"
-                            class="mx-1"
                             icon
                             :to="{ name: 'products.update', params: { id: item.id } }"
                         >
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click="deleteProduct(item)">
+                        <v-btn
+                            v-if="$can('delete products')"
+                            icon
+                            @click="deleteProduct(item)"
+                        >
                             <trash-icon />
                         </v-btn>
                     </div>
@@ -75,7 +78,7 @@
 <script>
 import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
-import { statusLabels, uniqueContentList } from '@/enums';
+import { statusLabels, uniqueContentList, groupLabels } from '@/enums';
 import Product from '../models/Product';
 import PageHeader from '~/components/common/PageHeader';
 
@@ -120,6 +123,12 @@ export default {
                     label: 'Категории',
                     name: 'categories.id',
                     component: () => import('@/components/search/fields/CategoryTreeSearchField'),
+                },
+                {
+                    label: 'Группа',
+                    name: 'group_id',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: groupLabels
                 },
                 {
                     label: 'ID',

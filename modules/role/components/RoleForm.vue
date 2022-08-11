@@ -6,7 +6,6 @@
             :error-messages="form.errors.get('name')"
             :error="form.errors.has('name')"
         />
-
         <v-text-field
             v-model="form.key"
             label="Ключ"

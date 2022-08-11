@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Достижения" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create achievements')" class="mb-2">
             <v-btn :to="{ name: 'achievements.create' }"> Добавить достижения </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -40,13 +39,14 @@
                 <template #item.action="{ item }">
                     <div class="table-actions">
                         <v-btn
+                            v-if="$can('edit achievements')"
                             icon
                             :to="{ name: 'achievements.update', params: { id: item.id } }"
                         >
                             <pencil-alt-icon />
                         </v-btn>
 
-                        <v-btn icon @click.prevent="deleteAchievement(item)">
+                        <v-btn v-if="$can('delete achievements')" icon @click.prevent="deleteAchievement(item)">
                             <trash-icon />
                         </v-btn>
                     </div>

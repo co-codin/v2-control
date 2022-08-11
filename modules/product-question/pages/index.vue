@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Вопросы к товарам" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create product questions')" class="mb-2">
             <v-btn :to="{ name: 'product-questions.create' }"> Добавить вопрос </v-btn>
         </div>
 
@@ -24,7 +24,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -77,6 +76,7 @@
                 <template #item.action="{ item }">
                     <div class="table-actions">
                         <v-btn
+                            v-if="$can('view product answers')"
                             icon
                             @click="selectedQuestion = item; showQuestionAnswersPopup = true"
                             class="mr-1"
@@ -90,12 +90,13 @@
                             <eye-icon width="24" height="24" />
                         </v-btn>
                         <v-btn
+                            v-if="$can('edit product questions')"
                             icon
                             :to="{ name: 'product-questions.update', params: { id: item.id } }"
                         >
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteProductQuestion(item)">
+                        <v-btn v-if="$can('delete product questions')" icon @click.prevent="deleteProductQuestion(item)">
                             <trash-icon />
                         </v-btn>
                     </div>
@@ -145,26 +146,28 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn
-                        v-if="!selectedQuestion.isApproved"
-                        color="green"
-                        outlined
-                        small
-                        @click="approveQuestion(selectedQuestion)"
-                    >
-                        <check-circle-icon class="h-6 w-6 mr-1" />
-                        Одобрить
-                    </v-btn>
-                    <v-btn
-                        v-if="!selectedQuestion.isRejected"
-                        color="red"
-                        outlined
-                        small
-                        @click="rejectQuestion(selectedQuestion)"
-                    >
-                        <x-circle-icon class="h-6 w-6 mr-1" />
-                        Отклонить
-                    </v-btn>
+                    <template v-if="$can('edit product questions')">
+                        <v-btn
+                            v-if="!selectedQuestion.isApproved"
+                            color="green"
+                            outlined
+                            small
+                            @click="approveQuestion(selectedQuestion)"
+                        >
+                            <check-circle-icon class="h-6 w-6 mr-1" />
+                            Одобрить
+                        </v-btn>
+                        <v-btn
+                            v-if="!selectedQuestion.isRejected"
+                            color="red"
+                            outlined
+                            small
+                            @click="rejectQuestion(selectedQuestion)"
+                        >
+                            <x-circle-icon class="h-6 w-6 mr-1" />
+                            Отклонить
+                        </v-btn>
+                    </template>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -189,6 +192,7 @@
                                 <v-divider class="my-2" />
                                 <div class="text-center">
                                     <v-btn
+                                        v-if="$can('delete product answers')"
                                         small
                                         class="white--text"
                                         color="red"
@@ -204,7 +208,7 @@
                         Не добавлено ни одного ответа к вопросу. Нажмите на "Добавить ответ", чтобы добавить первый ответ
                     </v-alert>
                     <div class="mt-2">
-                        <v-btn link small color="primary" outlined @click="showAddAnswerPopup = true">Добавить ответ</v-btn>
+                        <v-btn v-if="$can('create product answers')" link small color="primary" outlined @click="showAddAnswerPopup = true">Добавить ответ</v-btn>
                     </div>
                 </v-card-text>
             </v-card>

@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Редактирование отзыва" :breadcrumbs="breadcrumbs" />
         <template v-if="!$fetchState.pending">
-            <div class="mb-2">
+            <div v-if="$can('edit product reviews')" class="mb-2">
                 <v-btn v-if="!review.isApproved" color="green" outlined small @click="approveReview(review)">
                     <check-circle-icon class="h-6 w-6 mr-1" />
                     Одобрить

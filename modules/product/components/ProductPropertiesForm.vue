@@ -10,67 +10,67 @@
                     <v-card flat>
                         <v-card-text>
                             <v-expansion-panels v-if="form && form.properties.length" class="mb-3">
-                                <v-expansion-panel v-for="(property, index) in form.properties" :key="property.id">
-                                    <v-expansion-panel-header class="title">{{
-                                        property.name
-                                    }}</v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-switch
-                                            v-model="property.is_in_variations"
-                                            label="Использовать в модификации"
-                                            dense
-                                            inset
-                                        />
-                                        <v-select
-                                            v-if="property.is_boolean"
-                                            v-model="property.field_value_ids"
-                                            label="Значение"
-                                            :items="booleanItems"
-                                            clearable
-                                            dense
-                                        />
-                                        <field-value-autocomplete
-                                            v-else
-                                            v-model="property.field_value_ids"
-                                            label="Значение"
-                                            item-text="value"
-                                            item-value="id"
-                                            :multiple="true"
-                                            :chips="true"
-                                            :items="getItemsByIds(property.field_value_ids)"
-                                            deletable-chips
-                                            :query-params="{ sort: 'valueLength' }"
-                                            dense
-                                        />
-                                        <v-text-field
-                                            v-model="property.pretty_key"
-                                            label="Отформатированное название для страницы товара"
-                                            :error-messages="form.errors.get(`properties.${index}.pretty_key`)"
-                                            :error="form.errors.has(`properties.${index}.pretty_key`)"
-                                            dense
-                                        />
-                                        <v-text-field
-                                            v-model="property.pretty_value"
-                                            label="Отформатированное значение для страницы товара"
-                                            :error-messages="form.errors.get(`properties.${index}.pretty_value`)"
-                                            :error="form.errors.has(`properties.${index}.pretty_value`)"
-                                            dense
-                                        />
-                                        <v-switch
-                                            v-model="property.is_important"
-                                            label="Отображать в блоке 'Коротко о товаре'"
-                                            :error-messages="form.errors.get(`properties.${index}.is_important`)"
-                                            :error="form.errors.has(`properties.${index}.is_important`)"
-                                            dense
-                                            inset
-                                        />
-                                        <div class="text-center mt-1">
-                                            <v-btn small color="red" class="white--text" @click="removeProperty(index)"
+                                <draggable v-model="form.properties" @update="updatePropertyPositions">
+                                    <v-expansion-panel v-for="(property, index) in form.properties" :key="property.id">
+                                        <v-expansion-panel-header class="title">{{ property.name }}</v-expansion-panel-header>
+                                        <v-expansion-panel-content>
+                                            <v-switch
+                                                v-model="property.is_in_variations"
+                                                label="Использовать в модификации"
+                                                dense
+                                                inset
+                                            />
+                                            <v-select
+                                                v-if="property.is_boolean"
+                                                v-model="property.field_value_ids"
+                                                label="Значение"
+                                                :items="booleanItems"
+                                                clearable
+                                                dense
+                                            />
+                                            <field-value-autocomplete
+                                                v-else
+                                                v-model="property.field_value_ids"
+                                                label="Значение"
+                                                item-text="value"
+                                                item-value="id"
+                                                :multiple="true"
+                                                :chips="true"
+                                                :items="getItemsByIds(property.field_value_ids)"
+                                                deletable-chips
+                                                :query-params="{ sort: 'valueLength' }"
+                                                dense
+                                            />
+                                            <v-text-field
+                                                v-model="property.pretty_key"
+                                                label="Отформатированное название для страницы товара"
+                                                :error-messages="form.errors.get(`properties.${index}.pretty_key`)"
+                                                :error="form.errors.has(`properties.${index}.pretty_key`)"
+                                                dense
+                                            />
+                                            <v-text-field
+                                                v-model="property.pretty_value"
+                                                label="Отформатированное значение для страницы товара"
+                                                :error-messages="form.errors.get(`properties.${index}.pretty_value`)"
+                                                :error="form.errors.has(`properties.${index}.pretty_value`)"
+                                                dense
+                                            />
+                                            <v-switch
+                                                v-model="property.is_important"
+                                                label="Отображать в блоке 'Коротко о товаре'"
+                                                :error-messages="form.errors.get(`properties.${index}.is_important`)"
+                                                :error="form.errors.has(`properties.${index}.is_important`)"
+                                                dense
+                                                inset
+                                            />
+                                            <div class="text-center mt-1">
+                                                <v-btn small color="red" class="white--text" @click="removeProperty(index)"
                                                 >Удалить</v-btn
-                                            >
-                                        </div>
-                                    </v-expansion-panel-content>
-                                </v-expansion-panel>
+                                                >
+                                            </div>
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                </draggable>
                             </v-expansion-panels>
                             <v-alert v-else dense type="info" outlined>
                                 К товару не добавлено ни одной характеристики
@@ -114,9 +114,9 @@
                             </v-alert>
                             <div v-else>
                                 <v-expansion-panels>
-                                    <draggable v-model="draggableItems" @update="updatePropertyPositions">
-                                        <div v-for="(property, index) in form.properties" :key="property.id">
-                                            <v-expansion-panel v-if="property.is_important">
+                                    <draggable v-model="importantProperties">
+                                        <div v-for="(property, index) in importantProperties" :key="property.id">
+                                            <v-expansion-panel>
                                                 <v-expansion-panel-header class="title">{{
                                                     property.name
                                                 }}</v-expansion-panel-header>
@@ -169,12 +169,12 @@
 <script>
 import Form from 'form-backend-validation';
 import { mapGetters, mapMutations } from 'vuex';
-import Sortable from 'sortablejs';
 import draggable from 'vuedraggable';
 import FieldValueAutocomplete from '~/components/forms/FieldValueAutocomplete';
 import FieldValue from '~/models/FieldValue';
 import EntityAutocompleteField from '~/components/forms/EntityAutocompleteField';
 import PropertyForm from '~/modules/property/components/PropertyForm';
+import sortBy from 'lodash/sortBy'
 
 export default {
     components: {
@@ -209,7 +209,9 @@ export default {
             .map((property) => property.pivot.field_value_ids)
             .flat()
             .filter((value, index, self) => self.indexOf(value) === index);
-        const values = await FieldValue.select('id', 'value')
+        const values = await FieldValue.select({
+            field_values: ['id', 'value']
+        })
             .whereIn('id', valueIds)
             .params({
                 'page[size]': 1000,
@@ -230,8 +232,17 @@ export default {
         ...mapGetters({
             product: 'product/product',
         }),
-        importantProperties() {
-            return this.form?.properties?.filter((property) => property.is_important) || [];
+        importantProperties: {
+            get() {
+                return sortBy(this.form?.properties?.filter((property) => property.is_important) || [], ['important_position', 'name'])
+            },
+            set(value) {
+                let i = 0
+                value.forEach((importantProperty) => {
+                    const property = this.form.properties.find((property) => property.id === importantProperty.id)
+                    property.important_position = ++i
+                })
+            }
         },
     },
 
@@ -253,7 +264,7 @@ export default {
             }));
         },
         transformProperties(properties) {
-            return properties
+            const mappedProperties = properties
                 .map((property) => ({
                     ...property.pivot,
                     id: property.id,
@@ -261,16 +272,8 @@ export default {
                     is_boolean: property.is_boolean,
                     is_numeric: property.is_numeric,
                 }))
-                .sort((a, b) => {
-                    let ret = 0;
-                    if (a.name < b.name) {
-                        ret = -1;
-                    }
-                    if (a.name > b.name) {
-                        ret = 1;
-                    }
-                    return ret;
-                });
+
+            return sortBy(mappedProperties, ['position', 'name'])
         },
         removeProperty(index) {
             this.form.properties.splice(index, 1);
@@ -327,7 +330,12 @@ export default {
                 this.$snackbar(e.message);
             }
         },
-        updatePropertyPositions(e, l) {},
+        updatePropertyPositions() {
+            let i = 0
+            this.form.properties.forEach((property) => {
+                property.position = ++i
+            })
+        },
     },
 };
 </script>

@@ -28,6 +28,8 @@ import { toolRoutes } from './modules/tool/router';
 import { bannerRoutes } from './modules/banner/router';
 import { contactRoutes } from './modules/contact/router';
 import { roleRoutes } from './modules/role/router'
+import { userRoutes } from './modules/user/router'
+import {activityRoutes} from './modules/activity/router'
 
 export default {
     ssr: false,
@@ -65,6 +67,7 @@ export default {
         { src: '~plugins/dayjs' },
         { src: '~plugins/random-person' },
         { src: '~plugins/enum/plugin' },
+        { src: '~plugins/permissions' },
     ],
 
     buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv', '@nuxtjs/router'],
@@ -76,9 +79,9 @@ export default {
         strategies: {
             local: {
                 endpoints: {
-                    login: { url: `/auth/login/`, method: 'post', propertyName: 'token' },
-                    logout: { url: `/auth/logout/`, method: 'post' },
-                    user: { url: `/auth/user/`, method: 'get', propertyName: false },
+                    login: { url: `/admin/auth/login`, method: 'post', propertyName: 'token' },
+                    logout: { url: `/admin/auth/logout`, method: 'post' },
+                    user: { url: `/admin/auth/user`, method: 'get', propertyName: 'data' },
                 },
             },
         },
@@ -114,7 +117,7 @@ export default {
 
     router: {
         prefetchLinks: false,
-        middleware: ['auth', 'load-all-categories', 'load-all-enums'],
+        middleware: ['auth', 'permissions', 'load-all-categories', 'load-all-enums'],
         trailingSlash: false,
         extendRoutes(routes, resolve) {
             routes.splice(0, routes.length);
@@ -164,6 +167,8 @@ export default {
                     ...bannerRoutes(resolve),
                     ...contactRoutes(resolve),
                     ...roleRoutes(resolve),
+                    ...userRoutes(resolve),
+                    ...activityRoutes(resolve),
                 ]
             );
         },

@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Категории" :breadcrumbs="breadcrumbs"></page-header>
 
-        <div class="mb-2">
+        <div v-if="$can('create categories')" class="mb-2">
             <v-btn :to="{ name: 'categories.create' }"> Добавить категорию </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -44,12 +43,17 @@
                             <external-link-icon />
                         </v-btn>
                         <v-btn
+                            v-if="$can('edit categories')"
                             icon
                             :to="{ name: 'categories.update', params: { id: item.id } }"
                         >
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click="deleteCategory(item)">
+                        <v-btn
+                            v-if="$can('delete categories')"
+                            icon
+                            @click="deleteCategory(item)"
+                        >
                             <trash-icon />
                         </v-btn>
                     </div>

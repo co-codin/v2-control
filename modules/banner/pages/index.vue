@@ -2,9 +2,9 @@
     <div>
         <page-header h1="Баннеры" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
-            <v-btn :to="{ name: 'banners.create' }" class="mr-1"> Добавить баннер </v-btn>
-            <v-btn :to="{ name: 'banners.sort' }"> Сортировка баннеров </v-btn>
+        <div v-if="$can('create banners') || $can('sort banners')" class="mb-2">
+            <v-btn v-if="$can('create banners')" :to="{ name: 'banners.create' }" class="mr-1"> Добавить баннер </v-btn>
+            <v-btn v-if="$can('sort banners')" :to="{ name: 'banners.sort' }"> Сортировка баннеров </v-btn>
         </div>
 
         <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
@@ -20,7 +20,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -43,10 +42,10 @@
                         <v-btn icon target="_blank" link :href="`${$config.app.siteUrl}/`">
                             <external-link-icon />
                         </v-btn>
-                        <v-btn icon :to="{ name: 'banners.update', params: { id: item.id } }">
+                        <v-btn v-if="$can('edit banners')" icon :to="{ name: 'banners.update', params: { id: item.id } }">
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteBanner(item)">
+                        <v-btn v-if="$can('delete banners')" icon @click.prevent="deleteBanner(item)">
                             <trash-icon />
                         </v-btn>
                     </div>

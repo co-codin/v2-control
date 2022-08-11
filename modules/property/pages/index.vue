@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Характеристики" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create properties')" class="mb-2">
             <v-btn :to="{ name: 'properties.create' }"> Добавить характеристику </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -35,10 +34,10 @@
 
                 <template #item.action="{ item }">
                     <div class="table-actions">
-                        <v-btn icon :to="{ name: 'properties.update', params: { id: item.id } }">
+                        <v-btn v-if="$can('edit properties')" icon :to="{ name: 'properties.update', params: { id: item.id } }">
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteProperty(item)">
+                        <v-btn v-if="$can('delete properties')" icon @click.prevent="deleteProperty(item)">
                             <trash-icon />
                         </v-btn>
                     </div>

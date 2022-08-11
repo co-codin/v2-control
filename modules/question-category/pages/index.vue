@@ -2,7 +2,7 @@
     <div>
         <page-header h1="Категории вопросов" :breadcrumbs="breadcrumbs" />
 
-        <div class="mb-2">
+        <div v-if="$can('create question categories')" class="mb-2">
             <v-btn :to="{ name: 'question-categories.create' }"> Добавить категории </v-btn>
         </div>
 
@@ -19,7 +19,6 @@
                 loading-text="Идет загрузка..."
                 :options.sync="tableOptions"
                 :footer-props="tableFooterProps"
-                show-select
                 @update:items-per-page="updateOptions('itemsPerPage', $event)"
                 @update:page="updateOptions('page', $event)"
                 @update:sort-by="updateOptions('sortBy', $event)"
@@ -36,6 +35,7 @@
                 <template #item.action="{ item }">
                     <div class="table-actions">
                         <v-btn
+                            v-if="$can('edit question categories')"
                             icon
                             width="22"
                             height="22"
@@ -44,7 +44,7 @@
                         >
                             <pencil-alt-icon />
                         </v-btn>
-                        <v-btn icon @click.prevent="deleteQuestionCategory(item)">
+                        <v-btn v-if="$can('delete question categories')" icon @click.prevent="deleteQuestionCategory(item)">
                             <trash-icon />
                         </v-btn>
                     </div>
