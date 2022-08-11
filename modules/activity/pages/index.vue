@@ -33,7 +33,8 @@
                 </template>
 
                 <template #item.properties="{ item }">
-                    <div>{{ item.properties }}</div>
+                    <div v-if="propertyShow[item.id]">{{ item.properties }}</div>
+                    <div v-else @click.prevent="propertyShow[item.id] = true">Подробнее</div>
                 </template>
             </v-data-table>
         </v-card>
@@ -58,6 +59,7 @@ export default {
             searchForm: {
                 id: null,
             },
+            propertyShow: [],
             headers: [
                 { text: 'Дата и время', align: 'left', value: 'created_at' },
                 { text: 'Автор изменений', align: 'left', value: 'causer.name' },
