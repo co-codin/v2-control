@@ -24,7 +24,6 @@
                     <div>{{ item.asDate('created_at').format('DD.MM.YYYY HH:mm') }}</div>
                 </template>
 
-
                 <template #item.properties="{ item }">
                     <div v-if="propertyShow[item.id]" v-text="item.properties"></div>
                     <v-btn v-else @click.prevent="toggleProperty(item.id)">Подробнее</v-btn>
@@ -39,6 +38,8 @@ import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import PageHeader from '~/components/common/PageHeader';
 import Activity from '~/modules/activity/models/Activity'
+import { activityEvents } from '~/enums'
+import {subjectTypes} from '~/enums'
 
 export default {
     components: {
@@ -64,9 +65,33 @@ export default {
             breadcrumbs: [{ text: 'Список событий' }],
             filters: [
                 {
-                    label: 'Название',
-                    name: 'name',
+                    label: 'Быстрый поиск',
+                    name: 'live',
                     component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
+                    label: 'Действие',
+                    name: 'event',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: activityEvents,
+                },
+                {
+                    label: 'Тип сущности',
+                    name: 'subject_type',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: subjectTypes,
+                },
+                {
+                    label: 'Автор изменений',
+                    name: 'causer_id',
+                    component: () => import('@/components/search/fields/AutocompleteSearchField'),
+                    url: '/admin/users',
+                },
+                {
+                    label: 'ID сущности',
+                    name: 'subject_id',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                    items: subjectTypes,
                 },
                 {
                     label: 'ID',
@@ -87,12 +112,7 @@ export default {
             .get();
 
 
-
         this.activities = Activity.hydrate(response.data);
-
-        this.activities.forEach((activity) => {
-            this.propertyShow[activity.id] = false
-        })
 
         this.setTotal(response.meta.total);
         this.hideLoading();
@@ -101,8 +121,9 @@ export default {
         title: 'События',
     },
     methods: {
-        toggleProperty(id) {
-            this.propertyShow[id] = true
+        async toggleProperty(id) {
+            this.$fetch()
+            this.propertyShow[+id] = true
         }
     }
 };

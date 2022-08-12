@@ -10,6 +10,8 @@ import { type, typeLabels, typeDescriptions } from '~/enums/modules/Type';
 import { Group, groupLabels, groupDescriptions } from '~/enums/modules/ProductGroup';
 import { urlRules } from '~/enums/rules';
 import { fileType, fileExtensions } from '~/enums/modules/ExportFileExtension';
+import {activityEvents} from '~/enums/modules/Event'
+import {subjectTypes} from '~/enums/modules/SubjectType'
 
 import { systemFilters } from '~/enums/modules/SystemFilter';
 
@@ -58,4 +60,6 @@ export {
     systemFilters,
     fileType,
     fileExtensions,
+    activityEvents,
+    subjectTypes,
 };
