@@ -82,6 +82,12 @@ export default {
                     items: subjectTypes,
                 },
                 {
+                    label: 'Автор изменений',
+                    name: 'causer_id',
+                    component: () => import('@/components/search/fields/AutocompleteSearchField'),
+                    url: '/admin/users',
+                },
+                {
                     label: 'ID сущности',
                     name: 'subject_id',
                     component: () => import('@/components/search/fields/TextSearchField'),
