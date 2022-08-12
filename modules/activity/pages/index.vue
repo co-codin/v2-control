@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header h1="Достижения" :breadcrumbs="breadcrumbs" />
+        <page-header h1="Журнал событий" :breadcrumbs="breadcrumbs" />
 
         <advanced-search-form fast-filter-name="live" :filters="filters" :value="searchForm" @search="search" />
 
@@ -20,21 +20,14 @@
                 @update:sort-by="updateOptions('sortBy', $event)"
                 @update:sort-desc="updateOptions('sortDesc', $event)"
             >
-                <template #item.id="{ item }">
-                    <div class="font-weight-bold"># {{ item.id }}</div>
-                </template>
-
-                <template #item.is_enabled="{ item }">
-                    <div class="font-weight-bold">{{ item.is_enabled ? 'Да' : 'Нет' }}</div>
-                </template>
-
                 <template #item.created_at="{ item }">
                     <div>{{ item.asDate('created_at').format('DD.MM.YYYY HH:mm') }}</div>
                 </template>
 
+
                 <template #item.properties="{ item }">
-                    <div v-if="propertyShow[item.id]">{{ item.properties }}</div>
-                    <div v-else @click.prevent="propertyShow[item.id] = true">Подробнее</div>
+                    <div v-if="propertyShow[item.id]" v-text="item.properties"></div>
+                    <v-btn v-else @click.prevent="toggleProperty(item.id)">Подробнее</v-btn>
                 </template>
             </v-data-table>
         </v-card>
@@ -59,12 +52,12 @@ export default {
             searchForm: {
                 id: null,
             },
-            propertyShow: [],
+            propertyShow: {},
             headers: [
                 { text: 'Дата и время', align: 'left', value: 'created_at' },
                 { text: 'Автор изменений', align: 'left', value: 'causer.name' },
                 { text: 'Тип сущности', align: 'left', value: 'subject_type' },
-                { text: 'ID сущности', align: 'left', value: 'id' },
+                { text: 'ID сущности', align: 'left', value: 'subject_id' },
                 { text: 'Действие', align: 'left', value: 'event' },
                 { text: 'Доп. параметры', align: 'left', value: 'properties' },
             ],
@@ -93,9 +86,13 @@ export default {
             .params(this.queryParams)
             .get();
 
-        console.log(response.data)
+
 
         this.activities = Activity.hydrate(response.data);
+
+        this.activities.forEach((activity) => {
+            this.propertyShow[activity.id] = false
+        })
 
         this.setTotal(response.meta.total);
         this.hideLoading();
@@ -103,5 +100,10 @@ export default {
     head: {
         title: 'События',
     },
+    methods: {
+        toggleProperty(id) {
+            this.propertyShow[id] = true
+        }
+    }
 };
 </script>
