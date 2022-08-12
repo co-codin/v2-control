@@ -39,6 +39,8 @@ import DatatableMixin from '@/mixins/datatable';
 import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import PageHeader from '~/components/common/PageHeader';
 import Activity from '~/modules/activity/models/Activity'
+import { activityEvents } from '~/enums'
+import {subjectTypes} from '~/enums'
 
 export default {
     components: {
@@ -64,9 +66,27 @@ export default {
             breadcrumbs: [{ text: 'Список событий' }],
             filters: [
                 {
-                    label: 'Название',
-                    name: 'name',
+                    label: 'Быстрый поиск',
+                    name: 'live',
                     component: () => import('@/components/search/fields/TextSearchField'),
+                },
+                {
+                    label: 'Действие',
+                    name: 'event',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: activityEvents,
+                },
+                {
+                    label: 'Тип сущности',
+                    name: 'subject_type',
+                    component: () => import('@/components/search/fields/SelectSearchField'),
+                    items: subjectTypes,
+                },
+                {
+                    label: 'ID сущности',
+                    name: 'subject_id',
+                    component: () => import('@/components/search/fields/TextSearchField'),
+                    items: subjectTypes,
                 },
                 {
                     label: 'ID',
