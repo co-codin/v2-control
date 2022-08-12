@@ -24,7 +24,6 @@
                     <div>{{ item.asDate('created_at').format('DD.MM.YYYY HH:mm') }}</div>
                 </template>
 
-
                 <template #item.properties="{ item }">
                     <div v-if="propertyShow[item.id]" v-text="item.properties"></div>
                     <v-btn v-else @click.prevent="toggleProperty(item.id)">Подробнее</v-btn>
@@ -107,12 +106,7 @@ export default {
             .get();
 
 
-
         this.activities = Activity.hydrate(response.data);
-
-        this.activities.forEach((activity) => {
-            this.propertyShow[activity.id] = false
-        })
 
         this.setTotal(response.meta.total);
         this.hideLoading();
@@ -121,8 +115,9 @@ export default {
         title: 'События',
     },
     methods: {
-        toggleProperty(id) {
-            this.propertyShow[id] = true
+        async toggleProperty(id) {
+            this.$fetch()
+            this.propertyShow[+id] = true
         }
     }
 };
