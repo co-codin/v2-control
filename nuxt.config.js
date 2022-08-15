@@ -48,7 +48,7 @@ export default {
         ],
     },
 
-    css: ['~/assets/scss/theme.scss', 'vue-json-pretty/lib/styles.css'],
+    css: ['~/assets/scss/theme.scss'],
 
     plugins: [
         { src: '~/plugins/animate.js' },

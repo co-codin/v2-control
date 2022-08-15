@@ -25,8 +25,8 @@
                 </template>
 
                 <template #item.properties="{ item }">
-<!--                    <vue-json-pretty v-if="propertyShow[item.id]" :path="'res'" :data="item.properties" />-->
-<!--                    <v-btn v-else small @click.prevent="toggleProperty(item.id)">Подробнее</v-btn>-->
+                    <pre v-if="propertyShow[item.id]"><code v-html="highlight(JSON.stringify(item.properties, null, 2))"></code></pre>
+                    <v-btn v-else small @click.prevent="toggleProperty(item.id)">Подробнее</v-btn>
                 </template>
             </v-data-table>
         </v-card>
@@ -40,14 +40,12 @@ import PageHeader from '~/components/common/PageHeader';
 import Activity from '~/modules/activity/models/Activity'
 import { activityEvents } from '~/enums'
 import {subjectTypes} from '~/enums'
-import VueJsonPretty from 'vue-json-pretty';
-import 'vue-json-pretty/lib/styles.css';
+import formatHighlight from 'json-format-highlight'
 
 export default {
     components: {
         PageHeader,
         AdvancedSearchForm,
-        VueJsonPretty,
     },
     mixins: [DatatableMixin],
     data() {
@@ -127,6 +125,9 @@ export default {
         async toggleProperty(id) {
             this.$fetch()
             this.propertyShow[+id] = true
+        },
+        highlight(json) {
+            return formatHighlight(json)
         }
     }
 };
