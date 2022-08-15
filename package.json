@@ -32,6 +32,7 @@
     "vue": "^2.6.12",
     "vue-api-query": "^1.9.1",
     "vue-flatpickr-component": "^8",
+    "vue-json-pretty": "^2.1.1",
     "vue-mc": "^0.6.0",
     "vue-router": "^3.5.2",
     "vue-shortkey": "^3.1.7",
