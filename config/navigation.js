@@ -37,7 +37,6 @@ export default {
                 { icon: 'case', text: 'Кейсы', link: '/cases', permission: 'view cases' },
                 { icon: 'banner', text: 'Баннеры', link: '/banners', permission: 'view banners' },
                 { icon: 'contact', text: 'Контакты', link: '/contacts', permission: 'view contacts' },
-                { icon: 'journal', text: 'Журнал событий', link: '/activities', permission: 'view activity log' },
             ],
         },
         {
@@ -53,6 +52,12 @@ export default {
             items: [
                 { icon: 'user', text: 'Сотрудники', link: '/users', permission: 'view users' },
                 { icon: 'database', text: 'Роли', link: '/roles', permission: 'view roles' },
+            ],
+        },
+        {
+            text: 'Система',
+            items: [
+                { icon: 'journal', text: 'Журнал событий', link: '/activities', permission: 'view activity log' },
             ],
         },
     ],
