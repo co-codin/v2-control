@@ -124,10 +124,17 @@ export default {
     methods: {
         async toggleProperty(id) {
             this.$fetch()
-            this.propertyShow[+id] = true
+            this.propertyShow[+id] = !this.propertyShow[+id]
         },
         highlight(json) {
-            return formatHighlight(json)
+            return formatHighlight(json, {
+                keyColor: 'black',
+                numberColor: 'blue',
+                stringColor: '#0B7500',
+                trueColor: '#00cc00',
+                falseColor: '#ff8080',
+                nullColor: 'cornflowerblue'
+            })
         }
     }
 };
