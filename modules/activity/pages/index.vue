@@ -57,11 +57,11 @@ export default {
             propertyShow: {},
             headers: [
                 { text: 'Дата и время', align: 'left', value: 'created_at' },
-                { text: 'Автор изменений', align: 'left', value: 'causer.name' },
+                { text: 'Автор изменений', align: 'left', value: 'causer.name', sortable: false, },
                 { text: 'Тип сущности', align: 'left', value: 'subject_type' },
                 { text: 'ID сущности', align: 'left', value: 'subject_id' },
-                { text: 'Действие', align: 'left', value: 'event' },
-                { text: 'Доп. параметры', align: 'left', value: 'properties' },
+                { text: 'Действие', align: 'left', value: 'event', sortable: false, },
+                { text: 'Доп. параметры', align: 'left', value: 'properties', sortable: false, },
             ],
             breadcrumbs: [{ text: 'Список событий' }],
             filters: [
