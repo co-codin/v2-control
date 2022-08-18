@@ -39,7 +39,6 @@ import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import PageHeader from '~/components/common/PageHeader';
 import Activity from '~/modules/activity/models/Activity'
 import { activityEvents } from '~/enums'
-import {subjectTypes} from '~/enums'
 import formatHighlight from 'json-format-highlight'
 
 export default {
@@ -79,8 +78,7 @@ export default {
                 {
                     label: 'Тип сущности',
                     name: 'subject_type',
-                    component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: subjectTypes,
+                    component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
                     label: 'Автор изменений',
@@ -92,7 +90,6 @@ export default {
                     label: 'ID сущности',
                     name: 'subject_id',
                     component: () => import('@/components/search/fields/TextSearchField'),
-                    items: subjectTypes,
                 },
                 {
                     label: 'ID',
