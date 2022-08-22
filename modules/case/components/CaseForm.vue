@@ -99,16 +99,6 @@
                 "
         />
 
-        <AutocompleteSearchField
-            v-if="isUpdating"
-            v-model="form.products"
-            :error-messages="form.errors.get('form.products')"
-            :error="form.errors.has('form.products')"
-            url="/products"
-            name="products"
-            label="Товар"
-        />
-
         <v-text-field
             v-model="form.released_year"
             type="number"
@@ -177,7 +167,6 @@ export default {
             summary: null,
             note: null,
             city_id: null,
-            products: null,
             released_year: null,
             released_quarter: null,
         },
