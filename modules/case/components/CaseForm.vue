@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="$emit('send', form)">
+    <v-form @submit.prevent="sendForm">
         <entity-autocomplete-field
             v-model="form.city_id"
             url="/cities"
@@ -51,12 +51,20 @@
             :error="form.errors.has('full_description')"
         />
 
-        <wysiwyg-field
-            v-model="form.body"
-            label="Текст страницы"
-            :error-messages="form.errors.get('body')"
-            :error="form.errors.has('body')"
-        />
+        <div>
+            <label class="v-label theme--light" :class="[form.errors.has('body') ? 'error--text' : '']" style="left: 0px; right: auto; position: relative;">Текст страницы</label>
+            <div ref="editor" class="mt-2" style="width: 800px; height: 300px;"></div>
+            <span v-if="form.errors.has('body')" style="color: red;">
+                {{form.errors.get('body')}}
+            </span>
+        </div>
+
+<!--        <wysiwyg-field-->
+<!--            v-model="form.body"-->
+<!--            label="Текст страницы"-->
+<!--            :error-messages="form.errors.get('body')"-->
+<!--            :error="form.errors.has('body')"-->
+<!--        />-->
 
         <v-textarea
             v-model="form.summary"
@@ -87,7 +95,6 @@
                     form.image = $event.file;
                 "
         />
-
         <file-field
             v-else
             v-model="form.image"
@@ -135,6 +142,7 @@ import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
 import { statusLabels } from '~/enums';
 import AutocompleteSearchField from '~/components/search/fields/AutocompleteSearchField'
+import * as monaco from 'monaco-editor';
 
 export default {
     components: {
@@ -170,6 +178,7 @@ export default {
             released_year: null,
             released_quarter: null,
         },
+        editor: null,
         form: null,
         statusLabels,
         quarters: [
@@ -189,7 +198,23 @@ export default {
             .withOptions({ http: this.$axios })
             .populate(this.caseItem || {});
     },
+    async mounted() {
+        const el = this.$refs.editor;
+        const text = this.form.body ?? "<h1>Текст страницы</h1>"
+        this.editor = monaco.editor.create(el, {
+            value: text,
+            language: "html",
+            lineNumbers: 'off',
+            minimap: {
+                enabled: false
+            }
+        });
+    },
     methods: {
+        sendForm() {
+            this.form.body = this.editor.getValue()
+            this.$emit('send', this.form)
+        },
         updateSlug: debounce(async function () {
             if (this.isUpdating && this.form.slug) {
                 return;

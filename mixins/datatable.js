@@ -52,7 +52,11 @@ export default {
     },
     methods: {
         async updateOptions(key, value) {
-            this.tableOptions[key] = value;
+            if (key === 'sortBy' || key === 'sortDesc') {
+                this.tableOptions[key] = [value];
+            } else {
+                this.tableOptions[key] = value;
+            }
             await this.$router.replace({
                 query: {
                     ...this.$route.query,
@@ -62,7 +66,7 @@ export default {
                     sort_desc: this.tableOptions.sortDesc,
                 },
             });
-            this.$fetch();
+            await this.$fetch();
         },
         showLoading() {
             this.isLoading = true;
