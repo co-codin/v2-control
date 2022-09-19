@@ -51,12 +51,13 @@
             :error="form.errors.has('full_description')"
         />
 
-        <wysiwyg-field
-            v-model="form.body"
-            label="Текст страницы"
-            :error-messages="form.errors.get('body')"
-            :error="form.errors.has('body')"
-        />
+        <div ref="editor" style="width: 500px; height: 500px;"></div>
+<!--        <wysiwyg-field-->
+<!--            v-model="form.body"-->
+<!--            label="Текст страницы"-->
+<!--            :error-messages="form.errors.get('body')"-->
+<!--            :error="form.errors.has('body')"-->
+<!--        />-->
 
         <v-textarea
             v-model="form.summary"
@@ -135,6 +136,7 @@ import FileField from '~/components/forms/FileField';
 import FileUploader from '~/components/FileUploader'
 import { statusLabels } from '~/enums';
 import AutocompleteSearchField from '~/components/search/fields/AutocompleteSearchField'
+import * as monaco from 'monaco-editor';
 
 export default {
     components: {
@@ -170,6 +172,7 @@ export default {
             released_year: null,
             released_quarter: null,
         },
+        editor: null,
         form: null,
         statusLabels,
         quarters: [
@@ -188,6 +191,17 @@ export default {
         this.form = Form.create(this.formDefaults)
             .withOptions({ http: this.$axios })
             .populate(this.caseItem || {});
+    },
+    async mounted() {
+        const el = this.$refs.editor;
+        this.editor = monaco.editor.create(el, {
+            value: "<h1><b style='color: red;'>test</b></h1>",
+            language: "html",
+            lineNumbers: 'off',
+            minimap: {
+                enabled: false
+            }
+        });
     },
     methods: {
         updateSlug: debounce(async function () {
