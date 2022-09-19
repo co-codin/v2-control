@@ -200,7 +200,6 @@ export default {
     },
     async mounted() {
         const el = this.$refs.editor;
-        console.log(this.caseItem)
         const text = this.form.body ?? "<h1>Текст страницы</h1>"
         this.editor = monaco.editor.create(el, {
             value: text,
