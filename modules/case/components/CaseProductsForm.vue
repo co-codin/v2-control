@@ -16,6 +16,7 @@
                 search-column="live"
                 hide-no-data
                 cache-items
+                no-filter
                 chips
                 deletable-chips
                 clearable
