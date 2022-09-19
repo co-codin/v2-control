@@ -29,6 +29,7 @@ export default {
                 paste_preprocess: (pl, data) => {
                     data.content = this.cleanFormat(data);
                 },
+                relative_urls: false,
                 toolbar_sticky: true,
             },
         };
