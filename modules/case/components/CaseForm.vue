@@ -1,12 +1,5 @@
 <template>
     <v-form @submit.prevent="$emit('send', form)">
-        <v-text-field
-            v-model="form.published_at"
-            label="Дата поставки"
-            :error-messages="form.errors.get('published_at')"
-            :error="form.errors.has('published_at')"
-        />
-
         <entity-autocomplete-field
             v-model="form.city_id"
             url="/cities"
@@ -168,7 +161,6 @@ export default {
             slug: null,
             image: null,
             status: 1,
-            published_at: null,
             short_description: null,
             full_description: null,
             body: null,
