@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="$emit('send', form)">
+    <v-form @submit.prevent="sendForm">
         <entity-autocomplete-field
             v-model="form.city_id"
             url="/cities"
@@ -51,7 +51,14 @@
             :error="form.errors.has('full_description')"
         />
 
-        <div ref="editor" style="width: 500px; height: 500px;"></div>
+        <div>
+            <label class="v-label theme--light" :class="[form.errors.has('body') ? 'error--text' : '']" style="left: 0px; right: auto; position: relative;">Текст страницы</label>
+            <div ref="editor" class="mt-2" style="width: 800px; height: 300px;"></div>
+            <span v-if="form.errors.has('body')" style="color: red;">
+                {{form.errors.get('body')}}
+            </span>
+        </div>
+
 <!--        <wysiwyg-field-->
 <!--            v-model="form.body"-->
 <!--            label="Текст страницы"-->
@@ -88,7 +95,6 @@
                     form.image = $event.file;
                 "
         />
-
         <file-field
             v-else
             v-model="form.image"
@@ -194,8 +200,10 @@ export default {
     },
     async mounted() {
         const el = this.$refs.editor;
+        console.log(this.caseItem)
+        const text = this.form.body ?? "<h1>Текст страницы</h1>"
         this.editor = monaco.editor.create(el, {
-            value: "<h1><b style='color: red;'>test</b></h1>",
+            value: text,
             language: "html",
             lineNumbers: 'off',
             minimap: {
@@ -204,6 +212,10 @@ export default {
         });
     },
     methods: {
+        sendForm() {
+            this.form.body = this.editor.getValue()
+            this.$emit('send', this.form)
+        },
         updateSlug: debounce(async function () {
             if (this.isUpdating && this.form.slug) {
                 return;
