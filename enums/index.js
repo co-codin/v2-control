@@ -11,7 +11,6 @@ import { Group, groupLabels, groupDescriptions } from '~/enums/modules/ProductGr
 import { urlRules } from '~/enums/rules';
 import { fileType, fileExtensions } from '~/enums/modules/ExportFileExtension';
 import {activityEvents} from '~/enums/modules/Event'
-import {subjectTypes} from '~/enums/modules/SubjectType'
 
 import { systemFilters } from '~/enums/modules/SystemFilter';
 
@@ -61,5 +60,4 @@ export {
     fileType,
     fileExtensions,
     activityEvents,
-    subjectTypes,
 };

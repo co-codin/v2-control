@@ -24,11 +24,38 @@
                     <div>{{ item.asDate('created_at').format('DD.MM.YYYY HH:mm') }}</div>
                 </template>
 
+                <template #item.causer.name="{ item }">
+                    <div v-if="!item.causer_id">Система</div>
+                    <div v-else-if="item.causer_id && !item.causer">Пользователь удален</div>
+                    <div v-else>{{item.causer.name}}</div>
+                </template>
+
                 <template #item.properties="{ item }">
-                    <pre v-if="propertyShow[item.id]"><code v-html="highlight(JSON.stringify(item.properties, null, 2))"></code></pre>
-                    <v-btn v-else small @click.prevent="toggleProperty(item.id)">Подробнее</v-btn>
+                    <v-btn small @click.prevent="toggleProperty(item.properties)">Подробнее</v-btn>
                 </template>
             </v-data-table>
+            <v-dialog
+                v-model="popup.show"
+            >
+                <v-card>
+                    <v-card-text>
+                        <pre><code v-html="highlight(JSON.stringify(popup.message, null, 2))"></code></pre>
+                    </v-card-text>
+
+                    <v-divider></v-divider>
+
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="primary"
+                            text
+                            @click="popup.show = false"
+                        >
+                            Закрыть
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-card>
     </div>
 </template>
@@ -39,7 +66,6 @@ import AdvancedSearchForm from '@/components/search/AdvancedSearchForm';
 import PageHeader from '~/components/common/PageHeader';
 import Activity from '~/modules/activity/models/Activity'
 import { activityEvents } from '~/enums'
-import {subjectTypes} from '~/enums'
 import formatHighlight from 'json-format-highlight'
 
 export default {
@@ -54,14 +80,17 @@ export default {
             searchForm: {
                 id: null,
             },
-            propertyShow: {},
+            popup: {
+                show: false,
+                message: ''
+            },
             headers: [
                 { text: 'Дата и время', align: 'left', value: 'created_at' },
-                { text: 'Автор изменений', align: 'left', value: 'causer.name' },
+                { text: 'Автор изменений', align: 'left', value: 'causer.name', sortable: false, },
                 { text: 'Тип сущности', align: 'left', value: 'subject_type' },
                 { text: 'ID сущности', align: 'left', value: 'subject_id' },
-                { text: 'Действие', align: 'left', value: 'event' },
-                { text: 'Доп. параметры', align: 'left', value: 'properties' },
+                { text: 'Действие', align: 'left', value: 'event', sortable: false, },
+                { text: 'Доп. параметры', align: 'left', value: 'properties', sortable: false, },
             ],
             breadcrumbs: [{ text: 'Список событий' }],
             filters: [
@@ -79,8 +108,7 @@ export default {
                 {
                     label: 'Тип сущности',
                     name: 'subject_type',
-                    component: () => import('@/components/search/fields/SelectSearchField'),
-                    items: subjectTypes,
+                    component: () => import('@/components/search/fields/TextSearchField'),
                 },
                 {
                     label: 'Автор изменений',
@@ -92,7 +120,6 @@ export default {
                     label: 'ID сущности',
                     name: 'subject_id',
                     component: () => import('@/components/search/fields/TextSearchField'),
-                    items: subjectTypes,
                 },
                 {
                     label: 'ID',
@@ -122,9 +149,10 @@ export default {
         title: 'События',
     },
     methods: {
-        async toggleProperty(id) {
+        async toggleProperty(properties) {
             this.$fetch()
-            this.propertyShow[+id] = !this.propertyShow[+id]
+            this.popup.show = true
+            this.popup.message = properties
         },
         highlight(json) {
             return formatHighlight(json, {
