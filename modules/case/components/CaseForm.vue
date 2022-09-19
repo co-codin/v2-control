@@ -58,6 +58,13 @@
             :error="form.errors.has('full_description')"
         />
 
+        <wysiwyg-field
+            v-model="form.body"
+            label="Текст страницы"
+            :error-messages="form.errors.get('body')"
+            :error="form.errors.has('body')"
+        />
+
         <v-textarea
             v-model="form.summary"
             label="Что оснащено?"
@@ -164,6 +171,7 @@ export default {
             published_at: null,
             short_description: null,
             full_description: null,
+            body: null,
             summary: null,
             note: null,
             city_id: null,
